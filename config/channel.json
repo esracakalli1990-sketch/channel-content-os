@@ -1,0 +1,19 @@
+{
+  "channel": {
+    "working_name": "Decoded",
+    "promise": "The hidden strategies behind the world's biggest companies.",
+    "language": "en",
+    "target_market": ["US", "UK"],
+    "format": "Business and technology documentary",
+    "target_duration_minutes": [8, 12]
+  },
+  "governance": {
+    "public_publish_requires_human_approval": true,
+    "claim_verification_required": true,
+    "asset_license_record_required": true,
+    "minimum_topic_score": 75,
+    "minimum_quality_score": 80,
+    "max_script_revisions": 2
+  }
+}
+

@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -c ' *)",
+      "Bash(python auto_produce.py)",
+      "Bash(ffprobe -v error -show_entries format=duration,size -show_entries stream=codec_type,width,height -of default=noprint_wrappers=1 videos/VIDEO-001/08_assembly/final.mp4)",
+      "Bash(ffmpeg -y -v error -ss 3 -i videos/VIDEO-001/08_assembly/final.mp4 -frames:v 1 __TRACKED_VAR__/f1.png)",
+      "Bash(ffmpeg -y -v error -ss 20 -i videos/VIDEO-001/08_assembly/final.mp4 -frames:v 1 __TRACKED_VAR__/f2.png)",
+      "Bash(python -m pytest -q)",
+      "Skill(artifact-design)",
+      "Skill(artifact-design:*)",
+      "Bash(set -e)",
+      "Bash(mv 05_audio/narration.mp3 05_audio/subs.srt 06_voice/)",
+      "Bash(mv 06_visuals/bg_black.jpg 06_visuals/*.mp4 05_visuals/)",
+      "Bash(mv 08_assembly/raw.mp4 08_assembly/merged.mp4 07_edit/)",
+      "Bash(mv 08_assembly/final.mp4 08_export/)",
+      "Bash(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 08_export/final.mp4)"
+    ]
+  }
+}

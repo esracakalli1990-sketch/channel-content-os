@@ -1,0 +1,15 @@
+{
+  "default_mode": "template",
+  "active_provider": "gemini",
+  "supported_providers": ["template", "gemini", "openai", "ollama"],
+  "provider_models": {
+    "gemini": "gemini-2.5-flash",
+    "openai": "gpt-4o-mini",
+    "ollama": "llama3.1:8b"
+  },
+  "rules": {
+    "use_only_verified_source_ledger_claims": true,
+    "cite_claim_ids_in_drafts": true,
+    "human_approval_required_before_script_approved": true
+  }
+}

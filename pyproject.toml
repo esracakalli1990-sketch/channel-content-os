@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "channel-content-os"
+version = "0.2.0"
+description = "Human-approved YouTube documentary channel operations system."
+requires-python = ">=3.11"
+dependencies = [
+    "python-dotenv>=1.0",
+    "rich>=13.0",
+    # Windows'ta Python'un sistem sertifika deposu eksik olabildigi icin
+    # Pexels API cagrilarinda certifi'nin CA listesi kullaniliyor.
+    "certifi>=2024.0",
+]
+
+[project.optional-dependencies]
+tts = ["edge-tts>=6.1"]
+media = ["Pillow>=10.0", "pysrt>=1.1"]
+all = ["edge-tts>=6.1", "Pillow>=10.0", "pysrt>=1.1"]
+dev = ["pytest>=7.0", "pytest-cov>=4.0"]
+
+[project.scripts]
+channel-os = "channel_ops.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

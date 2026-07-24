@@ -1,0 +1,64 @@
+{
+  "scale": 100,
+  "total": 74.5,
+  "qualified": false,
+  "decision_status": "provisional_pending_evidence",
+  "criteria": [
+    {
+      "key": "demand",
+      "label": "Audience demand",
+      "weight": 20,
+      "rating": 7.0,
+      "weighted_score": 14.0
+    },
+    {
+      "key": "story",
+      "label": "Story / curiosity",
+      "weight": 20,
+      "rating": 8.0,
+      "weighted_score": 16.0
+    },
+    {
+      "key": "competition",
+      "label": "Competitive gap",
+      "weight": 15,
+      "rating": 4.0,
+      "weighted_score": 6.0
+    },
+    {
+      "key": "evergreen",
+      "label": "Evergreen value",
+      "weight": 15,
+      "rating": 9.0,
+      "weighted_score": 13.5
+    },
+    {
+      "key": "revenue",
+      "label": "Revenue / sponsor fit",
+      "weight": 10,
+      "rating": 8.0,
+      "weighted_score": 8.0
+    },
+    {
+      "key": "sources",
+      "label": "Source verifiability",
+      "weight": 10,
+      "rating": 9.0,
+      "weighted_score": 9.0
+    },
+    {
+      "key": "visuals",
+      "label": "Visual / license availability",
+      "weight": 5,
+      "rating": 9.0,
+      "weighted_score": 4.5
+    },
+    {
+      "key": "production",
+      "label": "Production feasibility",
+      "weight": 5,
+      "rating": 7.0,
+      "weighted_score": 3.5
+    }
+  ]
+}
