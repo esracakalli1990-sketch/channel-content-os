@@ -1,23 +1,29 @@
-# Kurulum Rehberi — Mekanik Dönüşüm Shorts Kanalı
+# Kurulum Rehberi — Unfoldables (Mobil)
 
-Bu belge **senin yapacağın hesap/erişim işlerini** anlatır. Kod tarafını Claude hallediyor.
-Her adımı bitirdikçe kutucuğu işaretle.
+Bu belge **senin telefonda yapacağın işleri** anlatır. Kod tarafını Claude hallediyor.
+Hiç yapmamış gibi, adım adım yazıldı. Bitirdiğin kutucuğu işaretle.
 
-> **🔒 EN ÖNEMLİ KURAL:** Bu rehberdeki hiçbir anahtarı, token'ı, şifreyi **sohbete yapıştırma.**
-> Hepsi doğrudan GitHub Secrets'a girilecek. Claude'un onları görmesine gerek yok.
+> **🔒 EN ÖNEMLİ KURAL:** Buradaki hiçbir anahtarı/token'ı **sohbete yapıştırma.**
+> Hepsi doğrudan GitHub Secrets'a girilecek. Claude'un görmesine gerek yok.
 
 ---
 
-## 0. Önce Karar: Yeni Kanal Açılmalı
+## 0. Mobil Hazırlık — bunu atlarsan takılırsın
 
-Mevcut `config/channel.json` içindeki kanal **"Decoded"** — 8-12 dakikalık İngilizce iş/teknoloji
-belgeseli kanalı. Mekanik dönüşüm Shorts'ları **tamamen farklı bir format**: sözsüz, 8 saniyelik,
-görsel.
+### 0.1 Hesap karışmasını önle
+Bu proje için **yeni bir mail** kullanıyorsun. Telefonda eski Google hesabın da açıksa Google
+işlemleri sessizce yanlış hesapta yapar; API'yi bir hesapta açarsın, kanal öbür hesapta kalır.
 
-**Bu ikisini aynı kanalda birleştirme.** YouTube algoritması kanalı bir konuya oturtmaya çalışır;
-karışık format hem izleyiciyi hem algoritmayı şaşırtır, ikisi de zarar görür.
+- [ ] Chrome'da **gizli sekme** aç (sağ üst ⋮ → *Yeni gizli sekme*) ve **sadece yeni mail** ile gir
+- [ ] Tüm Google/GitHub işlerini bu gizli sekmede yap
 
-➡️ **Karar: Shorts için ayrı, yeni bir kanal.** "Decoded" olduğu gibi dursun.
+### 0.2 "Masaüstü sitesi" modunu aç
+Google Cloud Console ve GitHub Ayarları mobil görünümde menülerin yarısını gizler.
+
+- [ ] Chrome'da ⋮ → **Masaüstü sitesi** kutusunu işaretle
+- [ ] Yazılar küçülecek, iki parmakla yakınlaştırarak kullan — normal
+
+Bu iki ayar açıkken devam et.
 
 ---
 
@@ -26,177 +32,182 @@ karışık format hem izleyiciyi hem algoritmayı şaşırtır, ikisi de zarar g
 | | Değer |
 |---|---|
 | **Kanal adı (görünen ad)** | `Unfoldables` |
-| **Handle (üç platformda da aynı)** | `@unfoldableslab` |
+| **Handle (üç platformda da)** | `@unfoldableslab` |
 
-- [x] YouTube hesabı açıldı
-- [x] Instagram hesabı açıldı
-- [x] TikTok hesabı açıldı
+- [x] YouTube / Instagram / TikTok hesapları açıldı
 
-> Görünen ad ile handle'ın farklı olması tamamen normaldir — görünen adlar benzersiz olmak
-> zorunda değil, sadece handle benzersizdir. Marka olarak "Unfoldables" kullanıyoruz.
+> ⚠️ **Kontrol et:** YouTube kanalı **yeni mail** ile mi açıldı? Eski mailde kaldıysa yükleme
+> yanlış kanala gider. YouTube uygulaması → profil → hesabın mailini doğrula.
 
 ---
 
-## 2. Ortak Görsel Malzemeler (üç platformda da aynı kullanılacak)
+## 2. Telegram Botu (~3 dakika, en kolayı)
 
-- [ ] **Profil fotoğrafı** — 800×800 px, PNG. (Öneri: siyah zemin üzerinde altın/pirinç bir dişli
-      veya kapalı haldeki oyuncak objenin fotoğrafı. Flow'da ürettiğin karelerden biri iş görür.)
-- [ ] **YouTube banner** — 2048×1152 px
-- [ ] **Bio metni** (üçünde de aynı, İngilizce):
-      > *Impossible machines that unfold. One button. One transformation. New short every day.*
+Eski `@kanal3kontrol_bot` yerine yeni bot açıyoruz: bir bot token'ını aynı anda tek bir sistem
+dinleyebilir, ileride iki sistem birbirinin mesajlarını çalmasın.
+
+- [ ] Telegram → arama → **@BotFather** → *Başlat*
+- [ ] `/newbot` yaz
+- [ ] Sorduğu isim: `Unfoldables Lab`
+- [ ] Sorduğu kullanıcı adı: `unfoldableslab_bot` *(dolu derse sonuna `1` ekle)*
+- [ ] BotFather uzun bir **token** verecek → kopyala, birazdan Secrets'a koyacaksın
+- [ ] **Yeni botunu aç ve `/start` yaz** ← bunu atlama, bot sana yazamaz
 
 ---
 
-## 3. YouTube Kurulumu
+## 3. Gemini API Anahtarı (~2 dakika)
 
-### 3.1 Kanalı aç
-- [ ] youtube.com → sağ üst profil → **Ayarlar → Yeni kanal oluştur** (Marka Hesabı olarak aç,
-      kişisel hesap değil — sonradan yönetici eklemek ve devretmek için şart)
-- [ ] Kanal adını ve `@handle`'ı ayarla
-- [ ] Profil fotoğrafı + banner + açıklama yükle
-- [ ] **Telefon doğrulaması yap** (Ayarlar → Kanal → Özellik uygunluğu). Özel kapak fotoğrafı ve
-      15 dk üstü video için gerekli, şimdiden hallet.
+Prompt ve açıklama üretimi için. **Yeni mail ile.**
 
-### 3.2 ⚠️ "Çocuklara Yönelik" ayarı — buraya çok dikkat
-YouTube kanal kurulumunda "İçeriğin çocuklara yönelik mi?" diye soracak.
+- [ ] Tarayıcıda [aistudio.google.com/apikey](https://aistudio.google.com/apikey)
+- [ ] Yeni mail ile giriş yap
+- [ ] **Create API key** → proje seçmeni isterse yenisini oluşturmasına izin ver
+- [ ] Çıkan anahtarı kopyala
 
-**Cevap: HAYIR.** İçerik *oyuncak* içeriyor diye "evet" dersen:
-- Yorumlar kapanır
-- Bildirimler çalışmaz
-- Kişiselleştirilmiş reklam gitmez → **gelir çöker**
+---
 
+## 4. Google Cloud — YouTube Yükleme İzni (~15 dakika, en uzunu)
+
+Video yüklemek için **API Key yetmez**, OAuth gerekir. (API Key sadece herkese açık veriyi
+*okur*; kendi kanalına *yazmak* OAuth ister.)
+
+### 4.1 Proje aç
+- [ ] [console.cloud.google.com](https://console.cloud.google.com) (gizli sekme + masaüstü modu)
+- [ ] Şartları kabul et
+- [ ] Üstteki proje seçiciye dokun → **New Project**
+- [ ] İsim: `unfoldables-lab` → **Create**
+- [ ] Oluşunca **o projenin seçili olduğundan emin ol** (üstte adı yazmalı)
+
+### 4.2 YouTube API'sini aç
+- [ ] Üstteki arama çubuğuna `YouTube Data API v3` yaz
+- [ ] Çıkan sonuca gir → **Enable** / **Etkinleştir**
+
+### 4.3 İzin ekranı (OAuth consent screen)
+- [ ] Sol menü → **APIs & Services → OAuth consent screen**
+      *(yeni arayüzde adı **Google Auth Platform** olabilir → **Get started**)*
+- [ ] App name: `Unfoldables Lab`
+- [ ] User support email: yeni mailin
+- [ ] Audience / User type: **External**
+- [ ] Developer contact: yeni mailin
+- [ ] Kaydet
+
+### 4.4 ⚠️⚠️ EN KRİTİK ADIM — atlarsan sistem 7 günde susar
+İzin ekranının durumu varsayılan olarak **"Testing"** gelir. Bu moddaki refresh token'ı Google
+**7 gün sonra iptal eder.** Sistem bir hafta çalışır, sonra hata bile vermeden durur.
+
+- [ ] Aynı sayfada **PUBLISH APP** / *Uygulamayı yayınla* → onayla
+- [ ] Durum **"In production"** yazmalı
+
+Sonra izin ekranında "Google bu uygulamayı doğrulamadı" uyarısı çıkacak — **normal.** Kendi
+uygulaman, kendi kanalın. *Gelişmiş → (uygulama adı)'na git* deyip geçeceksin. Doğrulama
+başvurusu yapmana gerek yok.
+
+### 4.5 OAuth istemcisi oluştur — mobil için "Web application"
+> Masaüstünde "Desktop app" seçilir ama o yöntem bilgisayarda yerel sunucu ister.
+> Telefonda **Web application** seçiyoruz, böylece her şey tarayıcıdan yürüyor.
+
+- [ ] Sol menü → **Credentials** → **Create Credentials** → **OAuth client ID**
+- [ ] Application type: **Web application**
+- [ ] Name: `unfoldables-uploader`
+- [ ] **Authorized redirect URIs** → *ADD URI* → tam olarak şunu yapıştır:
+      ```
+      https://developers.google.com/oauthplayground
+      ```
+- [ ] **Create**
+- [ ] Ekranda çıkan **Client ID** ve **Client Secret**'ı kopyala (sonra da görebilirsin)
+
+---
+
+## 5. Refresh Token Üretimi (~5 dakika, tamamen tarayıcıdan)
+
+Google refresh token'ı hazır vermiyor, bir kez izin verip üreteceksin.
+
+- [ ] [developers.google.com/oauthplayground](https://developers.google.com/oauthplayground)
+- [ ] Sağ üstteki **⚙️ dişli** simgesine dokun
+- [ ] **Use your own OAuth credentials** kutusunu işaretle
+- [ ] Az önceki **Client ID** ve **Client Secret**'ı yapıştır
+- [ ] Sol taraftaki **Step 1** kutusunda, en alttaki boş alana bu iki satırı (aralarında boşlukla) yaz:
+      ```
+      https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/youtube
+      ```
+- [ ] **Authorize APIs** → yeni mail ile giriş → (doğrulama uyarısını geç) → **İzin ver**
+- [ ] **Step 2** → **Exchange authorization code for tokens**
+- [ ] Çıkan **Refresh token** değerini kopyala ← Secrets'a gidecek olan bu
+
+> **Refresh token görünmüyorsa:** ⚙️ dişliden *Force prompt for consent* kutusunu işaretleyip
+> 4. adımdan itibaren tekrarla.
+
+---
+
+## 6. GitHub Secrets — hepsini buraya gir
+
+GitHub mobil **uygulaması** Secrets ekranını göstermez → **tarayıcıdan, masaüstü modunda** gir.
+
+- [ ] `github.com/esracakalli1990-sketch/channel-content-os`
+- [ ] **Settings** → sol menü **Secrets and variables → Actions**
+- [ ] Her biri için **New repository secret** → isim + değer → *Add secret*
+
+| Secret adı | Değer nereden |
+|---|---|
+| `TELEGRAM_BOT_TOKEN` | Adım 2 — BotFather |
+| `TELEGRAM_CHAT_ID` | Claude bulduracak (bota mesaj attıktan sonra) |
+| `GEMINI_API_KEY` | Adım 3 |
+| `YOUTUBE_CLIENT_ID` | Adım 4.5 |
+| `YOUTUBE_CLIENT_SECRET` | Adım 4.5 |
+| `YOUTUBE_REFRESH_TOKEN` | Adım 5 |
+| `PROMPT_TEMPLATE` | Claude verecek (repo public, formül açıkta durmasın) |
+
+---
+
+## 7. YouTube Kanal Ayarı — gelirini etkiler
+
+YouTube "İçeriğin çocuklara yönelik mi?" diye soracak. İçerikte oyuncak var diye **"evet"
+dersen** yorumlar kapanır, bildirim gitmez, kişiselleştirilmiş reklam kalkar → **gelir çöker.**
 Bu içerik genel izleyiciye yönelik, çocuklara özel değil.
 
-- [ ] Kanal ayarında **"Hayır, çocuklara yönelik değil"** seçildi
-
-### 3.3 API erişimi (Claude'un yükleme yapabilmesi için)
-- [ ] [console.cloud.google.com](https://console.cloud.google.com) → yeni proje oluştur
-      (isim: `channel-content-os`)
-- [ ] **APIs & Services → Library** → "YouTube Data API v3" → **Enable**
-- [ ] **OAuth consent screen** → User Type: **External** → uygulama adını gir, kendi mailini
-      destek maili olarak ekle
-- [ ] **Scopes** ekle: `https://www.googleapis.com/auth/youtube.upload` ve
-      `https://www.googleapis.com/auth/youtube`
-- [ ] **Credentials → Create Credentials → OAuth client ID → Desktop app** →
-      `client_secret.json` dosyasını indir
-
-### 3.4 ⚠️⚠️ EN KRİTİK ADIM — bunu atlarsan sistem 7 günde ölür
-
-OAuth consent screen'de uygulamanın durumu varsayılan olarak **"Testing"** gelir.
-**Testing modunda Google'ın verdiği refresh token 7 gün sonra geçersiz olur.** Yani sistem bir
-hafta çalışır, sonra sessizce durur.
-
-**Çözüm:** OAuth consent screen sayfasında **"PUBLISH APP" / "Uygulamayı yayınla"** düğmesine bas,
-durumu **"In production"** yap.
-
-Giriş yaparken "Google bu uygulamayı doğrulamadı" uyarısı çıkacak — **normal**, kendi uygulaman.
-"Gelişmiş → Devam et" diyip geçersin. Doğrulama başvurusuna gerek yok, sadece sen kullanacaksın.
-
-- [ ] OAuth consent screen durumu **"In production"** yapıldı
-
-### 3.5 Kota bilgisi (bilgi amaçlı, yapman gereken bir şey yok)
-Günlük ücretsiz kota 10.000 birim, bir yükleme 1.600 birim → **günde ~6 video**.
-Günde 1 video hedefimiz için fazlasıyla yeterli.
+- [ ] YouTube Studio → **Ayarlar → Kanal → Gelişmiş ayarlar**
+- [ ] **"Hayır, çocuklara yönelik değil"** seçili
 
 ---
 
-## 4. Instagram Kurulumu
+## 8. Instagram (sonra — acelesi yok)
 
-### 4.1 Hesap
-- [ ] Yeni Instagram hesabı aç, handle aynı olsun
-- [ ] **Ayarlar → Hesap türü → Profesyonel hesaba geç → İşletme (Business)**
-      *(Creator da çalışıyor ama API'nin belgelenmiş yolu Business, garantiye alalım)*
-- [ ] Profil fotoğrafı + bio ekle
+- [ ] Instagram → **Ayarlar → Hesap türü → Profesyonel → İşletme (Business)**
+- [ ] Facebook **Sayfası** oluştur (aynı isim) ve Instagram'a bağla
+- [ ] [developers.facebook.com](https://developers.facebook.com) → **Create App** → tip: **Business**
+- [ ] Ürün ekle: **Instagram Graph API**
+- [ ] Not et: **App ID**, **App Secret**, **Instagram Business Account ID**, **Page ID**
 
-### 4.2 Facebook sayfası (API için zorunlu)
-Instagram'ın yayınlama API'si, hesabın bir Facebook sayfasına bağlı olmasını **şart koşuyor**.
-- [ ] Yeni bir Facebook **Sayfası** oluştur (aynı isim)
-- [ ] Instagram → Ayarlar → **Sayfa bağla** → oluşturduğun sayfayı bağla
-
-### 4.3 Meta geliştirici uygulaması
-- [ ] [developers.facebook.com](https://developers.facebook.com) → **My Apps → Create App**
-- [ ] Uygulama tipi: **Business**
-- [ ] Ürün ekle: **Instagram Graph API** (veya "Instagram API setup with Facebook Login")
-- [ ] Sayfanı ve Instagram hesabını uygulamaya bağla
-- [ ] Şu değerleri bir kenara not et (sohbete değil!): **App ID**, **App Secret**,
-      **Instagram Business Account ID**, **Page ID**
-
-### 4.4 ⚠️ Token ömrü
-Meta'nın verdiği uzun ömürlü token **60 günde bir yenilenmeli**. Claude bunu otomatik yenileyen
-kodu yazacak, ama ilk token'ı senin üretmen gerekiyor. O adıma geldiğimizde birlikte yaparız.
+> Meta'nın token'ı 60 günde bir yenilenmeli — Claude otomatik yenileyen kodu yazacak.
 
 ---
 
-## 5. TikTok Kurulumu
+## 9. TikTok (en son)
 
-### 5.1 Hesap
-- [ ] TikTok hesabı aç, handle aynı olsun
-- [ ] Profil fotoğrafı + bio ekle
+TikTok'un yayınlama API'si geliştirici incelemesi istiyor. Onay gelmeden API ile atılan videolar
+**taslak** olarak düşer.
 
-### 5.2 API — beklentiyi baştan netleştirelim
-TikTok'un yayınlama API'si (Content Posting API) geliştirici başvurusu ve inceleme istiyor.
-**İnceleme onaylanmadan API ile atılan videolar sadece "taslak" olarak** hesabına düşer,
-otomatik yayınlanmaz.
-
-**Planımız:**
-1. **Şimdi:** Video TikTok'a taslak olarak gider, sen uygulamadan tek tık yayınlarsın.
-   (Zaten videoyu Flow'da elinle üretiyorsun, akışta zaten varsın — büyük yük değil.)
-2. **Paralelde:** [developers.tiktok.com](https://developers.tiktok.com) üzerinden başvuruyu
-   yaparsın, onay gelirse tam otomatiğe çeviririz.
-
-- [ ] TikTok hesabı açıldı
-- [ ] (Opsiyonel, acelesi yok) Geliştirici başvurusu yapıldı
+**Planımız:** Video taslak olarak gider, sen uygulamadan tek tık yayınlarsın. Paralelde
+[developers.tiktok.com](https://developers.tiktok.com) başvurusunu yaparız, onaylanırsa tam
+otomatiğe çeviririz.
 
 ---
 
-## 6. Telegram Botu
+## 10. Hangi Sırayla?
 
-Sistemin seninle konuştuğu yer burası.
+Hepsi bir günde bitmek zorunda değil. Sistemi ayağa kaldıran sıra:
 
-- [ ] Telegram'da **@BotFather**'ı aç
-- [ ] `/newbot` yaz → bota bir isim ve kullanıcı adı ver
-- [ ] BotFather sana bir **token** verecek → not et (sohbete yapıştırma!)
-- [ ] **Kendi botuna bir mesaj at** ("merhaba" yeter) — bu şart, yoksa bot sana yazamaz
-- [ ] Claude sana `chat_id`'yi nasıl bulacağını söyleyecek (tek komut, kolay)
+1. **Telegram botu** (adım 2) — 3 dk
+2. **Gemini anahtarı** (adım 3) — 2 dk
+3. **Google Cloud + OAuth + refresh token** (adım 4-5) — 20 dk
+4. **Secrets'a giriş** (adım 6) — 5 dk
 
----
-
-## 7. GitHub Secrets — hepsi buraya girilecek
-
-Repo → **Settings → Secrets and variables → Actions → New repository secret**
-
-| Secret adı | Nereden geliyor |
-|---|---|
-| `TELEGRAM_BOT_TOKEN` | BotFather (adım 6) |
-| `TELEGRAM_CHAT_ID` | Claude bulmanı sağlayacak |
-| `GEMINI_API_KEY` | [aistudio.google.com/apikey](https://aistudio.google.com/apikey) |
-| `YOUTUBE_CLIENT_ID` | `client_secret.json` içinden |
-| `YOUTUBE_CLIENT_SECRET` | `client_secret.json` içinden |
-| `YOUTUBE_REFRESH_TOKEN` | Claude'un yazacağı tek seferlik komutla üretilecek |
-| `IG_USER_ID` | Meta uygulaması (adım 4.3) |
-| `IG_ACCESS_TOKEN` | Meta uygulaması (adım 4.3) |
-| `PROMPT_TEMPLATE` | Claude verecek — prompt formülü repoda açıkta durmasın diye |
-
-> Repo public olduğu için prompt şablonunu koda değil Secret'a koyuyoruz.
-> Secrets public repoda bile gizlidir, kimse göremez.
+**Bu dördü bitince sistem yayına girebilir.** Instagram (8) ve TikTok (9) sonradan eklenir,
+onları beklemeye gerek yok.
 
 ---
 
-## 8. Sıralama Önerisi
+## Takıldığında
 
-Hepsini bir günde yapman gerekmiyor. Öncelik sırası:
-
-1. **İsim + handle kontrolü** (her şey buna bağlı)
-2. **YouTube kanalı + API + `In production` ayarı** ← Claude'un ilk ihtiyacı bu
-3. **Telegram botu** ← ikinci ihtiyaç
-4. **Instagram + Facebook sayfası** (biraz sonra lazım olacak)
-5. **TikTok** (en son, acelesi yok)
-
-İlk ikisi biterse sistem yayına girebilir; Instagram ve TikTok üstüne eklenir.
-
----
-
-## Takıldığın Yerde
-
-Adım adım anlatırım — hangi ekranda kaldığını yaz yeter.
-**Ama anahtarları asla sohbete yapıştırma**, sadece "şu ekranda şunu göremiyorum" de.
+Hangi ekranda kaldığını yaz, adım adım anlatırım.
+**Anahtarları yapıştırma** — sadece "şu ekranda şu düğmeyi göremiyorum" demen yeterli.
