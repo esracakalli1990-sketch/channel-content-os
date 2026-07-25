@@ -114,7 +114,38 @@ başvurusu yapmana gerek yok.
       https://developers.google.com/oauthplayground
       ```
 - [ ] **Create**
-- [ ] Ekranda çıkan **Client ID** ve **Client Secret**'ı kopyala (sonra da görebilirsin)
+- [ ] **Client ID**'yi kopyala
+
+### 4.6 Client Secret'ı bulma — Google artık ekranda göstermiyor
+
+Oluşturma ekranında Client ID görünür ama secret yerine **JSON dosyası indir** der. Secret o
+dosyanın içinde. İki yol var:
+
+**Yol 1 — dosya indirmeden (önce bunu dene):**
+- [ ] Sol menü → **Credentials** → listede `unfoldables-uploader` adına dokun
+- [ ] Detay sayfasında **"Additional information"** / **"Client secret"** bölümündeki
+      kopyala simgesine bas
+
+**Yol 2 — JSON'u telefonda açmak (secret gizliyse):**
+
+`.json` dosyasına dokununca telefon çoğu zaman "açacak uygulama yok" der. Uzantıyı değiştir:
+
+- **Android:** Dosyalar → İndirilenler → dosyaya **uzun bas** → *Yeniden adlandır* →
+  sonundaki `.json` yerine `.txt` yaz → kaydet → dosyaya dokun, metin olarak açılır
+- **iPhone:** Dosyalar → İndirilenler → dosyaya dokun, doğrudan metin olarak açılır
+
+Açılan metin tek satır ve karışık görünecek, normal. İçinde şunu ara:
+
+```
+"client_secret":"GOCSPX-xxxxxxxxxxxxxxxxxxxx"
+```
+
+**`GOCSPX-` ile başlayan** değer senin secret'ın (tırnaklar dahil değil). Aynı dosyada
+`"client_id"` de var, onu kaybettiysen oradan alabilirsin.
+
+- [ ] Client Secret kopyalandı
+- [ ] ⚠️ **JSON dosyasını telefondan sil** — kanalına erişim veren bir kimlik dosyası,
+      İndirilenler klasöründe durmasın. Secrets'a girdikten sonra gerekmiyor.
 
 ---
 
