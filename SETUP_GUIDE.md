@@ -21,27 +21,19 @@ karışık format hem izleyiciyi hem algoritmayı şaşırtır, ikisi de zarar g
 
 ---
 
-## 1. Kanal İsmi Seçimi
+## 1. Kanal Kimliği — ✅ KESİNLEŞTİ
 
-İçerik sözsüz ve global — İngilizce isim her pazarda çalışır.
+| | Değer |
+|---|---|
+| **Kanal adı (görünen ad)** | `Unfoldables` |
+| **Handle (üç platformda da aynı)** | `@unfoldableslab` |
 
-**Öneriler:**
+- [x] YouTube hesabı açıldı
+- [x] Instagram hesabı açıldı
+- [x] TikTok hesabı açıldı
 
-| İsim | Handle | Neden |
-|---|---|---|
-| **Unfoldables** | `@unfoldables` | Kısa, markalaşır, tam olarak işi anlatıyor. Birinci tercihim. |
-| **Clockwork Creatures** | `@clockworkcreatures` | Çağrışımı güçlü, steampunk hissi veriyor |
-| **Press & Unfold** | `@pressandunfold` | Videodaki eylemi birebir anlatıyor |
-| **Tiny Automata** | `@tinyautomata` | "Automata" bu sanatın gerçek adı, niş ama doğru |
-
-### ⚠️ Kritik: Handle'ı üç platformda AYNI ANDA kontrol et
-
-Bir isme karar vermeden önce **YouTube + Instagram + TikTok üçünde de** aynı handle'ın boş
-olduğundan emin ol. Üçünde de aynı olması marka açısından çok önemli. Biri doluysa o ismi ele,
-listedeki bir sonrakine geç.
-
-- [ ] İsim seçildi: `________________`
-- [ ] Handle üç platformda da müsait: `@________________`
+> Görünen ad ile handle'ın farklı olması tamamen normaldir — görünen adlar benzersiz olmak
+> zorunda değil, sadece handle benzersizdir. Marka olarak "Unfoldables" kullanıyoruz.
 
 ---
 
