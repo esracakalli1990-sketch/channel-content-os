@@ -5,6 +5,7 @@ import json
 import logging
 import os
 import re
+import time
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
@@ -15,12 +16,23 @@ logger = logging.getLogger(__name__)
 # Gemini API endpoint — works with a simple API key.
 GEMINI_API_BASE = "https://generativelanguage.googleapis.com/v1beta/models"
 
+# Statuses worth another attempt: rate limiting and the free tier's periodic
+# "high demand" unavailability. Everything else is a real problem and retrying
+# it only delays the error.
+_RETRYABLE_STATUS = frozenset({429, 500, 502, 503, 504})
+_MAX_ATTEMPTS = 4
+_BACKOFF_SECONDS = 4
+
 # Model names that exist but cannot serve a text prompt.
 _UNSUITABLE = ("embedding", "aqa", "imagen", "veo", "tts", "image-generation")
 
 
 class _ModelUnavailable(RuntimeError):
     """The configured model name is not callable by this key."""
+
+
+class _Transient(RuntimeError):
+    """A failure that is likely to clear on its own."""
 
 
 class GeminiProvider(AIProvider):
@@ -102,10 +114,32 @@ class GeminiProvider(AIProvider):
 
     def generate(self, prompt: str, *, system_prompt: str | None = None) -> str:
         try:
-            return self._generate_once(prompt, system_prompt)
+            return self._generate_with_retry(prompt, system_prompt)
         except _ModelUnavailable:
             self._resolve_model()
-            return self._generate_once(prompt, system_prompt)
+            return self._generate_with_retry(prompt, system_prompt)
+
+    def _generate_with_retry(self, prompt: str, system_prompt: str | None) -> str:
+        """Call the model, riding out the free tier's transient failures.
+
+        A scheduled job gets one chance a day, so giving up on a passing spike
+        in demand would cost the whole day's prompts.
+        """
+        for attempt in range(1, _MAX_ATTEMPTS + 1):
+            try:
+                return self._generate_once(prompt, system_prompt)
+            except _Transient as exc:
+                if attempt == _MAX_ATTEMPTS:
+                    raise RuntimeError(
+                        f"Gemini was still unavailable after {_MAX_ATTEMPTS} attempts: {exc}"
+                    ) from exc
+                delay = _BACKOFF_SECONDS * 2 ** (attempt - 1)
+                logger.warning(
+                    "Gemini call failed (%s); retrying in %ds (attempt %d/%d)",
+                    exc, delay, attempt + 1, _MAX_ATTEMPTS,
+                )
+                time.sleep(delay)
+        raise AssertionError("unreachable")  # pragma: no cover
 
     def _generate_once(self, prompt: str, system_prompt: str | None) -> str:
         url = f"{GEMINI_API_BASE}/{self._model}:generateContent?key={self._api_key}"
@@ -137,11 +171,14 @@ class GeminiProvider(AIProvider):
             # closed to newer keys. Signal that so the caller can pick another.
             if exc.code == 404:
                 raise _ModelUnavailable(error_body) from exc
+            if exc.code in _RETRYABLE_STATUS:
+                raise _Transient(f"HTTP {exc.code}") from exc
             raise RuntimeError(
                 f"Gemini API returned HTTP {exc.code}: {error_body}"
             ) from exc
         except URLError as exc:
-            raise RuntimeError(f"Could not reach Gemini API: {exc.reason}") from exc
+            # A dropped connection is as temporary as a 503.
+            raise _Transient(f"connection failed ({exc.reason})") from exc
 
         # Parse response
         try:
