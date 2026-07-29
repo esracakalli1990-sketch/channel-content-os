@@ -1,0 +1,26 @@
+name: Telegram — chat ID bul
+
+# Tek seferlik kurulum yardımcısı. Botuna bir mesaj at, sonra buradan
+# "Run workflow" de; chat ID'yi çalışma kaydında yazar.
+# Bu değeri TELEGRAM_CHAT_ID secret'ı olarak kaydet.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  whoami:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Chat ID'yi göster
+        env:
+          PYTHONPATH: src
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        run: python -m channel_ops telegram-whoami

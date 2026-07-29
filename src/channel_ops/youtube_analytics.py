@@ -16,23 +16,17 @@ from urllib.error import HTTPError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
+from .youtube_auth import get_access_token
+
 logger = logging.getLogger(__name__)
 
 ANALYTICS_URL = "https://youtubeanalytics.googleapis.com/v2/reports"
 DATA_URL = "https://www.googleapis.com/youtube/v3/videos"
 
 
-def _load_token() -> str:
-    token_path = os.getenv("YOUTUBE_TOKEN_PATH", "")
-    if not token_path or not Path(token_path).exists():
-        raise RuntimeError("YouTube OAuth token not found.")
-    data = json.loads(Path(token_path).read_text(encoding="utf-8"))
-    return data.get("access_token", "")
-
-
 def get_video_stats(youtube_video_id: str) -> dict:
     """Fetch basic statistics for a video (views, likes, comments)."""
-    token = _load_token()
+    token = get_access_token()
     params = urlencode({
         "part": "statistics,contentDetails",
         "id": youtube_video_id,
@@ -74,7 +68,7 @@ def get_analytics_report(
 
     Requires YouTube Analytics API scope.
     """
-    token = _load_token()
+    token = get_access_token()
     ch_id = channel_id or os.getenv("YOUTUBE_CHANNEL_ID", "")
     if not ch_id:
         raise RuntimeError("YOUTUBE_CHANNEL_ID required for analytics.")
