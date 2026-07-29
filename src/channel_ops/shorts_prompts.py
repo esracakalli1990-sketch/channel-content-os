@@ -89,14 +89,21 @@ Hard rules, in priority order:
 7. Write every field in English, in plain descriptive prose, with no camera or
    lighting directions — the template already supplies those.
 8. GRAMMAR. Every field is a fragment dropped into a sentence, never a sentence
-   of its own. No field may start with a capital letter or an article, and none
-   may end with a full stop.
-   * `shape` is one to four words and must not contain the word "shaped", since
-     the template appends "-shaped": "dome", "oval", "rounded hexagonal puck".
-   * `creature` must not contain the word "mechanical" — the template already
-     says it. Write "scarab beetle", never "a mechanical scarab beetle".
-   * `material`, `internal_detail`, `button` and `button_short` are noun
-     phrases: "polished obsidian-black ceramic", not "It is made of ceramic."
+   of its own, and none may end with a full stop. Articles differ per field:
+   * `shape` — one to four words, no article, and never the word "shaped"
+     since the template appends "-shaped": "dome", "rounded hexagonal puck".
+   * `creature` — no article, and never the word "mechanical"; the template
+     already says it. Write "scarab beetle", not "a mechanical scarab beetle".
+   * `button` — KEEP the article, because the template does not supply one:
+     "a single recessed titanium button ringed by amber light".
+   * `button_short` — KEEP "the": "the recessed titanium button at the centre".
+   * `material` and `internal_detail` — noun phrases, no article needed:
+     "polished obsidian-black ceramic", not "It is made of ceramic."
+   * `shell_mechanic` — a complete independent clause with its own subject and
+     verb, because the template continues it with ", revealing the movement of
+     internal mechanical components and gears". Start with the thing that
+     moves: "The hexagonal shell splits along its titanium seams". NEVER open
+     with "as", "when", "while" or "once" — that leaves the sentence unfinished.
 
 Do not reuse any of these creatures: {avoid}
 """
@@ -113,6 +120,16 @@ _MID_SENTENCE = frozenset(
 # ruby button".
 _ARTICLE_SUPPLIED = frozenset({"shape", "creature"})
 
+# The template continues shell_mechanic with ", revealing …", so a subordinate
+# opener leaves the sentence without a main clause.
+_SUBORDINATOR = re.compile(r"^(?:as|when|while|once|after|then)\s+", re.IGNORECASE)
+_DETERMINER = re.compile(r"^(?:the|a|an|its|two|three|four|six|eight)\b", re.IGNORECASE)
+_ARTICLE = re.compile(r"^(?:a|an|the)\b", re.IGNORECASE)
+
+
+def _indefinite(text: str) -> str:
+    return "an" if text[:1].lower() in "aeiou" else "a"
+
 
 def _clean_slot(value: object, slot: str) -> str:
     """Reshape a model-written field into the fragment the template expects.
@@ -126,6 +143,17 @@ def _clean_slot(value: object, slot: str) -> str:
     text = text.rstrip(" .")  # the template supplies the punctuation
     if not text:
         return text
+
+    if slot == "shell_mechanic":
+        text = _SUBORDINATOR.sub("", text)
+        if not _DETERMINER.match(text):
+            text = f"The {text}"
+    elif slot == "button" and not _ARTICLE.match(text):
+        # "The toy features small copper rivet" — the template supplies no
+        # article here, so a missing one has to be restored.
+        text = f"{_indefinite(text)} {text}"
+    elif slot == "button_short" and not _ARTICLE.match(text):
+        text = f"the {text}"
 
     if slot in _MID_SENTENCE:
         if slot in _ARTICLE_SUPPLIED:
