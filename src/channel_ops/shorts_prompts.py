@@ -88,9 +88,59 @@ Hard rules, in priority order:
    recessed titanium button at the centre of the obsidian puck".
 7. Write every field in English, in plain descriptive prose, with no camera or
    lighting directions — the template already supplies those.
+8. GRAMMAR. Every field is a fragment dropped into a sentence, never a sentence
+   of its own. No field may start with a capital letter or an article, and none
+   may end with a full stop.
+   * `shape` is one to four words and must not contain the word "shaped", since
+     the template appends "-shaped": "dome", "oval", "rounded hexagonal puck".
+   * `creature` must not contain the word "mechanical" — the template already
+     says it. Write "scarab beetle", never "a mechanical scarab beetle".
+   * `material`, `internal_detail`, `button` and `button_short` are noun
+     phrases: "polished obsidian-black ceramic", not "It is made of ceramic."
 
 Do not reuse any of these creatures: {avoid}
 """
+
+# Slots dropped into the middle of a sentence; they must not start with a
+# capital or an article. The rest begin a sentence and keep their capital.
+_MID_SENTENCE = frozenset(
+    {"shape", "material", "internal_detail", "button", "button_short", "creature"}
+)
+
+# Only these two follow an article the template already supplies ("a compact,
+# {shape}-shaped object", "a miniature mechanical {creature}"). The button
+# fields carry their own, so stripping it there would produce "features small,
+# ruby button".
+_ARTICLE_SUPPLIED = frozenset({"shape", "creature"})
+
+
+def _clean_slot(value: object, slot: str) -> str:
+    """Reshape a model-written field into the fragment the template expects.
+
+    The instructions ask for fragments, but models drift back into whole
+    sentences — which renders as "a compact, A sleek cylinder.-shaped object".
+    Normalising here rather than trusting the prompt keeps that out of the
+    published wording.
+    """
+    text = " ".join(str(value).split()).strip()
+    text = text.rstrip(" .")  # the template supplies the punctuation
+    if not text:
+        return text
+
+    if slot in _MID_SENTENCE:
+        if slot in _ARTICLE_SUPPLIED:
+            text = re.sub(r"^(?:a|an|the)\s+", "", text, flags=re.IGNORECASE)
+        if slot == "creature":
+            # "mechanical dragonfly" would render as "mechanical mechanical …".
+            text = re.sub(r"^mechanical\s+", "", text, flags=re.IGNORECASE)
+        # Two leading capital *letters* mean an acronym such as LED or USB;
+        # "A small ruby button" must not be mistaken for one.
+        lead = text[:2]
+        if not (lead.isalpha() and lead.isupper()):
+            text = text[0].lower() + text[1:]
+    else:
+        text = text[0].upper() + text[1:]
+    return text
 
 
 class TemplateMissingError(RuntimeError):
@@ -238,10 +288,11 @@ def parse_concepts(raw: str) -> list[Concept]:
     for index, item in enumerate(data, start=1):
         if not isinstance(item, dict):
             raise RuntimeError(f"Concept {index} is not an object.")
-        missing = [slot for slot in _SLOTS if not str(item.get(slot, "")).strip()]
+        cleaned = {slot: _clean_slot(item.get(slot, ""), slot) for slot in _SLOTS}
+        missing = [slot for slot, value in cleaned.items() if not value]
         if missing:
             raise RuntimeError(f"Concept {index} is missing: {', '.join(missing)}")
-        concepts.append(Concept(**{slot: str(item[slot]).strip() for slot in _SLOTS}))
+        concepts.append(Concept(**cleaned))
     return concepts
 
 
