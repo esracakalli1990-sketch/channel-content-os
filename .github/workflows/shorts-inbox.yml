@@ -74,5 +74,4 @@ jobs:
           curl -sS -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
             -d chat_id="$TELEGRAM_CHAT_ID" \
             -d parse_mode=HTML \
-            --data-urlencode "text=⚠️ <b>Gelen kutusu başarısız oldu</b>
-Ayrıntı: $RUN_URL" > /dev/null
+            --data-urlencode "text=⚠️ Gelen kutusu başarısız oldu — $RUN_URL" > /dev/null
