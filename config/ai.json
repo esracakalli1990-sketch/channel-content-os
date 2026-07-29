@@ -1,9 +1,14 @@
 {
   "default_mode": "template",
   "active_provider": "gemini",
-  "supported_providers": ["template", "gemini", "openai", "ollama"],
+  "supported_providers": [
+    "template",
+    "gemini",
+    "openai",
+    "ollama"
+  ],
   "provider_models": {
-    "gemini": "gemini-2.5-flash",
+    "gemini": "gemini-flash-latest",
     "openai": "gpt-4o-mini",
     "ollama": "llama3.1:8b"
   },
