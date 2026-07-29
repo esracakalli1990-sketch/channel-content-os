@@ -272,6 +272,14 @@ def _publish_one(
         f"{instagram_line}\n"
         f"İzleyip beğenirsen Studio'dan herkese açık yap."
     )
+
+    # TikTok has no automated path yet: its API cannot post publicly before the
+    # developer audit clears. The caption is sent as its own tap-to-copy message
+    # so the clip — already in this chat — can be posted by hand in seconds.
+    notifications.send_message(
+        f"🎵 <b>TikTok açıklaması</b> — kopyala, videoyu elle yükle\n\n"
+        f"<pre>{_escape(metadata.tiktok())}</pre>"
+    )
     return record
 
 
