@@ -1,43 +1,32 @@
 """YouTube Data API v3 integration for private upload and status management.
 
-Handles OAuth 2.0 authentication, video upload (always private first),
-metadata management, and publish status transitions.
+Handles video upload (always private first), metadata management, and publish
+status transitions. Access tokens come from :mod:`channel_ops.youtube_auth`,
+which exchanges the long-lived refresh token on demand.
 
-Setup:
-1. Create a project at https://console.cloud.google.com
-2. Enable YouTube Data API v3
-3. Create OAuth 2.0 credentials (Desktop app)
-4. Download client_secret.json
-5. Set YOUTUBE_CLIENT_SECRETS_PATH in .env
+Setup lives in SETUP_GUIDE.md sections 4 and 5.
 """
 from __future__ import annotations
 
 import json
 import logging
-import os
 from datetime import UTC, datetime
 from pathlib import Path
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
+from .youtube_auth import get_access_token
+
 logger = logging.getLogger(__name__)
 
 YOUTUBE_UPLOAD_URL = "https://www.googleapis.com/upload/youtube/v3/videos"
 YOUTUBE_VIDEOS_URL = "https://www.googleapis.com/youtube/v3/videos"
 
-
-def _load_token() -> str:
-    """Load the OAuth access token from the token file."""
-    token_path = os.getenv("YOUTUBE_TOKEN_PATH", "")
-    if not token_path or not Path(token_path).exists():
-        raise RuntimeError(
-            "YouTube OAuth token not found. Run the auth flow first:\n"
-            "  channel-os youtube-auth\n"
-            "Set YOUTUBE_TOKEN_PATH in .env to point to the token file."
-        )
-    data = json.loads(Path(token_path).read_text(encoding="utf-8"))
-    return data.get("access_token", "")
+# YouTube treats a video as a Short when it is vertical and short enough; there
+# is no API flag for it. These are the limits to stay inside.
+SHORTS_MAX_SECONDS = 180
+SHORTS_TAG = "#Shorts"
 
 
 def upload_video(
@@ -78,7 +67,7 @@ def upload_video(
         logger.warning("Forcing private upload — use publish_video() after review.")
         privacy = "private"
 
-    token = _load_token()
+    token = get_access_token()
 
     metadata = {
         "snippet": {
@@ -143,7 +132,7 @@ def upload_video(
 
 def publish_video(youtube_video_id: str) -> dict:
     """Change a private video to public (requires human approval before calling)."""
-    token = _load_token()
+    token = get_access_token()
     params = urlencode({"part": "status"})
     url = f"{YOUTUBE_VIDEOS_URL}?{params}"
 
@@ -174,7 +163,7 @@ def publish_video(youtube_video_id: str) -> dict:
 
 def set_thumbnail(youtube_video_id: str, thumbnail_path: Path) -> dict:
     """Upload a custom thumbnail for a video."""
-    token = _load_token()
+    token = get_access_token()
     url = f"https://www.googleapis.com/upload/youtube/v3/thumbnails/set?videoId={youtube_video_id}"
 
     image_data = thumbnail_path.read_bytes()
