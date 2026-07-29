@@ -1,50 +1,50 @@
 [
   {
     "index": 1,
-    "created_at": "2026-07-29T18:10:40+00:00",
+    "created_at": "2026-07-29T18:23:36+00:00",
     "concept": {
-      "shape": "A sleek, streamlined metallic cylinder tapering gently at both ends.",
-      "material": "Iridescent anodized titanium and carbon fiber with tempered sapphire glass accents.",
-      "internal_detail": "Fine brass micro-gears, silver piston linkages, and a coiled gold wire drive spring.",
-      "button": "A small, flush-mounted ruby button positioned near the front tip of the cylinder.",
-      "button_short": "the flush-mounted ruby button near the tip of the cylinder",
-      "creature": "mechanical dragonfly",
-      "shell_mechanic": "The cylindrical shell splits along four longitudinal seams and the thin metallic panels swing upward to form two pairs of translucent wings",
-      "emerging_parts": "A slender jointed tail and six folded wire legs"
+      "shape": "segmented ovoid",
+      "material": "tarnished bronze scales and darkened steel plating",
+      "internal_detail": "interlocking brass gears and miniaturized spring drives",
+      "button": "small copper rivet flush with the top central scale",
+      "button_short": "copper rivet on the top central scale",
+      "creature": "pangolin",
+      "shell_mechanic": "As overlapping bronze scales uncurl sequentially along a central spine",
+      "emerging_parts": "Four clawed brass legs and a slender snout"
     },
-    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, A sleek, streamlined metallic cylinder tapering gently at both ends.-shaped object made of Iridescent anodized titanium and carbon fiber with tempered sapphire glass accents., Fine brass micro-gears, silver piston linkages, and a coiled gold wire drive spring.. The toy features A small, flush-mounted ruby button positioned near the front tip of the cylinder.. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
-    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the flush-mounted ruby button near the tip of the cylinder with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical mechanical dragonfly. The unfolding and transformation process is logical and physically consistent. The cylindrical shell splits along four longitudinal seams and the thin metallic panels swing upward to form two pairs of translucent wings, revealing the movement of internal mechanical components and gears. A slender jointed tail and six folded wire legs physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical mechanical dragonfly's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice."
+    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, segmented ovoid-shaped object made of tarnished bronze scales and darkened steel plating, interlocking brass gears and miniaturized spring drives. The toy features small copper rivet flush with the top central scale. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
+    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses copper rivet on the top central scale with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical pangolin. The unfolding and transformation process is logical and physically consistent. As overlapping bronze scales uncurl sequentially along a central spine, revealing the movement of internal mechanical components and gears. Four clawed brass legs and a slender snout physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical pangolin's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice."
   },
   {
     "index": 2,
-    "created_at": "2026-07-29T18:10:40+00:00",
+    "created_at": "2026-07-29T18:23:36+00:00",
     "concept": {
-      "shape": "A conical spiral pod resting flat on its weighted base.",
-      "material": "Tarnished bronze plate, hammered copper rivets, and dark oxidized iron.",
-      "internal_detail": "Spiral copper mainsprings, miniature drive chains, and interlocking spur gears.",
-      "button": "A raised, knurled brass button set into the center apex of the spiral shell.",
-      "button_short": "the knurled brass button at the apex of the spiral shell",
-      "creature": "mechanical hermit crab",
-      "shell_mechanic": "The spiral casing tilts open on a double-hinged base as its side plates expand outward",
-      "emerging_parts": "Two heavy hinged pincers and six articulated brass walking legs"
+      "shape": "flattened teardrop",
+      "material": "etched damascus steel and iridescent mother-of-pearl inlay",
+      "internal_detail": "delicate silver micro-clockwork and fine wire linkages",
+      "button": "tiny pearl stud embedded in the upper casing",
+      "button_short": "pearl stud in the upper casing",
+      "creature": "moth",
+      "shell_mechanic": "As upper and lower casing panels split lengthwise and pivot outward",
+      "emerging_parts": "Six segmented wire legs, a narrow abdomen, and two feathery antennae"
     },
-    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, A conical spiral pod resting flat on its weighted base.-shaped object made of Tarnished bronze plate, hammered copper rivets, and dark oxidized iron., Spiral copper mainsprings, miniature drive chains, and interlocking spur gears.. The toy features A raised, knurled brass button set into the center apex of the spiral shell.. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
-    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the knurled brass button at the apex of the spiral shell with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical mechanical hermit crab. The unfolding and transformation process is logical and physically consistent. The spiral casing tilts open on a double-hinged base as its side plates expand outward, revealing the movement of internal mechanical components and gears. Two heavy hinged pincers and six articulated brass walking legs physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical mechanical hermit crab's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice."
+    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, flattened teardrop-shaped object made of etched damascus steel and iridescent mother-of-pearl inlay, delicate silver micro-clockwork and fine wire linkages. The toy features tiny pearl stud embedded in the upper casing. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
+    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses pearl stud in the upper casing with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical moth. The unfolding and transformation process is logical and physically consistent. As upper and lower casing panels split lengthwise and pivot outward, revealing the movement of internal mechanical components and gears. Six segmented wire legs, a narrow abdomen, and two feathery antennae physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical moth's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice."
   },
   {
     "index": 3,
-    "created_at": "2026-07-29T18:10:40+00:00",
+    "created_at": "2026-07-29T18:23:36+00:00",
     "concept": {
-      "shape": "A smooth, flattened diamond-shaped puck with rounded corners.",
-      "material": "Matte gunmetal, polished silver inlay, and internal fiber-optic light conduits.",
-      "internal_detail": "Segmented steel ribbing, tiny hydraulic pistons, and micro-actuators.",
-      "button": "A flush circular steel button positioned at the exact center of the upper hull.",
-      "button_short": "the flush steel button at the centre of the upper hull",
-      "creature": "mechanical manta ray",
-      "shell_mechanic": "The central diamond body uncurls its flexible side panels along spring-tensioned joints",
-      "emerging_parts": "A whip-like segmented tail and a pair of forward-facing optic sensors"
+      "shape": "smooth pebble",
+      "material": "anodized green aluminium and polished brass accenting",
+      "internal_detail": "compact brass gear trains and coiled tension springs",
+      "button": "recessed gold pin on the smooth top ridge",
+      "button_short": "recessed gold pin on the top ridge",
+      "creature": "tree frog",
+      "shell_mechanic": "As side shell panels swing outward and the top cap lifts",
+      "emerging_parts": "Four hinged legs with suction-pad toes and a broad head"
     },
-    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, A smooth, flattened diamond-shaped puck with rounded corners.-shaped object made of Matte gunmetal, polished silver inlay, and internal fiber-optic light conduits., Segmented steel ribbing, tiny hydraulic pistons, and micro-actuators.. The toy features A flush circular steel button positioned at the exact center of the upper hull.. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
-    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the flush steel button at the centre of the upper hull with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical mechanical manta ray. The unfolding and transformation process is logical and physically consistent. The central diamond body uncurls its flexible side panels along spring-tensioned joints, revealing the movement of internal mechanical components and gears. A whip-like segmented tail and a pair of forward-facing optic sensors physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical mechanical manta ray's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice."
+    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, smooth pebble-shaped object made of anodized green aluminium and polished brass accenting, compact brass gear trains and coiled tension springs. The toy features recessed gold pin on the smooth top ridge. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
+    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses recessed gold pin on the top ridge with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical tree frog. The unfolding and transformation process is logical and physically consistent. As side shell panels swing outward and the top cap lifts, revealing the movement of internal mechanical components and gears. Four hinged legs with suction-pad toes and a broad head physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical tree frog's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice."
   }
 ]
