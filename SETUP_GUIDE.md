@@ -213,14 +213,30 @@ Bu içerik genel izleyiciye yönelik, çocuklara özel değil.
 
 ---
 
-## 9. TikTok (en son)
+## 9. TikTok — elle paylaşım (karar verildi)
 
-TikTok'un yayınlama API'si geliştirici incelemesi istiyor. Onay gelmeden API ile atılan videolar
-**taslak** olarak düşer.
+TikTok'un yayınlama API'si geliştirici incelemesinden geçmeden **herkese açık paylaşım
+yapamıyor**; onay gelene kadar gönderilen videolar hesaba private düşüyor ve yine elle
+yayınlanması gerekiyor. Yani entegrasyon, onay çıkmadan elle paylaşımdan bir kazanç sağlamıyor.
 
-**Planımız:** Video taslak olarak gider, sen uygulamadan tek tık yayınlarsın. Paralelde
-[developers.tiktok.com](https://developers.tiktok.com) başvurusunu yaparız, onaylanırsa tam
-otomatiğe çeviririz.
+**Bu yüzden TikTok için API kurmuyoruz.** Bunun yerine sistem, her videoda Telegram'a
+**ikinci bir mesaj** gönderiyor:
+
+```
+🎵 TikTok açıklaması — kopyala, videoyu elle yükle
+
+One button and it becomes a mechanical moth. #moth #automaton #satisfying …
+```
+
+Açıklama kopyalanabilir blok halinde, içinde sadece metin var. Video da zaten aynı sohbette —
+Flow'da üretip bota gönderdiğin dosya. Yani TikTok paylaşımı yaklaşık 30 saniye:
+
+- [ ] Telegram'daki videoyu kaydet
+- [ ] TikTok'a yükle
+- [ ] Açıklama mesajına dokunup kopyala, yapıştır
+
+> İleride TikTok onayı almak istersen [developers.tiktok.com](https://developers.tiktok.com)
+> üzerinden başvurulur. Onay çıkarsa entegrasyon eklenebilir; çıkmazsa bu akış zaten çalışıyor.
 
 ---
 
@@ -233,8 +249,8 @@ Hepsi bir günde bitmek zorunda değil. Sistemi ayağa kaldıran sıra:
 3. **Google Cloud + OAuth + refresh token** (adım 4-5) — 20 dk
 4. **Secrets'a giriş** (adım 6) — 5 dk
 
-**Bu dördü bitince sistem yayına girebilir.** Instagram (8) ve TikTok (9) sonradan eklenir,
-onları beklemeye gerek yok.
+**Bu dördü bitince sistem yayına girebilir.** Instagram (8) sonradan eklenir, beklemeye gerek
+yok. TikTok (9) için kurulum gerekmiyor — açıklama Telegram'a geliyor, paylaşımı elle yapıyorsun.
 
 ---
 
