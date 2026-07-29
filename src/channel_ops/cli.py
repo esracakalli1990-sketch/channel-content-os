@@ -80,7 +80,27 @@ def build_parser() -> argparse.ArgumentParser:
     # --- dashboard ---
     subparsers.add_parser("dashboard", help="Show a rich overview of all videos")
 
+    # --- Unfoldables shorts pipeline ---
+    prompts = subparsers.add_parser(
+        "shorts-prompts", help="Generate transformation prompts and send them to Telegram"
+    )
+    prompts.add_argument("--count", type=int, default=3, help="How many concepts to send")
+
+    subparsers.add_parser(
+        "shorts-inbox", help="Publish any video waiting in the Telegram chat"
+    )
+
+    subparsers.add_parser(
+        "telegram-whoami", help="Print the chat ID of everyone who has messaged the bot"
+    )
+
     return parser
+
+
+def _shorts_provider():
+    """Build the AI provider used by the shorts pipeline."""
+    from .providers.gemini_provider import GeminiProvider
+    return GeminiProvider()
 
 
 def main() -> None:
@@ -182,6 +202,35 @@ def main() -> None:
         content, mode = generate_draft(prompt, provider_name=args.provider)
         destination = save_draft(video_directory, args.stage, prompt, content, mode)
         print(f"Saved {args.stage} ({mode}) draft -> {destination.name}")
+
+    elif args.command == "shorts-prompts":
+        from .shorts_pipeline import send_daily_prompts
+        pairs = send_daily_prompts(_shorts_provider(), count=args.count, root=root)
+        print(f"Sent {len(pairs)} prompt pair(s) to Telegram:")
+        for index, pair in enumerate(pairs, start=1):
+            print(f"  #{index} {pair.concept.creature} ({pair.concept.shape})")
+
+    elif args.command == "shorts-inbox":
+        from .shorts_pipeline import process_inbox
+        records = process_inbox(_shorts_provider(), root=root)
+        if not records:
+            print("Nothing to publish.")
+            return
+        for record in records:
+            print(f"Uploaded {record['creature']}: {record['youtube_url']}")
+
+    elif args.command == "telegram-whoami":
+        from .telegram_inbox import describe_chats
+        chats = describe_chats()
+        if not chats:
+            print(
+                "No messages found. Send your bot a message first (any text will do), "
+                "then run this again."
+            )
+            return
+        print("Store this as the TELEGRAM_CHAT_ID secret:\n")
+        for chat in chats:
+            print(f"  chat_id={chat['chat_id']}  ({chat['type']}, {chat['name']})")
 
 
 if __name__ == "__main__":

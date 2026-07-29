@@ -1,0 +1,58 @@
+name: Shorts — gelen kutusu
+
+# Telegram'a video gelmiş mi diye bakar; geldiyse başlık/açıklama üretip
+# YouTube'a private olarak yükler ve sonucu Telegram'dan bildirir.
+# Beklemek istemezsen "Run workflow" ile anında çalıştır.
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+# Telegram okuma imleci repoda tutuluyor. İki çalışma çakışırsa aynı videoyu
+# iki kez yükleyebilir, o yüzden sıraya alıyoruz.
+concurrency:
+  group: shorts-inbox
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Gelen videoyu yayınla
+        env:
+          PYTHONPATH: src
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_MODEL: gemini-2.5-flash
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+        run: python -m channel_ops shorts-inbox
+
+      - name: Okuma imlecini ve yayın kaydını sakla
+        # Yükleme başarısız olsa bile imleç ilerlemiş olabilir; kaydedilmezse
+        # bir sonraki çalışma aynı videoyu tekrar işler.
+        if: always()
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/telegram_state.json data/shorts_published.json
+          if git diff --cached --quiet; then
+            echo "Kaydedilecek değişiklik yok."
+          else
+            git commit -m "chore: telegram imleci ve yayın kaydını güncelle"
+            # Bu iş 15 dakikada bir çalışıyor; arada dala başka commit girmiş
+            # olabilir, o yüzden itmeden önce üstüne yeniden oturt.
+            git pull --rebase --autostash
+            git push
+          fi
