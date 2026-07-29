@@ -168,6 +168,20 @@ def extract_videos(updates: list[dict]) -> list[IncomingVideo]:
     return videos
 
 
+def extract_commands(updates: list[dict]) -> list[str]:
+    """Return the lowercase text commands sent to the bot.
+
+    A leading slash is optional so both "/rapor" and "rapor" work — the bot is
+    used from a phone where the slash is an extra keystroke.
+    """
+    commands: list[str] = []
+    for update in updates:
+        text = str((update.get("message") or {}).get("text", "")).strip().lower()
+        if text:
+            commands.append(text.lstrip("/").split("@")[0].split()[0])
+    return commands
+
+
 def download_video(video: IncomingVideo, destination: Path) -> Path:
     """Download an incoming video to *destination*.
 

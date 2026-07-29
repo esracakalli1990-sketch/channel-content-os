@@ -1,0 +1,53 @@
+name: Shorts — performans raporu
+
+# Yayınlanan videoların YouTube ve Instagram sayılarını Telegram'a gönderir.
+# Ayrıca Telegram'a "rapor" yazman da yeter — gelen kutusu işi onu yakalar.
+on:
+  schedule:
+    - cron: "0 6 * * 1" # Pazartesi 09:00 TRT — haftalık özet
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: "Kaç video raporlansın?"
+        required: false
+        default: "10"
+
+concurrency:
+  group: shorts-report
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Raporu gönder
+        env:
+          PYTHONPATH: src
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+        run: python -m channel_ops shorts-report --limit "${{ inputs.limit || 10 }}"
+
+      - name: Hata olursa Telegram'dan bildir
+        if: failure()
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          curl -sS -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
+            -d chat_id="$TELEGRAM_CHAT_ID" \
+            --data-urlencode "text=⚠️ Rapor hazırlanamadı — $RUN_URL" > /dev/null

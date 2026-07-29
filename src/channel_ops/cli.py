@@ -94,6 +94,11 @@ def build_parser() -> argparse.ArgumentParser:
         "telegram-whoami", help="Print the chat ID of everyone who has messaged the bot"
     )
 
+    report = subparsers.add_parser(
+        "shorts-report", help="Send a YouTube and Instagram performance report to Telegram"
+    )
+    report.add_argument("--limit", type=int, default=10, help="How many recent videos to cover")
+
     return parser
 
 
@@ -218,6 +223,11 @@ def main() -> None:
             return
         for record in records:
             print(f"Uploaded {record['creature']}: {record['youtube_url']}")
+
+    elif args.command == "shorts-report":
+        from .reporting import send_report
+        send_report(root, limit=args.limit)
+        print("Report sent to Telegram.")
 
     elif args.command == "telegram-whoami":
         from .telegram_inbox import describe_chats

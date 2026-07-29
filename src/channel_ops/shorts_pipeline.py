@@ -40,6 +40,9 @@ logger = logging.getLogger(__name__)
 PENDING_FILE = "data/shorts_pending.json"
 PUBLISHED_FILE = "data/shorts_published.json"
 
+# Typed into the Telegram chat to ask for a performance report.
+REPORT_COMMANDS = frozenset({"rapor", "report", "istatistik", "stats"})
+
 # Concepts older than this are no longer offered as a match for an arriving clip.
 PENDING_EXPIRY_DAYS = 14
 
@@ -186,6 +189,11 @@ def process_inbox(provider: AIProvider, *, root: Path | None = None) -> list[dic
     # crash mid-upload must not make the next run upload the same clip again.
     telegram_inbox.save_offset(max(u.get("update_id", 0) for u in updates) + 1, root)
 
+    # A typed command is handled before videos so asking for a report never
+    # depends on having sent a clip.
+    if REPORT_COMMANDS.intersection(telegram_inbox.extract_commands(updates)):
+        _send_report(root)
+
     videos = telegram_inbox.extract_videos(updates)
     if not videos:
         logger.info("Updates contained no video")
@@ -237,7 +245,7 @@ def _publish_one(
         # Instagram is attempted while the file is still on disk, but only
         # after YouTube has the video: a Reels failure must not cost the upload
         # that already worked.
-        reel_url = _publish_to_instagram(destination, metadata.instagram())
+        reel_url, reel_media_id = _publish_to_instagram(destination, metadata.instagram())
 
     youtube_id = result.get("id", "")
     record = {
@@ -247,6 +255,9 @@ def _publish_one(
         "youtube_video_id": youtube_id,
         "youtube_url": f"https://youtube.com/watch?v={youtube_id}",
         "instagram_url": reel_url,
+        # Stored so reports can fetch insights without searching the account's
+        # media for a matching permalink.
+        "instagram_media_id": reel_media_id,
         "instagram_caption": metadata.instagram(),
         "tiktok_caption": metadata.tiktok(),
         "size_mb": round(video.size_mb, 1),
@@ -264,29 +275,43 @@ def _publish_one(
     return record
 
 
-def _publish_to_instagram(video_path: Path, caption: str) -> str:
-    """Publish the clip as a Reel and return its link, or "" if not published.
+def _send_report(root: Path) -> None:
+    """Answer a /rapor command. Never raises — a failed report must not stop
+    the video waiting behind it from being published."""
+    from . import reporting
 
-    Instagram fetches the video from a URL rather than accepting an upload, so
-    the clip is staged publicly for the duration of the call and removed again.
-    Every failure here is reported and swallowed — the video is already on
-    YouTube by this point.
+    try:
+        reporting.send_report(root)
+        logger.info("Sent a performance report")
+    except (RuntimeError, OSError) as exc:
+        logger.warning("Report failed: %s", exc)
+        notifications.send_message(f"⚠️ <b>Rapor hazırlanamadı</b>\n{_escape(str(exc))}")
+
+
+def _publish_to_instagram(video_path: Path, caption: str) -> tuple[str, str]:
+    """Publish the clip as a Reel and return ``(link, media_id)``.
+
+    Both are "" when nothing was published. Instagram fetches the video from a
+    URL rather than accepting an upload, so the clip is staged publicly for the
+    duration of the call and removed again. Every failure here is reported and
+    swallowed — the video is already on YouTube by this point.
     """
     if not (os.getenv("IG_USER_ID") and os.getenv("IG_ACCESS_TOKEN")):
         logger.info("Instagram credentials not set — skipping Reels")
-        return ""
+        return "", ""
 
     staged = None
     try:
         staged = media_host.stage(video_path, name="short.mp4")
         reel = instagram_uploader.publish_reel(staged.url, caption)
-        return reel.permalink or f"https://instagram.com/reel/{reel.media_id}"
+        link = reel.permalink or f"https://instagram.com/reel/{reel.media_id}"
+        return link, reel.media_id
     except (instagram_uploader.InstagramError, media_host.HostingError) as exc:
         logger.warning("Instagram publish failed: %s", exc)
         notifications.send_message(
             f"⚠️ <b>Instagram'a yüklenemedi</b> (YouTube tamam)\n{_escape(str(exc))}"
         )
-        return ""
+        return "", ""
     finally:
         if staged is not None:
             media_host.unstage(staged)
