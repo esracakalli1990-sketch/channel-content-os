@@ -16,13 +16,20 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 import re
 import tempfile
 from dataclasses import asdict
 from datetime import UTC, datetime
 from pathlib import Path
 
-from . import notifications, telegram_inbox, youtube_uploader
+from . import (
+    instagram_uploader,
+    media_host,
+    notifications,
+    telegram_inbox,
+    youtube_uploader,
+)
 from .config_loader import find_project_root
 from .providers.base import AIProvider
 from .shorts_metadata import generate_metadata
@@ -227,6 +234,10 @@ def _publish_one(
             privacy="private",
             made_for_kids=False,
         )
+        # Instagram is attempted while the file is still on disk, but only
+        # after YouTube has the video: a Reels failure must not cost the upload
+        # that already worked.
+        reel_url = _publish_to_instagram(destination, metadata.instagram())
 
     youtube_id = result.get("id", "")
     record = {
@@ -235,16 +246,47 @@ def _publish_one(
         "title": title,
         "youtube_video_id": youtube_id,
         "youtube_url": f"https://youtube.com/watch?v={youtube_id}",
+        "instagram_url": reel_url,
         "instagram_caption": metadata.instagram(),
         "tiktok_caption": metadata.tiktok(),
         "size_mb": round(video.size_mb, 1),
     }
     _record_published(record, root)
 
+    instagram_line = f"📸 Instagram: {reel_url}\n" if reel_url else ""
     notifications.send_message(
         f"✅ <b>YouTube'a yüklendi (private)</b>\n\n"
         f"<b>{_escape(title)}</b>\n"
-        f"🔗 {record['youtube_url']}\n\n"
+        f"🔗 {record['youtube_url']}\n"
+        f"{instagram_line}\n"
         f"İzleyip beğenirsen Studio'dan herkese açık yap."
     )
     return record
+
+
+def _publish_to_instagram(video_path: Path, caption: str) -> str:
+    """Publish the clip as a Reel and return its link, or "" if not published.
+
+    Instagram fetches the video from a URL rather than accepting an upload, so
+    the clip is staged publicly for the duration of the call and removed again.
+    Every failure here is reported and swallowed — the video is already on
+    YouTube by this point.
+    """
+    if not (os.getenv("IG_USER_ID") and os.getenv("IG_ACCESS_TOKEN")):
+        logger.info("Instagram credentials not set — skipping Reels")
+        return ""
+
+    staged = None
+    try:
+        staged = media_host.stage(video_path, name="short.mp4")
+        reel = instagram_uploader.publish_reel(staged.url, caption)
+        return reel.permalink or f"https://instagram.com/reel/{reel.media_id}"
+    except (instagram_uploader.InstagramError, media_host.HostingError) as exc:
+        logger.warning("Instagram publish failed: %s", exc)
+        notifications.send_message(
+            f"⚠️ <b>Instagram'a yüklenemedi</b> (YouTube tamam)\n{_escape(str(exc))}"
+        )
+        return ""
+    finally:
+        if staged is not None:
+            media_host.unstage(staged)
