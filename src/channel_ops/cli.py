@@ -225,9 +225,13 @@ def main() -> None:
             print(f"Uploaded {record['creature']}: {record['youtube_url']}")
 
     elif args.command == "shorts-report":
+        import re as _re
         from .reporting import send_report
-        send_report(root, limit=args.limit)
-        print("Report sent to Telegram.")
+        # Echo the report into the job log as well. The figures are already
+        # public on the channels themselves, and having them in the run makes
+        # the numbers reviewable without reaching for the phone.
+        message = send_report(root, limit=args.limit)
+        print(_re.sub(r"<[^>]+>", "", message))
 
     elif args.command == "telegram-whoami":
         from .telegram_inbox import describe_chats
