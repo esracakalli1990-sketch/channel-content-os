@@ -28,6 +28,8 @@ YOUTUBE_VIDEOS_URL = "https://www.googleapis.com/youtube/v3/videos"
 SHORTS_MAX_SECONDS = 180
 SHORTS_TAG = "#Shorts"
 
+PRIVACY_STATUSES = frozenset({"private", "unlisted", "public"})
+
 
 def upload_video(
     video_path: Path,
@@ -39,7 +41,7 @@ def upload_video(
     privacy: str = "private",
     made_for_kids: bool = False,
 ) -> dict:
-    """Upload a video to YouTube (always as private initially).
+    """Upload a video to YouTube.
 
     Parameters
     ----------
@@ -54,18 +56,20 @@ def upload_video(
     category_id:
         YouTube category ID. 28 = Science & Technology.
     privacy:
-        Privacy status: ``"private"``, ``"unlisted"``, or ``"public"``.
-        Forced to ``"private"`` for safety.
+        ``"private"``, ``"unlisted"`` or ``"public"``. Defaults to private, but
+        the caller's choice is honoured: an earlier version quietly rewrote
+        "public" to "private", which meant a caller asking to publish got no
+        error and no published video.
 
     Returns
     -------
     dict
         YouTube API response with video ID and status.
     """
-    # Safety: always upload as private first
-    if privacy == "public":
-        logger.warning("Forcing private upload — use publish_video() after review.")
-        privacy = "private"
+    if privacy not in PRIVACY_STATUSES:
+        raise ValueError(
+            f"Unknown privacy status {privacy!r}. Expected one of: {', '.join(sorted(PRIVACY_STATUSES))}"
+        )
 
     token = get_access_token()
 

@@ -219,7 +219,7 @@ def _publish_one(
     provider: AIProvider,
     root: Path,
 ) -> dict:
-    """Download one clip, caption it, and upload it to YouTube as private."""
+    """Download one clip, caption it, and publish it to YouTube and Instagram."""
     entry = match_pending(video.caption, pending)
     if entry is None:
         raise RuntimeError(
@@ -234,12 +234,15 @@ def _publish_one(
     with tempfile.TemporaryDirectory() as workspace:
         destination = Path(workspace) / "short.mp4"
         telegram_inbox.download_video(video, destination)
+        # Published straight to public: the clip is reviewed in Flow before it
+        # is ever sent to the bot, so a private-first step adds no second look —
+        # it only left videos stranded unlisted when publishing was forgotten.
         result = youtube_uploader.upload_video(
             destination,
             title,
             description,
             tags=metadata.youtube_tags(),
-            privacy="private",
+            privacy="public",
             made_for_kids=False,
         )
         # Instagram is attempted while the file is still on disk, but only
@@ -266,11 +269,10 @@ def _publish_one(
 
     instagram_line = f"📸 Instagram: {reel_url}\n" if reel_url else ""
     notifications.send_message(
-        f"✅ <b>YouTube'a yüklendi (private)</b>\n\n"
+        f"✅ <b>Yayınlandı</b>\n\n"
         f"<b>{_escape(title)}</b>\n"
-        f"🔗 {record['youtube_url']}\n"
-        f"{instagram_line}\n"
-        f"İzleyip beğenirsen Studio'dan herkese açık yap."
+        f"▶️ {record['youtube_url']}\n"
+        f"{instagram_line}"
     )
 
     # TikTok has no automated path yet: its API cannot post publicly before the
