@@ -181,6 +181,19 @@ def _num(value: int | None) -> str:
     return "—" if value is None else f"{value:,}".replace(",", ".")
 
 
+def _replay_rate(instagram: dict[str, int]) -> str:
+    """Views divided by reach — how many times the average viewer watched.
+
+    This is the only figure so far that separated the Reel that travelled from
+    the ones that stalled, so it is worth showing on its own rather than
+    leaving the reader to divide two numbers in their head.
+    """
+    views, reach = instagram.get("views"), instagram.get("reach")
+    if not views or not reach:  # a zero reach would divide by zero
+        return ""
+    return f"{views / reach:.2f}".replace(".", ",")
+
+
 def format_telegram(reports: list[VideoReport]) -> str:
     """Render the report as the HTML Telegram accepts."""
     if not reports:
@@ -218,6 +231,9 @@ def format_telegram(reports: list[VideoReport]) -> str:
                 for key, label in (("views", "görüntülenme"), ("reach", "erişim"))
                 if key in ig
             ]
+            replays = _replay_rate(ig)
+            if replays:
+                reach.append(f"kişi başı {replays}")
             if reach:
                 lines.append("  📸 " + " · ".join(reach))
             reaction = [
