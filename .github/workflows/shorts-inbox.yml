@@ -27,6 +27,10 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Kanca yazısı için bağımlılıklar
+        # Runner'da sistem ffmpeg'i yok; tasinabilir olani pip ile geliyor.
+        run: pip install --quiet Pillow imageio-ffmpeg
+
       - name: Gelen videoyu yayınla
         env:
           PYTHONPATH: src

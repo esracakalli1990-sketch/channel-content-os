@@ -28,11 +28,13 @@ from . import (
     media_host,
     notifications,
     telegram_inbox,
+    video_overlay,
     youtube_uploader,
 )
 from .config_loader import find_project_root
 from .providers.base import AIProvider
 from .shorts_metadata import generate_metadata
+from . import shorts_prompts
 from .shorts_prompts import Concept, PromptPair, generate_prompt_pairs
 
 logger = logging.getLogger(__name__)
@@ -234,6 +236,7 @@ def _publish_one(
     with tempfile.TemporaryDirectory() as workspace:
         destination = Path(workspace) / "short.mp4"
         telegram_inbox.download_video(video, destination)
+        destination = _burn_hook(destination, metadata.hook)
         # Published straight to public: the clip is reviewed in Flow before it
         # is ever sent to the bot, so a private-first step adds no second look —
         # it only left videos stranded unlisted when publishing was forgotten.
@@ -264,6 +267,11 @@ def _publish_one(
         "instagram_caption": metadata.instagram(),
         "tiktok_caption": metadata.tiktok(),
         "size_mb": round(video.size_mb, 1),
+        "hook": metadata.hook,
+        # Which wording produced this video. Template changes are tested by
+        # comparing videos before and after, which is guesswork without a
+        # marker on each record.
+        "template_version": shorts_prompts.template_version(),
     }
     _record_published(record, root)
 
@@ -283,6 +291,21 @@ def _publish_one(
         f"<pre>{_escape(metadata.tiktok())}</pre>"
     )
     return record
+
+
+def _burn_hook(clip: Path, hook: str) -> Path:
+    """Return the clip with its hook text drawn on, or untouched on failure.
+
+    A missing hook costs some reach; refusing to publish would cost the whole
+    video, so every problem here falls back to the original file.
+    """
+    if not hook:
+        return clip
+    try:
+        return video_overlay.add_hook(clip, clip.with_name("hooked.mp4"), hook)
+    except (video_overlay.OverlayUnavailable, OSError) as exc:
+        logger.warning("Publishing without the hook overlay: %s", exc)
+        return clip
 
 
 def _send_report(root: Path) -> None:

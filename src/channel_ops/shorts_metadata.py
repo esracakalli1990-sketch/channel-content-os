@@ -45,7 +45,10 @@ button is pressed. There is no narration and no on-screen text, so the caption
 carries the whole hook.
 
 Return ONLY a JSON object, no prose and no code fences, with these fields:
-  - "title": under 60 characters, describes the transformation as a hook.
+  - "title": under 60 characters. Names the closed object but NOT what it
+    becomes, so the reveal still belongs to the video.
+  - "hook": 2 to 5 words, burned over the opening seconds of the clip. Plain
+    and legible at a glance: "What's inside?", "Watch it open".
   - "description": two or three sentences for the YouTube description.
   - "caption": one or two sentences for Instagram and TikTok, more casual.
   - "hashtags": 8 to 12 lowercase hashtag strings, each starting with '#'.
@@ -55,8 +58,10 @@ Rules:
    show — no "you won't believe", no fake stakes.
 2. The video is silent and global. Keep the language plain so a non-native
    reader gets it instantly. Avoid idioms and wordplay.
-3. Lead with the object and what it becomes, because that is the hook.
-4. At most one emoji in the title, none in the description.
+3. The title keeps the surprise. Name the object — "What is inside this bronze
+   egg?" — but never the creature, because the whole appeal is not knowing.
+   The description and caption may say what it becomes; the title may not.
+4. At most one emoji in the title, none in the description, none in the hook.
 5. Hashtags must be real, searchable terms — no invented tags, no brand names.
 
 The video shows: a {shape} made of {material} that unfolds into a mechanical
@@ -72,6 +77,9 @@ class ShortMetadata:
     description: str
     caption: str
     hashtags: list[str] = field(default_factory=list)
+    # Burned over the opening seconds of the clip, so it has to stay short
+    # enough to read before the transformation starts.
+    hook: str = ""
 
     def youtube(self) -> tuple[str, str]:
         """Return the (title, description) YouTube expects.
@@ -153,17 +161,18 @@ def parse_metadata(raw: str) -> ShortMetadata:
         description=str(data["description"]).strip(),
         caption=str(data["caption"]).strip(),
         hashtags=[str(tag) for tag in hashtags],
+        hook=str(data.get("hook", "")).strip(),
     )
 
 
 def fallback_metadata(concept: Concept) -> ShortMetadata:
     """Build usable metadata from the concept alone, without the model."""
     creature = concept.creature.strip()
-    # The article agrees with whatever word follows it, which is the creature in
-    # the title but always "mechanical" in the longer sentences.
-    article = "an" if creature[:1].lower() in "aeiou" else "a"
     return ShortMetadata(
-        title=f"This {concept.shape.strip()} becomes {article} {creature}",
+        # The fallback title withholds the creature too, so a failed model call
+        # does not quietly reintroduce the spoiler the prompt is avoiding.
+        title=f"What is inside this {concept.shape.strip()}?",
+        hook="What's inside?",
         description=(
             f"A {concept.material.strip()} {concept.shape.strip()} unfolds into "
             f"a mechanical {creature}. One button, one continuous take, no cuts."

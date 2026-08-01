@@ -25,6 +25,7 @@ The template exposes these slots:
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import logging
 import os
@@ -221,6 +222,22 @@ def load_template() -> tuple[str, str]:
         raise TemplateMissingError(
             f"PROMPT_TEMPLATE is malformed ({exc}). Expected JSON with 't2i' and 'i2v' keys."
         ) from exc
+
+
+def template_version() -> str:
+    """A short fingerprint of the current template wording.
+
+    Template changes are evaluated by comparing videos made before and after
+    them, which cannot be done reliably from memory once a few days have
+    passed. Recording this against each published video makes the comparison
+    exact. It is a hash rather than the text itself so the formula stays out of
+    this public repository's data files.
+    """
+    try:
+        t2i, i2v = load_template()
+    except TemplateMissingError:
+        return "unset"
+    return hashlib.sha256(f"{t2i}\x00{i2v}".encode()).hexdigest()[:12]
 
 
 def render(concept: Concept) -> PromptPair:

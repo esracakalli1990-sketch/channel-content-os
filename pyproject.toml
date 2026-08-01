@@ -18,7 +18,10 @@ dependencies = [
 [project.optional-dependencies]
 tts = ["edge-tts>=6.1"]
 media = ["Pillow>=10.0", "pysrt>=1.1"]
-all = ["edge-tts>=6.1", "Pillow>=10.0", "pysrt>=1.1"]
+# Kanca yazisini videoya basmak icin: Pillow yaziyi cizer, imageio-ffmpeg
+# tasinabilir ffmpeg ikilisini getirir (calisma ortaminda sistem ffmpeg'i yok).
+overlay = ["Pillow>=10.0", "imageio-ffmpeg>=0.4"]
+all = ["edge-tts>=6.1", "Pillow>=10.0", "pysrt>=1.1", "imageio-ffmpeg>=0.4"]
 dev = ["pytest>=7.0", "pytest-cov>=4.0"]
 
 [project.scripts]
