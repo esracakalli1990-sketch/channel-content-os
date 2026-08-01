@@ -130,7 +130,14 @@ def upload_video(
         raise RuntimeError(f"YouTube upload failed (HTTP {exc.code}): {error_body}") from exc
 
     video_id = result.get("id", "")
-    logger.info("Video uploaded: https://youtube.com/watch?v=%s (private)", video_id)
+    # Report the status YouTube actually applied. This line used to say
+    # "(private)" unconditionally, which kept claiming the video was hidden
+    # after uploads switched to public.
+    logger.info(
+        "Video uploaded: https://youtube.com/watch?v=%s (%s)",
+        video_id,
+        result.get("status", {}).get("privacyStatus", privacy),
+    )
     return result
 
 
