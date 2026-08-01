@@ -192,7 +192,7 @@ def format_telegram(reports: list[VideoReport]) -> str:
     stamp = datetime.now(UTC).strftime("%d.%m.%Y %H:%M UTC")
     lines = [f"📊 <b>Unfoldables — Rapor</b>\n<i>{len(reports)} video · {stamp}</i>\n"]
 
-    yt_total = ig_total = 0
+    yt_total = ig_total = ig_shares = 0
     for report in reports:
         lines.append(f"<b>{_escape(report.title or report.creature)}</b>")
 
@@ -209,12 +209,29 @@ def format_telegram(reports: list[VideoReport]) -> str:
         ig = report.instagram
         if ig:
             ig_total += ig.get("views", 0)
-            parts = [f"{_num(ig.get('views'))} görüntülenme"] if "views" in ig else []
-            parts.append(f"{_num(ig.get('likes'))} beğeni")
-            parts.append(f"{_num(ig.get('comments'))} yorum")
-            if "saved" in ig:
-                parts.append(f"{_num(ig.get('saved'))} kayıt")
-            lines.append("  📸 " + " · ".join(parts))
+            ig_shares += ig.get("shares", 0)
+            # Split across two lines: how far it travelled, then how people
+            # reacted. Shares lead the second line because they are what
+            # actually drives Reels distribution.
+            reach = [
+                f"{_num(ig[key])} {label}"
+                for key, label in (("views", "görüntülenme"), ("reach", "erişim"))
+                if key in ig
+            ]
+            if reach:
+                lines.append("  📸 " + " · ".join(reach))
+            reaction = [
+                f"{_num(ig[key])} {label}"
+                for key, label in (
+                    ("shares", "paylaşım"),
+                    ("saved", "kayıt"),
+                    ("likes", "beğeni"),
+                    ("comments", "yorum"),
+                )
+                if key in ig
+            ]
+            if reaction:
+                lines.append("     " + " · ".join(reaction))
         elif report.instagram_url:
             lines.append("  📸 —")
 
@@ -222,9 +239,10 @@ def format_telegram(reports: list[VideoReport]) -> str:
             lines.append(f"  <i>⚠️ {_escape(note)}</i>")
         lines.append("")
 
-    lines.append(
-        f"<b>Toplam:</b> {_num(yt_total)} YouTube izlenme · {_num(ig_total)} Instagram görüntülenme"
-    )
+    total = f"<b>Toplam:</b> {_num(yt_total)} YouTube izlenme · {_num(ig_total)} Instagram görüntülenme"
+    if ig_shares:
+        total += f" · {_num(ig_shares)} paylaşım"
+    lines.append(total)
     return "\n".join(lines)
 
 
