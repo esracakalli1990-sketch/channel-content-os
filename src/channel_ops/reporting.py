@@ -336,6 +336,11 @@ def format_telegram(reports: list[VideoReport]) -> str:
                 reach.append(f"kişi başı {replays}")
             if reach:
                 lines.append("  📸 " + " · ".join(reach))
+            # Instagram has reported shares as exactly 0 on every video so far,
+            # including one with 31k views and 100 likes, while YouTube reports
+            # real shares for the same clips. The metric is almost certainly
+            # not being populated, so a zero is hidden rather than printed as
+            # though it were measured.
             reaction = [
                 f"{_num(ig[key])} {label}"
                 for key, label in (
@@ -344,7 +349,7 @@ def format_telegram(reports: list[VideoReport]) -> str:
                     ("likes", "beğeni"),
                     ("comments", "yorum"),
                 )
-                if key in ig
+                if key in ig and not (key == "shares" and not ig[key])
             ]
             if reaction:
                 lines.append("     " + " · ".join(reaction))
