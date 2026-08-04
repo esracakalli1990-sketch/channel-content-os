@@ -84,9 +84,9 @@ def build_parser() -> argparse.ArgumentParser:
     prompts = subparsers.add_parser(
         "shorts-prompts", help="Generate transformation prompts and send them to Telegram"
     )
-    # Nine concepts for three videos a day: the same three-to-one choice the
-    # single-video schedule had, so there is still something to reject.
-    prompts.add_argument("--count", type=int, default=9, help="How many concepts to send")
+    # One concept per run. The job fires three times a day, so each firing is
+    # one video's worth of work and the reminder to do it.
+    prompts.add_argument("--count", type=int, default=1, help="How many concepts to send")
 
     subparsers.add_parser(
         "shorts-inbox", help="Publish any video waiting in the Telegram chat"

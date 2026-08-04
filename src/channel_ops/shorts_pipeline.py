@@ -100,32 +100,53 @@ def _escape(text: str) -> str:
 def send_daily_prompts(
     provider: AIProvider,
     *,
-    count: int = 3,
+    count: int = 1,
     root: Path | None = None,
 ) -> list[PromptPair]:
-    """Generate *count* concepts, send them to Telegram, and hold them pending."""
+    """Generate *count* concepts, send them to Telegram, and hold them pending.
+
+    One concept per run is the normal case: the job fires three times a day and
+    each firing is both the idea and the reminder to make it. Choosing between
+    several ideas was work without a payoff — nothing in the data said the
+    rejected ones would have done worse.
+    """
     pairs = generate_prompt_pairs(provider, count=count, root=root)
 
-    notifications.send_message(
-        f"☀️ <b>Günün fikirleri hazır</b> — {len(pairs)} tane.\n"
-        f"Beğendiğini Flow'da üret, videoyu bu sohbete geri gönder.\n"
-        f"<i>Hangisi olduğunu yazmak için başlığa numarayı ekle (örn. \"2\").</i>"
-    )
-    for index, pair in enumerate(pairs, start=1):
-        notifications.send_message(_format_prompt_message(index, pair))
-
+    path = _data_path(PENDING_FILE, root)
+    # Concepts accumulate rather than replace. The job runs three times a day
+    # and a video made in the evening still has to match the idea sent that
+    # morning, which overwriting the file would have thrown away.
     pending = [
-        {
+        entry for entry in _read_json(path, [])
+        if _is_fresh(entry) and not entry.get("used_at")
+    ]
+    first_index = max((int(entry.get("index", 0)) for entry in pending), default=0) + 1
+
+    if count == 1:
+        notifications.send_message(
+            "🎬 <b>Sıradaki video</b>\n"
+            "Promptları Flow'da çalıştır, çıkan videoyu bu sohbete geri gönder."
+        )
+    else:
+        notifications.send_message(
+            f"☀️ <b>Yeni fikirler hazır</b> — {len(pairs)} tane.\n"
+            f"Beğendiğini Flow'da üret, videoyu bu sohbete geri gönder.\n"
+            f"<i>Hangisi olduğunu yazmak için başlığa numarayı ekle.</i>"
+        )
+
+    for offset, pair in enumerate(pairs):
+        index = first_index + offset
+        notifications.send_message(_format_prompt_message(index, pair))
+        pending.append({
             "index": index,
             "created_at": datetime.now(UTC).isoformat(timespec="seconds"),
             "concept": asdict(pair.concept),
             "text_to_image": pair.text_to_image,
             "image_to_video": pair.image_to_video,
-        }
-        for index, pair in enumerate(pairs, start=1)
-    ]
-    _write_json(_data_path(PENDING_FILE, root), pending)
-    logger.info("Sent %d prompt pair(s) and stored them as pending", len(pairs))
+        })
+
+    _write_json(path, pending)
+    logger.info("Sent %d prompt pair(s); %d now pending", len(pairs), len(pending))
     return pairs
 
 

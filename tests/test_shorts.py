@@ -90,6 +90,65 @@ class RecentHookTests(unittest.TestCase):
             self.assertEqual(shorts_pipeline._recent_hooks(Path(workspace)), [])
 
 
+class PendingAccumulationTests(unittest.TestCase):
+    """The prompt job runs three times a day, so each run must add to the
+    pending list rather than replace it."""
+
+    def setUp(self):
+        self._workspace = TemporaryDirectory()
+        self.root = Path(self._workspace.name)
+        (self.root / "data").mkdir()
+        self.addCleanup(self._workspace.cleanup)
+
+    def _send(self, creature):
+        class StubProvider:
+            def generate(self, prompt, system_prompt=""):
+                raise AssertionError("the concept source is stubbed instead")
+
+        def fake_pairs(provider, *, count, root=None):
+            from channel_ops.shorts_prompts import PromptPair
+            return [PromptPair(_concept(creature), "t2i", "i2v") for _ in range(count)]
+
+        original = shorts_pipeline.generate_prompt_pairs
+        sent = []
+        shorts_pipeline.generate_prompt_pairs = fake_pairs
+        original_send = shorts_pipeline.notifications.send_message
+        shorts_pipeline.notifications.send_message = sent.append
+        try:
+            shorts_pipeline.send_daily_prompts(StubProvider(), count=1, root=self.root)
+        finally:
+            shorts_pipeline.generate_prompt_pairs = original
+            shorts_pipeline.notifications.send_message = original_send
+        return sent
+
+    def _pending(self):
+        return json.loads((self.root / shorts_pipeline.PENDING_FILE).read_text(encoding="utf-8"))
+
+    def test_a_later_run_keeps_the_earlier_concept(self):
+        self._send("moth")
+        self._send("scorpion")
+        creatures = [entry["concept"]["creature"] for entry in self._pending()]
+        self.assertEqual(creatures, ["moth", "scorpion"])
+
+    def test_indices_keep_counting_up(self):
+        self._send("moth")
+        self._send("scorpion")
+        self.assertEqual([entry["index"] for entry in self._pending()], [1, 2])
+
+    def test_used_concepts_are_dropped_on_the_next_run(self):
+        self._send("moth")
+        pending = self._pending()
+        pending[0]["used_at"] = "2026-08-04T12:00:00+00:00"
+        (self.root / shorts_pipeline.PENDING_FILE).write_text(json.dumps(pending), encoding="utf-8")
+        self._send("scorpion")
+        creatures = [entry["concept"]["creature"] for entry in self._pending()]
+        self.assertEqual(creatures, ["scorpion"])
+
+    def test_a_single_idea_is_not_announced_as_a_choice(self):
+        messages = self._send("moth")
+        self.assertNotIn("Beğendiğini", messages[0])
+
+
 class HookTests(unittest.TestCase):
     def test_default_hook_names_the_object(self):
         self.assertEqual(_default_hook(_concept(shape="a sleek brushed steel capsule")), "Inside this capsule?")
