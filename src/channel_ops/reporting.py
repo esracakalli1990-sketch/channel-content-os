@@ -247,11 +247,19 @@ def _duration(seconds: float | None) -> str:
 
 
 def _retention_line(retention: dict[str, float]) -> str:
-    """How much of the clip was watched, and what it earned."""
+    """How much of the clip was watched, and what it earned.
+
+    On Shorts ``averageViewPercentage`` counts replays, so it routinely exceeds
+    100% — the real figures here run to 261%. Reading that as "261% retention"
+    is nonsense, so anything over a full watch is shown as a loop multiplier
+    instead, which is what it actually measures.
+    """
     parts: list[str] = []
     percentage = retention.get("averageViewPercentage")
-    if percentage:
-        parts.append(f"%{percentage:.0f} tutulma".replace(".", ","))
+    if percentage and percentage >= 100:
+        parts.append(f"{percentage / 100:.2f}× izlendi".replace(".", ","))
+    elif percentage:
+        parts.append(f"%{percentage:.0f} izlendi")
     watched = _duration(retention.get("averageViewDuration"))
     if watched:
         parts.append(f"{watched} ort. izlenme")
