@@ -148,8 +148,12 @@ def match_pending(caption: str, pending: list[dict]) -> dict | None:
     Matching order: an explicit number in the caption, then a creature named in
     it, then the most recent concept. The last case is what makes the common
     path work — send a video with no caption at all and it still publishes.
+
+    Concepts already published are skipped. Without that, sending three
+    uncaptioned videos in one day matched all three to the same concept and
+    published them under one title.
     """
-    fresh = [entry for entry in pending if _is_fresh(entry)]
+    fresh = [entry for entry in pending if _is_fresh(entry) and not entry.get("used_at")]
     if not fresh:
         return None
 
@@ -168,6 +172,17 @@ def match_pending(caption: str, pending: list[dict]) -> dict | None:
             return entry
 
     return fresh[-1]
+
+
+# How far back to look when telling the model which hooks are already spent.
+RECENT_HOOK_WINDOW = 8
+
+
+def _recent_hooks(root: Path | None = None) -> list[str]:
+    """The hooks burned onto the most recent videos, newest last."""
+    history = _read_json(_data_path(PUBLISHED_FILE, root), [])
+    hooks = [str(record.get("hook", "")).strip() for record in history[-RECENT_HOOK_WINDOW:]]
+    return [hook for hook in hooks if hook]
 
 
 def _record_published(entry: dict, root: Path | None = None) -> Path:
@@ -212,6 +227,11 @@ def process_inbox(provider: AIProvider, *, root: Path | None = None) -> list[dic
         except RuntimeError as exc:
             logger.exception("Publishing failed")
             notifications.send_message(f"❌ <b>Yükleme başarısız</b>\n{_escape(str(exc))}")
+
+    # Which concepts got used has to outlive this run, or tomorrow's second
+    # video reuses one that already went out.
+    if records:
+        _write_json(_data_path(PENDING_FILE, root), pending)
     return records
 
 
@@ -230,7 +250,7 @@ def _publish_one(
         )
 
     concept = Concept(**entry["concept"])
-    metadata = generate_metadata(provider, concept)
+    metadata = generate_metadata(provider, concept, recent_hooks=_recent_hooks(root))
     title, description = metadata.youtube()
 
     with tempfile.TemporaryDirectory() as workspace:
@@ -274,6 +294,9 @@ def _publish_one(
         "template_version": shorts_prompts.template_version(),
     }
     _record_published(record, root)
+    # Retire the concept only once the video is actually out, so a failed
+    # upload leaves it available for the next attempt.
+    entry["used_at"] = record["published_at"]
 
     instagram_line = f"📸 Instagram: {reel_url}\n" if reel_url else ""
     notifications.send_message(

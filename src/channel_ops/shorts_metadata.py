@@ -19,7 +19,7 @@ from __future__ import annotations
 import json
 import logging
 import re
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 
 from .providers.base import AIProvider
 from .shorts_prompts import Concept
@@ -47,8 +47,10 @@ carries the whole hook.
 Return ONLY a JSON object, no prose and no code fences, with these fields:
   - "title": under 60 characters. Names the closed object but NOT what it
     becomes, so the reveal still belongs to the video.
-  - "hook": 2 to 5 words, burned over the opening seconds of the clip. Plain
-    and legible at a glance: "What's inside?", "Watch it open".
+  - "hook": 2 to 5 words, burned over the opening seconds of the clip. It has
+    to make the viewer ask a question, not answer one, and it has to fit THIS
+    object specifically — a hook that would suit every video in the series is
+    a failed hook. Name the object's material or shape where it helps.
   - "description": two or three sentences for the YouTube description.
   - "caption": one or two sentences for Instagram and TikTok, more casual.
   - "hashtags": 8 to 12 lowercase hashtag strings, each starting with '#'.
@@ -63,9 +65,22 @@ Rules:
    The description and caption may say what it becomes; the title may not.
 4. At most one emoji in the title, none in the description, none in the hook.
 5. Hashtags must be real, searchable terms — no invented tags, no brand names.
+6. The hook must never announce the transformation. "Watch it unfold", "watch
+   it open", "see it transform" and every variant of them are banned: they
+   spend the viewer's curiosity instead of creating it.
 
 The video shows: a {shape} made of {material} that unfolds into a mechanical
 {creature}. Internally: {internal_detail}.
+"""
+
+# Appended when earlier videos are known, so the model is not free to land on
+# the same hook every time. It writes each video in isolation and, left to
+# itself, converged on one phrase for three videos running.
+_RECENT_HOOKS_NOTE = """\
+
+These hooks were burned onto recent videos in this series. Write a hook that is
+clearly different from all of them — different opening word, different idea:
+{recent}
 """
 
 
@@ -165,6 +180,18 @@ def parse_metadata(raw: str) -> ShortMetadata:
     )
 
 
+def _default_hook(concept: Concept) -> str:
+    """A short hook built from the object itself, so it differs per video.
+
+    The last word of the shape is the noun — "a sleek brushed steel capsule"
+    gives "capsule" — which keeps the hook specific without repeating the
+    whole description on screen.
+    """
+    words = re.findall(r"[a-zA-Z]+", concept.shape)
+    noun = words[-1].lower() if words else "object"
+    return f"Inside this {noun}?"
+
+
 def fallback_metadata(concept: Concept) -> ShortMetadata:
     """Build usable metadata from the concept alone, without the model."""
     creature = concept.creature.strip()
@@ -172,7 +199,7 @@ def fallback_metadata(concept: Concept) -> ShortMetadata:
         # The fallback title withholds the creature too, so a failed model call
         # does not quietly reintroduce the spoiler the prompt is avoiding.
         title=f"What is inside this {concept.shape.strip()}?",
-        hook="What's inside?",
+        hook=_default_hook(concept),
         description=(
             f"A {concept.material.strip()} {concept.shape.strip()} unfolds into "
             f"a mechanical {creature}. One button, one continuous take, no cuts."
@@ -182,19 +209,41 @@ def fallback_metadata(concept: Concept) -> ShortMetadata:
     )
 
 
-def generate_metadata(provider: AIProvider, concept: Concept) -> ShortMetadata:
-    """Write metadata for *concept*, falling back if the model is unavailable."""
+def generate_metadata(
+    provider: AIProvider,
+    concept: Concept,
+    *,
+    recent_hooks: list[str] | None = None,
+) -> ShortMetadata:
+    """Write metadata for *concept*, falling back if the model is unavailable.
+
+    *recent_hooks* are the hooks already burned onto earlier videos. They are
+    shown to the model as things not to repeat, and enforced afterwards — an
+    instruction alone was what produced three identical hooks in a row.
+    """
     instructions = _METADATA_INSTRUCTIONS.format(
         shape=concept.shape,
         material=concept.material,
         creature=concept.creature,
         internal_detail=concept.internal_detail,
     )
+    used = [hook.strip() for hook in (recent_hooks or []) if hook.strip()]
+    if used:
+        instructions += _RECENT_HOOKS_NOTE.format(
+            recent="\n".join(f"  - {hook}" for hook in used)
+        )
+
     try:
         raw = provider.generate("Write the caption set for this video.", system_prompt=instructions)
         metadata = parse_metadata(raw)
-        logger.info("Generated metadata: %s", metadata.title)
-        return metadata
     except RuntimeError as exc:
         logger.warning("Metadata generation failed (%s) — falling back to the concept", exc)
         return fallback_metadata(concept)
+
+    if metadata.hook and metadata.hook.casefold() in {hook.casefold() for hook in used}:
+        replacement = _default_hook(concept)
+        logger.warning("Model repeated the hook %r — using %r", metadata.hook, replacement)
+        metadata = replace(metadata, hook=replacement)
+
+    logger.info("Generated metadata: %s (hook: %s)", metadata.title, metadata.hook)
+    return metadata

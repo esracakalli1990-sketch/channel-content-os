@@ -58,7 +58,9 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/telegram_state.json data/shorts_published.json
+          # shorts_pending.json carries which concepts have been used up; if it
+          # is not saved, the next video reuses one that already went out.
+          git add data/telegram_state.json data/shorts_published.json data/shorts_pending.json
           if git diff --cached --quiet; then
             echo "Kaydedilecek değişiklik yok."
           else
