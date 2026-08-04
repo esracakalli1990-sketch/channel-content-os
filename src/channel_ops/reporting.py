@@ -5,11 +5,11 @@ report covers exactly what this system published and nothing else.
 
 Two deliberate limits shape what can be shown:
 
-* YouTube watch time, retention and subscribers gained come from the YouTube
-  *Analytics* API, which needs the ``yt-analytics.readonly`` scope. The refresh
-  token was minted for upload and Data API access only, so those numbers are
-  out of reach until the app is re-authorised. Views, likes and comments come
-  from the Data API and are available now.
+* YouTube retention, subscribers gained and the traffic mix come from the
+  YouTube *Analytics* API, which needs the ``yt-analytics.readonly`` scope. A
+  refresh token minted without it still uploads fine, so the report shows those
+  lines when the scope is there and says so once when it is not. Views, likes
+  and comments come from the Data API and always work.
 * Instagram views, reach, saves and shares are insights, which need
   ``instagram_business_manage_insights``. Likes and comments live on the media
   node itself and always work. Insights are attempted and quietly dropped when
@@ -46,6 +46,10 @@ class VideoReport:
     youtube_url: str = ""
     instagram_url: str = ""
     youtube: dict[str, int] = field(default_factory=dict)
+    # Retention and traffic mix, from the Analytics API. Empty when the token
+    # has no yt-analytics.readonly scope, which is not the same as zero.
+    retention: dict[str, float] = field(default_factory=dict)
+    traffic: dict[str, int] = field(default_factory=dict)
     instagram: dict[str, int] = field(default_factory=dict)
     notes: list[str] = field(default_factory=list)
 
@@ -127,10 +131,20 @@ def instagram_stats(media_id: str, token: str) -> tuple[dict[str, int], list[str
 
 def collect(root: Path | None = None, *, limit: int = 10) -> list[VideoReport]:
     """Gather figures for the most recent *limit* published shorts."""
-    from .youtube_analytics import get_video_stats
+    from .youtube_analytics import (
+        AnalyticsScopeMissing,
+        get_traffic_sources,
+        get_video_retention,
+        get_video_stats,
+    )
 
     reports: list[VideoReport] = []
     published = _load_published(root)[-limit:]
+
+    # One missing scope would otherwise produce the same warning on every
+    # video. It is reported once and then not retried.
+    analytics_available = True
+    scope_note = ""
 
     token = ""
     try:
@@ -159,6 +173,16 @@ def collect(root: Path | None = None, *, limit: int = 10) -> list[VideoReport]:
             except RuntimeError as exc:
                 report.notes.append(f"YouTube verisi alınamadı ({exc})")
 
+            if analytics_available:
+                try:
+                    report.retention = get_video_retention(video_id)
+                    report.traffic = get_traffic_sources(video_id)
+                except AnalyticsScopeMissing as exc:
+                    analytics_available = False
+                    scope_note = str(exc)
+                except RuntimeError as exc:
+                    report.notes.append(f"Tutulma verisi alınamadı ({exc})")
+
         media_id = str(record.get("instagram_media_id", ""))
         if token and not media_id and report.instagram_url:
             try:
@@ -173,6 +197,9 @@ def collect(root: Path | None = None, *, limit: int = 10) -> list[VideoReport]:
                 report.notes.append(f"Instagram verisi alınamadı ({exc})")
 
         reports.append(report)
+
+    if scope_note and reports:
+        reports[0].notes.append(scope_note)
     return reports
 
 
@@ -192,6 +219,67 @@ def _replay_rate(instagram: dict[str, int]) -> str:
     if not views or not reach:  # a zero reach would divide by zero
         return ""
     return f"{views / reach:.2f}".replace(".", ",")
+
+
+# The API's traffic source codes, in the words the report is read in. Anything
+# not listed is shown as its raw code rather than dropped — an unexpected
+# source is exactly the thing worth noticing.
+TRAFFIC_LABELS = {
+    "SHORTS": "Shorts akışı",
+    "SUBSCRIBER": "abonelik",
+    "NO_LINK_OTHER": "doğrudan",
+    "NO_LINK_EMBEDDED": "gömülü",
+    "YT_SEARCH": "arama",
+    "RELATED_VIDEO": "önerilen",
+    "YT_CHANNEL": "kanal sayfası",
+    "PLAYLIST": "oynatma listesi",
+    "NOTIFICATION": "bildirim",
+    "EXT_URL": "dış bağlantı",
+}
+
+
+def _duration(seconds: float | None) -> str:
+    """Seconds as m:ss — the form YouTube Studio shows them in."""
+    if not seconds:
+        return ""
+    total = int(round(seconds))
+    return f"{total // 60}:{total % 60:02d}"
+
+
+def _retention_line(retention: dict[str, float]) -> str:
+    """How much of the clip was watched, and what it earned."""
+    parts: list[str] = []
+    percentage = retention.get("averageViewPercentage")
+    if percentage:
+        parts.append(f"%{percentage:.0f} tutulma".replace(".", ","))
+    watched = _duration(retention.get("averageViewDuration"))
+    if watched:
+        parts.append(f"{watched} ort. izlenme")
+    gained = int(retention.get("subscribersGained", 0))
+    if gained:
+        parts.append(f"+{gained} abone")
+    shares = int(retention.get("shares", 0))
+    if shares:
+        parts.append(f"{_num(shares)} paylaşım")
+    return "  🎯 " + " · ".join(parts) if parts else ""
+
+
+def _traffic_line(traffic: dict[str, int]) -> str:
+    """Where the views came from, as a share of the total.
+
+    Only the top three are shown; the tail is noise on a Short whose views are
+    almost always dominated by one source.
+    """
+    total = sum(traffic.values())
+    if not total:
+        return ""
+    top = sorted(traffic.items(), key=lambda item: item[1], reverse=True)[:3]
+    parts = [
+        f"{TRAFFIC_LABELS.get(source, source)} %{views / total * 100:.0f}"
+        for source, views in top
+        if views / total >= 0.03  # below this it is rounding, not a source
+    ]
+    return "  🔀 " + " · ".join(parts) if parts else ""
 
 
 def format_telegram(reports: list[VideoReport]) -> str:
@@ -218,6 +306,10 @@ def format_telegram(reports: list[VideoReport]) -> str:
             )
         else:
             lines.append("  ▶️ —")
+
+        for extra in (_retention_line(report.retention), _traffic_line(report.traffic)):
+            if extra:
+                lines.append(extra)
 
         ig = report.instagram
         if ig:
