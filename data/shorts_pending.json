@@ -33,19 +33,18 @@
   },
   {
     "index": 3,
-    "created_at": "2026-08-05T08:11:20+00:00",
+    "created_at": "2026-08-05T12:30:36+00:00",
     "concept": {
-      "shape": "smooth teardrop pod",
-      "material": "anodized sapphire-blue aluminium and polished copper",
-      "internal_detail": "jewelled gear trains and delicate tension springs",
-      "button": "a tiny flush copper stud at the tip of the pod",
-      "button_short": "the flush copper stud at the tip of the pod",
-      "creature": "kingfisher",
-      "shell_mechanic": "The teardrop shell splits longitudinally and two curved side panels pivot upward to form wings",
-      "emerging_parts": "A needle-sharp brass beak, a crested head, and a folded tail fan"
+      "shape": "thick pentagonal puck",
+      "material": "weathered bronze and patinated copper",
+      "internal_detail": "central brass planetary gear train and interlocking piston rods",
+      "button": "a small convex ruby push-stud at the center",
+      "button_short": "the small convex ruby push-stud at the center",
+      "creature": "starfish",
+      "shell_mechanic": "The pentagonal top plates pivot radially outward along five perimeter hinges",
+      "emerging_parts": "Five jointed tapered arms with segmented underside plating"
     },
-    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, smooth teardrop pod-shaped object made of anodized sapphire-blue aluminium and polished copper, jewelled gear trains and delicate tension springs. The toy features a tiny flush copper stud at the tip of the pod. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
-    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the flush copper stud at the tip of the pod with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical kingfisher. The unfolding and transformation process is logical and physically consistent. The teardrop shell splits longitudinally and two curved side panels pivot upward to form wings, revealing the movement of internal mechanical components and gears. A needle-sharp brass beak, a crested head, and a folded tail fan physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical kingfisher's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. In the last second the finished kingfisher settles into a still pose, resting on the same spot where the closed toy was placed, and the shot holds completely steady with no further movement and nothing entering the frame, so the clip cuts back to its opening without a jolt when it loops. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice.",
-    "used_at": "2026-08-05T11:29:38+00:00"
+    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, thick pentagonal puck-shaped object made of weathered bronze and patinated copper, central brass planetary gear train and interlocking piston rods. The toy features a small convex ruby push-stud at the center. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
+    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the small convex ruby push-stud at the center with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical starfish. The unfolding and transformation process is logical and physically consistent. The pentagonal top plates pivot radially outward along five perimeter hinges, revealing the movement of internal mechanical components and gears. Five jointed tapered arms with segmented underside plating physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical starfish's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. In the last second the finished starfish settles into a still pose, resting on the same spot where the closed toy was placed, and the shot holds completely steady with no further movement and nothing entering the frame, so the clip cuts back to its opening without a jolt when it loops. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice."
   }
 ]
