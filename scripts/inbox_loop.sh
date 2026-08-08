@@ -41,12 +41,26 @@ save_state() {
     git pull -q --rebase --autostash origin "$BRANCH" && git push -q origin "HEAD:$BRANCH"
 }
 
+# A run lasts five and a half hours, but the checkout is from the second it
+# started. Anything pushed in between — a corrected concept, a fixed bug — was
+# invisible to it, and an idea restored to the pool mid-run would have been
+# missed entirely, matching the arriving video to the wrong concept and
+# publishing it under the wrong title. Refresh before every poll.
+refresh() {
+    git fetch -q origin "$BRANCH" && git reset -q --hard "origin/$BRANCH"
+}
+
 deadline=$(( SECONDS + RUN_SECONDS ))
 failing=0
 
 echo "Telegram dinleniyor: her ${POLL_SECONDS} saniyede bir, ${RUN_SECONDS} saniye boyunca."
 
 while (( SECONDS < deadline )); do
+    # Hard reset is safe here: everything this job produces is committed by
+    # save_state at the end of the previous iteration, so there is never work
+    # in the tree worth keeping.
+    refresh || echo "Depo tazelenemedi; bu tur onceki kopyayla calisiyor."
+
     if python -m channel_ops shorts-inbox; then
         if (( failing )); then
             notify "✅ Gelen kutusu tekrar çalışıyor."
