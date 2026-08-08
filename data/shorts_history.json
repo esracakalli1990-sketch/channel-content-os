@@ -40,5 +40,12 @@
     "woodlouse",
     "paper wasp",
     "water strider"
+  ],
+  "shapes": [
+    "smooth almond wedge",
+    "seamless sphere",
+    "tapered spiral shell",
+    "tapered oval capsule",
+    "narrow elongated capsule"
   ]
 }

@@ -107,6 +107,10 @@ Hard rules, in priority order:
      with "as", "when", "while" or "once" — that leaves the sentence unfinished.
 
 Do not reuse any of these creatures: {avoid}
+
+These object shapes have been used recently. Pick something structurally
+different — five of the last thirteen videos were all a "capsule", which makes
+the series look like one object filmed over and over: {avoid_shapes}
 """
 
 # Slots dropped into the middle of a sentence; they must not start with a
@@ -287,25 +291,48 @@ def load_used_creatures(root: Path | None = None) -> list[str]:
         return []
 
 
-def remember_creatures(creatures: list[str], root: Path | None = None) -> Path:
-    """Append *creatures* to the history, keeping only the recent window."""
-    path = _history_path(root)
-    combined = load_used_creatures(root) + [c.strip() for c in creatures if c.strip()]
+def load_used_shapes(root: Path | None = None) -> list[str]:
+    """Return the object shapes used recently.
 
+    Absent from histories written before shapes were tracked, which reads as
+    "nothing to avoid" rather than an error.
+    """
+    path = _history_path(root)
+    if not path.exists():
+        return []
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+        return [str(item) for item in data.get("shapes", [])]
+    except (json.JSONDecodeError, AttributeError, TypeError) as exc:
+        logger.warning("Unreadable history at %s (%s) — treating as empty", path, exc)
+        return []
+
+
+def _recent_unique(existing: list[str], added: list[str]) -> list[str]:
+    """Merge, drop repeats keeping the newest, and trim to the memory window."""
     deduped: list[str] = []
     seen: set[str] = set()
-    for creature in reversed(combined):  # keep the most recent of any duplicate
-        key = creature.lower()
+    for value in reversed(existing + [a.strip() for a in added if a.strip()]):
+        key = value.lower()
         if key not in seen:
             seen.add(key)
-            deduped.append(creature)
-    deduped = list(reversed(deduped))[-RECENT_MEMORY:]
+            deduped.append(value)
+    return list(reversed(deduped))[-RECENT_MEMORY:]
 
+
+def remember_creatures(
+    creatures: list[str],
+    root: Path | None = None,
+    shapes: list[str] | None = None,
+) -> Path:
+    """Append *creatures* and *shapes* to the history, keeping recent ones."""
+    path = _history_path(root)
+    payload = {
+        "creatures": _recent_unique(load_used_creatures(root), creatures),
+        "shapes": _recent_unique(load_used_shapes(root), shapes or []),
+    }
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(
-        json.dumps({"creatures": deduped}, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
+    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return path
 
 
@@ -346,13 +373,21 @@ def generate_concepts(
     *,
     count: int = 3,
     avoid: list[str] | None = None,
+    avoid_shapes: list[str] | None = None,
 ) -> list[Concept]:
-    """Ask the provider for *count* fresh concepts."""
+    """Ask the provider for *count* fresh concepts.
+
+    Creatures were already kept distinct, but nothing watched the objects, and
+    the model settled on capsules. The shape is what a viewer sees for the
+    first second of the video, so its variety matters as much as the creature's.
+    """
     avoid_list = avoid or []
+    shape_list = avoid_shapes or []
     instructions = _CONCEPT_INSTRUCTIONS.format(
         count=count,
         slots="\n".join(f"  - {slot}" for slot in _SLOTS),
         avoid=", ".join(avoid_list) if avoid_list else "(none yet)",
+        avoid_shapes=", ".join(shape_list) if shape_list else "(none yet)",
     )
     raw = provider.generate(f"Invent {count} new concepts.", system_prompt=instructions)
     concepts = parse_concepts(raw)
@@ -367,9 +402,16 @@ def generate_prompt_pairs(
     root: Path | None = None,
     remember: bool = True,
 ) -> list[PromptPair]:
-    """Generate concepts and render them, skipping recently used creatures."""
-    concepts = generate_concepts(provider, count=count, avoid=load_used_creatures(root))
+    """Generate concepts and render them, skipping recent creatures and shapes."""
+    concepts = generate_concepts(
+        provider,
+        count=count,
+        avoid=load_used_creatures(root),
+        avoid_shapes=load_used_shapes(root),
+    )
     pairs = [render(concept) for concept in concepts]
     if remember:
-        remember_creatures([c.creature for c in concepts], root)
+        remember_creatures(
+            [c.creature for c in concepts], root, shapes=[c.shape for c in concepts]
+        )
     return pairs

@@ -12,7 +12,6 @@ from tempfile import TemporaryDirectory
 
 from channel_ops import reporting, shorts_pipeline
 from channel_ops.shorts_metadata import (
-    _question_title,
     _default_hook,
     fallback_metadata,
     generate_metadata,
@@ -204,8 +203,9 @@ class HookTests(unittest.TestCase):
 
 
 class TitleTests(unittest.TestCase):
-    """Eight of thirteen real titles came back as labels, which is why the
-    result is checked rather than only asked for."""
+    """Titles are no longer forced into questions: measured against real data,
+    label titles and question titles performed the same, and forcing one form
+    would have removed the only remaining thing to learn from."""
 
     def _provider(self, title):
         class StubProvider:
@@ -220,43 +220,17 @@ class TitleTests(unittest.TestCase):
 
         return StubProvider()
 
-    def test_a_label_is_replaced_with_a_question(self):
+    def test_a_label_title_is_left_alone(self):
         metadata = generate_metadata(
-            self._provider("Layered brass and blued steel oval capsule"),
-            _concept(shape="a layered oval capsule"),
+            self._provider("Green aluminum oval puck"), _concept()
         )
-        self.assertIn("?", metadata.title)
-        self.assertIn("capsule", metadata.title)
+        self.assertEqual(metadata.title, "Green aluminum oval puck")
 
-    def test_a_question_is_kept(self):
+    def test_a_question_title_is_left_alone(self):
         metadata = generate_metadata(
             self._provider("What hides inside this bronze puck?"), _concept()
         )
         self.assertEqual(metadata.title, "What hides inside this bronze puck?")
-
-    def test_a_question_with_a_trailing_emoji_is_kept(self):
-        metadata = generate_metadata(
-            self._provider("What is inside this copper pod? 🔵"), _concept()
-        )
-        self.assertTrue(metadata.title.endswith("🔵"))
-
-    def test_the_replacement_never_names_the_creature(self):
-        metadata = generate_metadata(self._provider("Green aluminum oval puck"), _concept("pangolin"))
-        self.assertNotIn("pangolin", metadata.title.lower())
-
-    def test_the_replacement_is_stable_across_runs(self):
-        """A randomised stem would give the same concept a different title on
-        a retry."""
-        concept = _concept("stag beetle", shape="a flat blued steel capsule")
-        titles = {_question_title(concept) for _ in range(5)}
-        self.assertEqual(len(titles), 1)
-
-    def test_different_creatures_get_different_stems(self):
-        stems = {
-            _question_title(_concept(name, shape="a bronze capsule"))
-            for name in ("pangolin", "moth", "scorpion", "firefly", "woodlouse", "starfish")
-        }
-        self.assertGreater(len(stems), 1)
 
 
 class MessageSplittingTests(unittest.TestCase):
@@ -314,3 +288,56 @@ class ReportFormattingTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ShapeVarietyTests(unittest.TestCase):
+    """Creatures were kept distinct but nothing watched the objects, and five
+    of thirteen videos came out as a "capsule"."""
+
+    def setUp(self):
+        self._workspace = TemporaryDirectory()
+        self.root = Path(self._workspace.name)
+        (self.root / "data").mkdir()
+        self.addCleanup(self._workspace.cleanup)
+
+    def test_shapes_are_remembered_alongside_creatures(self):
+        from channel_ops import shorts_prompts
+
+        shorts_prompts.remember_creatures(["moth"], self.root, shapes=["oval capsule"])
+        self.assertEqual(shorts_prompts.load_used_shapes(self.root), ["oval capsule"])
+        self.assertEqual(shorts_prompts.load_used_creatures(self.root), ["moth"])
+
+    def test_a_history_without_shapes_is_not_an_error(self):
+        """Histories written before shapes were tracked must still load."""
+        from channel_ops import shorts_prompts
+
+        (self.root / shorts_prompts.HISTORY_FILE).write_text(
+            json.dumps({"creatures": ["moth"]}), encoding="utf-8"
+        )
+        self.assertEqual(shorts_prompts.load_used_shapes(self.root), [])
+        self.assertEqual(shorts_prompts.load_used_creatures(self.root), ["moth"])
+
+    def test_repeated_shapes_are_not_stored_twice(self):
+        from channel_ops import shorts_prompts
+
+        shorts_prompts.remember_creatures(["moth"], self.root, shapes=["oval capsule"])
+        shorts_prompts.remember_creatures(["wasp"], self.root, shapes=["Oval Capsule"])
+        self.assertEqual(len(shorts_prompts.load_used_shapes(self.root)), 1)
+
+    def test_recent_shapes_reach_the_model(self):
+        from channel_ops import shorts_prompts
+
+        seen = {}
+
+        class StubProvider:
+            def generate(self, prompt, system_prompt=""):
+                seen["instructions"] = system_prompt
+                raise RuntimeError("stop after capturing the prompt")
+
+        (self.root / shorts_prompts.HISTORY_FILE).write_text(
+            json.dumps({"creatures": ["moth"], "shapes": ["oval capsule"]}), encoding="utf-8"
+        )
+        with self.assertRaises(RuntimeError):
+            shorts_prompts.generate_prompt_pairs(StubProvider(), count=1, root=self.root)
+        self.assertIn("oval capsule", seen["instructions"])
+        self.assertIn("moth", seen["instructions"])

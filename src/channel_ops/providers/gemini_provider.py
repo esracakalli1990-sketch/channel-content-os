@@ -20,8 +20,14 @@ GEMINI_API_BASE = "https://generativelanguage.googleapis.com/v1beta/models"
 # "high demand" unavailability. Everything else is a real problem and retrying
 # it only delays the error.
 _RETRYABLE_STATUS = frozenset({429, 500, 502, 503, 504})
-_MAX_ATTEMPTS = 4
+# Four attempts spanning 28 seconds was not enough: on 6 August the free tier
+# answered 503 to all of them and that slot's idea was never sent. Six attempts
+# span about two minutes, which is the length these outages have actually run.
+_MAX_ATTEMPTS = 6
 _BACKOFF_SECONDS = 4
+# Without a ceiling the last waits would double to 128s and push a scheduled
+# job past the point where it is worth still waiting.
+_MAX_BACKOFF_SECONDS = 45
 
 # Model names that exist but cannot serve a text prompt.
 _UNSUITABLE = ("embedding", "aqa", "imagen", "veo", "tts", "image-generation")
@@ -133,7 +139,7 @@ class GeminiProvider(AIProvider):
                     raise RuntimeError(
                         f"Gemini was still unavailable after {_MAX_ATTEMPTS} attempts: {exc}"
                     ) from exc
-                delay = _BACKOFF_SECONDS * 2 ** (attempt - 1)
+                delay = min(_BACKOFF_SECONDS * 2 ** (attempt - 1), _MAX_BACKOFF_SECONDS)
                 logger.warning(
                     "Gemini call failed (%s); retrying in %ds (attempt %d/%d)",
                     exc, delay, attempt + 1, _MAX_ATTEMPTS,
