@@ -341,3 +341,20 @@ class ShapeVarietyTests(unittest.TestCase):
             shorts_prompts.generate_prompt_pairs(StubProvider(), count=1, root=self.root)
         self.assertIn("oval capsule", seen["instructions"])
         self.assertIn("moth", seen["instructions"])
+
+
+class DeletedVideoTests(unittest.TestCase):
+    """A video removed from the channel by hand still has a record. Without a
+    marker the report queries it, gets nothing back, and draws the same bare
+    "—" it draws when the API is broken."""
+
+    def test_a_deleted_video_is_named_as_deleted(self):
+        report = reporting.VideoReport(
+            creature="ladybug", title="T", published_at="",
+            notes=["YouTube'dan silindi (Instagram'da duruyor)"],
+            instagram={"views": 2423, "reach": 1919, "likes": 7},
+        )
+        rendered = reporting.format_telegram([report])
+        self.assertIn("silindi", rendered)
+        # The Instagram figures are real and stay in the totals.
+        self.assertIn("2.423", rendered)

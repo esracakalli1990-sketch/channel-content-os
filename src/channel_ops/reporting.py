@@ -162,7 +162,13 @@ def collect(root: Path | None = None, *, limit: int = 10) -> list[VideoReport]:
         )
 
         video_id = str(record.get("youtube_video_id", ""))
-        if video_id:
+        if record.get("youtube_deleted"):
+            # Deleted from the channel by hand. Querying it returns nothing,
+            # which the report would otherwise draw as a bare "—" — the same
+            # thing it draws when the API fails, so the reader could not tell
+            # a removed video from a broken one.
+            report.notes.append("YouTube'dan silindi (Instagram'da duruyor)")
+        elif video_id:
             try:
                 stats = get_video_stats(video_id)
                 report.youtube = {
