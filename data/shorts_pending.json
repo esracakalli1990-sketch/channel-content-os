@@ -48,23 +48,6 @@
     "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the small domed copper rivet at the apex of the spire with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical garden snail. The unfolding and transformation process is logical and physically consistent. The spiral whorls slide backward along concentric brass tracks, revealing the movement of internal mechanical components and gears. A flexible segmented bronze body and two telescoping stalked eyes physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical garden snail's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. In the last second the finished garden snail settles into a still pose, resting on the same spot where the closed toy was placed, and the shot holds completely steady with no further movement and nothing entering the frame, so the clip cuts back to its opening without a jolt when it loops. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice."
   },
   {
-    "index": 4,
-    "created_at": "2026-08-08T06:29:34+00:00",
-    "concept": {
-      "shape": "tapered oval capsule",
-      "material": "layered yellow brass and blued steel",
-      "internal_detail": "miniature clockwork gears, coiled escapement springs, and silver linkage rods",
-      "button": "a small flush amber-inlaid steel button on the top casing",
-      "button_short": "the flush amber-inlaid steel button on top",
-      "creature": "paper wasp",
-      "shell_mechanic": "The sleek capsule casing divides along two longitudinal seams and flares backward to form delicate metallic wings",
-      "emerging_parts": "Six jointed wire legs, a segmented abdomen, and a needle-sharp brass stinger"
-    },
-    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, tapered oval capsule-shaped object made of layered yellow brass and blued steel, miniature clockwork gears, coiled escapement springs, and silver linkage rods. The toy features a small flush amber-inlaid steel button on the top casing. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
-    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the flush amber-inlaid steel button on top with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical paper wasp. The unfolding and transformation process is logical and physically consistent. The sleek capsule casing divides along two longitudinal seams and flares backward to form delicate metallic wings, revealing the movement of internal mechanical components and gears. Six jointed wire legs, a segmented abdomen, and a needle-sharp brass stinger physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical paper wasp's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. In the last second the finished paper wasp settles into a still pose, resting on the same spot where the closed toy was placed, and the shot holds completely steady with no further movement and nothing entering the frame, so the clip cuts back to its opening without a jolt when it loops. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice.",
-    "used_at": "2026-08-08T13:17:06+00:00"
-  },
-  {
     "index": 5,
     "created_at": "2026-08-08T11:17:37+00:00",
     "concept": {
@@ -82,19 +65,18 @@
   },
   {
     "index": 6,
-    "created_at": "2026-08-08T13:37:07+00:00",
+    "created_at": "2026-08-08T17:19:02+00:00",
     "concept": {
-      "shape": "domed disc",
-      "material": "crimson enamel and polished black nickel",
-      "internal_detail": "miniature copper gear trains and coiled mainsprings",
-      "button": "a flush black nickel stud embedded near the front rim",
-      "button_short": "the flush black nickel stud near the front rim",
-      "creature": "ladybug",
-      "shell_mechanic": "The domed crimson shell parts down the middle and lifts upward on twin lever arms",
-      "emerging_parts": "Six jointed nickel legs, a small thorax, and two folding gossamer wings"
+      "shape": "rounded rectangular dome",
+      "material": "weathered bronze and dark stained walnut",
+      "internal_detail": "intermeshing miniature brass spur gears and steel linkage arms",
+      "button": "a small flush-mounted bronze rivet on the front edge",
+      "button_short": "the flush-mounted bronze rivet on the front edge",
+      "creature": "box turtle",
+      "shell_mechanic": "The hinged side panels fold downward while the upper shell section rises slightly",
+      "emerging_parts": "Four clawed brass legs, a short pointed tail, and a blunt retractable head"
     },
-    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, domed disc-shaped object made of crimson enamel and polished black nickel, miniature copper gear trains and coiled mainsprings. The toy features a flush black nickel stud embedded near the front rim. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
-    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the flush black nickel stud near the front rim with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical ladybug. The unfolding and transformation process is logical and physically consistent. The domed crimson shell parts down the middle and lifts upward on twin lever arms, revealing the movement of internal mechanical components and gears. Six jointed nickel legs, a small thorax, and two folding gossamer wings physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical ladybug's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. In the last second the finished ladybug settles into a still pose, resting on the same spot where the closed toy was placed, and the shot holds completely steady with no further movement and nothing entering the frame, so the clip cuts back to its opening without a jolt when it loops. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice.",
-    "used_at": "2026-08-08T13:58:34+00:00"
+    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, rounded rectangular dome-shaped object made of weathered bronze and dark stained walnut, intermeshing miniature brass spur gears and steel linkage arms. The toy features a small flush-mounted bronze rivet on the front edge. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
+    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the flush-mounted bronze rivet on the front edge with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical box turtle. The unfolding and transformation process is logical and physically consistent. The hinged side panels fold downward while the upper shell section rises slightly, revealing the movement of internal mechanical components and gears. Four clawed brass legs, a short pointed tail, and a blunt retractable head physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical box turtle's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. In the last second the finished box turtle settles into a still pose, resting on the same spot where the closed toy was placed, and the shot holds completely steady with no further movement and nothing entering the frame, so the clip cuts back to its opening without a jolt when it loops. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice."
   }
 ]
