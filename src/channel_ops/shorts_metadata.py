@@ -16,6 +16,7 @@ pipeline stopping.
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import logging
 import re
@@ -45,8 +46,10 @@ button is pressed. There is no narration and no on-screen text, so the caption
 carries the whole hook.
 
 Return ONLY a JSON object, no prose and no code fences, with these fields:
-  - "title": under 60 characters. Names the closed object but NOT what it
-    becomes, so the reveal still belongs to the video.
+  - "title": under 60 characters, and it must be a QUESTION ending in "?".
+    Name the closed object but never what it becomes, so the reveal still
+    belongs to the video. "Layered brass and blued steel oval capsule" is a
+    label, not a title — nobody taps a label.
   - "hook": 2 to 5 words, burned over the opening seconds of the clip. It has
     to make the viewer ask a question, not answer one, and it has to fit THIS
     object specifically — a hook that would suit every video in the series is
@@ -63,6 +66,8 @@ Rules:
 3. The title keeps the surprise. Name the object — "What is inside this bronze
    egg?" — but never the creature, because the whole appeal is not knowing.
    The description and caption may say what it becomes; the title may not.
+   Vary the question across videos: ask about the weight, the seam, the
+   material, the shape. Not every title should start with "What is inside".
 4. At most one emoji in the title, none in the description, none in the hook.
 5. Hashtags must be real, searchable terms — no invented tags, no brand names.
 6. The hook must never announce the transformation. "Watch it unfold", "watch
@@ -180,6 +185,36 @@ def parse_metadata(raw: str) -> ShortMetadata:
     )
 
 
+# Used when the model returns a label instead of a question. Rotated by the
+# concept so a run of fallbacks does not produce a run of identical titles.
+_TITLE_STEMS = (
+    "What is inside this {noun}?",
+    "What hides inside this {noun}?",
+    "What rests inside this {noun}?",
+    "Is this {noun} solid?",
+)
+
+
+def _object_noun(concept: Concept) -> str:
+    """The bare noun for the closed object — "capsule", "disc", "puck"."""
+    words = re.findall(r"[a-zA-Z]+", concept.shape)
+    return words[-1].lower() if words else "object"
+
+
+def _question_title(concept: Concept) -> str:
+    """A curiosity-shaped title built from the object alone.
+
+    Eight of thirteen titles came back as flat labels ("Green aluminum oval
+    puck"), which give a scrolling viewer no reason to stop. Instructing the
+    model was not enough on its own, so a non-question is replaced.
+    """
+    noun = _object_noun(concept)
+    # Not hash(): Python randomises string hashing per process, so the same
+    # concept would pick a different stem on every run.
+    seed = int(hashlib.sha256(concept.creature.encode("utf-8")).hexdigest()[:8], 16)
+    return _TITLE_STEMS[seed % len(_TITLE_STEMS)].format(noun=noun)
+
+
 def _default_hook(concept: Concept) -> str:
     """A short hook built from the object itself, so it differs per video.
 
@@ -187,9 +222,7 @@ def _default_hook(concept: Concept) -> str:
     gives "capsule" — which keeps the hook specific without repeating the
     whole description on screen.
     """
-    words = re.findall(r"[a-zA-Z]+", concept.shape)
-    noun = words[-1].lower() if words else "object"
-    return f"Inside this {noun}?"
+    return f"Inside this {_object_noun(concept)}?"
 
 
 def fallback_metadata(concept: Concept) -> ShortMetadata:
@@ -239,6 +272,13 @@ def generate_metadata(
     except RuntimeError as exc:
         logger.warning("Metadata generation failed (%s) — falling back to the concept", exc)
         return fallback_metadata(concept)
+
+    # A title without a question mark is a label. Trailing emoji are allowed,
+    # so the check looks past them rather than at the last character.
+    if "?" not in metadata.title:
+        replacement = _question_title(concept)
+        logger.warning("Model returned a label, not a title (%r) — using %r", metadata.title, replacement)
+        metadata = replace(metadata, title=replacement)
 
     if metadata.hook and metadata.hook.casefold() in {hook.casefold() for hook in used}:
         replacement = _default_hook(concept)

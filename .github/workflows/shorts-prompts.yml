@@ -51,7 +51,11 @@ jobs:
             echo "Kaydedilecek değişiklik yok."
           else
             git commit -m "chore: günün shorts fikirlerini kaydet"
-            git push
+            # Gelen kutusu turu iki dakikada bir push ediyor; araya girmişse
+            # düz push reddedilir. Reddedilirse fikir Telegram'a gitmiş ama
+            # kaydedilmemiş olur, gelen video da yanlış fikirle eşleşir.
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
           fi
 
       - name: Hata olursa Telegram'dan bildir

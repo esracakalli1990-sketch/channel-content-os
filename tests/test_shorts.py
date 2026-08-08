@@ -12,6 +12,7 @@ from tempfile import TemporaryDirectory
 
 from channel_ops import reporting, shorts_pipeline
 from channel_ops.shorts_metadata import (
+    _question_title,
     _default_hook,
     fallback_metadata,
     generate_metadata,
@@ -200,6 +201,89 @@ class HookTests(unittest.TestCase):
             StubProvider(), _concept(), recent_hooks=["Watch it unfold"]
         )
         self.assertEqual(metadata.hook, "Nine hidden gears")
+
+
+class TitleTests(unittest.TestCase):
+    """Eight of thirteen real titles came back as labels, which is why the
+    result is checked rather than only asked for."""
+
+    def _provider(self, title):
+        class StubProvider:
+            def generate(self, prompt, system_prompt=""):
+                return json.dumps({
+                    "title": title,
+                    "hook": "Nine hidden gears",
+                    "description": "A capsule opens.",
+                    "caption": "A capsule opens.",
+                    "hashtags": ["#automata"],
+                })
+
+        return StubProvider()
+
+    def test_a_label_is_replaced_with_a_question(self):
+        metadata = generate_metadata(
+            self._provider("Layered brass and blued steel oval capsule"),
+            _concept(shape="a layered oval capsule"),
+        )
+        self.assertIn("?", metadata.title)
+        self.assertIn("capsule", metadata.title)
+
+    def test_a_question_is_kept(self):
+        metadata = generate_metadata(
+            self._provider("What hides inside this bronze puck?"), _concept()
+        )
+        self.assertEqual(metadata.title, "What hides inside this bronze puck?")
+
+    def test_a_question_with_a_trailing_emoji_is_kept(self):
+        metadata = generate_metadata(
+            self._provider("What is inside this copper pod? 🔵"), _concept()
+        )
+        self.assertTrue(metadata.title.endswith("🔵"))
+
+    def test_the_replacement_never_names_the_creature(self):
+        metadata = generate_metadata(self._provider("Green aluminum oval puck"), _concept("pangolin"))
+        self.assertNotIn("pangolin", metadata.title.lower())
+
+    def test_the_replacement_is_stable_across_runs(self):
+        """A randomised stem would give the same concept a different title on
+        a retry."""
+        concept = _concept("stag beetle", shape="a flat blued steel capsule")
+        titles = {_question_title(concept) for _ in range(5)}
+        self.assertEqual(len(titles), 1)
+
+    def test_different_creatures_get_different_stems(self):
+        stems = {
+            _question_title(_concept(name, shape="a bronze capsule"))
+            for name in ("pangolin", "moth", "scorpion", "firefly", "woodlouse", "starfish")
+        }
+        self.assertGreater(len(stems), 1)
+
+
+class MessageSplittingTests(unittest.TestCase):
+    """Telegram answers HTTP 400 past 4096 characters. The weekly report hit
+    that at fifteen videos and silently stopped arriving."""
+
+    def test_a_short_report_stays_one_message(self):
+        self.assertEqual(reporting.split_for_telegram("kısa"), ["kısa"])
+
+    def test_a_long_report_is_split(self):
+        text = "\n".join(f"satır {i} " + "x" * 80 for i in range(200))
+        parts = reporting.split_for_telegram(text)
+        self.assertGreater(len(parts), 1)
+        for part in parts:
+            self.assertLessEqual(len(part), reporting.TELEGRAM_MESSAGE_LIMIT)
+
+    def test_splitting_loses_no_lines(self):
+        text = "\n".join(f"satır {i} " + "y" * 80 for i in range(200))
+        rejoined = "\n".join(reporting.split_for_telegram(text))
+        self.assertEqual(
+            [line.strip() for line in text.split("\n") if line.strip()],
+            [line.strip() for line in rejoined.split("\n") if line.strip()],
+        )
+
+    def test_a_single_line_over_the_limit_is_still_emitted(self):
+        parts = reporting.split_for_telegram("z" * 5000)
+        self.assertEqual(len(parts), 1)
 
 
 class ReportFormattingTests(unittest.TestCase):

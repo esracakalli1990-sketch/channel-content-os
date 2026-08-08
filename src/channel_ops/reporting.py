@@ -371,10 +371,44 @@ def _escape(text: str) -> str:
     return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
 
+# Telegram rejects a sendMessage body over 4096 characters with HTTP 400 and
+# no explanation. The report crossed it at 15 videos and the weekly report
+# simply stopped arriving. Split a little under the limit to leave room for
+# the entity indices Telegram counts differently.
+TELEGRAM_MESSAGE_LIMIT = 3900
+
+
+def split_for_telegram(text: str, limit: int = TELEGRAM_MESSAGE_LIMIT) -> list[str]:
+    """Break *text* into messages Telegram will accept.
+
+    Splits between lines only. Every line in the report closes its own HTML
+    tags, so no chunk can end mid-tag — which Telegram would also reject.
+    """
+    if len(text) <= limit:
+        return [text]
+
+    chunks: list[str] = []
+    current: list[str] = []
+    length = 0
+    for line in text.split("\n"):
+        # +1 for the newline that will rejoin it.
+        if current and length + len(line) + 1 > limit:
+            chunks.append("\n".join(current).strip())
+            current, length = [], 0
+        current.append(line)
+        length += len(line) + 1
+    if current:
+        chunks.append("\n".join(current).strip())
+    return [chunk for chunk in chunks if chunk]
+
+
 def send_report(root: Path | None = None, *, limit: int = 10) -> str:
-    """Build the report and send it to Telegram. Returns the message text."""
+    """Build the report and send it to Telegram. Returns the full message text."""
     from . import notifications
 
     message = format_telegram(collect(root, limit=limit))
-    notifications.send_message(message)
+    parts = split_for_telegram(message)
+    for number, part in enumerate(parts, start=1):
+        suffix = f"\n\n<i>({number}/{len(parts)})</i>" if len(parts) > 1 else ""
+        notifications.send_message(part + suffix)
     return message
