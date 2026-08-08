@@ -1,6 +1,5 @@
 {
   "creatures": [
-    "crystal turtle",
     "steam locomotive",
     "mechanical owl",
     "scarab beetle",
@@ -39,6 +38,7 @@
     "leaf-tailed gecko",
     "stag beetle",
     "firefly",
-    "woodlouse"
+    "woodlouse",
+    "paper wasp"
   ]
 }
