@@ -296,6 +296,60 @@ def _traffic_line(traffic: dict[str, int]) -> str:
     return "  🔀 " + " · ".join(parts) if parts else ""
 
 
+# A video YouTube declines to distribute looks exactly like a healthy one in
+# the publish log — it is only visible next to its neighbours. This has now
+# happened twice and both times a human spotted it days later, so the report
+# does the comparison itself.
+STARVED_SHARE = 0.15
+STARVED_AFTER_HOURS = 24
+# Below this the channel is too small for "far under the median" to mean
+# anything, and the warning would fire on ordinary variation.
+STARVED_MIN_MEDIAN = 200
+
+
+def _hours_since(stamp: str) -> float | None:
+    try:
+        return (datetime.now(UTC) - datetime.fromisoformat(stamp)).total_seconds() / 3600
+    except ValueError:
+        return None
+
+
+def _median_views(reports: list[VideoReport]) -> float:
+    """Median YouTube views among videos old enough to have been distributed."""
+    counts = sorted(
+        report.youtube["views"]
+        for report in reports
+        if report.youtube.get("views") is not None
+        and (_hours_since(report.published_at) or 0) >= STARVED_AFTER_HOURS
+    )
+    if not counts:
+        return 0.0
+    middle = len(counts) // 2
+    if len(counts) % 2:
+        return float(counts[middle])
+    return (counts[middle - 1] + counts[middle]) / 2
+
+
+def _distribution_warning(report: VideoReport, median: float) -> str:
+    """Flag a video the Shorts feed appears to have skipped.
+
+    Only fires once the video has had a day to be picked up, so a clip
+    published minutes ago is never called dead.
+    """
+    if median < STARVED_MIN_MEDIAN:
+        return ""
+    age = _hours_since(report.published_at)
+    views = report.youtube.get("views")
+    if age is None or age < STARVED_AFTER_HOURS or views is None:
+        return ""
+    if views >= median * STARVED_SHARE:
+        return ""
+    return (
+        f"  ⚠️ <b>YouTube dağıtmadı</b> — {_num(views)} izlenme, "
+        f"benzerlerinin ortancası {_num(int(median))}"
+    )
+
+
 def format_telegram(reports: list[VideoReport]) -> str:
     """Render the report as the HTML Telegram accepts."""
     if not reports:
@@ -307,6 +361,7 @@ def format_telegram(reports: list[VideoReport]) -> str:
     stamp = datetime.now(UTC).strftime("%d.%m.%Y %H:%M UTC")
     lines = [f"📊 <b>Unfoldables — Rapor</b>\n<i>{len(reports)} video · {stamp}</i>\n"]
 
+    median = _median_views(reports)
     yt_total = ig_total = ig_shares = 0
     for report in reports:
         lines.append(f"<b>{_escape(report.title or report.creature)}</b>")
@@ -321,7 +376,11 @@ def format_telegram(reports: list[VideoReport]) -> str:
         else:
             lines.append("  ▶️ —")
 
-        for extra in (_retention_line(report.retention), _traffic_line(report.traffic)):
+        for extra in (
+            _distribution_warning(report, median),
+            _retention_line(report.retention),
+            _traffic_line(report.traffic),
+        ):
             if extra:
                 lines.append(extra)
 

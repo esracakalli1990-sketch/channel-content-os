@@ -358,3 +358,53 @@ class DeletedVideoTests(unittest.TestCase):
         self.assertIn("silindi", rendered)
         # The Instagram figures are real and stay in the totals.
         self.assertIn("2.423", rendered)
+
+
+class DistributionWarningTests(unittest.TestCase):
+    """YouTube declining to distribute a video looks identical to a healthy
+    publish in the log. It happened twice and a human caught it both times,
+    days later."""
+
+    def _report(self, title, views, hours_old):
+        from datetime import UTC, datetime, timedelta
+
+        return reporting.VideoReport(
+            creature="x", title=title,
+            published_at=(datetime.now(UTC) - timedelta(hours=hours_old)).isoformat(),
+            youtube={"views": views, "likes": 0, "comments": 0},
+        )
+
+    def _healthy(self, count=5, views=1500, hours_old=48):
+        return [self._report(f"v{i}", views, hours_old) for i in range(count)]
+
+    def test_a_starved_video_is_flagged(self):
+        reports = [self._report("ölü", 10, 30), *self._healthy()]
+        rendered = reporting.format_telegram(reports)
+        self.assertIn("YouTube dağıtmadı", rendered)
+
+    def test_a_normal_video_is_not_flagged(self):
+        rendered = reporting.format_telegram(self._healthy())
+        self.assertNotIn("YouTube dağıtmadı", rendered)
+
+    def test_a_fresh_video_is_never_called_dead(self):
+        """A clip published minutes ago has no views yet and that is normal."""
+        reports = [self._report("yeni", 0, 1), *self._healthy()]
+        rendered = reporting.format_telegram(reports)
+        self.assertNotIn("YouTube dağıtmadı", rendered)
+
+    def test_a_young_channel_produces_no_warnings(self):
+        """Below the median floor, ordinary variation would trip the check."""
+        reports = [self._report("a", 2, 48), self._report("b", 30, 48), self._report("c", 40, 48)]
+        self.assertNotIn("YouTube dağıtmadı", reporting.format_telegram(reports))
+
+    def test_the_median_ignores_videos_too_new_to_judge(self):
+        reports = [*self._healthy(count=3), self._report("yeni", 0, 2)]
+        self.assertEqual(reporting._median_views(reports), 1500)
+
+    def test_an_unparseable_date_does_not_crash_the_report(self):
+        broken = reporting.VideoReport(
+            creature="x", title="bozuk tarih", published_at="dün",
+            youtube={"views": 5, "likes": 0, "comments": 0},
+        )
+        rendered = reporting.format_telegram([broken, *self._healthy()])
+        self.assertIn("bozuk tarih", rendered)
