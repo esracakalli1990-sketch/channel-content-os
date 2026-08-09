@@ -1,6 +1,5 @@
 {
   "creatures": [
-    "scarab beetle",
     "mechanical dragonfly",
     "mechanical hermit crab",
     "mechanical manta ray",
@@ -39,7 +38,8 @@
     "woodlouse",
     "paper wasp",
     "water strider",
-    "box turtle"
+    "box turtle",
+    "barn owl"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -47,6 +47,7 @@
     "tapered spiral shell",
     "tapered oval capsule",
     "narrow elongated capsule",
-    "rounded rectangular dome"
+    "rounded rectangular dome",
+    "tapered egg"
   ]
 }
