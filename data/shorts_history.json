@@ -1,6 +1,5 @@
 {
   "creatures": [
-    "mechanical hermit crab",
     "mechanical manta ray",
     "pangolin",
     "moth",
@@ -39,7 +38,8 @@
     "water strider",
     "box turtle",
     "barn owl",
-    "golden tortoise beetle"
+    "golden tortoise beetle",
+    "dragonfly"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -49,6 +49,7 @@
     "narrow elongated capsule",
     "rounded rectangular dome",
     "tapered egg",
-    "flattened circular disc"
+    "flattened circular disc",
+    "slender triangular prism"
   ]
 }
