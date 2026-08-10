@@ -1,6 +1,5 @@
 {
   "creatures": [
-    "moth",
     "tree frog",
     "scorpion",
     "armadillo",
@@ -39,7 +38,8 @@
     "golden tortoise beetle",
     "dragonfly",
     "diving beetle",
-    "manta ray"
+    "manta ray",
+    "thorny skate"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -52,6 +52,7 @@
     "flattened circular disc",
     "slender triangular prism",
     "smooth convex teardrop",
-    "flattened rhombic block"
+    "flattened rhombic block",
+    "flattened kite wedge"
   ]
 }
