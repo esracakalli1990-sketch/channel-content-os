@@ -1,6 +1,5 @@
 {
   "creatures": [
-    "mechanical manta ray",
     "pangolin",
     "moth",
     "tree frog",
@@ -39,7 +38,8 @@
     "box turtle",
     "barn owl",
     "golden tortoise beetle",
-    "dragonfly"
+    "dragonfly",
+    "diving beetle"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -50,6 +50,7 @@
     "rounded rectangular dome",
     "tapered egg",
     "flattened circular disc",
-    "slender triangular prism"
+    "slender triangular prism",
+    "smooth convex teardrop"
   ]
 }
