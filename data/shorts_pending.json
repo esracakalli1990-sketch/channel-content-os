@@ -65,19 +65,18 @@
   },
   {
     "index": 6,
-    "created_at": "2026-08-10T07:02:50+00:00",
+    "created_at": "2026-08-10T11:39:05+00:00",
     "concept": {
-      "shape": "smooth convex teardrop",
-      "material": "burnished bronze and translucent amber resin",
-      "internal_detail": "interlocking miniature brass clockwork gears and tiny pneumatic pistons",
-      "button": "a tiny flush-mounted polished ruby button set into the trailing edge",
-      "button_short": "the flush-mounted polished ruby button at the trailing edge",
-      "creature": "diving beetle",
-      "shell_mechanic": "The convex upper shell splits longitudinally and swings open like twin wing covers",
-      "emerging_parts": "Six jointed brass legs and a compact head with fringed paddle-like oar limbs"
+      "shape": "flattened rhombic block",
+      "material": "brushed titanium and frosted cyan glass",
+      "internal_detail": "miniature drive cables and interlocking brass micro-gears",
+      "button": "a small flush titanium pin in the centre of the top panel",
+      "button_short": "the small flush titanium pin on the top panel",
+      "creature": "manta ray",
+      "shell_mechanic": "The rhombic casing splits lengthwise into two upper flaps that hinge sideways",
+      "emerging_parts": "Two broad flexible pectoral fins, a slender jointed tail, and twin curved cephalic lobes"
     },
-    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, smooth convex teardrop-shaped object made of burnished bronze and translucent amber resin, interlocking miniature brass clockwork gears and tiny pneumatic pistons. The toy features a tiny flush-mounted polished ruby button set into the trailing edge. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
-    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the flush-mounted polished ruby button at the trailing edge with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical diving beetle. The unfolding and transformation process is logical and physically consistent. The convex upper shell splits longitudinally and swings open like twin wing covers, revealing the movement of internal mechanical components and gears. Six jointed brass legs and a compact head with fringed paddle-like oar limbs physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical diving beetle's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. In the last second the finished diving beetle settles into a still pose, resting on the same spot where the closed toy was placed, and the shot holds completely steady with no further movement and nothing entering the frame, so the clip cuts back to its opening without a jolt when it loops. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice.",
-    "used_at": "2026-08-10T07:55:12+00:00"
+    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, flattened rhombic block-shaped object made of brushed titanium and frosted cyan glass, miniature drive cables and interlocking brass micro-gears. The toy features a small flush titanium pin in the centre of the top panel. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
+    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the small flush titanium pin on the top panel with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical manta ray. The unfolding and transformation process is logical and physically consistent. The rhombic casing splits lengthwise into two upper flaps that hinge sideways, revealing the movement of internal mechanical components and gears. Two broad flexible pectoral fins, a slender jointed tail, and twin curved cephalic lobes physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical manta ray's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. In the last second the finished manta ray settles into a still pose, resting on the same spot where the closed toy was placed, and the shot holds completely steady with no further movement and nothing entering the frame, so the clip cuts back to its opening without a jolt when it loops. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice."
   }
 ]
