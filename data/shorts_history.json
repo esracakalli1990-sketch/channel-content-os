@@ -1,6 +1,5 @@
 {
   "creatures": [
-    "tree frog",
     "scorpion",
     "armadillo",
     "grasshopper",
@@ -39,7 +38,8 @@
     "dragonfly",
     "diving beetle",
     "manta ray",
-    "thorny skate"
+    "thorny skate",
+    "rhinoceros beetle"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -53,6 +53,7 @@
     "slender triangular prism",
     "smooth convex teardrop",
     "flattened rhombic block",
-    "flattened kite wedge"
+    "flattened kite wedge",
+    "arched hexagonal block"
   ]
 }
