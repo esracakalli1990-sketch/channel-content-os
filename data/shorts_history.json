@@ -1,8 +1,5 @@
 {
   "creatures": [
-    "grasshopper",
-    "nautilus",
-    "chameleon",
     "horseshoe crab",
     "flying fish",
     "spider crab",
@@ -39,7 +36,10 @@
     "thorny skate",
     "rhinoceros beetle",
     "jewel beetle",
-    "emperor scorpion"
+    "emperor scorpion",
+    "armadillo",
+    "hermit crab",
+    "luna moth"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -56,6 +56,9 @@
     "flattened kite wedge",
     "arched hexagonal block",
     "faceted oval ingot",
-    "flattened crescent wedge"
+    "flattened crescent wedge",
+    "segmented cylindrical barrel",
+    "asymmetrical conical spire",
+    "flattened trapezoid"
   ]
 }
