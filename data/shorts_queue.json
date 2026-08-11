@@ -32,5 +32,22 @@
       "shell_mechanic": "The shell opening hinges outward in three curved petals",
       "emerging_parts": "Ten jointed walking legs, two unequal pincers, and a pair of stalked eyes"
     }
+  },
+  {
+    "queued_at": "2026-08-11T21:56:52+00:00",
+    "publish_at": "2026-08-12T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAPGanuVLI9g0aHCrl1wvC-yzKu6EEcAAo4bAAK63OBTFR-gGvyaaXk9BA",
+    "file_size": 2106852,
+    "caption": "3",
+    "concept": {
+      "shape": "flattened trapezoid",
+      "material": "patinated mint-green copper and frosted quartz",
+      "internal_detail": "delicate golden hairsprings and micro-gear linkages",
+      "button": "a flush-mounted ruby bead ringed in polished brass",
+      "button_short": "the flush-mounted ruby bead on the upper casing",
+      "creature": "luna moth",
+      "shell_mechanic": "The upper casing splits diagonally and unfurls into two broad filigree wings",
+      "emerging_parts": "Six thin jointed legs, a fuzzy segmented abdomen, and two feathery antennae"
+    }
   }
 ]
