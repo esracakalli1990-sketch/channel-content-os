@@ -426,11 +426,19 @@ class ReleaseSlotTests(unittest.TestCase):
         self.assertEqual([slot.hour for slot in taken], sorted(shorts_pipeline.PUBLISH_SLOTS_UTC))
 
     def test_slots_are_always_in_the_future(self):
-        from datetime import UTC, datetime
-        evening = datetime(2026, 8, 10, 20, 0, tzinfo=UTC)
-        slot = shorts_pipeline.next_slot([], evening)
-        self.assertGreater(slot, evening)
+        """Past the day's last slot, the next one belongs to tomorrow.
+
+        The hour is derived from the schedule rather than written in, so
+        retuning the slots does not silently turn this into a no-op.
+        """
+        from datetime import UTC, datetime, timedelta
+
+        last = max(shorts_pipeline.PUBLISH_SLOTS_UTC)
+        after_last = datetime(2026, 8, 10, last, 0, tzinfo=UTC) + timedelta(minutes=1)
+        slot = shorts_pipeline.next_slot([], after_last)
+        self.assertGreater(slot, after_last)
         self.assertEqual(slot.day, 11)
+        self.assertEqual(slot.hour, min(shorts_pipeline.PUBLISH_SLOTS_UTC))
 
     def test_a_fourth_video_rolls_to_the_next_day(self):
         taken = []
