@@ -33,7 +33,11 @@ notify() {
 # cancelled with an uncommitted cursor, Telegram replays the video and it is
 # published twice.
 save_state() {
-    git add data/telegram_state.json data/shorts_published.json data/shorts_pending.json
+    # Everything under data/ rather than a list of names. The list silently
+    # omitted shorts_queue.json when the release queue was added, so every
+    # queued video was wiped by the next refresh and three clips were lost.
+    # A new state file must not be able to go missing the same way.
+    git add data/
     if git diff --cached --quiet; then
         return 0
     fi
@@ -47,7 +51,15 @@ save_state() {
 # missed entirely, matching the arriving video to the wrong concept and
 # publishing it under the wrong title. Refresh before every poll.
 refresh() {
-    git fetch -q origin "$BRANCH" && git reset -q --hard "origin/$BRANCH"
+    git fetch -q origin "$BRANCH" || return 1
+    # Rebase, not reset --hard. If save_state's push lost a race its commit is
+    # still only local, and resetting would throw away a queued video along
+    # with it. On a conflict the local state is kept and the next round tries
+    # again — dropping work is never the safer choice here.
+    if ! git rebase -q --autostash "origin/$BRANCH"; then
+        git rebase --abort 2>/dev/null || true
+        return 1
+    fi
 }
 
 deadline=$(( SECONDS + RUN_SECONDS ))

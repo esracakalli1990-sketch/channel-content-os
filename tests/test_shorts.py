@@ -651,3 +651,40 @@ class BatchNumberingTests(unittest.TestCase):
         pending = [old, self._entry(1, "scorpion", "2026-08-12T21:00:00+00:00")]
         chosen = shorts_pipeline.match_pending("1", pending)
         self.assertEqual(chosen["concept"]["creature"], "scorpion")
+
+
+class StatePersistenceTests(unittest.TestCase):
+    """The watch loop resets its checkout every couple of minutes, so anything
+    the pipeline writes and does not commit is destroyed. shorts_queue.json was
+    added to the pipeline but not to the loop's commit list, and three queued
+    videos were lost before anyone noticed."""
+
+    def _loop_script(self):
+        return Path("scripts/inbox_loop.sh").read_text(encoding="utf-8")
+
+    def _state_files(self):
+        """Every data file the pipeline persists, from its own constants."""
+        return {
+            value
+            for name, value in vars(shorts_pipeline).items()
+            if name.endswith("_FILE") and isinstance(value, str) and value.startswith("data/")
+        }
+
+    def test_the_loop_commits_every_state_file(self):
+        script = self._loop_script()
+        add_lines = [line for line in script.splitlines() if "git add" in line]
+        self.assertTrue(add_lines, "the loop must stage its state files")
+        staged = " ".join(add_lines)
+        for path in self._state_files():
+            covered = path in staged or "data/" in staged
+            self.assertTrue(covered, f"{path} is never staged, so a refresh would destroy it")
+
+    def test_the_queue_file_is_a_tracked_state_file(self):
+        self.assertIn(shorts_pipeline.QUEUE_FILE, self._state_files())
+
+    def test_the_loop_does_not_discard_local_commits(self):
+        """A hard reset drops a commit whose push lost a race, taking any
+        queued video with it."""
+        script = self._loop_script()
+        self.assertNotIn("reset -q --hard", script)
+        self.assertIn("rebase", script)
