@@ -17,6 +17,15 @@ POLL_SECONDS="${POLL_SECONDS:-120}"
 # Stops well inside the six-hour ceiling GitHub kills a job at.
 RUN_SECONDS="${RUN_SECONDS:-19800}" # 5h30m
 BRANCH="${GITHUB_REF_NAME:-main}"
+SELF="${BASH_SOURCE[0]}"
+
+# Refreshing the checkout updates this file on disk, but bash has already
+# parsed the loop below and keeps running the old version for the whole five
+# and a half hours. A fix pushed mid-run therefore did nothing, which is how a
+# corrected queue bug still lost a second batch of videos. Re-exec instead.
+self_fingerprint() {
+    sha1sum "$SELF" 2>/dev/null | cut -d' ' -f1
+}
 
 git config user.name  "github-actions[bot]"
 git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -64,6 +73,7 @@ refresh() {
 
 deadline=$(( SECONDS + RUN_SECONDS ))
 failing=0
+started_as="$(self_fingerprint)"
 
 echo "Telegram dinleniyor: her ${POLL_SECONDS} saniyede bir, ${RUN_SECONDS} saniye boyunca."
 
@@ -72,6 +82,18 @@ while (( SECONDS < deadline )); do
     # save_state at the end of the previous iteration, so there is never work
     # in the tree worth keeping.
     refresh || echo "Depo tazelenemedi; bu tur onceki kopyayla calisiyor."
+
+    # A newer version of this script is on disk: hand the rest of the run over
+    # to it rather than spending hours on the version that was fixed.
+    if [ -n "$started_as" ] && [ "$(self_fingerprint)" != "$started_as" ]; then
+        remaining=$(( deadline - SECONDS ))
+        if (( remaining > POLL_SECONDS )); then
+            echo "Betik guncellendi; kalan ${remaining} saniye yeni surumle surdurulecek."
+            RUN_SECONDS="$remaining" exec bash "$SELF"
+        fi
+        echo "Betik guncellendi ama tur bitmek uzere; siradaki tur devralacak."
+        break
+    fi
 
     if python -m channel_ops shorts-inbox; then
         if (( failing )); then
