@@ -408,3 +408,151 @@ class DistributionWarningTests(unittest.TestCase):
         )
         rendered = reporting.format_telegram([broken, *self._healthy()])
         self.assertIn("bozuk tarih", rendered)
+
+
+class ReleaseSlotTests(unittest.TestCase):
+    """Videos are made in one morning batch and released across the day, so
+    the queue has to hand out distinct future slots."""
+
+    def setUp(self):
+        from datetime import UTC, datetime
+        self.morning = datetime(2026, 8, 10, 7, 0, tzinfo=UTC)
+
+    def test_three_videos_take_three_different_slots(self):
+        taken = []
+        for _ in range(3):
+            taken.append(shorts_pipeline.next_slot(taken, self.morning))
+        self.assertEqual(len(set(taken)), 3)
+        self.assertEqual([slot.hour for slot in taken], sorted(shorts_pipeline.PUBLISH_SLOTS_UTC))
+
+    def test_slots_are_always_in_the_future(self):
+        from datetime import UTC, datetime
+        evening = datetime(2026, 8, 10, 20, 0, tzinfo=UTC)
+        slot = shorts_pipeline.next_slot([], evening)
+        self.assertGreater(slot, evening)
+        self.assertEqual(slot.day, 11)
+
+    def test_a_fourth_video_rolls_to_the_next_day(self):
+        taken = []
+        for _ in range(4):
+            taken.append(shorts_pipeline.next_slot(taken, self.morning))
+        self.assertEqual(taken[3].day, 11)
+
+    def test_an_unreadable_queued_time_is_ignored(self):
+        """A corrupt entry must not stop new videos being scheduled."""
+        times = shorts_pipeline._queued_times([{"publish_at": "yarın"}, {}])
+        self.assertEqual(times, [])
+
+
+class CaptionOrderTests(unittest.TestCase):
+    """The operator labels the batch 1, 2, 3; Telegram may deliver them in any
+    order, and the labels are what decide which slot each one gets."""
+
+    def test_numbered_captions_sort_numerically(self):
+        captions = ["3", "1", "2"]
+        self.assertEqual(sorted(captions, key=shorts_pipeline._caption_order), ["1", "2", "3"])
+
+    def test_ten_sorts_after_two(self):
+        captions = ["10", "2"]
+        self.assertEqual(sorted(captions, key=shorts_pipeline._caption_order), ["2", "10"])
+
+    def test_unlabelled_videos_go_last(self):
+        captions = ["", "2"]
+        self.assertEqual(sorted(captions, key=shorts_pipeline._caption_order), ["2", ""])
+
+
+class QueueFlowTests(unittest.TestCase):
+    """End to end: a clip arrives, waits for its slot, then publishes. The
+    video itself is never stored — only the Telegram file id — so the clip is
+    fetched again at release time."""
+
+    def setUp(self):
+        self._workspace = TemporaryDirectory()
+        self.root = Path(self._workspace.name)
+        (self.root / "data").mkdir()
+        self.addCleanup(self._workspace.cleanup)
+        self.sent = []
+        self.uploaded = []
+
+        import channel_ops.telegram_inbox as ti
+        from channel_ops import shorts_metadata, youtube_uploader
+
+        def fake_download(file_id, file_size, destination):
+            destination.write_bytes(b"video")
+            return destination
+
+        def fake_upload(path, title, description, **kw):
+            self.uploaded.append(title)
+            return {"id": "vid123", "status": {"privacyStatus": kw.get("privacy")}}
+
+        def fake_metadata(provider, concept, *, recent_hooks=None):
+            return shorts_metadata.fallback_metadata(concept)
+
+        patches = [
+            (shorts_pipeline.notifications, "send_message", self.sent.append),
+            (shorts_pipeline.telegram_inbox, "download_file", fake_download),
+            (shorts_pipeline.youtube_uploader, "upload_video", fake_upload),
+            (shorts_pipeline, "generate_metadata", fake_metadata),
+            (shorts_pipeline, "_burn_hook", lambda clip, hook: clip),
+            (shorts_pipeline, "_publish_to_instagram", lambda p, c: ("", "")),
+        ]
+        for target, name, replacement in patches:
+            original = getattr(target, name)
+            setattr(target, name, replacement)
+            self.addCleanup(setattr, target, name, original)
+
+    def _video(self, caption):
+        from channel_ops.telegram_inbox import IncomingVideo
+        return IncomingVideo(
+            update_id=1, file_id="F1", file_size=1_800_000, caption=caption, sent_by="me"
+        )
+
+    def _queue(self):
+        path = self.root / shorts_pipeline.QUEUE_FILE
+        return json.loads(path.read_text(encoding="utf-8")) if path.exists() else []
+
+    def test_a_clip_is_queued_not_published(self):
+        pending = [_pending(1, "moth")]
+        shorts_pipeline.enqueue(self._video("1"), pending, self.root)
+        self.assertEqual(len(self._queue()), 1)
+        self.assertEqual(self.uploaded, [])
+        self.assertTrue(pending[0]["used_at"], "concept must be retired on queueing")
+
+    def test_the_queued_item_stores_the_file_id_not_the_video(self):
+        shorts_pipeline.enqueue(self._video("1"), [_pending(1, "moth")], self.root)
+        item = self._queue()[0]
+        self.assertEqual(item["file_id"], "F1")
+        self.assertNotIn("video", item)
+
+    def test_nothing_publishes_before_the_slot(self):
+        shorts_pipeline.enqueue(self._video("1"), [_pending(1, "moth")], self.root)
+        published = shorts_pipeline.publish_due(object(), self.root)
+        self.assertEqual(published, [])
+        self.assertEqual(len(self._queue()), 1)
+
+    def test_the_slot_arriving_publishes_and_clears_the_queue(self):
+        from datetime import UTC, datetime, timedelta
+
+        shorts_pipeline.enqueue(self._video("1"), [_pending(1, "moth")], self.root)
+        queue = self._queue()
+        queue[0]["publish_at"] = (datetime.now(UTC) - timedelta(minutes=1)).isoformat()
+        (self.root / shorts_pipeline.QUEUE_FILE).write_text(json.dumps(queue), encoding="utf-8")
+
+        published = shorts_pipeline.publish_due(object(), self.root)
+        self.assertEqual(len(published), 1)
+        self.assertEqual(len(self.uploaded), 1)
+        self.assertEqual(self._queue(), [])
+
+    def test_three_clips_get_three_different_slots(self):
+        pending = [_pending(1, "moth"), _pending(2, "scorpion"), _pending(3, "nautilus")]
+        for caption in ("1", "2", "3"):
+            shorts_pipeline.enqueue(self._video(caption), pending, self.root)
+        slots = [item["publish_at"] for item in self._queue()]
+        self.assertEqual(len(set(slots)), 3)
+        creatures = [item["concept"]["creature"] for item in self._queue()]
+        self.assertEqual(creatures, ["moth", "scorpion", "nautilus"])
+
+    def test_the_operator_is_told_when_it_will_go_out(self):
+        shorts_pipeline.enqueue(self._video("1"), [_pending(1, "moth")], self.root)
+        self.assertIn("Sıraya alındı", self.sent[0])
+        self.assertIn("Yayın saati", self.sent[0])

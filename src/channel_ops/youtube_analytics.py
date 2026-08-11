@@ -178,6 +178,35 @@ def get_traffic_sources(
     return sources
 
 
+def get_audience_countries(
+    *,
+    days: int = 90,
+    channel_id: str | None = None,
+    limit: int = 8,
+) -> list[tuple[str, int]]:
+    """Return ``(country_code, views)`` for the channel, largest first.
+
+    Publishing "at peak hours" is meaningless without knowing whose clock to
+    use. The Analytics API exposes no hour-of-day dimension, so where the
+    viewers are is the closest available proxy for when they are awake.
+    """
+    end_date = datetime.now(UTC).date()
+    payload = _analytics_query({
+        "ids": _channel_selector(channel_id),
+        "startDate": (end_date - timedelta(days=days)).isoformat(),
+        "endDate": end_date.isoformat(),
+        "metrics": "views",
+        "dimensions": "country",
+        "sort": "-views",
+        "maxResults": limit,
+    })
+    return [
+        (str(row[0]), int(row[1]))
+        for row in (payload.get("rows") or [])
+        if len(row) >= 2
+    ]
+
+
 def get_analytics_report(
     youtube_video_id: str,
     *,

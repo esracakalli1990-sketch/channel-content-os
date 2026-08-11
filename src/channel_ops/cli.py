@@ -84,12 +84,23 @@ def build_parser() -> argparse.ArgumentParser:
     prompts = subparsers.add_parser(
         "shorts-prompts", help="Generate transformation prompts and send them to Telegram"
     )
-    # One concept per run. The job fires three times a day, so each firing is
-    # one video's worth of work and the reminder to do it.
-    prompts.add_argument("--count", type=int, default=1, help="How many concepts to send")
+    # A day's worth in one batch. Splitting them across the day meant making a
+    # video whenever the reminder landed, which kept missing the hours worth
+    # publishing in; the clips are now made in one sitting and released later.
+    prompts.add_argument("--count", type=int, default=3, help="How many concepts to send")
 
     subparsers.add_parser(
-        "shorts-inbox", help="Publish any video waiting in the Telegram chat"
+        "shorts-inbox",
+        help="Queue any video waiting in Telegram and publish whatever is due",
+    )
+
+    subparsers.add_parser(
+        "shorts-resend",
+        help="Re-render the unused concepts with the current template and resend them",
+    )
+
+    subparsers.add_parser(
+        "shorts-audience", help="Print where the channel's viewers are, to pick release slots"
     )
 
     subparsers.add_parser(
@@ -221,10 +232,28 @@ def main() -> None:
         from .shorts_pipeline import process_inbox
         records = process_inbox(_shorts_provider(), root=root)
         if not records:
-            print("Nothing to publish.")
+            print("Nothing due to publish.")
             return
         for record in records:
             print(f"Uploaded {record['creature']}: {record['youtube_url']}")
+
+    elif args.command == "shorts-resend":
+        from .shorts_pipeline import resend_pending
+        pairs = resend_pending(root=root)
+        if not pairs:
+            print("No unused concepts to resend.")
+            return
+        print(f"Re-rendered and resent {len(pairs)} concept(s):")
+        for index, pair in enumerate(pairs, start=1):
+            print(f"  {index}. {pair.concept.creature} ({pair.concept.shape})")
+
+    elif args.command == "shorts-audience":
+        from .youtube_analytics import get_audience_countries
+        rows = get_audience_countries()
+        total = sum(views for _, views in rows) or 1
+        print("İzleyicilerin ülkeleri (son 90 gün):")
+        for code, views in rows:
+            print(f"  {code:<4} {views:>8,} izlenme  %{views / total * 100:.0f}")
 
     elif args.command == "shorts-report":
         import re as _re

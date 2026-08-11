@@ -1,0 +1,59 @@
+name: Shorts — araçlar
+
+# Elle çalıştırılan tek seferlik işler. Zamanlaması yok.
+#   resend   : kullanılmamış fikirleri güncel şablonla yeniden üretip yollar
+#              (PROMPT_TEMPLATE değiştiğinde gerekir — kayıtlı promptlar eski
+#              şablonla oluşturulmuş olur)
+#   audience : izleyicilerin hangi ülkelerde olduğunu yazar; yayın saatlerini
+#              tahminle değil veriyle seçmek için
+on:
+  workflow_dispatch:
+    inputs:
+      job:
+        description: "Hangi iş?"
+        required: true
+        type: choice
+        options: [resend, audience]
+
+concurrency:
+  group: shorts-tools
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Çalıştır
+        env:
+          PYTHONPATH: src
+          PROMPT_TEMPLATE: ${{ secrets.PROMPT_TEMPLATE }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+        run: python -m channel_ops "shorts-${{ inputs.job }}"
+
+      - name: Yenilenen promptları kaydet
+        # Yalnızca resend işi dosya değiştirir; audience sadece yazdırır.
+        if: ${{ inputs.job == 'resend' }}
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/shorts_pending.json
+          if git diff --cached --quiet; then
+            echo "Kaydedilecek değişiklik yok."
+          else
+            git commit -m "chore: bekleyen promptları güncel şablonla yenile"
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi

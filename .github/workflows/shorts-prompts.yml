@@ -1,18 +1,18 @@
 name: Shorts — günün promptları
 
-# Gün içinde üç kez tek bir fikir gönderir. Her gönderim aynı zamanda
-# "sıradaki videoyu yap" hatırlatması: hepsi sabah gelseydi akşamki iki video
-# unutulurdu.
+# Günde bir kez, sabah erkenden günün üç fikrini birden gönderir. Videolar tek
+# oturumda üretilip Telegram'a "1", "2", "3" başlığıyla geri gönderiliyor;
+# yayın saatlerini gelen kutusu kuyruğu belirliyor (shorts_pipeline.py).
 # "Run workflow" düğmesiyle istediğin an elle de çalıştırabilirsin.
 on:
   schedule:
-    - cron: "0 6,11,17 * * *" # 09:00, 14:00 ve 20:00 TRT
+    - cron: "13 4 * * *" # 07:13 TRT
   workflow_dispatch:
     inputs:
       count:
         description: "Kaç fikir gönderilsin?"
         required: false
-        default: "1"
+        default: "3"
 
 # Üretilen fikirler repoya yazıldığı için aynı anda iki çalışma olmamalı.
 concurrency:
@@ -39,7 +39,7 @@ jobs:
           PROMPT_TEMPLATE: ${{ secrets.PROMPT_TEMPLATE }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: python -m channel_ops shorts-prompts --count "${{ inputs.count || 1 }}"
+        run: python -m channel_ops shorts-prompts --count "${{ inputs.count || 3 }}"
 
       - name: Bekleyen fikirleri kaydet
         run: |

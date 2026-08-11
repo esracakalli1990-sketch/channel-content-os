@@ -20,7 +20,7 @@ import os
 import re
 import tempfile
 from dataclasses import asdict
-from datetime import UTC, datetime
+from datetime import UTC, datetime, time, timedelta
 from pathlib import Path
 
 from . import (
@@ -41,6 +41,16 @@ logger = logging.getLogger(__name__)
 
 PENDING_FILE = "data/shorts_pending.json"
 PUBLISHED_FILE = "data/shorts_published.json"
+QUEUE_FILE = "data/shorts_queue.json"
+
+# When queued videos go out, as UTC hours. Videos used to publish the moment
+# they were sent, which tied release time to whenever the operator happened to
+# be free — often the middle of the night. The clips are now made in one
+# morning session and released across the day instead.
+#
+# Only the file id is queued, never the video: Telegram keeps file ids valid
+# indefinitely, so the clip is fetched again at publish time.
+PUBLISH_SLOTS_UTC = (11, 15, 19)
 
 # Typed into the Telegram chat to ask for a performance report.
 REPORT_COMMANDS = frozenset({"rapor", "report", "istatistik", "stats"})
@@ -150,6 +160,38 @@ def send_daily_prompts(
     return pairs
 
 
+def resend_pending(root: Path | None = None) -> list[PromptPair]:
+    """Re-render every unused concept with the current template and resend it.
+
+    The rendered prompts are stored, not regenerated on demand, so a corrected
+    template does not reach concepts that were rendered before it. Rather than
+    discard perfectly good ideas, they are rebuilt from the concept and sent
+    again.
+    """
+    path = _data_path(PENDING_FILE, root)
+    pending = _read_json(path, [])
+    unused = [entry for entry in pending if _is_fresh(entry) and not entry.get("used_at")]
+    if not unused:
+        return []
+
+    pairs: list[PromptPair] = []
+    notifications.send_message(
+        f"♻️ <b>Promptlar yenilendi</b> — {len(unused)} fikir.\n"
+        f"Şablon düzeltildi; <b>eski mesajlardaki promptları kullanma</b>, "
+        f"aşağıdakileri kullan."
+    )
+    for entry in unused:
+        pair = shorts_prompts.render(Concept(**entry["concept"]))
+        entry["text_to_image"] = pair.text_to_image
+        entry["image_to_video"] = pair.image_to_video
+        notifications.send_message(_format_prompt_message(int(entry["index"]), pair))
+        pairs.append(pair)
+
+    _write_json(path, pending)
+    logger.info("Re-rendered %d pending concept(s)", len(pairs))
+    return pairs
+
+
 # -----------------------------------------------------------------------
 # Inbox job
 # -----------------------------------------------------------------------
@@ -214,13 +256,26 @@ def _record_published(entry: dict, root: Path | None = None) -> Path:
 
 
 def process_inbox(provider: AIProvider, *, root: Path | None = None) -> list[dict]:
-    """Handle every video waiting in Telegram. Returns one record per upload."""
+    """Take in whatever Telegram is holding and release whatever is due.
+
+    Returns one record per video actually published, which is usually not the
+    video that just arrived: clips are queued on arrival and go out at their
+    slot. Both halves run on every poll of the watch loop, which is what keeps
+    release times accurate to a couple of minutes despite GitHub starting
+    scheduled jobs hours late.
+    """
     root = root or find_project_root()
+    _accept_incoming(provider, root)
+    return publish_due(provider, root)
+
+
+def _accept_incoming(provider: AIProvider, root: Path) -> list[dict]:
+    """Queue every video waiting in Telegram. Returns the queued items."""
     offset = telegram_inbox.load_offset(root)
     updates = telegram_inbox.fetch_updates(offset)
 
     if not updates:
-        logger.info("Nothing waiting in Telegram")
+        logger.debug("Nothing waiting in Telegram")
         return []
 
     # Acknowledge immediately: Telegram replays unconfirmed updates, and a
@@ -238,31 +293,70 @@ def process_inbox(provider: AIProvider, *, root: Path | None = None) -> list[dic
         return []
 
     pending = _read_json(_data_path(PENDING_FILE, root), [])
-    records: list[dict] = []
+    queued: list[dict] = []
 
-    for video in videos:
+    # Sorted by caption so "1", "2", "3" claim the day's slots in that order
+    # however Telegram happened to deliver them.
+    for video in sorted(videos, key=lambda v: _caption_order(v.caption)):
         try:
-            records.append(_publish_one(video, pending, provider, root))
+            queued.append(enqueue(video, pending, root))
         except telegram_inbox.VideoTooLargeError as exc:
             notifications.send_message(f"⚠️ <b>Video alınamadı</b>\n{_escape(str(exc))}")
         except RuntimeError as exc:
-            logger.exception("Publishing failed")
-            notifications.send_message(f"❌ <b>Yükleme başarısız</b>\n{_escape(str(exc))}")
+            logger.exception("Queueing failed")
+            notifications.send_message(f"❌ <b>Sıraya alınamadı</b>\n{_escape(str(exc))}")
 
-    # Which concepts got used has to outlive this run, or tomorrow's second
-    # video reuses one that already went out.
-    if records:
+    # Which concepts got used has to outlive this run, or the next video
+    # reuses one that is already waiting in the queue.
+    if queued:
         _write_json(_data_path(PENDING_FILE, root), pending)
-    return records
+    return queued
 
 
-def _publish_one(
-    video: telegram_inbox.IncomingVideo,
-    pending: list[dict],
-    provider: AIProvider,
-    root: Path,
-) -> dict:
-    """Download one clip, caption it, and publish it to YouTube and Instagram."""
+def _caption_order(caption: str) -> tuple[int, str]:
+    """Sort key putting a numbered caption first, in numeric order."""
+    numbers = re.findall(r"\d+", caption)
+    return (int(numbers[0]), caption) if numbers else (10**6, caption)
+
+
+# -----------------------------------------------------------------------
+# Release queue
+# -----------------------------------------------------------------------
+
+def next_slot(taken: list[datetime], now: datetime | None = None) -> datetime:
+    """The next release time not already claimed by a queued video.
+
+    Slots fill forward: three clips sent in one morning take today's three
+    remaining slots, and anything beyond that rolls into the following days
+    rather than going out together.
+    """
+    now = now or datetime.now(UTC)
+    claimed = {slot.replace(second=0, microsecond=0) for slot in taken}
+    day = now.date()
+    for offset in range(14):  # a fortnight is far past any sane backlog
+        for hour in sorted(PUBLISH_SLOTS_UTC):
+            candidate = datetime.combine(
+                day + timedelta(days=offset), time(hour=hour), tzinfo=UTC
+            )
+            if candidate > now and candidate not in claimed:
+                return candidate
+    # Every slot for two weeks is spoken for, which means something is wrong
+    # upstream; releasing now beats holding the video indefinitely.
+    return now
+
+
+def _queued_times(queue: list[dict]) -> list[datetime]:
+    times: list[datetime] = []
+    for item in queue:
+        try:
+            times.append(datetime.fromisoformat(item["publish_at"]))
+        except (KeyError, ValueError):
+            continue
+    return times
+
+
+def enqueue(video: telegram_inbox.IncomingVideo, pending: list[dict], root: Path) -> dict:
+    """Match an arriving clip to a concept and hold it for its release slot."""
     entry = match_pending(video.caption, pending)
     if entry is None:
         raise RuntimeError(
@@ -270,13 +364,78 @@ def _publish_one(
             "or send the video within two weeks of receiving its prompt."
         )
 
+    path = _data_path(QUEUE_FILE, root)
+    queue = _read_json(path, [])
+    publish_at = next_slot(_queued_times(queue))
+
+    item = {
+        "queued_at": datetime.now(UTC).isoformat(timespec="seconds"),
+        "publish_at": publish_at.isoformat(timespec="seconds"),
+        "file_id": video.file_id,
+        "file_size": video.file_size,
+        "caption": video.caption,
+        "concept": entry["concept"],
+    }
+    queue.append(item)
+    _write_json(path, queue)
+
+    # Retire the concept now rather than at publish time: the next clip in the
+    # same batch must not match it again while this one is still waiting.
+    entry["used_at"] = item["queued_at"]
+
     concept = Concept(**entry["concept"])
+    notifications.send_message(
+        f"🗓 <b>Sıraya alındı</b> — {_escape(concept.creature)}\n"
+        f"Yayın saati: <b>{publish_at.strftime('%d.%m %H:%M')} UTC</b> "
+        f"({(publish_at + timedelta(hours=3)).strftime('%H:%M')} TRT)"
+    )
+    logger.info("Queued %s for %s", concept.creature, publish_at.isoformat())
+    return item
+
+
+def publish_due(provider: AIProvider, root: Path | None = None) -> list[dict]:
+    """Publish every queued video whose slot has arrived."""
+    root = root or find_project_root()
+    path = _data_path(QUEUE_FILE, root)
+    queue = _read_json(path, [])
+    if not queue:
+        return []
+
+    now = datetime.now(UTC)
+    records: list[dict] = []
+    remaining: list[dict] = []
+
+    for item in queue:
+        try:
+            due = datetime.fromisoformat(item["publish_at"]) <= now
+        except (KeyError, ValueError):
+            due = True  # an unreadable slot must not strand the video forever
+        if not due:
+            remaining.append(item)
+            continue
+        try:
+            records.append(_publish_queued(item, provider, root))
+        except telegram_inbox.VideoTooLargeError as exc:
+            notifications.send_message(f"⚠️ <b>Video alınamadı</b>\n{_escape(str(exc))}")
+        except RuntimeError as exc:
+            logger.exception("Publishing failed")
+            notifications.send_message(f"❌ <b>Yükleme başarısız</b>\n{_escape(str(exc))}")
+
+    # Written whatever happened: a failed item is dropped rather than retried
+    # forever, and the failure was already reported to Telegram.
+    _write_json(path, remaining)
+    return records
+
+
+def _publish_queued(item: dict, provider: AIProvider, root: Path) -> dict:
+    """Fetch a queued clip from Telegram and publish it."""
+    concept = Concept(**item["concept"])
     metadata = generate_metadata(provider, concept, recent_hooks=_recent_hooks(root))
     title, description = metadata.youtube()
 
     with tempfile.TemporaryDirectory() as workspace:
         destination = Path(workspace) / "short.mp4"
-        telegram_inbox.download_video(video, destination)
+        telegram_inbox.download_file(item["file_id"], int(item.get("file_size", 0)), destination)
         destination = _burn_hook(destination, metadata.hook)
         # Published straight to public: the clip is reviewed in Flow before it
         # is ever sent to the bot, so a private-first step adds no second look —
@@ -307,7 +466,10 @@ def _publish_one(
         "instagram_media_id": reel_media_id,
         "instagram_caption": metadata.instagram(),
         "tiktok_caption": metadata.tiktok(),
-        "size_mb": round(video.size_mb, 1),
+        "size_mb": round(int(item.get("file_size", 0)) / (1024 * 1024), 1),
+        # When the clip arrived versus when it went out, so a slot's effect on
+        # reach can be read back from the record.
+        "queued_at": item.get("queued_at", ""),
         "hook": metadata.hook,
         # Which wording produced this video. Template changes are tested by
         # comparing videos before and after, which is guesswork without a
@@ -315,9 +477,6 @@ def _publish_one(
         "template_version": shorts_prompts.template_version(),
     }
     _record_published(record, root)
-    # Retire the concept only once the video is actually out, so a failed
-    # upload leaves it available for the next attempt.
-    entry["used_at"] = record["published_at"]
 
     instagram_line = f"📸 Instagram: {reel_url}\n" if reel_url else ""
     notifications.send_message(

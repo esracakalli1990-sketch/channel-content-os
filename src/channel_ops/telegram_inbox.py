@@ -183,7 +183,17 @@ def extract_commands(updates: list[dict]) -> list[str]:
 
 
 def download_video(video: IncomingVideo, destination: Path) -> Path:
-    """Download an incoming video to *destination*.
+    """Download an incoming video to *destination*."""
+    return download_file(video.file_id, video.file_size, destination)
+
+
+def download_file(file_id: str, file_size: int, destination: Path) -> Path:
+    """Download a Telegram file by id.
+
+    Taking the id rather than the update lets a video be fetched long after it
+    arrived: publishing is deferred to a scheduled slot, and Telegram keeps
+    file ids valid indefinitely even though the download path from ``getFile``
+    expires within the hour.
 
     Raises
     ------
@@ -191,13 +201,14 @@ def download_video(video: IncomingVideo, destination: Path) -> Path:
         If the file is beyond the Bot API's 20 MB ceiling. This is a hard
         Telegram limit, so the only fix is to export a smaller clip.
     """
-    if video.file_size > TELEGRAM_DOWNLOAD_LIMIT_BYTES:
+    if file_size > TELEGRAM_DOWNLOAD_LIMIT_BYTES:
+        size_mb = file_size / (1024 * 1024)
         raise VideoTooLargeError(
-            f"Video is {video.size_mb:.1f} MB; Telegram bots cannot download more than 20 MB. "
+            f"Video is {size_mb:.1f} MB; Telegram bots cannot download more than 20 MB. "
             f"Re-export the clip at a lower bitrate or resolution and send it again."
         )
 
-    file_path = _call("getFile", file_id=video.file_id).get("file_path", "")
+    file_path = _call("getFile", file_id=file_id).get("file_path", "")
     if not file_path:
         raise RuntimeError("Telegram did not return a download path for the video.")
 
@@ -209,7 +220,7 @@ def download_video(video: IncomingVideo, destination: Path) -> Path:
     except (HTTPError, URLError) as exc:
         raise RuntimeError(f"Downloading the video from Telegram failed: {exc}") from exc
 
-    logger.info("Downloaded %.1f MB to %s", video.size_mb, destination)
+    logger.info("Downloaded %.1f MB to %s", file_size / (1024 * 1024), destination)
     return destination
 
 
