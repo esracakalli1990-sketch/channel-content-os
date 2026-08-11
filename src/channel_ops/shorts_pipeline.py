@@ -48,9 +48,20 @@ QUEUE_FILE = "data/shorts_queue.json"
 # be free — often the middle of the night. The clips are now made in one
 # morning session and released across the day instead.
 #
+# The hours come from where the viewers actually are (channel-os
+# shorts-audience), not from generic advice. Over 90 days: US 49%, Indonesia
+# 14%, Vietnam 12%, India 9%, then Brazil, the Philippines, Thailand and Iraq
+# at 4% each. That is one large American block and a second, nearly as large,
+# spread across UTC+5:30 to +8.
+#
+#   13:00 UTC — evening across South East Asia (20:00 in Jakarta and Hanoi,
+#               18:30 in India), morning in the United States
+#   17:00 UTC — American midday (13:00 New York, 10:00 Los Angeles)
+#   23:00 UTC — American prime time (19:00 New York, 16:00 Los Angeles)
+#
 # Only the file id is queued, never the video: Telegram keeps file ids valid
 # indefinitely, so the clip is fetched again at publish time.
-PUBLISH_SLOTS_UTC = (11, 15, 19)
+PUBLISH_SLOTS_UTC = (13, 17, 23)
 
 # Typed into the Telegram chat to ask for a performance report.
 REPORT_COMMANDS = frozenset({"rapor", "report", "istatistik", "stats"})
