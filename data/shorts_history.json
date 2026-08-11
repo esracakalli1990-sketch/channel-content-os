@@ -1,6 +1,5 @@
 {
   "creatures": [
-    "armadillo",
     "grasshopper",
     "nautilus",
     "chameleon",
@@ -39,7 +38,8 @@
     "manta ray",
     "thorny skate",
     "rhinoceros beetle",
-    "jewel beetle"
+    "jewel beetle",
+    "emperor scorpion"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -55,6 +55,7 @@
     "flattened rhombic block",
     "flattened kite wedge",
     "arched hexagonal block",
-    "faceted oval ingot"
+    "faceted oval ingot",
+    "flattened crescent wedge"
   ]
 }
