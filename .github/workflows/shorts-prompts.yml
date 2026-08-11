@@ -1,12 +1,16 @@
 name: Shorts — günün promptları
 
-# Günde bir kez, sabah erkenden günün üç fikrini birden gönderir. Videolar tek
-# oturumda üretilip Telegram'a "1", "2", "3" başlığıyla geri gönderiliyor;
+# Günde bir kez, gece yarısına doğru günün üç fikrini birden gönderir. Videolar
+# tek oturumda üretilip Telegram'a "1", "2", "3" başlığıyla geri gönderiliyor;
 # yayın saatlerini gelen kutusu kuyruğu belirliyor (shorts_pipeline.py).
+#
+# Saat operatörün uyanık olduğu ana göre seçildi: sabah gelen bildirim uykuda
+# gözden kaçıyordu. GitHub zamanlanmış işleri geciktirebildiği için gece
+# yarısından biraz önceye kuruldu, gecikirse de uyanık saate düşsün.
 # "Run workflow" düğmesiyle istediğin an elle de çalıştırabilirsin.
 on:
   schedule:
-    - cron: "13 4 * * *" # 07:13 TRT
+    - cron: "30 20 * * *" # 23:30 TRT
   workflow_dispatch:
     inputs:
       count:

@@ -63,6 +63,13 @@ QUEUE_FILE = "data/shorts_queue.json"
 # indefinitely, so the clip is fetched again at publish time.
 PUBLISH_SLOTS_UTC = (13, 17, 23)
 
+# How far ahead the first release must be. The prompts arrive at midnight
+# Turkish time (21:00 UTC) and the clips are made straight away, which puts
+# them in hand around 22:00 UTC — an hour before the 23:00 slot. Without this
+# the batch's first video would go out almost immediately and the day's other
+# two would trail it, instead of the batch opening at 13:00 the next day.
+MIN_LEAD_HOURS = 4
+
 # Typed into the Telegram chat to ask for a performance report.
 REPORT_COMMANDS = frozenset({"rapor", "report", "istatistik", "stats"})
 
@@ -141,7 +148,19 @@ def send_daily_prompts(
         entry for entry in _read_json(path, [])
         if _is_fresh(entry) and not entry.get("used_at")
     ]
-    first_index = max((int(entry.get("index", 0)) for entry in pending), default=0) + 1
+    # Each batch is numbered from one, because that is what the operator writes
+    # on the clips. A running counter would have made tonight's first idea
+    # "#11" while the caption still said "1".
+    #
+    # The stamp identifies the batch, so two runs must never share one: a
+    # caption of "1" would then match either batch's first idea and publish the
+    # clip under the wrong concept. Second precision was not enough to promise
+    # that, so it carries microseconds and is nudged on the rare collision.
+    existing = {str(entry.get("batch", "")) for entry in pending}
+    now = datetime.now(UTC)
+    while now.isoformat() in existing:
+        now += timedelta(microseconds=1)
+    batch = now.isoformat()
 
     if count == 1:
         notifications.send_message(
@@ -155,12 +174,12 @@ def send_daily_prompts(
             f"<i>Hangisi olduğunu yazmak için başlığa numarayı ekle.</i>"
         )
 
-    for offset, pair in enumerate(pairs):
-        index = first_index + offset
+    for index, pair in enumerate(pairs, start=1):
         notifications.send_message(_format_prompt_message(index, pair))
         pending.append({
             "index": index,
-            "created_at": datetime.now(UTC).isoformat(timespec="seconds"),
+            "batch": batch,
+            "created_at": batch,
             "concept": asdict(pair.concept),
             "text_to_image": pair.text_to_image,
             "image_to_video": pair.image_to_video,
@@ -236,6 +255,14 @@ def match_pending(caption: str, pending: list[dict]) -> dict | None:
     numbers = re.findall(r"\d+", caption)
     if numbers:
         wanted = int(numbers[0])
+        # A number means "the Nth idea of this morning's batch", which is what
+        # the operator is looking at when labelling the clips. Older ideas keep
+        # their own numbering and stay reachable by naming the creature, but
+        # they must not win a bare "1" against today's first idea.
+        newest = max((str(entry.get("batch", "")) for entry in fresh), default="")
+        for entry in fresh:
+            if str(entry.get("batch", "")) == newest and entry.get("index") == wanted:
+                return entry
         for entry in fresh:
             if entry.get("index") == wanted:
                 return entry
@@ -342,6 +369,7 @@ def next_slot(taken: list[datetime], now: datetime | None = None) -> datetime:
     rather than going out together.
     """
     now = now or datetime.now(UTC)
+    earliest = now + timedelta(hours=MIN_LEAD_HOURS)
     claimed = {slot.replace(second=0, microsecond=0) for slot in taken}
     day = now.date()
     for offset in range(14):  # a fortnight is far past any sane backlog
@@ -349,7 +377,7 @@ def next_slot(taken: list[datetime], now: datetime | None = None) -> datetime:
             candidate = datetime.combine(
                 day + timedelta(days=offset), time(hour=hour), tzinfo=UTC
             )
-            if candidate > now and candidate not in claimed:
+            if candidate >= earliest and candidate not in claimed:
                 return candidate
     # Every slot for two weeks is spoken for, which means something is wrong
     # upstream; releasing now beats holding the video indefinitely.

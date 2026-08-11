@@ -91,8 +91,8 @@ class RecentHookTests(unittest.TestCase):
 
 
 class PendingAccumulationTests(unittest.TestCase):
-    """The prompt job runs three times a day, so each run must add to the
-    pending list rather than replace it."""
+    """A batch that goes unused must survive the next night's batch, so each
+    run adds to the pending list rather than replacing it."""
 
     def setUp(self):
         self._workspace = TemporaryDirectory()
@@ -130,10 +130,14 @@ class PendingAccumulationTests(unittest.TestCase):
         creatures = [entry["concept"]["creature"] for entry in self._pending()]
         self.assertEqual(creatures, ["moth", "scorpion"])
 
-    def test_indices_keep_counting_up(self):
+    def test_each_batch_is_numbered_from_one(self):
+        """The operator labels clips by position in tonight's batch, so a
+        running counter would have made tonight's first idea #4."""
         self._send("moth")
         self._send("scorpion")
-        self.assertEqual([entry["index"] for entry in self._pending()], [1, 2])
+        pending = self._pending()
+        self.assertEqual([entry["index"] for entry in pending], [1, 1])
+        self.assertNotEqual(pending[0]["batch"], pending[1]["batch"])
 
     def test_used_concepts_are_dropped_on_the_next_run(self):
         self._send("moth")
@@ -564,3 +568,86 @@ class QueueFlowTests(unittest.TestCase):
         shorts_pipeline.enqueue(self._video("1"), [_pending(1, "moth")], self.root)
         self.assertIn("Sıraya alındı", self.sent[0])
         self.assertIn("Yayın saati", self.sent[0])
+
+
+class LeadTimeTests(unittest.TestCase):
+    """Prompts arrive around midnight Turkish time and the clips are made at
+    once, so without a minimum lead the batch's first video would drop into a
+    slot an hour away instead of opening the next day."""
+
+    def test_an_imminent_slot_is_skipped(self):
+        from datetime import UTC, datetime, timedelta
+
+        # 22:30 UTC — half an hour before the 23:00 slot.
+        night = datetime(2026, 8, 12, 22, 30, tzinfo=UTC)
+        slot = shorts_pipeline.next_slot([], night)
+        self.assertGreaterEqual(
+            slot - night, timedelta(hours=shorts_pipeline.MIN_LEAD_HOURS)
+        )
+
+    def test_a_midnight_batch_opens_the_following_afternoon(self):
+        from datetime import UTC, datetime
+
+        night = datetime(2026, 8, 12, 22, 30, tzinfo=UTC)
+        taken = []
+        for _ in range(3):
+            taken.append(shorts_pipeline.next_slot(taken, night))
+        self.assertEqual([slot.hour for slot in taken], [13, 17, 23])
+        self.assertEqual([slot.day for slot in taken], [13, 13, 13])
+
+    def test_a_new_batch_does_not_take_a_slot_the_old_one_holds(self):
+        from datetime import UTC, datetime
+
+        still_queued = datetime(2026, 8, 13, 23, 0, tzinfo=UTC)
+        night = datetime(2026, 8, 13, 21, 30, tzinfo=UTC)
+        taken = [still_queued]
+        for _ in range(3):
+            taken.append(shorts_pipeline.next_slot(taken, night))
+        self.assertEqual(len(set(taken)), 4)
+        self.assertNotIn(still_queued, taken[1:])
+
+
+class BatchNumberingTests(unittest.TestCase):
+    """The operator writes 1, 2, 3 on the clips meaning "of tonight's batch".
+    A running counter would have made tonight's first idea #11 while the
+    caption still said 1, publishing it under a previous day's concept."""
+
+    def _entry(self, index, creature, batch):
+        return {
+            "index": index,
+            "batch": batch,
+            "created_at": batch,
+            "concept": _concept(creature).__dict__ | {},
+        }
+
+    def test_a_number_picks_from_the_newest_batch(self):
+        pending = [
+            self._entry(1, "moth", "2026-08-11T21:00:00+00:00"),
+            self._entry(1, "scorpion", "2026-08-12T21:00:00+00:00"),
+        ]
+        chosen = shorts_pipeline.match_pending("1", pending)
+        self.assertEqual(chosen["concept"]["creature"], "scorpion")
+
+    def test_an_older_idea_is_still_reachable_by_name(self):
+        pending = [
+            self._entry(1, "moth", "2026-08-11T21:00:00+00:00"),
+            self._entry(1, "scorpion", "2026-08-12T21:00:00+00:00"),
+        ]
+        chosen = shorts_pipeline.match_pending("the moth one", pending)
+        self.assertEqual(chosen["concept"]["creature"], "moth")
+
+    def test_a_number_outside_the_newest_batch_falls_back(self):
+        pending = [
+            self._entry(7, "moth", "2026-08-11T21:00:00+00:00"),
+            self._entry(1, "scorpion", "2026-08-12T21:00:00+00:00"),
+        ]
+        chosen = shorts_pipeline.match_pending("7", pending)
+        self.assertEqual(chosen["concept"]["creature"], "moth")
+
+    def test_entries_without_a_batch_never_outrank_a_real_one(self):
+        """Ideas stored before batches existed must not win a bare number."""
+        old = {"index": 1, "created_at": "2026-08-01T00:00:00+00:00",
+               "concept": _concept("moth").__dict__ | {}}
+        pending = [old, self._entry(1, "scorpion", "2026-08-12T21:00:00+00:00")]
+        chosen = shorts_pipeline.match_pending("1", pending)
+        self.assertEqual(chosen["concept"]["creature"], "scorpion")
