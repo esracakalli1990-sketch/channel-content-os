@@ -15,5 +15,22 @@
       "shell_mechanic": "The interlocking cylindrical bands slide along internal tracks to curve into an arched back",
       "emerging_parts": "Four jointed clawed legs, a pointed snout, and a ringed tail"
     }
+  },
+  {
+    "queued_at": "2026-08-11T21:54:50+00:00",
+    "publish_at": "2026-08-12T17:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAPEanuT9-HXs1ubuhYmWNz8TV7scwwAAo0bAAK63OBTUsnNSszciLw9BA",
+    "file_size": 2023391,
+    "caption": "2",
+    "concept": {
+      "shape": "asymmetrical conical spire",
+      "material": "iridescent mother-of-pearl and polished silver wire",
+      "internal_detail": "jeweled brass gear trains and silver micro-ratchets",
+      "button": "a small pearl inlay set flush into the shell apex",
+      "button_short": "the small pearl inlay at the shell apex",
+      "creature": "hermit crab",
+      "shell_mechanic": "The shell opening hinges outward in three curved petals",
+      "emerging_parts": "Ten jointed walking legs, two unequal pincers, and a pair of stalked eyes"
+    }
   }
 ]
