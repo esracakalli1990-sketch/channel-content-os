@@ -1,8 +1,5 @@
 {
   "creatures": [
-    "horseshoe crab",
-    "flying fish",
-    "spider crab",
     "bat",
     "hummingbird",
     "squid",
@@ -39,7 +36,10 @@
     "emperor scorpion",
     "armadillo",
     "hermit crab",
-    "luna moth"
+    "luna moth",
+    "chameleon",
+    "pangolin",
+    "chambered nautilus"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -59,6 +59,9 @@
     "flattened crescent wedge",
     "segmented cylindrical barrel",
     "asymmetrical conical spire",
-    "flattened trapezoid"
+    "flattened trapezoid",
+    "curved pentagonal block",
+    "faceted pinecone segment",
+    "coiled spiral puck"
   ]
 }

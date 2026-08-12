@@ -1,56 +1,53 @@
 [
   {
     "index": 1,
-    "batch": "2026-08-11T21:12:23.191060+00:00",
-    "created_at": "2026-08-11T21:12:23.191060+00:00",
+    "batch": "2026-08-12T21:11:12.460170+00:00",
+    "created_at": "2026-08-12T21:11:12.460170+00:00",
     "concept": {
-      "shape": "segmented cylindrical barrel",
-      "material": "tarnished nickel plating and weathered leather",
-      "internal_detail": "miniature brass clockwork gears and coiled tension springs",
-      "button": "a tiny spring-loaded copper pin flush with the central segment",
-      "button_short": "the tiny spring-loaded copper pin on the central segment",
-      "creature": "armadillo",
-      "shell_mechanic": "The interlocking cylindrical bands slide along internal tracks to curve into an arched back",
-      "emerging_parts": "Four jointed clawed legs, a pointed snout, and a ringed tail"
+      "shape": "curved pentagonal block",
+      "material": "iridescent patinated bronze and anodized titanium",
+      "internal_detail": "miniature rack-and-pinion assemblies and micro-clockwork linkages",
+      "button": "a tiny brass flush-mounted stud on the dorsal spine",
+      "button_short": "the tiny brass flush-mounted stud on the dorsal spine",
+      "creature": "chameleon",
+      "shell_mechanic": "The five segmented armor plates slide apart laterally along curved rails",
+      "emerging_parts": "Four jointed gripping limbs, a prehensile coiled tail, and a conical turreted head"
     },
-    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, segmented cylindrical barrel-shaped object made of tarnished nickel plating and weathered leather. The outer shell is completely closed, solid and seamless, with no gears, springs or moving parts visible anywhere on its surface. The toy features a tiny spring-loaded copper pin flush with the central segment. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
-    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the tiny spring-loaded copper pin on the central segment with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical armadillo. The unfolding and transformation process is logical and physically consistent. The interlocking cylindrical bands slide along internal tracks to curve into an arched back, revealing the movement of internal mechanical components and gears. Four jointed clawed legs, a pointed snout, and a ringed tail physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical armadillo's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. In the last second the finished armadillo settles into a still pose, resting on the same spot where the closed toy was placed, and the shot holds completely steady with no further movement and nothing entering the frame, so the clip cuts back to its opening without a jolt when it loops. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice.",
-    "used_at": "2026-08-11T21:52:48+00:00"
+    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, curved pentagonal block-shaped object made of iridescent patinated bronze and anodized titanium. The outer shell is completely closed, solid and seamless, with no gears, springs or moving parts visible anywhere on its surface. The toy features a tiny brass flush-mounted stud on the dorsal spine. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
+    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the tiny brass flush-mounted stud on the dorsal spine with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical chameleon. The unfolding and transformation process is logical and physically consistent. The five segmented armor plates slide apart laterally along curved rails, revealing the movement of internal mechanical components and gears. Four jointed gripping limbs, a prehensile coiled tail, and a conical turreted head physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical chameleon's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. In the last second the finished chameleon settles into a still pose, resting on the same spot where the closed toy was placed, and the shot holds completely steady with no further movement and nothing entering the frame, so the clip cuts back to its opening without a jolt when it loops. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice."
   },
   {
     "index": 2,
-    "batch": "2026-08-11T21:12:23.191060+00:00",
-    "created_at": "2026-08-11T21:12:23.191060+00:00",
+    "batch": "2026-08-12T21:11:12.460170+00:00",
+    "created_at": "2026-08-12T21:11:12.460170+00:00",
     "concept": {
-      "shape": "asymmetrical conical spire",
-      "material": "iridescent mother-of-pearl and polished silver wire",
-      "internal_detail": "jeweled brass gear trains and silver micro-ratchets",
-      "button": "a small pearl inlay set flush into the shell apex",
-      "button_short": "the small pearl inlay at the shell apex",
-      "creature": "hermit crab",
-      "shell_mechanic": "The shell opening hinges outward in three curved petals",
-      "emerging_parts": "Ten jointed walking legs, two unequal pincers, and a pair of stalked eyes"
+      "shape": "faceted pinecone segment",
+      "material": "brushed rose gold and blackened steel",
+      "internal_detail": "tiny planetary gear trains and leaf-spring tensioners",
+      "button": "an oval flush-mounted copper trigger near the rear crest",
+      "button_short": "the oval flush-mounted copper trigger near the rear crest",
+      "creature": "pangolin",
+      "shell_mechanic": "The imbricated metal scales fan open sequentially from front to back",
+      "emerging_parts": "Four clawed digging paws, a narrow snout, and a long segmented armored tail"
     },
-    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, asymmetrical conical spire-shaped object made of iridescent mother-of-pearl and polished silver wire. The outer shell is completely closed, solid and seamless, with no gears, springs or moving parts visible anywhere on its surface. The toy features a small pearl inlay set flush into the shell apex. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
-    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the small pearl inlay at the shell apex with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical hermit crab. The unfolding and transformation process is logical and physically consistent. The shell opening hinges outward in three curved petals, revealing the movement of internal mechanical components and gears. Ten jointed walking legs, two unequal pincers, and a pair of stalked eyes physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical hermit crab's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. In the last second the finished hermit crab settles into a still pose, resting on the same spot where the closed toy was placed, and the shot holds completely steady with no further movement and nothing entering the frame, so the clip cuts back to its opening without a jolt when it loops. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice.",
-    "used_at": "2026-08-11T21:54:50+00:00"
+    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, faceted pinecone segment-shaped object made of brushed rose gold and blackened steel. The outer shell is completely closed, solid and seamless, with no gears, springs or moving parts visible anywhere on its surface. The toy features an oval flush-mounted copper trigger near the rear crest. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
+    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the oval flush-mounted copper trigger near the rear crest with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical pangolin. The unfolding and transformation process is logical and physically consistent. The imbricated metal scales fan open sequentially from front to back, revealing the movement of internal mechanical components and gears. Four clawed digging paws, a narrow snout, and a long segmented armored tail physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical pangolin's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. In the last second the finished pangolin settles into a still pose, resting on the same spot where the closed toy was placed, and the shot holds completely steady with no further movement and nothing entering the frame, so the clip cuts back to its opening without a jolt when it loops. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice."
   },
   {
     "index": 3,
-    "batch": "2026-08-11T21:12:23.191060+00:00",
-    "created_at": "2026-08-11T21:12:23.191060+00:00",
+    "batch": "2026-08-12T21:11:12.460170+00:00",
+    "created_at": "2026-08-12T21:11:12.460170+00:00",
     "concept": {
-      "shape": "flattened trapezoid",
-      "material": "patinated mint-green copper and frosted quartz",
-      "internal_detail": "delicate golden hairsprings and micro-gear linkages",
-      "button": "a flush-mounted ruby bead ringed in polished brass",
-      "button_short": "the flush-mounted ruby bead on the upper casing",
-      "creature": "luna moth",
-      "shell_mechanic": "The upper casing splits diagonally and unfurls into two broad filigree wings",
-      "emerging_parts": "Six thin jointed legs, a fuzzy segmented abdomen, and two feathery antennae"
+      "shape": "coiled spiral puck",
+      "material": "pearlescent abalone inlay and polished nickel-silver",
+      "internal_detail": "delicate escapement wheels and coiled hairspring assemblies",
+      "button": "a small knurled silver pin recessed into the central hub",
+      "button_short": "the small knurled silver pin recessed into the central hub",
+      "creature": "chambered nautilus",
+      "shell_mechanic": "The outer chamber shell hinges outward in three concentric arc segments",
+      "emerging_parts": "A cluster of fine flexible tentacles and two polished glass optics"
     },
-    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, flattened trapezoid-shaped object made of patinated mint-green copper and frosted quartz. The outer shell is completely closed, solid and seamless, with no gears, springs or moving parts visible anywhere on its surface. The toy features a flush-mounted ruby bead ringed in polished brass. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
-    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the flush-mounted ruby bead on the upper casing with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical luna moth. The unfolding and transformation process is logical and physically consistent. The upper casing splits diagonally and unfurls into two broad filigree wings, revealing the movement of internal mechanical components and gears. Six thin jointed legs, a fuzzy segmented abdomen, and two feathery antennae physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical luna moth's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. In the last second the finished luna moth settles into a still pose, resting on the same spot where the closed toy was placed, and the shot holds completely steady with no further movement and nothing entering the frame, so the clip cuts back to its opening without a jolt when it loops. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice.",
-    "used_at": "2026-08-11T21:56:52+00:00"
+    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, coiled spiral puck-shaped object made of pearlescent abalone inlay and polished nickel-silver. The outer shell is completely closed, solid and seamless, with no gears, springs or moving parts visible anywhere on its surface. The toy features a small knurled silver pin recessed into the central hub. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
+    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the small knurled silver pin recessed into the central hub with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical chambered nautilus. The unfolding and transformation process is logical and physically consistent. The outer chamber shell hinges outward in three concentric arc segments, revealing the movement of internal mechanical components and gears. A cluster of fine flexible tentacles and two polished glass optics physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical chambered nautilus's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. In the last second the finished chambered nautilus settles into a still pose, resting on the same spot where the closed toy was placed, and the shot holds completely steady with no further movement and nothing entering the frame, so the clip cuts back to its opening without a jolt when it loops. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice."
   }
 ]
