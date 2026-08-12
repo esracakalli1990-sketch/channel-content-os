@@ -1,22 +1,5 @@
 [
   {
-    "queued_at": "2026-08-11T21:52:48+00:00",
-    "publish_at": "2026-08-12T13:00:00+00:00",
-    "file_id": "BQACAgQAAxkBAAPCanuSQ1UIV53qu-pD8q3r2vY39kEAAowbAAK63OBTekfz4kbZl1E9BA",
-    "file_size": 1868042,
-    "caption": "1",
-    "concept": {
-      "shape": "segmented cylindrical barrel",
-      "material": "tarnished nickel plating and weathered leather",
-      "internal_detail": "miniature brass clockwork gears and coiled tension springs",
-      "button": "a tiny spring-loaded copper pin flush with the central segment",
-      "button_short": "the tiny spring-loaded copper pin on the central segment",
-      "creature": "armadillo",
-      "shell_mechanic": "The interlocking cylindrical bands slide along internal tracks to curve into an arched back",
-      "emerging_parts": "Four jointed clawed legs, a pointed snout, and a ringed tail"
-    }
-  },
-  {
     "queued_at": "2026-08-11T21:54:50+00:00",
     "publish_at": "2026-08-12T17:00:00+00:00",
     "file_id": "BQACAgQAAxkBAAPEanuT9-HXs1ubuhYmWNz8TV7scwwAAo0bAAK63OBTUsnNSszciLw9BA",
