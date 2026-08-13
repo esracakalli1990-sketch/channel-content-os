@@ -1,8 +1,5 @@
 {
   "creatures": [
-    "bat",
-    "hummingbird",
-    "squid",
     "fiddler crab",
     "trilobite",
     "shield bug",
@@ -39,7 +36,10 @@
     "luna moth",
     "chameleon",
     "pangolin",
-    "chambered nautilus"
+    "chambered nautilus",
+    "horseshoe crab",
+    "cuttlefish",
+    "tree frog"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -62,6 +62,9 @@
     "flattened trapezoid",
     "curved pentagonal block",
     "faceted pinecone segment",
-    "coiled spiral puck"
+    "coiled spiral puck",
+    "domed semicircular shield",
+    "streamlined flattened lozenge",
+    "compact rounded tetrahedron"
   ]
 }
