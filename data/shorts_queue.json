@@ -15,5 +15,22 @@
       "shell_mechanic": "The five segmented armor plates slide apart laterally along curved rails",
       "emerging_parts": "Four jointed gripping limbs, a prehensile coiled tail, and a conical turreted head"
     }
+  },
+  {
+    "queued_at": "2026-08-13T03:36:55+00:00",
+    "publish_at": "2026-08-13T17:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAPkan07jHdX6PNLPGPERER8bojDqioAAr0dAALccuhTHmkISf4D4jg9BA",
+    "file_size": 1843122,
+    "caption": "2",
+    "concept": {
+      "shape": "faceted pinecone segment",
+      "material": "brushed rose gold and blackened steel",
+      "internal_detail": "tiny planetary gear trains and leaf-spring tensioners",
+      "button": "an oval flush-mounted copper trigger near the rear crest",
+      "button_short": "the oval flush-mounted copper trigger near the rear crest",
+      "creature": "pangolin",
+      "shell_mechanic": "The imbricated metal scales fan open sequentially from front to back",
+      "emerging_parts": "Four clawed digging paws, a narrow snout, and a long segmented armored tail"
+    }
   }
 ]
