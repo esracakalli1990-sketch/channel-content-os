@@ -1,22 +1,5 @@
 [
   {
-    "queued_at": "2026-08-14T03:28:22+00:00",
-    "publish_at": "2026-08-14T13:00:00+00:00",
-    "file_id": "BQACAgQAAxkBAAPyan6K8LeNph9h-ICovf3fYVcXqVwAAvUeAALccvBTRkB_HQKcoDQ9BA",
-    "file_size": 1859201,
-    "caption": "1",
-    "concept": {
-      "shape": "domed semicircular shield",
-      "material": "brushed gunmetal titanium with dull bronze patina",
-      "internal_detail": "interlocking copper bevel gears and articulated brass pushrods",
-      "button": "a small recessed copper stud at the crest of the carapace",
-      "button_short": "the recessed copper stud at the crest",
-      "creature": "horseshoe crab",
-      "shell_mechanic": "The semicircular carapace pivots upward on a heavy rear hinge while the lateral rims fan outward",
-      "emerging_parts": "Ten multi-jointed walking legs, a hinged rear abdomen, and a slender pointed telson spine"
-    }
-  },
-  {
     "queued_at": "2026-08-14T03:30:25+00:00",
     "publish_at": "2026-08-14T17:00:00+00:00",
     "file_id": "BQACAgQAAxkBAAP0an6Lgsme788whDUztZVmzy-9cnoAAvYeAALccvBTx-ZzVY0L6Uc9BA",
