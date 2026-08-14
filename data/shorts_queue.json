@@ -15,5 +15,22 @@
       "shell_mechanic": "The semicircular carapace pivots upward on a heavy rear hinge while the lateral rims fan outward",
       "emerging_parts": "Ten multi-jointed walking legs, a hinged rear abdomen, and a slender pointed telson spine"
     }
+  },
+  {
+    "queued_at": "2026-08-14T03:30:25+00:00",
+    "publish_at": "2026-08-14T17:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAP0an6Lgsme788whDUztZVmzy-9cnoAAvYeAALccvBTx-ZzVY0L6Uc9BA",
+    "file_size": 2084622,
+    "caption": "2",
+    "concept": {
+      "shape": "streamlined flattened lozenge",
+      "material": "pearlescent white ceramic and polished chrome",
+      "internal_detail": "micro-machined stainless steel rack-and-pinion drives and blue fiber-optic conduit coils",
+      "button": "a flush crystal sensor node on the dorsal ridge",
+      "button_short": "the flush crystal sensor node on the ridge",
+      "creature": "cuttlefish",
+      "shell_mechanic": "The lateral cowlings slide outward along twin curved guide rails",
+      "emerging_parts": "Eight articulated grasping tentacles, two longer clubbed feeding arms, and flexible undulating fin skirts"
+    }
   }
 ]
