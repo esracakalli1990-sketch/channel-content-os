@@ -1,8 +1,5 @@
 {
   "creatures": [
-    "fiddler crab",
-    "trilobite",
-    "shield bug",
     "seahorse",
     "giant isopod",
     "praying mantis",
@@ -39,7 +36,10 @@
     "chambered nautilus",
     "horseshoe crab",
     "cuttlefish",
-    "tree frog"
+    "tree frog",
+    "honeybee",
+    "fruit bat",
+    "flying fish"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -65,6 +65,9 @@
     "coiled spiral puck",
     "domed semicircular shield",
     "streamlined flattened lozenge",
-    "compact rounded tetrahedron"
+    "compact rounded tetrahedron",
+    "faceted hexagonal spindle",
+    "creased triangular mantle",
+    "streamlined bevelled dart"
   ]
 }
