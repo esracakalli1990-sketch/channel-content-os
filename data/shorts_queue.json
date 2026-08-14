@@ -32,5 +32,22 @@
       "shell_mechanic": "The lateral cowlings slide outward along twin curved guide rails",
       "emerging_parts": "Eight articulated grasping tentacles, two longer clubbed feeding arms, and flexible undulating fin skirts"
     }
+  },
+  {
+    "queued_at": "2026-08-14T03:32:28+00:00",
+    "publish_at": "2026-08-14T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAP2an6MI6ruyga6vS8PKE6YHjKJC3gAAvceAALccvBTi_4psy_FDhg9BA",
+    "file_size": 1845004,
+    "caption": "3",
+    "concept": {
+      "shape": "compact rounded tetrahedron",
+      "material": "enameled emerald-green brass and oxidized copper",
+      "internal_detail": "miniaturized balance wheels, coiled spring escapements, and polished steel linkages",
+      "button": "a raised polished brass fastener situated between the dorsal ridges",
+      "button_short": "the raised brass fastener between the dorsal ridges",
+      "creature": "tree frog",
+      "shell_mechanic": "The enameled dorsal shell plates split along the midline and lift slightly upward",
+      "emerging_parts": "Two folded spring-loaded hind legs, two delicate front webbed paws, and a wide articulated head with protruding optic orbs"
+    }
   }
 ]
