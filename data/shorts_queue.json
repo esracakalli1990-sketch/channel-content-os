@@ -32,5 +32,22 @@
       "shell_mechanic": "The upper carapace plates split laterally and tilt backward on sprung hinges",
       "emerging_parts": "One oversized articulated claw, five pairs of jointed ambulatory legs, and twin stalked optical sensors"
     }
+  },
+  {
+    "queued_at": "2026-08-15T23:11:45+00:00",
+    "publish_at": "2026-08-16T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIBEmqA8fXvegwLyA82cayZyo4FTLAvAAJ4HwAC2UEJUBKs4FuIFOQBPQQ",
+    "file_size": 2047508,
+    "caption": "3",
+    "concept": {
+      "shape": "faceted lanceolate block",
+      "material": "iridescent anodized titanium and polished mother-of-pearl inlays",
+      "internal_detail": "miniature sprung wire tendons, jeweled pinions, and coiled micro-springs",
+      "button": "a polished mother-of-pearl actuator set flush along the dorsal ridge",
+      "button_short": "the flush mother-of-pearl actuator along the dorsal ridge",
+      "creature": "hummingbird",
+      "shell_mechanic": "The faceted flank plates split down the spine and swing outward like plumage",
+      "emerging_parts": "Two articulated filigree wings, a needle-thin bill, and a fanned tail assembly"
+    }
   }
 ]
