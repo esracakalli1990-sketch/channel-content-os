@@ -15,5 +15,22 @@
       "shell_mechanic": "The tiered outer plates slide and pivot apart along lateral tracks",
       "emerging_parts": "A pair of jointed antennae, dozens of filigree walking legs, and a ribbed pygidium"
     }
+  },
+  {
+    "queued_at": "2026-08-15T23:09:43+00:00",
+    "publish_at": "2026-08-16T17:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIBEGqA8VakZ35zXU1wpPL2b8qOEQvPAAJ1HwAC2UEJUK45GEkgDbzsPQQ",
+    "file_size": 2003142,
+    "caption": "2",
+    "concept": {
+      "shape": "canted polygonal box",
+      "material": "brushed rose gold and weathered verdigris bronze",
+      "internal_detail": "exposed watch jewels, micro-escapement assemblies, and tiny brass push-rods",
+      "button": "a flush-mounted ruby cabochon switch on the upper corner",
+      "button_short": "the flush ruby switch on the upper corner",
+      "creature": "fiddler crab",
+      "shell_mechanic": "The upper carapace plates split laterally and tilt backward on sprung hinges",
+      "emerging_parts": "One oversized articulated claw, five pairs of jointed ambulatory legs, and twin stalked optical sensors"
+    }
   }
 ]
