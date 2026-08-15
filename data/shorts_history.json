@@ -1,8 +1,5 @@
 {
   "creatures": [
-    "seahorse",
-    "giant isopod",
-    "praying mantis",
     "pufferfish",
     "cicada",
     "three-axis gyroscope",
@@ -39,7 +36,10 @@
     "tree frog",
     "honeybee",
     "fruit bat",
-    "flying fish"
+    "flying fish",
+    "trilobite",
+    "fiddler crab",
+    "hummingbird"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -68,6 +68,9 @@
     "compact rounded tetrahedron",
     "faceted hexagonal spindle",
     "creased triangular mantle",
-    "streamlined bevelled dart"
+    "streamlined bevelled dart",
+    "tiered semicircular vault",
+    "canted polygonal box",
+    "faceted lanceolate block"
   ]
 }
