@@ -1,22 +1,5 @@
 [
   {
-    "queued_at": "2026-08-15T23:07:40+00:00",
-    "publish_at": "2026-08-16T13:00:00+00:00",
-    "file_id": "BQACAgQAAxkBAAIBDmqA8M9pne6yjmA6H5NVn8t6oQp0AAJwHwAC2UEJUAaBfu7zKjiSPQQ",
-    "file_size": 1925744,
-    "caption": "1",
-    "concept": {
-      "shape": "tiered semicircular vault",
-      "material": "brushed gunmetal and oxidized brass",
-      "internal_detail": "interlocking brass gear trains and miniature hydraulic piston linkages",
-      "button": "a recessed knurled copper plunger set into the central ridge",
-      "button_short": "the knurled copper plunger on the central ridge",
-      "creature": "trilobite",
-      "shell_mechanic": "The tiered outer plates slide and pivot apart along lateral tracks",
-      "emerging_parts": "A pair of jointed antennae, dozens of filigree walking legs, and a ribbed pygidium"
-    }
-  },
-  {
     "queued_at": "2026-08-15T23:09:43+00:00",
     "publish_at": "2026-08-16T17:00:00+00:00",
     "file_id": "BQACAgQAAxkBAAIBEGqA8VakZ35zXU1wpPL2b8qOEQvPAAJ1HwAC2UEJUK45GEkgDbzsPQQ",
