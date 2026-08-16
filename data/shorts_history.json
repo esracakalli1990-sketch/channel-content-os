@@ -1,8 +1,5 @@
 {
   "creatures": [
-    "pufferfish",
-    "cicada",
-    "three-axis gyroscope",
     "ladybug",
     "acorn weevil",
     "kingfisher",
@@ -39,7 +36,10 @@
     "flying fish",
     "trilobite",
     "fiddler crab",
-    "hummingbird"
+    "hummingbird",
+    "desert locust",
+    "dumbo octopus",
+    "mantis shrimp"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -71,6 +71,9 @@
     "streamlined bevelled dart",
     "tiered semicircular vault",
     "canted polygonal box",
-    "faceted lanceolate block"
+    "faceted lanceolate block",
+    "faceted chevron bar",
+    "fluted paraboloid bell",
+    "grooved oblong plinth"
   ]
 }
