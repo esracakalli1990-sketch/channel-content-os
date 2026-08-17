@@ -32,5 +32,22 @@
       "shell_mechanic": "The top carapace plate shifts backward while the flanking shields swing out into lateral armor plates",
       "emerging_parts": "A pair of stalked compound eyes, two folded dactyl club appendages, and ten articulated walking legs"
     }
+  },
+  {
+    "queued_at": "2026-08-17T15:06:49+00:00",
+    "publish_at": "2026-08-18T17:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIBIGqDIfLAQVzQrNi2EdyY4rj3DN4RAAL_HQAC99sZUHc-BwR2fCU5PQQ",
+    "file_size": 2057896,
+    "caption": "2",
+    "concept": {
+      "shape": "faceted chevron bar",
+      "material": "brushed olive-anodized aluminium and polished brass",
+      "internal_detail": "miniature brass leaf springs, interlocking gear trains, and coiled steel tension wire",
+      "button": "a tiny circular brass push-stud recessed into the dorsal seam",
+      "button_short": "the tiny brass push-stud on the dorsal seam",
+      "creature": "desert locust",
+      "shell_mechanic": "The chevron bar divides along its central spine and the two lateral plates tilt upwards into angled wing covers",
+      "emerging_parts": "A compound-eyed head, four folded forelegs, and a pair of large jointed springing legs"
+    }
   }
 ]
