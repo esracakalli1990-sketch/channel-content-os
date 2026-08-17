@@ -11,6 +11,10 @@ name: Shorts — günün promptları
 on:
   schedule:
     - cron: "30 20 * * *" # 23:30 TRT
+    # Telafi denemeleri: ilk çalışma sırasında Gemini çökükse gün fikirsiz
+    # kalıyordu, iki kez oldu. Fikirler ulaştıysa bunlar hiçbir şey yapmaz.
+    - cron: "15 21 * * *" # 00:15 TRT
+    - cron: "0 22 * * *"  # 01:00 TRT
   workflow_dispatch:
     inputs:
       count:
@@ -43,7 +47,7 @@ jobs:
           PROMPT_TEMPLATE: ${{ secrets.PROMPT_TEMPLATE }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: python -m channel_ops shorts-prompts --count "${{ inputs.count || 3 }}"
+        run: python -m channel_ops shorts-prompts --count "${{ inputs.count || 3 }}" --skip-if-recent "${{ github.event_name == 'schedule' && 6 || 0 }}"
 
       - name: Bekleyen fikirleri kaydet
         run: |

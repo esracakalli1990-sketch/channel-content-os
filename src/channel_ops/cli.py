@@ -88,6 +88,15 @@ def build_parser() -> argparse.ArgumentParser:
     # video whenever the reminder landed, which kept missing the hours worth
     # publishing in; the clips are now made in one sitting and released later.
     prompts.add_argument("--count", type=int, default=3, help="How many concepts to send")
+    # Used by the catch-up runs so a retry after an upstream outage does not
+    # send a second batch once the first one got through.
+    prompts.add_argument(
+        "--skip-if-recent",
+        type=float,
+        default=0,
+        metavar="HOURS",
+        help="Do nothing if a batch already went out within this many hours",
+    )
 
     subparsers.add_parser(
         "shorts-inbox",
@@ -227,7 +236,15 @@ def main() -> None:
 
     elif args.command == "shorts-prompts":
         from .shorts_pipeline import send_daily_prompts
-        pairs = send_daily_prompts(_shorts_provider(), count=args.count, root=root)
+        pairs = send_daily_prompts(
+            _shorts_provider(),
+            count=args.count,
+            root=root,
+            skip_if_recent_hours=args.skip_if_recent,
+        )
+        if not pairs:
+            print("A batch already went out recently — nothing sent.")
+            return
         print(f"Sent {len(pairs)} prompt pair(s) to Telegram:")
         for index, pair in enumerate(pairs, start=1):
             print(f"  #{index} {pair.concept.creature} ({pair.concept.shape})")

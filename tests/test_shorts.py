@@ -815,3 +815,71 @@ class BadgeTests(unittest.TestCase):
         import inspect
         source = inspect.getsource(shorts_pipeline._publish_queued)
         self.assertIn('"badge": badge', source)
+
+
+class CatchUpRunTests(unittest.TestCase):
+    """The prompt job gets one shot a night. Twice now Gemini answered 503 to
+    every retry and the night produced no ideas at all, so later runs repeat
+    the attempt — and must stand down once a batch has landed."""
+
+    def setUp(self):
+        self._workspace = TemporaryDirectory()
+        self.root = Path(self._workspace.name)
+        (self.root / "data").mkdir()
+        self.addCleanup(self._workspace.cleanup)
+
+    def _write_batch(self, hours_ago):
+        from datetime import UTC, datetime, timedelta
+        stamp = (datetime.now(UTC) - timedelta(hours=hours_ago)).isoformat()
+        (self.root / shorts_pipeline.PENDING_FILE).write_text(
+            json.dumps([{"index": 1, "batch": stamp, "created_at": stamp,
+                         "concept": _concept("moth").__dict__ | {}}]),
+            encoding="utf-8",
+        )
+
+    def test_a_recent_batch_is_detected(self):
+        self._write_batch(1)
+        self.assertTrue(shorts_pipeline.has_recent_batch(6, self.root))
+
+    def test_an_old_batch_does_not_count(self):
+        self._write_batch(30)
+        self.assertFalse(shorts_pipeline.has_recent_batch(6, self.root))
+
+    def test_no_pending_file_means_nothing_recent(self):
+        self.assertFalse(shorts_pipeline.has_recent_batch(6, self.root))
+
+    def test_an_unreadable_stamp_is_ignored(self):
+        (self.root / shorts_pipeline.PENDING_FILE).write_text(
+            json.dumps([{"batch": "dün"}]), encoding="utf-8")
+        self.assertFalse(shorts_pipeline.has_recent_batch(6, self.root))
+
+    def test_the_catch_up_sends_nothing_when_ideas_arrived(self):
+        self._write_batch(1)
+
+        class StubProvider:
+            def generate(self, prompt, system_prompt=""):
+                raise AssertionError("the model must not be called again")
+
+        pairs = shorts_pipeline.send_daily_prompts(
+            StubProvider(), count=3, root=self.root, skip_if_recent_hours=6
+        )
+        self.assertEqual(pairs, [])
+
+    def test_the_catch_up_runs_when_the_night_produced_nothing(self):
+        sent = []
+
+        def fake_pairs(provider, *, count, root=None):
+            from channel_ops.shorts_prompts import PromptPair
+            return [PromptPair(_concept("barn owl"), "t2i", "i2v") for _ in range(count)]
+
+        original = shorts_pipeline.generate_prompt_pairs
+        original_send = shorts_pipeline.notifications.send_message
+        shorts_pipeline.generate_prompt_pairs = fake_pairs
+        shorts_pipeline.notifications.send_message = sent.append
+        self.addCleanup(setattr, shorts_pipeline, "generate_prompt_pairs", original)
+        self.addCleanup(setattr, shorts_pipeline.notifications, "send_message", original_send)
+
+        pairs = shorts_pipeline.send_daily_prompts(
+            object(), count=2, root=self.root, skip_if_recent_hours=6
+        )
+        self.assertEqual(len(pairs), 2)

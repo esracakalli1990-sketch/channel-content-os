@@ -125,11 +125,24 @@ def _escape(text: str) -> str:
     return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
 
+def has_recent_batch(hours: float, root: Path | None = None) -> bool:
+    """Whether a batch of ideas already went out within *hours*."""
+    cutoff = datetime.now(UTC) - timedelta(hours=hours)
+    for entry in _read_json(_data_path(PENDING_FILE, root), []):
+        try:
+            if datetime.fromisoformat(str(entry.get("batch", ""))) >= cutoff:
+                return True
+        except ValueError:
+            continue
+    return False
+
+
 def send_daily_prompts(
     provider: AIProvider,
     *,
     count: int = 1,
     root: Path | None = None,
+    skip_if_recent_hours: float = 0,
 ) -> list[PromptPair]:
     """Generate *count* concepts, send them to Telegram, and hold them pending.
 
@@ -138,6 +151,13 @@ def send_daily_prompts(
     several ideas was work without a payoff — nothing in the data said the
     rejected ones would have done worse.
     """
+    # The catch-up runs use this: the job gets one shot a night, and twice now
+    # Gemini answered 503 to every retry and the whole night was lost. Later
+    # runs repeat the attempt and stand down once a batch has landed.
+    if skip_if_recent_hours and has_recent_batch(skip_if_recent_hours, root):
+        logger.info("A batch already went out in the last %g hours — nothing to do", skip_if_recent_hours)
+        return []
+
     pairs = generate_prompt_pairs(provider, count=count, root=root)
 
     path = _data_path(PENDING_FILE, root)
