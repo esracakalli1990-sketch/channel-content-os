@@ -49,5 +49,22 @@
       "shell_mechanic": "The chevron bar divides along its central spine and the two lateral plates tilt upwards into angled wing covers",
       "emerging_parts": "A compound-eyed head, four folded forelegs, and a pair of large jointed springing legs"
     }
+  },
+  {
+    "queued_at": "2026-08-17T21:01:29+00:00",
+    "publish_at": "2026-08-18T13:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIBLGqDdkK9pOmGmP767S6wLr4bEzRIAAKsHgAC99sZUE6WEX90_Lt7PQQ",
+    "file_size": 1977379,
+    "caption": "1",
+    "concept": {
+      "shape": "smooth elliptical pebble",
+      "material": "matte blackened steel and brushed dark bronze plates",
+      "internal_detail": "intricate bronze gear trains and ruby jewel bearings",
+      "button": "a flush dark titanium toggle at the centre of the upper casing",
+      "button_short": "the flush dark titanium toggle on the upper casing",
+      "creature": "trapdoor spider",
+      "shell_mechanic": "The upper casing splits longitudinally into two lateral shields that hinge upward and outward",
+      "emerging_parts": "Eight multi-jointed spindly legs and a pair of articulated pedipalps"
+    }
   }
 ]
