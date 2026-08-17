@@ -45,7 +45,10 @@
     "flying fish",
     "dumbo octopus",
     "mantis shrimp",
-    "desert locust"
+    "desert locust",
+    "trapdoor spider",
+    "hedgehog",
+    "peregrine falcon"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -80,6 +83,9 @@
     "faceted lanceolate block",
     "faceted chevron bar",
     "fluted paraboloid bell",
-    "grooved oblong plinth"
+    "grooved oblong plinth",
+    "smooth elliptical pebble",
+    "faceted ovoid nodule",
+    "chamfered triangular block"
   ]
 }
