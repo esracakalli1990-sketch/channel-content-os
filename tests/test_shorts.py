@@ -505,7 +505,7 @@ class QueueFlowTests(unittest.TestCase):
             (shorts_pipeline.telegram_inbox, "download_file", fake_download),
             (shorts_pipeline.youtube_uploader, "upload_video", fake_upload),
             (shorts_pipeline, "generate_metadata", fake_metadata),
-            (shorts_pipeline, "_burn_hook", lambda clip, hook: clip),
+            (shorts_pipeline, "_burn_hook", lambda clip, hook, badge="": clip),
             (shorts_pipeline, "_publish_to_instagram", lambda p, c: ("", "")),
         ]
         for target, name, replacement in patches:
@@ -761,3 +761,57 @@ class CreatureVarietyTests(unittest.TestCase):
         provider = self._provider([["stag beetle"]])
         concepts = self.sp.generate_concepts(provider, count=1, avoid=["stag beetle"])
         self.assertEqual(len(concepts), 1)
+
+
+class BadgeTests(unittest.TestCase):
+    """219,000 views produced 83 subscribers — roughly a tenth of what this
+    format converts — because nothing on screen said a channel existed."""
+
+    def setUp(self):
+        self._workspace = TemporaryDirectory()
+        self.root = Path(self._workspace.name)
+        (self.root / "data").mkdir()
+        self.addCleanup(self._workspace.cleanup)
+
+    def _publish(self, count):
+        (self.root / shorts_pipeline.PUBLISHED_FILE).write_text(
+            json.dumps([{"creature": f"c{i}"} for i in range(count)]), encoding="utf-8"
+        )
+
+    def test_the_badge_numbers_the_next_video(self):
+        self._publish(42)
+        self.assertEqual(shorts_pipeline._badge_text(self.root), "№43 · @unfoldableslab")
+
+    def test_the_first_video_is_number_one(self):
+        self.assertEqual(shorts_pipeline._badge_text(self.root), "№1 · @unfoldableslab")
+
+    def test_the_badge_carries_the_handle(self):
+        self.assertIn(shorts_pipeline.CHANNEL_HANDLE, shorts_pipeline._badge_text(self.root))
+
+    def test_a_failed_overlay_still_publishes_the_clip(self):
+        """A missing badge costs some conversion; refusing to publish costs the
+        whole video."""
+        from channel_ops import video_overlay
+
+        def explode(*args, **kwargs):
+            raise video_overlay.OverlayUnavailable("no ffmpeg here")
+
+        original = shorts_pipeline.video_overlay.add_hook
+        shorts_pipeline.video_overlay.add_hook = explode
+        self.addCleanup(setattr, shorts_pipeline.video_overlay, "add_hook", original)
+
+        clip = self.root / "clip.mp4"
+        clip.write_bytes(b"video")
+        self.assertEqual(shorts_pipeline._burn_hook(clip, "Hook", "№1 · @x"), clip)
+
+    def test_nothing_to_draw_leaves_the_clip_alone(self):
+        clip = self.root / "clip.mp4"
+        clip.write_bytes(b"video")
+        self.assertEqual(shorts_pipeline._burn_hook(clip, "", ""), clip)
+
+    def test_the_badge_is_recorded_for_later_comparison(self):
+        """Whether the badge moved conversion has to be answerable from the
+        data, not from memory."""
+        import inspect
+        source = inspect.getsource(shorts_pipeline._publish_queued)
+        self.assertIn('"badge": badge', source)

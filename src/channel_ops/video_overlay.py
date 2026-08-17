@@ -34,6 +34,19 @@ FONT_PATH_CANDIDATES = (
     "/usr/share/fonts/dejavu/DejaVuSans-Bold.ttf",
 )
 
+# The badge sits in the top-left for the whole clip. 219,000 views produced 83
+# subscribers — about a tenth of what this format normally converts — because
+# nothing on screen ever told a viewer there was a channel behind the video.
+#
+# It is a corner mark rather than a closing card on purpose: the clips settle
+# into a still pose so they loop without a jolt, and a card over that last
+# second would break the loop. The series number carries the "there are more
+# of these" idea instead, at no cost to the loop.
+BADGE_TOP_RATIO = 0.055
+BADGE_LEFT_RATIO = 0.055
+BADGE_WIDTH_RATIO = 1 / 26  # font size relative to frame width
+BADGE_ALPHA = 205
+
 
 class OverlayUnavailable(RuntimeError):
     """Raised when the clip cannot be rendered with a hook."""
@@ -104,35 +117,86 @@ def render_text_layer(text: str, width: int, height: int, destination: Path) -> 
     return destination
 
 
-def add_hook(source: Path, destination: Path, text: str) -> Path:
-    """Return a copy of *source* with *text* over its opening seconds.
+def render_badge_layer(text: str, width: int, height: int, destination: Path) -> Path:
+    """Draw the corner badge as a transparent PNG sized for the clip."""
+    from PIL import Image, ImageDraw, ImageFont
+
+    layer = Image.new("RGBA", (width, height), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(layer)
+    size = max(12, int(width * BADGE_WIDTH_RATIO))
+    font = ImageFont.truetype(_font_path(), size)
+
+    x, y = width * BADGE_LEFT_RATIO, height * BADGE_TOP_RATIO
+    outline = max(2, size // 12)
+    # Same solid outline as the hook: the badge sits over whatever the clip
+    # happens to show in that corner, which is not always dark wood.
+    for dx in range(-outline, outline + 1):
+        for dy in range(-outline, outline + 1):
+            if dx * dx + dy * dy <= outline * outline:
+                draw.text((x + dx, y + dy), text, font=font, fill=(0, 0, 0, 160))
+    draw.text((x, y), text, font=font, fill=(255, 255, 255, BADGE_ALPHA))
+
+    layer.save(destination)
+    return destination
+
+
+def add_hook(source: Path, destination: Path, text: str, badge: str = "") -> Path:
+    """Return a copy of *source* with the hook and the channel badge drawn on.
+
+    *text* covers the opening seconds; *badge* stays for the whole clip and may
+    be empty. Both are composited in one encode — running ffmpeg twice would
+    re-compress the clip a second time for nothing.
 
     Raises :class:`OverlayUnavailable` if the clip cannot be rendered; callers
     are expected to fall back to the untouched original.
     """
     text = " ".join(text.split())
-    if not text:
-        raise OverlayUnavailable("No hook text to draw")
+    badge = " ".join(badge.split())
+    if not text and not badge:
+        raise OverlayUnavailable("Nothing to draw")
 
     width, height = video_size(source)
-    layer = destination.with_suffix(".hook.png")
-    render_text_layer(text, width, height, layer)
+    inputs: list[str] = []
+    layers: list[Path] = []
+    steps: list[str] = []
+
+    if text:
+        hook_layer = destination.with_suffix(".hook.png")
+        render_text_layer(text, width, height, hook_layer)
+        layers.append(hook_layer)
+        steps.append(f"overlay=0:0:enable='lt(t,{HOOK_SECONDS})'")
+    if badge:
+        badge_layer = destination.with_suffix(".badge.png")
+        render_badge_layer(badge, width, height, badge_layer)
+        layers.append(badge_layer)
+        steps.append("overlay=0:0")
+
+    # [0:v][1:v]overlay…[v1];[v1][2:v]overlay… — each layer feeds the next.
+    chain: list[str] = []
+    stream = "0:v"
+    for index, step in enumerate(steps, start=1):
+        label = f"v{index}" if index < len(steps) else ""
+        suffix = f"[{label}]" if label else ""
+        chain.append(f"[{stream}][{index}:v]{step}{suffix}")
+        stream = label
+    for layer in layers:
+        inputs += ["-i", str(layer)]
 
     command = [
         _ffmpeg(), "-y", "-v", "error",
-        "-i", str(source),
-        "-i", str(layer),
-        "-filter_complex", f"[0:v][1:v]overlay=0:0:enable='lt(t,{HOOK_SECONDS})'",
+        "-i", str(source), *inputs,
+        "-filter_complex", ";".join(chain),
         "-c:a", "copy",           # the mechanical audio is untouched
         "-c:v", "libx264", "-preset", "veryfast", "-crf", "20",
         "-movflags", "+faststart",
         str(destination),
     ]
     result = subprocess.run(command, capture_output=True, text=True, timeout=600)
-    layer.unlink(missing_ok=True)
+    for layer in layers:
+        layer.unlink(missing_ok=True)
 
     if result.returncode != 0 or not destination.exists():
         raise OverlayUnavailable(f"ffmpeg failed: {result.stderr.strip()[:200]}")
 
-    logger.info("Burned hook %r onto %s", text, destination.name)
+    logger.info("Burned hook %r and badge %r onto %s", text, badge, destination.name)
     return destination
