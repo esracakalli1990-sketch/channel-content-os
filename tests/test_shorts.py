@@ -688,3 +688,76 @@ class StatePersistenceTests(unittest.TestCase):
         script = self._loop_script()
         self.assertNotIn("reset -q --hard", script)
         self.assertIn("rebase", script)
+
+
+class CreatureVarietyTests(unittest.TestCase):
+    """Forty-two videos produced five beetles, three crabs, two nautiluses and
+    two exact repeats. The exact-name list never stopped a second beetle, and
+    the memory window was shorter than the channel's own history."""
+
+    def setUp(self):
+        from channel_ops import shorts_prompts
+        self.sp = shorts_prompts
+
+    def test_the_family_is_the_last_word(self):
+        self.assertEqual(self.sp.family_of("stag beetle"), "beetle")
+        self.assertEqual(self.sp.family_of("chambered nautilus"), "nautilus")
+        self.assertEqual(self.sp.family_of("leaf-tailed gecko"), "gecko")
+        self.assertEqual(self.sp.family_of("pangolin"), "pangolin")
+
+    def test_family_words_are_unique_and_ordered(self):
+        families = self.sp.family_words(["stag beetle", "hermit crab", "jewel beetle"])
+        self.assertEqual(families, ["beetle", "crab"])
+
+    def test_memory_outlasts_the_published_history(self):
+        """40 was smaller than the 42 videos already out, which is exactly how
+        the pangolin came back."""
+        published = json.loads(Path("data/shorts_published.json").read_text(encoding="utf-8"))
+        self.assertGreater(self.sp.RECENT_MEMORY, len(published))
+
+    def _provider(self, batches):
+        from dataclasses import asdict
+
+        def concept(creature):
+            return asdict(_concept(creature))
+
+        class StubProvider:
+            def __init__(self):
+                self.calls = 0
+
+            def generate(self, prompt, system_prompt=""):
+                batch = batches[min(self.calls, len(batches) - 1)]
+                self.calls += 1
+                return json.dumps([concept(name) for name in batch])
+
+        return StubProvider()
+
+    def test_a_repeated_family_is_rejected_and_replaced(self):
+        provider = self._provider([["jewel beetle"], ["barn owl"]])
+        concepts = self.sp.generate_concepts(provider, count=1, avoid=["stag beetle"])
+        self.assertEqual([c.creature for c in concepts], ["barn owl"])
+        self.assertEqual(provider.calls, 2, "the shortfall must be re-asked")
+
+    def test_an_exact_repeat_is_rejected(self):
+        provider = self._provider([["pangolin"], ["tree frog"]])
+        concepts = self.sp.generate_concepts(provider, count=1, avoid=["pangolin"])
+        self.assertEqual([c.creature for c in concepts], ["tree frog"])
+
+    def test_two_of_the_same_family_in_one_batch_are_caught(self):
+        provider = self._provider([["fiddler crab", "hermit crab"], ["barn owl"]])
+        concepts = self.sp.generate_concepts(provider, count=2, avoid=[])
+        families = [self.sp.family_of(c.creature) for c in concepts]
+        self.assertEqual(len(set(families)), len(families))
+
+    def test_a_fresh_creature_is_kept_without_a_second_call(self):
+        provider = self._provider([["barn owl"]])
+        concepts = self.sp.generate_concepts(provider, count=1, avoid=["stag beetle"])
+        self.assertEqual([c.creature for c in concepts], ["barn owl"])
+        self.assertEqual(provider.calls, 1)
+
+    def test_a_day_is_never_left_without_ideas(self):
+        """If everything the model offers repeats, shipping a repeat still
+        beats sending nothing."""
+        provider = self._provider([["stag beetle"]])
+        concepts = self.sp.generate_concepts(provider, count=1, avoid=["stag beetle"])
+        self.assertEqual(len(concepts), 1)

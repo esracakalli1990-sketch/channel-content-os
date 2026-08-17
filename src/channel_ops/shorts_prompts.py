@@ -41,7 +41,19 @@ logger = logging.getLogger(__name__)
 HISTORY_FILE = "data/shorts_history.json"
 
 # How many past creatures to keep out of new suggestions.
-RECENT_MEMORY = 40
+# How many creature names to keep so the model cannot suggest one again. This
+# was 40 while 42 videos had gone out, so the pangolin and the hummingbird
+# aged out of memory and came back. At three videos a day this window is about
+# three months; the names cost a few kilobytes of prompt, which is far cheaper
+# than a viewer recognising a repeat.
+RECENT_MEMORY = 300
+
+# Exact names are not enough on their own: "stag beetle" in the list never
+# stopped "jewel beetle", and five of the first forty-two videos were beetles,
+# three were crabs. The last word of an English creature name is its family —
+# beetle, crab, moth, nautilus — so recent head words are banned outright for
+# a shorter window. Long enough that a family cannot return within a week.
+FAMILY_MEMORY = 25
 
 _SLOTS = (
     "shape",
@@ -107,6 +119,13 @@ Hard rules, in priority order:
      with "as", "when", "while" or "once" — that leaves the sentence unfinished.
 
 Do not reuse any of these creatures: {avoid}
+
+Do not suggest anything from these families either — no creature whose name
+ends in one of these words, and nothing that is obviously one of them under
+another name: {avoid_families}
+Reach across the tree of life instead. Beetles, crabs and moths have been
+heavily overused; birds, mammals, reptiles, amphibians, molluscs, arachnids
+and non-animal machines are all under-used.
 
 These object shapes have been used recently. Pick something structurally
 different — five of the last thirteen videos were all a "capsule", which makes
@@ -368,6 +387,31 @@ def parse_concepts(raw: str) -> list[Concept]:
     return concepts
 
 
+def family_of(creature: str) -> str:
+    """The family word of a creature name — its last word.
+
+    English animal names put the family last: a "stag beetle" is a beetle, a
+    "hermit crab" is a crab, a "chambered nautilus" is a nautilus. Comparing
+    head words is what stops the fifth beetle without a hand-written taxonomy.
+    """
+    parts = re.findall(r"[a-zA-Z]+", creature)
+    return parts[-1].lower() if parts else ""
+
+
+def family_words(creatures: list[str]) -> list[str]:
+    """The families used recently, newest last, without repeats."""
+    seen: list[str] = []
+    for name in creatures:
+        family = family_of(name)
+        if family and family not in seen:
+            seen.append(family)
+    return seen
+
+
+def _is_repeat(creature: str, avoid: set[str], families: set[str]) -> bool:
+    return creature.strip().lower() in avoid or family_of(creature) in families
+
+
 def generate_concepts(
     provider: AIProvider,
     *,
@@ -383,16 +427,44 @@ def generate_concepts(
     """
     avoid_list = avoid or []
     shape_list = avoid_shapes or []
-    instructions = _CONCEPT_INSTRUCTIONS.format(
-        count=count,
-        slots="\n".join(f"  - {slot}" for slot in _SLOTS),
-        avoid=", ".join(avoid_list) if avoid_list else "(none yet)",
-        avoid_shapes=", ".join(shape_list) if shape_list else "(none yet)",
-    )
-    raw = provider.generate(f"Invent {count} new concepts.", system_prompt=instructions)
-    concepts = parse_concepts(raw)
-    logger.info("Generated %d concept(s): %s", len(concepts), ", ".join(c.creature for c in concepts))
-    return concepts
+    banned_names = {name.strip().lower() for name in avoid_list}
+    banned_families = set(family_words(avoid_list[-FAMILY_MEMORY:]))
+
+    def ask(wanted: int, extra_names: list[str]) -> list[Concept]:
+        names = avoid_list + extra_names
+        instructions = _CONCEPT_INSTRUCTIONS.format(
+            count=wanted,
+            slots="\n".join(f"  - {slot}" for slot in _SLOTS),
+            avoid=", ".join(names) if names else "(none yet)",
+            avoid_families=", ".join(sorted(banned_families)) if banned_families else "(none yet)",
+            avoid_shapes=", ".join(shape_list) if shape_list else "(none yet)",
+        )
+        return parse_concepts(provider.generate(f"Invent {wanted} new concepts.", system_prompt=instructions))
+
+    kept: list[Concept] = []
+    rejected: list[str] = []
+    # The instruction alone is not trusted. Asking the model not to repeat a
+    # hook was not enough either, and this list is far longer than a hook.
+    for attempt in range(2):
+        wanted = count - len(kept)
+        if wanted <= 0:
+            break
+        for concept in ask(wanted, rejected):
+            if _is_repeat(concept.creature, banned_names, banned_families):
+                rejected.append(concept.creature)
+                logger.warning("Rejected repeat concept %r", concept.creature)
+                continue
+            kept.append(concept)
+            banned_names.add(concept.creature.strip().lower())
+            banned_families.add(family_of(concept.creature))
+
+    if not kept:
+        # Better a repeat than a silent day with no ideas at all.
+        logger.warning("Every suggestion repeated something; using them anyway")
+        kept = ask(count, rejected)
+
+    logger.info("Generated %d concept(s): %s", len(kept), ", ".join(c.creature for c in kept))
+    return kept[:count]
 
 
 def generate_prompt_pairs(
