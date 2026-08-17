@@ -178,6 +178,52 @@ def get_traffic_sources(
     return sources
 
 
+def get_channel_totals() -> dict[str, int]:
+    """Lifetime subscriber and view counts for the authorised channel.
+
+    These are the numbers the Partner Programme thresholds are written
+    against, so they come from the channel itself rather than being summed
+    from the videos this system happens to have published.
+    """
+    token = get_access_token()
+    params = urlencode({"part": "statistics,snippet", "mine": "true"})
+    request = Request(
+        f"https://www.googleapis.com/youtube/v3/channels?{params}",
+        headers={"Authorization": f"Bearer {token}"},
+    )
+    try:
+        with urlopen(request, timeout=20) as response:
+            payload = json.load(response)
+    except HTTPError as exc:
+        raise RuntimeError(f"YouTube Data API error: HTTP {exc.code}") from exc
+
+    items = payload.get("items") or []
+    if not items:
+        return {}
+    stats = items[0].get("statistics", {})
+    return {
+        "subscribers": int(stats.get("subscriberCount", 0)),
+        "views": int(stats.get("viewCount", 0)),
+        "videos": int(stats.get("videoCount", 0)),
+    }
+
+
+def get_period_totals(*, days: int, channel_id: str | None = None) -> dict[str, float]:
+    """Channel-wide figures over the last *days*.
+
+    The Shorts route into the Partner Programme is measured over a rolling
+    ninety days, so the window has to be a parameter rather than "all time".
+    """
+    end_date = datetime.now(UTC).date()
+    payload = _analytics_query({
+        "ids": _channel_selector(channel_id),
+        "startDate": (end_date - timedelta(days=days)).isoformat(),
+        "endDate": end_date.isoformat(),
+        "metrics": "views,estimatedMinutesWatched,subscribersGained,subscribersLost",
+    })
+    return _first_row(payload)
+
+
 def get_audience_countries(
     *,
     days: int = 90,

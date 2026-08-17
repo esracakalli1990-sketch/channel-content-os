@@ -6,6 +6,7 @@ name: Shorts — araçlar
 #              şablonla oluşturulmuş olur)
 #   audience : izleyicilerin hangi ülkelerde olduğunu yazar; yayın saatlerini
 #              tahminle değil veriyle seçmek için
+#   channel  : kanal toplamları ve para kazanma eşiklerine mesafe
 on:
   workflow_dispatch:
     inputs:
@@ -13,7 +14,7 @@ on:
         description: "Hangi iş?"
         required: true
         type: choice
-        options: [resend, audience]
+        options: [resend, audience, channel]
 
 concurrency:
   group: shorts-tools

@@ -104,6 +104,10 @@ def build_parser() -> argparse.ArgumentParser:
     )
 
     subparsers.add_parser(
+        "shorts-channel", help="Print channel totals and progress toward monetisation"
+    )
+
+    subparsers.add_parser(
         "telegram-whoami", help="Print the chat ID of everyone who has messaged the bot"
     )
 
@@ -246,6 +250,22 @@ def main() -> None:
         print(f"Re-rendered and resent {len(pairs)} concept(s):")
         for index, pair in enumerate(pairs, start=1):
             print(f"  {index}. {pair.concept.creature} ({pair.concept.shape})")
+
+    elif args.command == "shorts-channel":
+        from .youtube_analytics import get_channel_totals, get_period_totals
+        totals = get_channel_totals()
+        print("Kanal (toplam):")
+        print(f"  abone : {totals.get('subscribers', 0):,}")
+        print(f"  izlenme: {totals.get('views', 0):,}")
+        print(f"  video : {totals.get('videos', 0):,}")
+        for days in (7, 28, 90):
+            period = get_period_totals(days=days)
+            gained = int(period.get("subscribersGained", 0))
+            lost = int(period.get("subscribersLost", 0))
+            print(f"\nSon {days} gün:")
+            print(f"  izlenme     : {int(period.get('views', 0)):,}")
+            print(f"  izlenme saati: {period.get('estimatedMinutesWatched', 0) / 60:,.1f}")
+            print(f"  abone       : +{gained} / -{lost} = {gained - lost:+d}")
 
     elif args.command == "shorts-audience":
         from .youtube_analytics import get_audience_countries
