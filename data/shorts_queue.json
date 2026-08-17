@@ -15,5 +15,22 @@
       "shell_mechanic": "The fluted conical casing hinges upward into a bulbous mantle",
       "emerging_parts": "Eight curled webbed arms and two paddle-shaped ear fins"
     }
+  },
+  {
+    "queued_at": "2026-08-17T15:04:47+00:00",
+    "publish_at": "2026-08-18T13:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIBImqDIpgrZq5pqhgO7lXUbFN95LsoAAMeAAL32xlQ43KTMZYTHpw9BA",
+    "file_size": 2008827,
+    "caption": "3",
+    "concept": {
+      "shape": "grooved oblong plinth",
+      "material": "iridescent rainbow-anodized titanium and satin-finished steel",
+      "internal_detail": "spring-loaded hammer cams, micro-ratchets, and polished ruby pivot bearings",
+      "button": "a small knurled titanium button centered on the top plate",
+      "button_short": "the knurled titanium button on the top plate",
+      "creature": "mantis shrimp",
+      "shell_mechanic": "The top carapace plate shifts backward while the flanking shields swing out into lateral armor plates",
+      "emerging_parts": "A pair of stalked compound eyes, two folded dactyl club appendages, and ten articulated walking legs"
+    }
   }
 ]
