@@ -66,5 +66,22 @@
       "shell_mechanic": "The upper casing splits longitudinally into two lateral shields that hinge upward and outward",
       "emerging_parts": "Eight multi-jointed spindly legs and a pair of articulated pedipalps"
     }
+  },
+  {
+    "queued_at": "2026-08-17T21:03:33+00:00",
+    "publish_at": "2026-08-18T17:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIBLmqDdsfzLVrAcGkUlHRdZ1eMZXE1AAKtHgAC99sZUEQI3HjqH2luPQQ",
+    "file_size": 1863663,
+    "caption": "2",
+    "concept": {
+      "shape": "faceted ovoid nodule",
+      "material": "weathered brass and blued steel spines",
+      "internal_detail": "clockwork escapements and miniature coil springs",
+      "button": "a small polished copper stud on the front rim",
+      "button_short": "the polished copper stud on the front rim",
+      "creature": "hedgehog",
+      "shell_mechanic": "The curved spiny dorsal mantle unrolls backward while side panels swing open",
+      "emerging_parts": "A pointed snouted head and four tiny clawed legs"
+    }
   }
 ]
