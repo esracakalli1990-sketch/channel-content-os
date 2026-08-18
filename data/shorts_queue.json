@@ -15,5 +15,22 @@
       "shell_mechanic": "The angled top plates sweep outward and lock into rigid wings",
       "emerging_parts": "A crested avian head, fanned tail stabilizers, and twin taloned perching legs"
     }
+  },
+  {
+    "queued_at": "2026-08-18T21:15:35+00:00",
+    "publish_at": "2026-08-19T13:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIBQWqEyx0xmYVdyMc_z6vg_mu0YSzJAAIsHQAC99spUOC8LuQYSYfHPQQ",
+    "file_size": 2062914,
+    "caption": "1",
+    "concept": {
+      "shape": "curved rectangular brick",
+      "material": "weathered gunmetal and exposed brass gears",
+      "internal_detail": "a tightly wound mainspring and interlocking rack-and-pinion linkages",
+      "button": "a small brass lever set flush into the corner of the brick",
+      "button_short": "the small brass lever set flush into the corner",
+      "creature": "tarsier",
+      "shell_mechanic": "The gunmetal casing splits cleanly down the middle and the two halves fold outward like opening book covers",
+      "emerging_parts": "Two oversized jointed hind legs, thin elongated fingers, and two huge concentric glass eyes"
+    }
   }
 ]
