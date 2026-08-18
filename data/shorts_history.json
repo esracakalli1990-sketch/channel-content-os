@@ -48,7 +48,9 @@
     "desert locust",
     "trapdoor spider",
     "hedgehog",
-    "peregrine falcon"
+    "peregrine falcon",
+    "tarsier",
+    "steam locomotive engine"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -86,6 +88,8 @@
     "grooved oblong plinth",
     "smooth elliptical pebble",
     "faceted ovoid nodule",
-    "chamfered triangular block"
+    "chamfered triangular block",
+    "curved rectangular brick",
+    "ribbed cylindrical spool"
   ]
 }
