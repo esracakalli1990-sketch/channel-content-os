@@ -20,10 +20,13 @@ GEMINI_API_BASE = "https://generativelanguage.googleapis.com/v1beta/models"
 # "high demand" unavailability. Everything else is a real problem and retrying
 # it only delays the error.
 _RETRYABLE_STATUS = frozenset({429, 500, 502, 503, 504})
-# Four attempts spanning 28 seconds was not enough: on 6 August the free tier
-# answered 503 to all of them and that slot's idea was never sent. Six attempts
-# span about two minutes, which is the length these outages have actually run.
-_MAX_ATTEMPTS = 6
+# A 503 means this model is overloaded, not that the account is. Waiting longer
+# on the same one did not help: three nights running — 6, 17 and 18 August —
+# every retry came back 503, always around 20:50 UTC, the free tier's busiest
+# hour. So the retries per model are kept short and a different model is tried
+# instead, which is the thing that actually clears an overload.
+_MAX_ATTEMPTS = 4
+_MAX_MODELS = 3
 _BACKOFF_SECONDS = 4
 # Without a ceiling the last waits would double to 128s and push a scheduled
 # job past the point where it is worth still waiting.
@@ -39,6 +42,10 @@ class _ModelUnavailable(RuntimeError):
 
 class _Transient(RuntimeError):
     """A failure that is likely to clear on its own."""
+
+
+class _Overloaded(RuntimeError):
+    """One model stayed unavailable for every attempt."""
 
 
 class GeminiProvider(AIProvider):
@@ -119,11 +126,40 @@ class GeminiProvider(AIProvider):
         return chosen
 
     def generate(self, prompt: str, *, system_prompt: str | None = None) -> str:
+        """Answer the prompt, moving to another model rather than waiting out
+        an overload on the one that is busy."""
+        tried: list[str] = []
+        failure: Exception | None = None
+
+        for _ in range(_MAX_MODELS):
+            tried.append(self._model)
+            try:
+                return self._generate_with_retry(prompt, system_prompt)
+            except _ModelUnavailable:
+                # The name is gone rather than busy: ask what the key can call.
+                if not self._switch_model(tried):
+                    raise
+            except _Overloaded as exc:
+                failure = exc
+                if not self._switch_model(tried):
+                    break
+
+        raise RuntimeError(
+            f"Gemini was unavailable on every model tried ({', '.join(tried)}): {failure}"
+        ) from failure
+
+    def _switch_model(self, exclude: list[str]) -> bool:
+        """Move to the best model not tried yet. False when none is left."""
         try:
-            return self._generate_with_retry(prompt, system_prompt)
-        except _ModelUnavailable:
-            self._resolve_model()
-            return self._generate_with_retry(prompt, system_prompt)
+            candidates = [m for m in self.available_models() if m not in exclude]
+        except Exception as exc:  # listing needs the network too
+            logger.warning("Could not list Gemini models: %s", exc)
+            return False
+        if not candidates:
+            return False
+        self._model = max(candidates, key=self._rank)
+        logger.warning("Switching to Gemini model %r after %s failed", self._model, exclude[-1])
+        return True
 
     def _generate_with_retry(self, prompt: str, system_prompt: str | None) -> str:
         """Call the model, riding out the free tier's transient failures.
@@ -136,8 +172,8 @@ class GeminiProvider(AIProvider):
                 return self._generate_once(prompt, system_prompt)
             except _Transient as exc:
                 if attempt == _MAX_ATTEMPTS:
-                    raise RuntimeError(
-                        f"Gemini was still unavailable after {_MAX_ATTEMPTS} attempts: {exc}"
+                    raise _Overloaded(
+                        f"{self._model} unavailable after {_MAX_ATTEMPTS} attempts: {exc}"
                     ) from exc
                 delay = min(_BACKOFF_SECONDS * 2 ** (attempt - 1), _MAX_BACKOFF_SECONDS)
                 logger.warning(
