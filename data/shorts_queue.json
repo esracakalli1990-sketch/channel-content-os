@@ -1,22 +1,5 @@
 [
   {
-    "queued_at": "2026-08-17T21:05:38+00:00",
-    "publish_at": "2026-08-18T23:00:00+00:00",
-    "file_id": "BQACAgQAAxkBAAIBMGqDd1qAxCKi6ITDruBNXwWyNY_iAAKuHgAC99sZUAgryxsYcG72PQQ",
-    "file_size": 1970863,
-    "caption": "3",
-    "concept": {
-      "shape": "chamfered triangular block",
-      "material": "damascus steel and brushed gunmetal alloy",
-      "internal_detail": "nested cable pulleys and micro-pneumatic actuators",
-      "button": "a recessed knurled silver trigger on the dorsal ridge",
-      "button_short": "the recessed knurled silver trigger on the dorsal ridge",
-      "creature": "peregrine falcon",
-      "shell_mechanic": "The angled top plates sweep outward and lock into rigid wings",
-      "emerging_parts": "A crested avian head, fanned tail stabilizers, and twin taloned perching legs"
-    }
-  },
-  {
     "queued_at": "2026-08-18T21:15:35+00:00",
     "publish_at": "2026-08-19T13:00:00+00:00",
     "file_id": "BQACAgQAAxkBAAIBQWqEyx0xmYVdyMc_z6vg_mu0YSzJAAIsHQAC99spUOC8LuQYSYfHPQQ",
