@@ -32,5 +32,22 @@
       "shell_mechanic": "The gunmetal casing splits cleanly down the middle and the two halves fold outward like opening book covers",
       "emerging_parts": "Two oversized jointed hind legs, thin elongated fingers, and two huge concentric glass eyes"
     }
+  },
+  {
+    "queued_at": "2026-08-18T21:17:38+00:00",
+    "publish_at": "2026-08-19T17:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIBQ2qEy7CuO3Q72rqRwKnXNpw0-QUJAAItHQAC99spUGwV0mL-diqbPQQ",
+    "file_size": 1844379,
+    "caption": "2",
+    "concept": {
+      "shape": "ribbed cylindrical spool",
+      "material": "patinated bronze and polished copper wire coils",
+      "internal_detail": "a miniature vertical boiler and delicate copper steam pistons",
+      "button": "a knurled copper plunger projecting from the top rim",
+      "button_short": "the knurled copper plunger projecting from the top rim",
+      "creature": "steam locomotive engine",
+      "shell_mechanic": "The ribbed bronze cylinder sections telescope outward and slide apart along parallel guide rails",
+      "emerging_parts": "Four flanged steel wheels, a tapered cowcatcher, and a small brass smokestack"
+    }
   }
 ]
