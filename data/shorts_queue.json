@@ -49,5 +49,22 @@
       "shell_mechanic": "The ribbed bronze cylinder sections telescope outward and slide apart along parallel guide rails",
       "emerging_parts": "Four flanged steel wheels, a tapered cowcatcher, and a small brass smokestack"
     }
+  },
+  {
+    "queued_at": "2026-08-18T21:19:40+00:00",
+    "publish_at": "2026-08-19T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIBRWqEzFyXH1LkOloWoBMNuk6v-y3GAAIxHQAC99spUMBGq0HfBrP_PQQ",
+    "file_size": 1908601,
+    "caption": "3",
+    "concept": {
+      "shape": "streamlined bevelled dart",
+      "material": "pearlized blue anodized aluminium and polished silver leaf",
+      "internal_detail": "precision rack-and-pinion slides and jewelled micro-bearings",
+      "button": "a minute sapphire-tipped push pin situated behind the dorsal ridge",
+      "button_short": "the minute sapphire-tipped push pin behind the dorsal ridge",
+      "creature": "flying fish",
+      "shell_mechanic": "The lateral hull plates glide laterally outward to deploy into expansive ribbed pectoral fins",
+      "emerging_parts": "A hinged forked tail assembly and a sleek tapered head"
+    }
   }
 ]
