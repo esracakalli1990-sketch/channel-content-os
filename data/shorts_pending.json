@@ -1,56 +1,53 @@
 [
   {
-    "index": 3,
-    "batch": "2026-08-14T20:53:47.381535+00:00",
-    "created_at": "2026-08-14T20:53:47.381535+00:00",
-    "concept": {
-      "shape": "streamlined bevelled dart",
-      "material": "pearlized blue anodized aluminium and polished silver leaf",
-      "internal_detail": "precision rack-and-pinion slides and jewelled micro-bearings",
-      "button": "a minute sapphire-tipped push pin situated behind the dorsal ridge",
-      "button_short": "the minute sapphire-tipped push pin behind the dorsal ridge",
-      "creature": "flying fish",
-      "shell_mechanic": "The lateral hull plates glide laterally outward to deploy into expansive ribbed pectoral fins",
-      "emerging_parts": "A hinged forked tail assembly and a sleek tapered head"
-    },
-    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, streamlined bevelled dart-shaped object made of pearlized blue anodized aluminium and polished silver leaf. The outer shell is completely closed, solid and seamless, with no gears, springs or moving parts visible anywhere on its surface. The toy features a minute sapphire-tipped push pin situated behind the dorsal ridge. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
-    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the minute sapphire-tipped push pin behind the dorsal ridge with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical flying fish. The unfolding and transformation process is logical and physically consistent. The lateral hull plates glide laterally outward to deploy into expansive ribbed pectoral fins, revealing the movement of internal mechanical components and gears. A hinged forked tail assembly and a sleek tapered head physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical flying fish's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. In the last second the finished flying fish settles into a still pose, resting on the same spot where the closed toy was placed, and the shot holds completely steady with no further movement and nothing entering the frame, so the clip cuts back to its opening without a jolt when it loops. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice.",
-    "used_at": "2026-08-18T21:19:40+00:00"
-  },
-  {
     "index": 1,
-    "batch": "2026-08-18T20:57:50.265839+00:00",
-    "created_at": "2026-08-18T20:57:50.265839+00:00",
+    "batch": "2026-08-19T20:52:50.436768+00:00",
+    "created_at": "2026-08-19T20:52:50.436768+00:00",
     "concept": {
-      "shape": "curved rectangular brick",
-      "material": "weathered gunmetal and exposed brass gears",
-      "internal_detail": "a tightly wound mainspring and interlocking rack-and-pinion linkages",
-      "button": "a small brass lever set flush into the corner of the brick",
-      "button_short": "the small brass lever set flush into the corner",
-      "creature": "tarsier",
-      "shell_mechanic": "The gunmetal casing splits cleanly down the middle and the two halves fold outward like opening book covers",
-      "emerging_parts": "Two oversized jointed hind legs, thin elongated fingers, and two huge concentric glass eyes"
+      "shape": "fluted keel block",
+      "material": "brushed nautical brass and oiled teak veneer",
+      "internal_detail": "miniature brass pulley cables, tension springs, and interlocking clockwork escapements",
+      "button": "a recessed bronze release pin seated along the upper spine",
+      "button_short": "the recessed bronze release pin along the spine",
+      "creature": "brown pelican",
+      "shell_mechanic": "The fluted teak casing splits along its central seam and the lateral hull plates swing upward into swept wings",
+      "emerging_parts": "An articulated neck with an expandable mesh throat pouch and two jointed webbed feet"
     },
-    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, curved rectangular brick-shaped object made of weathered gunmetal and exposed brass gears. The outer shell is completely closed, solid and seamless, with no gears, springs or moving parts visible anywhere on its surface. The toy features a small brass lever set flush into the corner of the brick. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
-    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the small brass lever set flush into the corner with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical tarsier. The unfolding and transformation process is logical and physically consistent. The gunmetal casing splits cleanly down the middle and the two halves fold outward like opening book covers, revealing the movement of internal mechanical components and gears. Two oversized jointed hind legs, thin elongated fingers, and two huge concentric glass eyes physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical tarsier's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. In the last second the finished tarsier settles into a still pose, resting on the same spot where the closed toy was placed, and the shot holds completely steady with no further movement and nothing entering the frame, so the clip cuts back to its opening without a jolt when it loops. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice.",
-    "used_at": "2026-08-18T21:15:35+00:00"
+    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, fluted keel block-shaped object made of brushed nautical brass and oiled teak veneer. The outer shell is completely closed, solid and seamless, with no gears, springs or moving parts visible anywhere on its surface. The toy features a recessed bronze release pin seated along the upper spine. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
+    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the recessed bronze release pin along the spine with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical brown pelican. The unfolding and transformation process is logical and physically consistent. The fluted teak casing splits along its central seam and the lateral hull plates swing upward into swept wings, revealing the movement of internal mechanical components and gears. An articulated neck with an expandable mesh throat pouch and two jointed webbed feet physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical brown pelican's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. In the last second the finished brown pelican settles into a still pose, resting on the same spot where the closed toy was placed, and the shot holds completely steady with no further movement and nothing entering the frame, so the clip cuts back to its opening without a jolt when it loops. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice."
   },
   {
     "index": 2,
-    "batch": "2026-08-18T20:57:50.265839+00:00",
-    "created_at": "2026-08-18T20:57:50.265839+00:00",
+    "batch": "2026-08-19T20:52:50.436768+00:00",
+    "created_at": "2026-08-19T20:52:50.436768+00:00",
     "concept": {
-      "shape": "ribbed cylindrical spool",
-      "material": "patinated bronze and polished copper wire coils",
-      "internal_detail": "a miniature vertical boiler and delicate copper steam pistons",
-      "button": "a knurled copper plunger projecting from the top rim",
-      "button_short": "the knurled copper plunger projecting from the top rim",
-      "creature": "steam locomotive engine",
-      "shell_mechanic": "The ribbed bronze cylinder sections telescope outward and slide apart along parallel guide rails",
-      "emerging_parts": "Four flanged steel wheels, a tapered cowcatcher, and a small brass smokestack"
+      "shape": "beveled hexagonal cartridge",
+      "material": "anodized bronze-green titanium and smoked amber acrylic",
+      "internal_detail": "delicate copper acoustic ribs, micro-solenoids, and gear-driven linkage rods",
+      "button": "a miniature flush circular stud seated in the top face",
+      "button_short": "the miniature flush circular stud on the top face",
+      "creature": "periodical cicada",
+      "shell_mechanic": "The upper titanium casing splits along central seam lines and pivots laterally outward",
+      "emerging_parts": "Two gossamer filigree wings, an articulated segmented abdomen, and six jointed legs"
     },
-    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, ribbed cylindrical spool-shaped object made of patinated bronze and polished copper wire coils. The outer shell is completely closed, solid and seamless, with no gears, springs or moving parts visible anywhere on its surface. The toy features a knurled copper plunger projecting from the top rim. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
-    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the knurled copper plunger projecting from the top rim with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical steam locomotive engine. The unfolding and transformation process is logical and physically consistent. The ribbed bronze cylinder sections telescope outward and slide apart along parallel guide rails, revealing the movement of internal mechanical components and gears. Four flanged steel wheels, a tapered cowcatcher, and a small brass smokestack physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical steam locomotive engine's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. In the last second the finished steam locomotive engine settles into a still pose, resting on the same spot where the closed toy was placed, and the shot holds completely steady with no further movement and nothing entering the frame, so the clip cuts back to its opening without a jolt when it loops. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice.",
-    "used_at": "2026-08-18T21:17:38+00:00"
+    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, beveled hexagonal cartridge-shaped object made of anodized bronze-green titanium and smoked amber acrylic. The outer shell is completely closed, solid and seamless, with no gears, springs or moving parts visible anywhere on its surface. The toy features a miniature flush circular stud seated in the top face. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
+    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the miniature flush circular stud on the top face with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical periodical cicada. The unfolding and transformation process is logical and physically consistent. The upper titanium casing splits along central seam lines and pivots laterally outward, revealing the movement of internal mechanical components and gears. Two gossamer filigree wings, an articulated segmented abdomen, and six jointed legs physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical periodical cicada's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. In the last second the finished periodical cicada settles into a still pose, resting on the same spot where the closed toy was placed, and the shot holds completely steady with no further movement and nothing entering the frame, so the clip cuts back to its opening without a jolt when it loops. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice."
+  },
+  {
+    "index": 3,
+    "batch": "2026-08-19T20:52:50.436768+00:00",
+    "created_at": "2026-08-19T20:52:50.436768+00:00",
+    "concept": {
+      "shape": "faceted pentagonal prism",
+      "material": "sandblasted copper and etched dark vulcanite",
+      "internal_detail": "circular planetary gear trains, fine tension wires, and phosphor-bronze leaf springs",
+      "button": "a flush octagonal copper push-plate on the upper facet",
+      "button_short": "the flush octagonal copper push-plate on the upper facet",
+      "creature": "frilled-neck lizard",
+      "shell_mechanic": "The outer pentagonal plates unlock along their beveled edges and swing outward on dual pivots",
+      "emerging_parts": "An articulated horned head, a wide pleated radial neck frill, and four clawed walking legs"
+    },
+    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, faceted pentagonal prism-shaped object made of sandblasted copper and etched dark vulcanite. The outer shell is completely closed, solid and seamless, with no gears, springs or moving parts visible anywhere on its surface. The toy features a flush octagonal copper push-plate on the upper facet. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
+    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the flush octagonal copper push-plate on the upper facet with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical frilled-neck lizard. The unfolding and transformation process is logical and physically consistent. The outer pentagonal plates unlock along their beveled edges and swing outward on dual pivots, revealing the movement of internal mechanical components and gears. An articulated horned head, a wide pleated radial neck frill, and four clawed walking legs physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical frilled-neck lizard's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. In the last second the finished frilled-neck lizard settles into a still pose, resting on the same spot where the closed toy was placed, and the shot holds completely steady with no further movement and nothing entering the frame, so the clip cuts back to its opening without a jolt when it loops. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice."
   }
 ]

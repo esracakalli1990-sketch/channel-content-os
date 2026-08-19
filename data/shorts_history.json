@@ -50,7 +50,10 @@
     "hedgehog",
     "peregrine falcon",
     "tarsier",
-    "steam locomotive engine"
+    "steam locomotive engine",
+    "brown pelican",
+    "periodical cicada",
+    "frilled-neck lizard"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -90,6 +93,9 @@
     "faceted ovoid nodule",
     "chamfered triangular block",
     "curved rectangular brick",
-    "ribbed cylindrical spool"
+    "ribbed cylindrical spool",
+    "fluted keel block",
+    "beveled hexagonal cartridge",
+    "faceted pentagonal prism"
   ]
 }
