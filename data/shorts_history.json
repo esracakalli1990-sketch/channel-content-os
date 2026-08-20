@@ -53,7 +53,10 @@
     "steam locomotive engine",
     "brown pelican",
     "periodical cicada",
-    "frilled-neck lizard"
+    "frilled-neck lizard",
+    "miniature steam locomotive",
+    "great blue heron",
+    "humpback whale"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -65,7 +68,6 @@
     "tapered egg",
     "flattened circular disc",
     "slender triangular prism",
-    "smooth convex teardrop",
     "flattened rhombic block",
     "flattened kite wedge",
     "arched hexagonal block",
@@ -96,6 +98,9 @@
     "ribbed cylindrical spool",
     "fluted keel block",
     "beveled hexagonal cartridge",
-    "faceted pentagonal prism"
+    "faceted pentagonal prism",
+    "heavy ribbed barrel",
+    "smooth faceted rhomboid",
+    "smooth convex teardrop"
   ]
 }
