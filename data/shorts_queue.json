@@ -1,1 +1,19 @@
-[]
+[
+  {
+    "queued_at": "2026-08-20T20:25:41+00:00",
+    "publish_at": "2026-08-21T13:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIBVGqHYrdlr7SV_5axp-Vgdswu237-AALtIAACvU05UKH6b6Rd4OXsPQQ",
+    "file_size": 1980739,
+    "caption": "3",
+    "concept": {
+      "shape": "faceted pentagonal prism",
+      "material": "sandblasted copper and etched dark vulcanite",
+      "internal_detail": "circular planetary gear trains, fine tension wires, and phosphor-bronze leaf springs",
+      "button": "a flush octagonal copper push-plate on the upper facet",
+      "button_short": "the flush octagonal copper push-plate on the upper facet",
+      "creature": "frilled-neck lizard",
+      "shell_mechanic": "The outer pentagonal plates unlock along their beveled edges and swing outward on dual pivots",
+      "emerging_parts": "An articulated horned head, a wide pleated radial neck frill, and four clawed walking legs"
+    }
+  }
+]
