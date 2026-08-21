@@ -56,7 +56,9 @@
     "frilled-neck lizard",
     "miniature steam locomotive",
     "great blue heron",
-    "humpback whale"
+    "humpback whale",
+    "mantis",
+    "land tortoise"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -101,6 +103,8 @@
     "faceted pentagonal prism",
     "heavy ribbed barrel",
     "smooth faceted rhomboid",
-    "smooth convex teardrop"
+    "smooth convex teardrop",
+    "smooth concave pod",
+    "ribbed hemispherical dome"
   ]
 }
