@@ -49,10 +49,9 @@ HISTORY_FILE = "data/shorts_history.json"
 RECENT_MEMORY = 300
 
 # Exact names are not enough on their own: "stag beetle" in the list never
-# stopped "jewel beetle", and five of the first forty-two videos were beetles,
-# three were crabs. The last word of an English creature name is its family —
-# beetle, crab, moth, nautilus — so recent head words are banned outright for
-# a shorter window. Long enough that a family cannot return within a week.
+# stopped "jewel beetle", and five of the first forty-two videos were beetles.
+# Every identifying word of a recent creature is banned instead, over a shorter
+# window than the exact-name list.
 FAMILY_MEMORY = 25
 
 _SLOTS = (
@@ -120,9 +119,9 @@ Hard rules, in priority order:
 
 Do not reuse any of these creatures: {avoid}
 
-Do not suggest anything from these families either — no creature whose name
-ends in one of these words, and nothing that is obviously one of them under
-another name: {avoid_families}
+Do not suggest anything whose name contains any of these words, and nothing
+that is obviously the same subject under another name — a "miniature steam
+locomotive" is the same video as a "steam locomotive engine": {avoid_families}
 Reach across the tree of life instead. Beetles, crabs and moths have been
 heavily overused; birds, mammals, reptiles, amphibians, molluscs, arachnids
 and non-animal machines are all under-used.
@@ -387,29 +386,54 @@ def parse_concepts(raw: str) -> list[Concept]:
     return concepts
 
 
-def family_of(creature: str) -> str:
-    """The family word of a creature name — its last word.
+# Words that describe a creature without identifying it. Banning on these
+# would block "brown bear" because "brown pelican" exists, so they are ignored
+# when deciding whether two names are the same subject.
+_MODIFIERS = frozenset({
+    "miniature", "mini", "tiny", "small", "giant", "great", "greater", "lesser",
+    "common", "european", "american", "african", "asian", "northern", "southern",
+    "eastern", "western", "desert", "forest", "sea", "deep", "land", "water",
+    "long", "short", "spotted", "striped", "banded", "crested", "horned",
+    "hooded", "masked", "royal", "imperial", "golden", "silver", "bronze",
+    "brown", "black", "white", "red", "blue", "green", "grey", "gray", "pale",
+    "dwarf", "pygmy", "true", "wild", "old", "young", "baby",
+})
 
-    English animal names put the family last: a "stag beetle" is a beetle, a
-    "hermit crab" is a crab, a "chambered nautilus" is a nautilus. Comparing
-    head words is what stops the fifth beetle without a hand-written taxonomy.
+
+def significant_words(creature: str) -> set[str]:
+    """The words that actually identify a creature.
+
+    Two names naming the same subject share one of these. Comparing only the
+    last word was not enough: "steam locomotive engine" and "miniature steam
+    locomotive" have different last words and a second locomotive went into
+    the pool, and "mantis shrimp" did not block a plain "mantis" either.
     """
-    parts = re.findall(r"[a-zA-Z]+", creature)
-    return parts[-1].lower() if parts else ""
+    words = {w.lower() for w in re.findall(r"[a-zA-Z]+", creature)}
+    meaningful = words - _MODIFIERS
+    # An all-modifier name ("the great white") is better compared on every
+    # word than treated as matching nothing.
+    return meaningful or words
 
 
 def family_words(creatures: list[str]) -> list[str]:
-    """The families used recently, newest last, without repeats."""
+    """Every identifying word used recently, in order of first appearance."""
     seen: list[str] = []
     for name in creatures:
-        family = family_of(name)
-        if family and family not in seen:
-            seen.append(family)
+        for word in sorted(significant_words(name)):
+            if word not in seen:
+                seen.append(word)
     return seen
 
 
-def _is_repeat(creature: str, avoid: set[str], families: set[str]) -> bool:
-    return creature.strip().lower() in avoid or family_of(creature) in families
+def _is_repeat(creature: str, avoid: set[str], words: set[str]) -> bool:
+    """Whether *creature* names something already used.
+
+    A shared identifying word is enough: the two locomotives differed only in
+    the noun they ended on, which the eye reads as the same video twice.
+    """
+    if creature.strip().lower() in avoid:
+        return True
+    return bool(significant_words(creature) & words)
 
 
 def generate_concepts(
@@ -430,6 +454,7 @@ def generate_concepts(
     banned_names = {name.strip().lower() for name in avoid_list}
     banned_families = set(family_words(avoid_list[-FAMILY_MEMORY:]))
 
+
     def ask(wanted: int, extra_names: list[str]) -> list[Concept]:
         names = avoid_list + extra_names
         instructions = _CONCEPT_INSTRUCTIONS.format(
@@ -445,18 +470,22 @@ def generate_concepts(
     rejected: list[str] = []
     # The instruction alone is not trusted. Asking the model not to repeat a
     # hook was not enough either, and this list is far longer than a hook.
-    for attempt in range(2):
+    #
+    # Each round asks for more than is missing, and there are three rounds:
+    # with only two rounds and an exact ask, rejections left holes and three
+    # nights running delivered one or two ideas instead of three.
+    for attempt in range(3):
         wanted = count - len(kept)
         if wanted <= 0:
             break
-        for concept in ask(wanted, rejected):
+        for concept in ask(wanted + 2, rejected):
             if _is_repeat(concept.creature, banned_names, banned_families):
                 rejected.append(concept.creature)
                 logger.warning("Rejected repeat concept %r", concept.creature)
                 continue
             kept.append(concept)
             banned_names.add(concept.creature.strip().lower())
-            banned_families.add(family_of(concept.creature))
+            banned_families.update(significant_words(concept.creature))
 
     if not kept:
         # Better a repeat than a silent day with no ideas at all.

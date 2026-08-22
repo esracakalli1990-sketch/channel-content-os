@@ -33,9 +33,14 @@ def _concept(creature="pangolin", shape="a brushed steel capsule"):
 
 
 def _pending(index, creature, **extra):
+    # Relative to now, never a fixed date: these entries were stamped
+    # 2026-08-04 and quietly aged past the fourteen-day freshness window,
+    # so the tests started failing on their own two weeks after being written.
+    from datetime import UTC, datetime, timedelta
+
     return {
         "index": index,
-        "created_at": "2026-08-04T06:00:00+00:00",
+        "created_at": (datetime.now(UTC) - timedelta(hours=1)).isoformat(),
         "concept": _concept(creature).__dict__ | {},
         "text_to_image": "",
         "image_to_video": "",
@@ -699,15 +704,31 @@ class CreatureVarietyTests(unittest.TestCase):
         from channel_ops import shorts_prompts
         self.sp = shorts_prompts
 
-    def test_the_family_is_the_last_word(self):
-        self.assertEqual(self.sp.family_of("stag beetle"), "beetle")
-        self.assertEqual(self.sp.family_of("chambered nautilus"), "nautilus")
-        self.assertEqual(self.sp.family_of("leaf-tailed gecko"), "gecko")
-        self.assertEqual(self.sp.family_of("pangolin"), "pangolin")
+    def test_identifying_words_drop_plain_modifiers(self):
+        self.assertEqual(self.sp.significant_words("giant brown pelican"), {"pelican"})
+        self.assertEqual(self.sp.significant_words("stag beetle"), {"stag", "beetle"})
 
-    def test_family_words_are_unique_and_ordered(self):
-        families = self.sp.family_words(["stag beetle", "hermit crab", "jewel beetle"])
-        self.assertEqual(families, ["beetle", "crab"])
+    def test_an_all_modifier_name_still_yields_words(self):
+        """Nothing identifying left would otherwise match every creature."""
+        self.assertTrue(self.sp.significant_words("great white"))
+
+    def test_a_second_locomotive_is_caught(self):
+        """The real miss: different last words, obviously the same video."""
+        words = set(self.sp.family_words(["steam locomotive engine"]))
+        self.assertTrue(self.sp._is_repeat("miniature steam locomotive", set(), words))
+
+    def test_a_shared_first_word_is_caught(self):
+        words = set(self.sp.family_words(["mantis shrimp"]))
+        self.assertTrue(self.sp._is_repeat("mantis", set(), words))
+
+    def test_a_shared_colour_does_not_block(self):
+        """"brown pelican" must not rule out every brown animal."""
+        words = set(self.sp.family_words(["brown pelican"]))
+        self.assertFalse(self.sp._is_repeat("brown bear", set(), words))
+
+    def test_an_unrelated_creature_passes(self):
+        words = set(self.sp.family_words(["stag beetle", "hermit crab"]))
+        self.assertFalse(self.sp._is_repeat("barn owl", set(), words))
 
     def test_memory_outlasts_the_published_history(self):
         """40 was smaller than the 42 videos already out, which is exactly how
@@ -746,8 +767,8 @@ class CreatureVarietyTests(unittest.TestCase):
     def test_two_of_the_same_family_in_one_batch_are_caught(self):
         provider = self._provider([["fiddler crab", "hermit crab"], ["barn owl"]])
         concepts = self.sp.generate_concepts(provider, count=2, avoid=[])
-        families = [self.sp.family_of(c.creature) for c in concepts]
-        self.assertEqual(len(set(families)), len(families))
+        words = [frozenset(self.sp.significant_words(c.creature)) for c in concepts]
+        self.assertFalse(words[0] & words[1], "two of one family slipped through")
 
     def test_a_fresh_creature_is_kept_without_a_second_call(self):
         provider = self._provider([["barn owl"]])
