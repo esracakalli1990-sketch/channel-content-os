@@ -32,5 +32,22 @@
       "shell_mechanic": "The upper titanium casing splits along central seam lines and pivots laterally outward",
       "emerging_parts": "Two gossamer filigree wings, an articulated segmented abdomen, and six jointed legs"
     }
+  },
+  {
+    "queued_at": "2026-08-22T04:07:49+00:00",
+    "publish_at": "2026-08-22T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIBdWqJIFOchTWNX-gall21QDu6LNiJAALmIgAC3VRIUCWfchiKmtyRPQQ",
+    "file_size": 2473535,
+    "caption": "3",
+    "concept": {
+      "shape": "tapered polyhedral wedge",
+      "material": "matte-black gunmetal and polished obsidian glass",
+      "internal_detail": "patinated brass pinions, articulated wire linkages, and miniature steel leaf springs",
+      "button": "a flush obsidian push-stud with an engraved runic ring",
+      "button_short": "the flush obsidian push-stud",
+      "creature": "raven",
+      "shell_mechanic": "The dark polyhedral shell divides along dorsal seams and tilts upward into overlapping mantle plates",
+      "emerging_parts": "A hooked beak assembly, articulated clawed talons, and layered feather-blade wings"
+    }
   }
 ]
