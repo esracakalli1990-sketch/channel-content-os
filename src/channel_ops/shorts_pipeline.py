@@ -341,8 +341,25 @@ def process_inbox(provider: AIProvider, *, root: Path | None = None) -> list[dic
     scheduled jobs hours late.
     """
     root = root or find_project_root()
-    _accept_incoming(provider, root)
-    return publish_due(provider, root)
+
+    # The two halves are independent and must stay that way. Reading the inbox
+    # used to run first and uncaught: one failed Telegram fetch took the whole
+    # poll down, so a video whose slot had arrived sat in the queue instead of
+    # going out. Releasing is the half with a deadline, so it always runs.
+    intake_failure: Exception | None = None
+    try:
+        _accept_incoming(provider, root)
+    except (RuntimeError, OSError) as exc:
+        logger.exception("Reading the Telegram inbox failed")
+        intake_failure = exc
+
+    records = publish_due(provider, root)
+
+    # Re-raised after releasing so the watch loop still reports the outage —
+    # swallowing it would make a broken inbox look like a quiet one.
+    if intake_failure is not None:
+        raise intake_failure
+    return records
 
 
 def _accept_incoming(provider: AIProvider, root: Path) -> list[dict]:

@@ -995,3 +995,45 @@ class ResendCommandTests(unittest.TestCase):
 
     def test_report_and_prompt_commands_do_not_overlap(self):
         self.assertFalse(shorts_pipeline.PROMPT_COMMANDS & shorts_pipeline.REPORT_COMMANDS)
+
+
+class IntakeIsolationTests(unittest.TestCase):
+    """Reading the inbox and releasing a queued video are independent jobs.
+    They were chained, so one failed Telegram fetch left a video whose slot
+    had already arrived sitting in the queue."""
+
+    def setUp(self):
+        self._workspace = TemporaryDirectory()
+        self.root = Path(self._workspace.name)
+        (self.root / "data").mkdir()
+        self.addCleanup(self._workspace.cleanup)
+        self.released = []
+
+        def fake_publish(provider, root=None):
+            self.released.append(True)
+            return [{"creature": "moth"}]
+
+        def fake_intake(provider, root):
+            raise RuntimeError("Telegram unreachable")
+
+        for name, replacement in (("publish_due", fake_publish),
+                                  ("_accept_incoming", fake_intake)):
+            original = getattr(shorts_pipeline, name)
+            setattr(shorts_pipeline, name, replacement)
+            self.addCleanup(setattr, shorts_pipeline, name, original)
+
+    def test_a_due_video_still_goes_out_when_the_inbox_fails(self):
+        with self.assertRaises(RuntimeError):
+            shorts_pipeline.process_inbox(object(), root=self.root)
+        self.assertEqual(len(self.released), 1, "the release must not be skipped")
+
+    def test_the_inbox_failure_is_still_reported(self):
+        """Swallowing it would make a broken inbox look like a quiet one."""
+        with self.assertRaises(RuntimeError) as caught:
+            shorts_pipeline.process_inbox(object(), root=self.root)
+        self.assertIn("Telegram unreachable", str(caught.exception))
+
+    def test_a_healthy_poll_returns_the_published_records(self):
+        shorts_pipeline._accept_incoming = lambda provider, root: []
+        records = shorts_pipeline.process_inbox(object(), root=self.root)
+        self.assertEqual(records, [{"creature": "moth"}])
