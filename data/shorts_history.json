@@ -59,7 +59,10 @@
     "humpback whale",
     "mantis",
     "land tortoise",
-    "raven"
+    "raven",
+    "earthworm",
+    "tardigrade",
+    "leaf insect"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -107,6 +110,9 @@
     "smooth convex teardrop",
     "smooth concave pod",
     "ribbed hemispherical dome",
-    "tapered polyhedral wedge"
+    "tapered polyhedral wedge",
+    "ribbed tubular cylinder",
+    "grooved cubic block",
+    "curved asymmetrical pod"
   ]
 }
