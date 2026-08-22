@@ -904,3 +904,94 @@ class CatchUpRunTests(unittest.TestCase):
             object(), count=2, root=self.root, skip_if_recent_hours=6
         )
         self.assertEqual(len(pairs), 2)
+
+
+class ResendCommandTests(unittest.TestCase):
+    """Unused ideas scroll out of reach in the chat, and the pool can hold
+    leftovers from several nights — each numbered from one, so Telegram showed
+    "1, 2, 1" and a caption of "1" was ambiguous."""
+
+    def setUp(self):
+        self._workspace = TemporaryDirectory()
+        self.root = Path(self._workspace.name)
+        (self.root / "data").mkdir()
+        self.addCleanup(self._workspace.cleanup)
+        self.sent = []
+
+        from channel_ops import shorts_prompts
+
+        original_send = shorts_pipeline.notifications.send_message
+        original_render = shorts_pipeline.shorts_prompts.render
+        shorts_pipeline.notifications.send_message = self.sent.append
+        shorts_pipeline.shorts_prompts.render = lambda c: shorts_prompts.PromptPair(c, "t2i", "i2v")
+        self.addCleanup(setattr, shorts_pipeline.notifications, "send_message", original_send)
+        self.addCleanup(setattr, shorts_pipeline.shorts_prompts, "render", original_render)
+
+    def _write(self, entries):
+        (self.root / shorts_pipeline.PENDING_FILE).write_text(
+            json.dumps(entries), encoding="utf-8")
+
+    def _read(self):
+        return json.loads((self.root / shorts_pipeline.PENDING_FILE).read_text(encoding="utf-8"))
+
+    def _entry(self, index, creature, batch):
+        return {"index": index, "batch": batch, "created_at": batch,
+                "concept": _concept(creature).__dict__ | {}}
+
+    def test_two_batches_are_renumbered_into_one_sequence(self):
+        self._write([
+            self._entry(1, "brown pelican", "2026-08-19T20:52:00+00:00"),
+            self._entry(2, "periodical cicada", "2026-08-19T20:52:00+00:00"),
+            self._entry(1, "raven", "2026-08-21T20:49:00+00:00"),
+        ])
+        shorts_pipeline.resend_pending(self.root)
+        entries = self._read()
+        self.assertEqual([e["index"] for e in entries], [1, 2, 3])
+        self.assertEqual(len({e["batch"] for e in entries}), 1, "all one batch now")
+
+    def test_a_number_matches_the_idea_that_was_listed(self):
+        """The whole point: after resending, "2" is the second one shown."""
+        self._write([
+            self._entry(1, "brown pelican", "2026-08-19T20:52:00+00:00"),
+            self._entry(2, "periodical cicada", "2026-08-19T20:52:00+00:00"),
+            self._entry(1, "raven", "2026-08-21T20:49:00+00:00"),
+        ])
+        shorts_pipeline.resend_pending(self.root)
+        chosen = shorts_pipeline.match_pending("2", self._read())
+        self.assertEqual(chosen["concept"]["creature"], "periodical cicada")
+
+    def test_used_ideas_are_not_resent(self):
+        self._write([
+            self._entry(1, "brown pelican", "2026-08-19T20:52:00+00:00"),
+            dict(self._entry(2, "moth", "2026-08-19T20:52:00+00:00"),
+                 used_at="2026-08-20T00:00:00+00:00"),
+        ])
+        pairs = shorts_pipeline.resend_pending(self.root)
+        self.assertEqual([p.concept.creature for p in pairs], ["brown pelican"])
+
+    def test_an_empty_pool_sends_nothing(self):
+        self._write([])
+        self.assertEqual(shorts_pipeline.resend_pending(self.root), [])
+        self.assertEqual(self.sent, [])
+
+    def test_the_command_tells_the_operator_when_the_pool_is_empty(self):
+        self._write([])
+        shorts_pipeline._resend_prompts(self.root)
+        self.assertIn("kullanılmamış fikir yok", " ".join(self.sent))
+
+    def test_a_failed_resend_does_not_raise(self):
+        """A video waiting behind the command must still publish."""
+        def explode(concept):
+            raise RuntimeError("template missing")
+
+        shorts_pipeline.shorts_prompts.render = explode
+        self._write([self._entry(1, "brown pelican", "2026-08-19T20:52:00+00:00")])
+        shorts_pipeline._resend_prompts(self.root)  # must not raise
+        self.assertIn("gönderilemedi", " ".join(self.sent))
+
+    def test_the_command_words_cover_the_obvious_turkish(self):
+        for word in ("promptlar", "fikirler", "prompt"):
+            self.assertIn(word, shorts_pipeline.PROMPT_COMMANDS)
+
+    def test_report_and_prompt_commands_do_not_overlap(self):
+        self.assertFalse(shorts_pipeline.PROMPT_COMMANDS & shorts_pipeline.REPORT_COMMANDS)

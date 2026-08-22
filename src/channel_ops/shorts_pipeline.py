@@ -73,6 +73,11 @@ MIN_LEAD_HOURS = 4
 # Typed into the Telegram chat to ask for a performance report.
 REPORT_COMMANDS = frozenset({"rapor", "report", "istatistik", "stats"})
 
+# Typed into the Telegram chat to have the unused ideas sent again. Their
+# prompts scroll out of reach within a day or two, and an idea nobody can find
+# is the same as no idea at all.
+PROMPT_COMMANDS = frozenset({"promptlar", "prompt", "fikirler", "fikir", "ideas"})
+
 # Concepts older than this are no longer offered as a match for an arriving clip.
 PENDING_EXPIRY_DAYS = 14
 
@@ -172,15 +177,7 @@ def send_daily_prompts(
     # on the clips. A running counter would have made tonight's first idea
     # "#11" while the caption still said "1".
     #
-    # The stamp identifies the batch, so two runs must never share one: a
-    # caption of "1" would then match either batch's first idea and publish the
-    # clip under the wrong concept. Second precision was not enough to promise
-    # that, so it carries microseconds and is nudged on the rare collision.
-    existing = {str(entry.get("batch", "")) for entry in pending}
-    now = datetime.now(UTC)
-    while now.isoformat() in existing:
-        now += timedelta(microseconds=1)
-    batch = now.isoformat()
+    batch = _fresh_batch_stamp(pending)
 
     if count == 1:
         notifications.send_message(
@@ -210,6 +207,19 @@ def send_daily_prompts(
     return pairs
 
 
+def _fresh_batch_stamp(pending: list[dict]) -> str:
+    """A batch stamp no existing entry uses.
+
+    Two batches sharing a stamp would make a caption of "1" ambiguous again,
+    which is the whole problem this is fixing.
+    """
+    existing = {str(entry.get("batch", "")) for entry in pending}
+    now = datetime.now(UTC)
+    while now.isoformat() in existing:
+        now += timedelta(microseconds=1)
+    return now.isoformat()
+
+
 def resend_pending(root: Path | None = None) -> list[PromptPair]:
     """Re-render every unused concept with the current template and resend it.
 
@@ -224,17 +234,25 @@ def resend_pending(root: Path | None = None) -> list[PromptPair]:
     if not unused:
         return []
 
+    # The pool can hold leftovers from several nights, each numbered from one,
+    # so Telegram showed "1, 2, 1" and a caption of "1" was ambiguous — it
+    # would have matched the newest batch rather than the first idea listed.
+    # Resending consolidates everything into one batch numbered 1..N.
+    batch = _fresh_batch_stamp(pending)
+
     pairs: list[PromptPair] = []
     notifications.send_message(
         f"♻️ <b>Promptlar yenilendi</b> — {len(unused)} fikir.\n"
-        f"Şablon düzeltildi; <b>eski mesajlardaki promptları kullanma</b>, "
-        f"aşağıdakileri kullan."
+        f"<b>Eski mesajlardaki promptları kullanma</b>, aşağıdakileri kullan.\n"
+        f"<i>Videoyu gönderirken açıklamaya numarasını yaz.</i>"
     )
-    for entry in unused:
+    for index, entry in enumerate(unused, start=1):
         pair = shorts_prompts.render(Concept(**entry["concept"]))
         entry["text_to_image"] = pair.text_to_image
         entry["image_to_video"] = pair.image_to_video
-        notifications.send_message(_format_prompt_message(int(entry["index"]), pair))
+        entry["index"] = index
+        entry["batch"] = batch
+        notifications.send_message(_format_prompt_message(index, pair))
         pairs.append(pair)
 
     _write_json(path, pending)
@@ -342,8 +360,11 @@ def _accept_incoming(provider: AIProvider, root: Path) -> list[dict]:
 
     # A typed command is handled before videos so asking for a report never
     # depends on having sent a clip.
-    if REPORT_COMMANDS.intersection(telegram_inbox.extract_commands(updates)):
+    commands = telegram_inbox.extract_commands(updates)
+    if REPORT_COMMANDS.intersection(commands):
         _send_report(root)
+    if PROMPT_COMMANDS.intersection(commands):
+        _resend_prompts(root)
 
     videos = telegram_inbox.extract_videos(updates)
     if not videos:
@@ -588,6 +609,22 @@ def _burn_hook(clip: Path, hook: str, badge: str = "") -> Path:
     except (video_overlay.OverlayUnavailable, OSError) as exc:
         logger.warning("Publishing without the overlays: %s", exc)
         return clip
+
+
+def _resend_prompts(root: Path) -> None:
+    """Answer a /promptlar command. Never raises — a failed resend must not
+    stop a video waiting behind it from being published."""
+    try:
+        pairs = resend_pending(root)
+        if not pairs:
+            notifications.send_message(
+                "📭 <b>Havuzda kullanılmamış fikir yok.</b>\n"
+                "Bu gece yenileri gelecek."
+            )
+        logger.info("Resent %d pending prompt(s)", len(pairs))
+    except (RuntimeError, OSError) as exc:
+        logger.warning("Resend failed: %s", exc)
+        notifications.send_message(f"⚠️ <b>Promptlar gönderilemedi</b>\n{_escape(str(exc))}")
 
 
 def _send_report(root: Path) -> None:
