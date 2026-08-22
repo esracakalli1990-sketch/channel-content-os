@@ -15,5 +15,22 @@
       "shell_mechanic": "The fluted teak casing splits along its central seam and the lateral hull plates swing upward into swept wings",
       "emerging_parts": "An articulated neck with an expandable mesh throat pouch and two jointed webbed feet"
     }
+  },
+  {
+    "queued_at": "2026-08-22T04:05:46+00:00",
+    "publish_at": "2026-08-22T17:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIBc2qJH6wFV31gyOkLeXz0ATO-hAABQgAC5CIAAt1USFDx0AIDlRAwoD0E",
+    "file_size": 2069596,
+    "caption": "2",
+    "concept": {
+      "shape": "beveled hexagonal cartridge",
+      "material": "anodized bronze-green titanium and smoked amber acrylic",
+      "internal_detail": "delicate copper acoustic ribs, micro-solenoids, and gear-driven linkage rods",
+      "button": "a miniature flush circular stud seated in the top face",
+      "button_short": "the miniature flush circular stud on the top face",
+      "creature": "periodical cicada",
+      "shell_mechanic": "The upper titanium casing splits along central seam lines and pivots laterally outward",
+      "emerging_parts": "Two gossamer filigree wings, an articulated segmented abdomen, and six jointed legs"
+    }
   }
 ]
