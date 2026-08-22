@@ -58,7 +58,8 @@
     "great blue heron",
     "humpback whale",
     "mantis",
-    "land tortoise"
+    "land tortoise",
+    "raven"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -105,6 +106,7 @@
     "smooth faceted rhomboid",
     "smooth convex teardrop",
     "smooth concave pod",
-    "ribbed hemispherical dome"
+    "ribbed hemispherical dome",
+    "tapered polyhedral wedge"
   ]
 }
