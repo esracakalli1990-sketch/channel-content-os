@@ -15,5 +15,22 @@
       "shell_mechanic": "The heavy brass cylinder divides into four vertical curved segments that swing outward on micro-hinges",
       "emerging_parts": "Four small intake nozzles and a tiny central brass flywheel"
     }
+  },
+  {
+    "queued_at": "2026-08-23T23:04:59+00:00",
+    "publish_at": "2026-08-24T17:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIBlWqLfAFQssrOytquwVjZfZJ2RBAFAAJQIAAC-cVYUMZfxvsk7QeAPQQ",
+    "file_size": 2453270,
+    "caption": "2",
+    "concept": {
+      "shape": "faceted biconical crystal",
+      "material": "optic quartz glass and platinum filigree",
+      "internal_detail": "silvery hairsprings and microscopic oscillating quartz tuning forks",
+      "button": "a flush-mounted platinum stud at the upper apex",
+      "button_short": "the flush-mounted platinum stud",
+      "creature": "crowned crane",
+      "shell_mechanic": "The upper and lower crystal cones separate as the equatorial girdle unlatches and hinges downward",
+      "emerging_parts": "Two slender jointed platinum legs and a long graceful neck with a crowned head"
+    }
   }
 ]
