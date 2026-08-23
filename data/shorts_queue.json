@@ -15,5 +15,22 @@
       "shell_mechanic": "The bronze tubular segments telescope outward in sequence",
       "emerging_parts": "Five accordion-pleated rings and a blunt rounded snout"
     }
+  },
+  {
+    "queued_at": "2026-08-23T01:15:48+00:00",
+    "publish_at": "2026-08-23T17:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIBh2qKSWk1h1xQc5Jd4Xedxg65tXZcAAIeJAAC3VRQUO5ktUi_-fAlPQQ",
+    "file_size": 1911716,
+    "caption": "2",
+    "concept": {
+      "shape": "grooved cubic block",
+      "material": "polished blued steel and inlaid silver filigree",
+      "internal_detail": "fine-toothed escapement wheels and tiny steel levers",
+      "button": "a flush silver square plate set into the top face",
+      "button_short": "the flush silver square plate set into the top face",
+      "creature": "tardigrade",
+      "shell_mechanic": "The steel cube splits along its inlaid silver grooves and the four corner quadrants slide apart",
+      "emerging_parts": "Eight short stubby limbs with microscopic claws and a blunt puckered mouth"
+    }
   }
 ]
