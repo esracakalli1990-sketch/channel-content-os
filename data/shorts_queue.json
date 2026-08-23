@@ -32,5 +32,22 @@
       "shell_mechanic": "The steel cube splits along its inlaid silver grooves and the four corner quadrants slide apart",
       "emerging_parts": "Eight short stubby limbs with microscopic claws and a blunt puckered mouth"
     }
+  },
+  {
+    "queued_at": "2026-08-23T01:17:51+00:00",
+    "publish_at": "2026-08-23T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIBiWqKSj0AAcHAt9Jz0h5tWng2nYwnJAACHyQAAt1UUFB3gHVUIM8v9j0E",
+    "file_size": 1950998,
+    "caption": "3",
+    "concept": {
+      "shape": "curved asymmetrical pod",
+      "material": "translucent amber resin and embedded brass filaments",
+      "internal_detail": "glowing micro-tubes and delicate bronze linkages",
+      "button": "a tiny circular brass dot flush with the curved amber surface",
+      "button_short": "the tiny circular brass dot flush with the curved amber surface",
+      "creature": "leaf insect",
+      "shell_mechanic": "The amber pod splits down the midline and the two translucent halves hinge outward like wing covers",
+      "emerging_parts": "Six twig-like jointed legs and a flat triangular head with thread antennae"
+    }
   }
 ]
