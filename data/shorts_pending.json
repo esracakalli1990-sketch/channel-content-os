@@ -1,56 +1,53 @@
 [
   {
     "index": 1,
-    "batch": "2026-08-22T20:48:28.149532+00:00",
-    "created_at": "2026-08-22T20:48:28.149532+00:00",
+    "batch": "2026-08-23T20:47:13.743457+00:00",
+    "created_at": "2026-08-23T20:47:13.743457+00:00",
     "concept": {
-      "shape": "ribbed tubular cylinder",
-      "material": "patinated bronze and oxidized copper wire",
-      "internal_detail": "tightly wound brass mainsprings and ruby pivot bearings",
-      "button": "a small raised copper stud set into the ribbed base",
-      "button_short": "the small raised copper stud set into the ribbed base",
-      "creature": "earthworm",
-      "shell_mechanic": "The bronze tubular segments telescope outward in sequence",
-      "emerging_parts": "Five accordion-pleated rings and a blunt rounded snout"
+      "shape": "heavy ribbed brass cylinder",
+      "material": "patinated brass and steel wire",
+      "internal_detail": "miniature copper pistons and delicate brass valve gears",
+      "button": "a small knurled brass thumbscrew on the side",
+      "button_short": "the small knurled brass thumbscrew",
+      "creature": "radial piston water pump",
+      "shell_mechanic": "The heavy brass cylinder divides into four vertical curved segments that swing outward on micro-hinges",
+      "emerging_parts": "Four small intake nozzles and a tiny central brass flywheel"
     },
-    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, ribbed tubular cylinder-shaped object made of patinated bronze and oxidized copper wire. The outer shell is completely closed, solid and seamless, with no gears, springs or moving parts visible anywhere on its surface. The toy features a small raised copper stud set into the ribbed base. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
-    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the small raised copper stud set into the ribbed base with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical earthworm. The unfolding and transformation process is logical and physically consistent. The bronze tubular segments telescope outward in sequence, revealing the movement of internal mechanical components and gears. Five accordion-pleated rings and a blunt rounded snout physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical earthworm's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. In the last second the finished earthworm settles into a still pose, resting on the same spot where the closed toy was placed, and the shot holds completely steady with no further movement and nothing entering the frame, so the clip cuts back to its opening without a jolt when it loops. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice.",
-    "used_at": "2026-08-23T01:07:44+00:00"
+    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, heavy ribbed brass cylinder-shaped object made of patinated brass and steel wire. The outer shell is completely closed, solid and seamless, with no gears, springs or moving parts visible anywhere on its surface. The toy features a small knurled brass thumbscrew on the side. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
+    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the small knurled brass thumbscrew with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical radial piston water pump. The unfolding and transformation process is logical and physically consistent. The heavy brass cylinder divides into four vertical curved segments that swing outward on micro-hinges, revealing the movement of internal mechanical components and gears. Four small intake nozzles and a tiny central brass flywheel physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical radial piston water pump's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. In the last second the finished radial piston water pump settles into a still pose, resting on the same spot where the closed toy was placed, and the shot holds completely steady with no further movement and nothing entering the frame, so the clip cuts back to its opening without a jolt when it loops. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice."
   },
   {
     "index": 2,
-    "batch": "2026-08-22T20:48:28.149532+00:00",
-    "created_at": "2026-08-22T20:48:28.149532+00:00",
+    "batch": "2026-08-23T20:47:13.743457+00:00",
+    "created_at": "2026-08-23T20:47:13.743457+00:00",
     "concept": {
-      "shape": "grooved cubic block",
-      "material": "polished blued steel and inlaid silver filigree",
-      "internal_detail": "fine-toothed escapement wheels and tiny steel levers",
-      "button": "a flush silver square plate set into the top face",
-      "button_short": "the flush silver square plate set into the top face",
-      "creature": "tardigrade",
-      "shell_mechanic": "The steel cube splits along its inlaid silver grooves and the four corner quadrants slide apart",
-      "emerging_parts": "Eight short stubby limbs with microscopic claws and a blunt puckered mouth"
+      "shape": "faceted biconical crystal",
+      "material": "optic quartz glass and platinum filigree",
+      "internal_detail": "silvery hairsprings and microscopic oscillating quartz tuning forks",
+      "button": "a flush-mounted platinum stud at the upper apex",
+      "button_short": "the flush-mounted platinum stud",
+      "creature": "crowned crane",
+      "shell_mechanic": "The upper and lower crystal cones separate as the equatorial girdle unlatches and hinges downward",
+      "emerging_parts": "Two slender jointed platinum legs and a long graceful neck with a crowned head"
     },
-    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, grooved cubic block-shaped object made of polished blued steel and inlaid silver filigree. The outer shell is completely closed, solid and seamless, with no gears, springs or moving parts visible anywhere on its surface. The toy features a flush silver square plate set into the top face. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
-    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the flush silver square plate set into the top face with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical tardigrade. The unfolding and transformation process is logical and physically consistent. The steel cube splits along its inlaid silver grooves and the four corner quadrants slide apart, revealing the movement of internal mechanical components and gears. Eight short stubby limbs with microscopic claws and a blunt puckered mouth physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical tardigrade's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. In the last second the finished tardigrade settles into a still pose, resting on the same spot where the closed toy was placed, and the shot holds completely steady with no further movement and nothing entering the frame, so the clip cuts back to its opening without a jolt when it loops. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice.",
-    "used_at": "2026-08-23T01:15:48+00:00"
+    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, faceted biconical crystal-shaped object made of optic quartz glass and platinum filigree. The outer shell is completely closed, solid and seamless, with no gears, springs or moving parts visible anywhere on its surface. The toy features a flush-mounted platinum stud at the upper apex. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
+    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the flush-mounted platinum stud with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical crowned crane. The unfolding and transformation process is logical and physically consistent. The upper and lower crystal cones separate as the equatorial girdle unlatches and hinges downward, revealing the movement of internal mechanical components and gears. Two slender jointed platinum legs and a long graceful neck with a crowned head physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical crowned crane's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. In the last second the finished crowned crane settles into a still pose, resting on the same spot where the closed toy was placed, and the shot holds completely steady with no further movement and nothing entering the frame, so the clip cuts back to its opening without a jolt when it loops. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice."
   },
   {
     "index": 3,
-    "batch": "2026-08-22T20:48:28.149532+00:00",
-    "created_at": "2026-08-22T20:48:28.149532+00:00",
+    "batch": "2026-08-23T20:47:13.743457+00:00",
+    "created_at": "2026-08-23T20:47:13.743457+00:00",
     "concept": {
-      "shape": "curved asymmetrical pod",
-      "material": "translucent amber resin and embedded brass filaments",
-      "internal_detail": "glowing micro-tubes and delicate bronze linkages",
-      "button": "a tiny circular brass dot flush with the curved amber surface",
-      "button_short": "the tiny circular brass dot flush with the curved amber surface",
-      "creature": "leaf insect",
-      "shell_mechanic": "The amber pod splits down the midline and the two translucent halves hinge outward like wing covers",
-      "emerging_parts": "Six twig-like jointed legs and a flat triangular head with thread antennae"
+      "shape": "smooth carved soapstone pebble",
+      "material": "veined green soapstone and forged iron wire",
+      "internal_detail": "rusted iron leaf springs and tiny pivoting knuckle joints",
+      "button": "a flat iron rivet embedded flush in the stone",
+      "button_short": "the flat iron rivet",
+      "creature": "three-toed sloth",
+      "shell_mechanic": "The smooth soapstone pebble splits down its central axis into two equal cup-like halves that pull apart",
+      "emerging_parts": "Long curved iron limbs with hooked triple-claws and a rounded furry-textured iron head"
     },
-    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, curved asymmetrical pod-shaped object made of translucent amber resin and embedded brass filaments. The outer shell is completely closed, solid and seamless, with no gears, springs or moving parts visible anywhere on its surface. The toy features a tiny circular brass dot flush with the curved amber surface. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
-    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the tiny circular brass dot flush with the curved amber surface with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical leaf insect. The unfolding and transformation process is logical and physically consistent. The amber pod splits down the midline and the two translucent halves hinge outward like wing covers, revealing the movement of internal mechanical components and gears. Six twig-like jointed legs and a flat triangular head with thread antennae physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical leaf insect's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. In the last second the finished leaf insect settles into a still pose, resting on the same spot where the closed toy was placed, and the shot holds completely steady with no further movement and nothing entering the frame, so the clip cuts back to its opening without a jolt when it loops. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice.",
-    "used_at": "2026-08-23T01:17:51+00:00"
+    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, smooth carved soapstone pebble-shaped object made of veined green soapstone and forged iron wire. The outer shell is completely closed, solid and seamless, with no gears, springs or moving parts visible anywhere on its surface. The toy features a flat iron rivet embedded flush in the stone. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
+    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the flat iron rivet with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical three-toed sloth. The unfolding and transformation process is logical and physically consistent. The smooth soapstone pebble splits down its central axis into two equal cup-like halves that pull apart, revealing the movement of internal mechanical components and gears. Long curved iron limbs with hooked triple-claws and a rounded furry-textured iron head physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical three-toed sloth's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. In the last second the finished three-toed sloth settles into a still pose, resting on the same spot where the closed toy was placed, and the shot holds completely steady with no further movement and nothing entering the frame, so the clip cuts back to its opening without a jolt when it loops. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice."
   }
 ]

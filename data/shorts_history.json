@@ -62,7 +62,10 @@
     "raven",
     "earthworm",
     "tardigrade",
-    "leaf insect"
+    "leaf insect",
+    "radial piston water pump",
+    "crowned crane",
+    "three-toed sloth"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -113,6 +116,9 @@
     "tapered polyhedral wedge",
     "ribbed tubular cylinder",
     "grooved cubic block",
-    "curved asymmetrical pod"
+    "curved asymmetrical pod",
+    "heavy ribbed brass cylinder",
+    "faceted biconical crystal",
+    "smooth carved soapstone pebble"
   ]
 }
