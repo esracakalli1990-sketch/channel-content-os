@@ -7,6 +7,10 @@ name: Shorts — araçlar
 #   audience : izleyicilerin hangi ülkelerde olduğunu yazar; yayın saatlerini
 #              tahminle değil veriyle seçmek için
 #   channel  : kanal toplamları ve para kazanma eşiklerine mesafe
+#   audit    : her videonun ve her günün ham verisini JSON olarak loga
+#              basar; "bu değişiklik işe yaradı mı" sorusu ancak tam
+#              veriyle cevaplanıyor, telefona giden rapor son on videoyu
+#              gösteriyor. Hiçbir şey yazmaz, sadece okur.
 on:
   workflow_dispatch:
     inputs:
@@ -14,7 +18,7 @@ on:
         description: "Hangi iş?"
         required: true
         type: choice
-        options: [resend, audience, channel]
+        options: [resend, audience, channel, audit]
 
 concurrency:
   group: shorts-tools
@@ -42,7 +46,12 @@ jobs:
           YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
           YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
           YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
-        run: python -m channel_ops "shorts-${{ inputs.job }}"
+        run: |
+          if [ "${{ inputs.job }}" = "audit" ]; then
+            python scripts/channel_audit.py
+          else
+            python -m channel_ops "shorts-${{ inputs.job }}"
+          fi
 
       - name: Yenilenen promptları kaydet
         # Yalnızca resend işi dosya değiştirir; audience sadece yazdırır.
