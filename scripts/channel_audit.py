@@ -126,7 +126,6 @@ def main() -> None:
             sort="-views",
         ),
         "countries": dict(dimensions="country", metrics="views", days=28, sort="-views"),
-        "hourly_by_day": dict(dimensions="day", metrics="views", days=14, sort="day"),
         "devices": dict(dimensions="deviceType", metrics="views", days=28, sort="-views"),
         "subs_status": dict(
             dimensions="subscribedStatus", metrics="views,averageViewPercentage", days=28
@@ -140,9 +139,70 @@ def main() -> None:
         except Exception as exc:
             dump["errors"][name] = str(exc)
 
-    print("===AUDIT_JSON_START===")
-    print(json.dumps(dump, ensure_ascii=False))
-    print("===AUDIT_JSON_END===")
+    _emit(dump)
+
+
+def _emit(dump: dict) -> None:
+    """Print the dump as short tab-separated tables.
+
+    One long JSON line is unreadable in a workflow log and unreadable to
+    anything that has to quote it back. Tables of a few hundred short lines
+    say the same thing and can be scanned by eye.
+    """
+    print("### TOPLAMLAR")
+    for key, value in (dump.get("totals") or {}).items():
+        print(f"{key}\t{value}")
+
+    print("\n### HATALAR")
+    for key, value in (dump.get("errors") or {}).items():
+        print(f"{key}\t{value}")
+    if not dump.get("errors"):
+        print("(yok)")
+
+    stats = dump.get("data_api") or {}
+    by_id = {}
+    for section in ("per_video",):
+        block = (dump.get("analytics") or {}).get(section) or {}
+        columns = block.get("columns") or []
+        for row in block.get("rows") or []:
+            record = dict(zip(columns, row))
+            by_id[record.get("video")] = record
+
+    print("\n### VIDEOLAR")
+    print("\t".join((
+        "no", "yayin", "yaratik", "id", "gorunurluk", "izlenme", "begeni",
+        "yorum", "izl%", "izl_sn", "abone", "paylasim", "kanca", "rozet", "sablon",
+    )))
+    for index, record in enumerate(dump.get("published") or [], 1):
+        vid = record.get("youtube_video_id", "")
+        data = stats.get(vid, {})
+        live = by_id.get(vid, {})
+        print("\t".join(str(cell) for cell in (
+            index,
+            (record.get("published_at") or "")[:16],
+            record.get("creature", ""),
+            vid,
+            data.get("privacy", "-"),
+            data.get("views", "-"),
+            data.get("likes", "-"),
+            data.get("comments", "-"),
+            round(live.get("averageViewPercentage", 0) or 0, 1) or "-",
+            round(live.get("averageViewDuration", 0) or 0) or "-",
+            live.get("subscribersGained", "-"),
+            live.get("shares", "-"),
+            "var" if record.get("hook") else "yok",
+            "var" if record.get("badge") else "yok",
+            (record.get("template_version") or "-")[:8],
+        )))
+
+    for section in ("daily", "traffic", "countries", "devices", "subs_status"):
+        block = (dump.get("analytics") or {}).get(section) or {}
+        if not block.get("rows"):
+            continue
+        print(f"\n### {section.upper()}")
+        print("\t".join(block.get("columns") or []))
+        for row in block["rows"]:
+            print("\t".join(str(cell) for cell in row))
 
 
 if __name__ == "__main__":
