@@ -65,7 +65,10 @@
     "leaf insect",
     "radial piston water pump",
     "crowned crane",
-    "three-toed sloth"
+    "three-toed sloth",
+    "toco toucan",
+    "walrus",
+    "fennec fox"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -119,6 +122,9 @@
     "curved asymmetrical pod",
     "heavy ribbed brass cylinder",
     "faceted biconical crystal",
-    "smooth carved soapstone pebble"
+    "smooth carved soapstone pebble",
+    "canted triangular ingot",
+    "stepped rectangular plinth",
+    "beveled pentagonal tablet"
   ]
 }
