@@ -60,7 +60,15 @@ def _data_stats(video_ids: list[str]) -> dict[str, dict]:
     return out
 
 
-def _rows(dimensions: str, metrics: str, *, days: int, sort: str = "", filters: str = "") -> dict:
+def _rows(
+    dimensions: str,
+    metrics: str,
+    *,
+    days: int,
+    sort: str = "",
+    filters: str = "",
+    max_results: int = 0,
+) -> dict:
     """One Analytics query returned with its column names attached."""
     end = date.today()
     params = {
@@ -74,6 +82,10 @@ def _rows(dimensions: str, metrics: str, *, days: int, sort: str = "", filters: 
         params["sort"] = sort
     if filters:
         params["filters"] = filters
+    if max_results:
+        # The video dimension is a "top videos" report; without maxResults the
+        # API answers with no rows at all rather than an error.
+        params["maxResults"] = max_results
     payload = _analytics_query(params, timeout=60)
     headers = [c.get("name", "") for c in payload.get("columnHeaders", [])]
     return {"columns": headers, "rows": payload.get("rows") or []}
@@ -112,11 +124,12 @@ def main() -> None:
                      "averageViewPercentage,subscribersGained,likes,shares,comments"),
             days=90,
             sort="-views",
+            max_results=200,
         ),
         "daily": dict(
             dimensions="day",
             metrics="views,estimatedMinutesWatched,subscribersGained,subscribersLost",
-            days=90,
+            days=45,
             sort="day",
         ),
         "traffic": dict(
@@ -125,7 +138,9 @@ def main() -> None:
             days=28,
             sort="-views",
         ),
-        "countries": dict(dimensions="country", metrics="views", days=28, sort="-views"),
+        "countries": dict(
+            dimensions="country", metrics="views", days=28, sort="-views", max_results=15
+        ),
         "devices": dict(dimensions="deviceType", metrics="views", days=28, sort="-views"),
         "subs_status": dict(
             dimensions="subscribedStatus", metrics="views,averageViewPercentage", days=28
