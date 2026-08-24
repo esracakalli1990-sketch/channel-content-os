@@ -74,6 +74,26 @@ Return ONLY a JSON array of {count} objects, no prose and no code fences. Each
 object must have exactly these string fields:
 {slots}
 
+CHOOSING THE SUBJECT — read this before anything else.
+
+Eleven of the first fifty-five videos passed ten thousand views and those
+eleven carried seventy-six per cent of all views; the median video got two
+thousand. So the subject is the whole game, and the eleven have something in
+common. Tarsier: enormous eyes. Mantis shrimp: the club. Rhinoceros beetle:
+the horn. Pangolin: overlapping scales. Fiddler crab: one oversized claw.
+Brown pelican: the throat pouch. Chambered nautilus: the spiral. Barn owl: the
+face disc. Humpback whale: the flukes. Every one has a SINGLE feature big
+enough to read from the silhouette, in the first frame, on a phone, and it is
+the feature the unfolding pays off.
+
+The ones that went nowhere — moth, grasshopper, woodlouse, paper wasp, box
+turtle, dragonfly, honeybee, tree frog, raven, earthworm — are creatures whose
+interest lives in fine detail. Detail does not survive a thumbnail.
+
+So: pick a creature or machine with one dominant, instantly readable feature,
+and make `emerging_parts` deliver exactly that feature. If you cannot name the
+one feature in three words, choose something else.
+
 Hard rules, in priority order:
 
 1. PLAUSIBLE FOLDING. The closed shape must believably BE the creature's main

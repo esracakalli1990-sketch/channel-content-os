@@ -533,8 +533,7 @@ def _publish_queued(item: dict, provider: AIProvider, root: Path) -> dict:
     with tempfile.TemporaryDirectory() as workspace:
         destination = Path(workspace) / "short.mp4"
         telegram_inbox.download_file(item["file_id"], int(item.get("file_size", 0)), destination)
-        badge = _badge_text(root)
-        destination = _burn_hook(destination, metadata.hook, badge)
+        destination = _burn_hook(destination, metadata.hook)
         # Published straight to public: the clip is reviewed in Flow before it
         # is ever sent to the bot, so a private-first step adds no second look —
         # it only left videos stranded unlisted when publishing was forgotten.
@@ -569,9 +568,9 @@ def _publish_queued(item: dict, provider: AIProvider, root: Path) -> dict:
         # reach can be read back from the record.
         "queued_at": item.get("queued_at", ""),
         "hook": metadata.hook,
-        # Which videos carry the corner badge, so the subscriber conversion
-        # before and after it can be compared instead of guessed at.
-        "badge": badge,
+        # Which videos carried the corner badge. Empty since it was switched
+        # off, and kept so the before/after split stays readable in the record.
+        "badge": "",
         # Which wording produced this video. Template changes are tested by
         # comparing videos before and after, which is guesswork without a
         # marker on each record.
@@ -597,24 +596,26 @@ def _publish_queued(item: dict, provider: AIProvider, root: Path) -> dict:
     return record
 
 
-# Drawn in the corner of every clip. Without it nothing on screen told a
-# viewer a channel existed, and 219,000 views produced 83 subscribers.
 CHANNEL_HANDLE = "@unfoldableslab"
 
-
-def _badge_text(root: Path | None = None) -> str:
-    """The corner mark: this video's number in the series, and the handle.
-
-    The number is what turns a satisfying clip into a collection worth
-    following, and it costs nothing — unlike a closing card, which would land
-    on the still final second the clips loop from.
-    """
-    number = len(_read_json(_data_path(PUBLISHED_FILE, root), [])) + 1
-    return f"№{number} · {CHANNEL_HANDLE}"
+# The corner badge — the series number and the handle, drawn over every frame —
+# ran from video 43 to 62 and is now off.
+#
+# It was added on the theory that nothing on screen told a viewer a channel
+# existed. Twenty videos later it has never shown a benefit, and both readings
+# of the data point the other way: subscribers per thousand views went 0.36 ->
+# 0.24 and likes per thousand 4.13 -> 3.80. Neither is conclusive — the badged
+# videos are newer and have had less time to collect subscribers — but the one
+# thing the badge was supposed to improve is the one thing that did not
+# improve, twice measured.
+#
+# The overlay code keeps its optional badge argument so the idea can be
+# retested properly if there is ever a reason to. `badge` stays in the
+# published record, now empty, so the before/after split stays readable.
 
 
 def _burn_hook(clip: Path, hook: str, badge: str = "") -> Path:
-    """Return the clip with its hook and badge drawn on, or untouched on failure.
+    """Return the clip with its hook drawn on, or untouched on failure.
 
     A missing overlay costs some reach; refusing to publish would cost the
     whole video, so every problem here falls back to the original file.

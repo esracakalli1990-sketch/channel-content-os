@@ -10,7 +10,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from channel_ops import reporting, shorts_pipeline
+from channel_ops import reporting, shorts_pipeline, shorts_prompts
 from channel_ops.shorts_metadata import (
     _default_hook,
     fallback_metadata,
@@ -784,9 +784,42 @@ class CreatureVarietyTests(unittest.TestCase):
         self.assertEqual(len(concepts), 1)
 
 
+class SubjectChoiceTests(unittest.TestCase):
+    """The subject decides the video's fate, so the rule that picks it is
+    bound here rather than left to survive on good intentions.
+
+    Of the first fifty-five videos, eleven passed ten thousand views and those
+    eleven carried seventy-six per cent of all views. What they share is one
+    feature large enough to read from the silhouette — the tarsier's eyes, the
+    fiddler crab's claw, the rhinoceros beetle's horn. The ones that went
+    nowhere are creatures whose interest lives in fine detail."""
+
+    def test_the_instructions_ask_for_one_readable_feature(self):
+        text = shorts_prompts._CONCEPT_INSTRUCTIONS
+        self.assertIn("silhouette", text)
+        self.assertIn("one dominant, instantly readable feature", text)
+
+    def test_the_rule_comes_before_the_writing_rules(self):
+        """Placed after the grammar rules it reads as an afterthought, and the
+        model treats it as one."""
+        text = shorts_prompts._CONCEPT_INSTRUCTIONS
+        self.assertLess(text.index("CHOOSING THE SUBJECT"), text.index("PLAUSIBLE FOLDING"))
+
+    def test_the_evidence_travels_with_the_rule(self):
+        """A bare instruction gets softened by the next person who edits it;
+        the examples are what make it checkable."""
+        text = shorts_prompts._CONCEPT_INSTRUCTIONS
+        for creature in ("Tarsier", "Fiddler crab", "Rhinoceros beetle"):
+            self.assertIn(creature, text)
+
+
 class BadgeTests(unittest.TestCase):
-    """219,000 views produced 83 subscribers — roughly a tenth of what this
-    format converts — because nothing on screen said a channel existed."""
+    """The corner badge ran from video 43 to 62 and is off again.
+
+    It never showed the benefit it was added for: over those twenty videos
+    subscribers per thousand views went 0.36 -> 0.24 and likes per thousand
+    4.13 -> 3.80. Neither reading is conclusive on its own, but nothing pointed
+    the other way, so it is not drawn any more."""
 
     def setUp(self):
         self._workspace = TemporaryDirectory()
@@ -794,23 +827,22 @@ class BadgeTests(unittest.TestCase):
         (self.root / "data").mkdir()
         self.addCleanup(self._workspace.cleanup)
 
-    def _publish(self, count):
-        (self.root / shorts_pipeline.PUBLISHED_FILE).write_text(
-            json.dumps([{"creature": f"c{i}"} for i in range(count)]), encoding="utf-8"
+    def test_no_badge_is_drawn_on_a_published_clip(self):
+        """The overlay call must carry the hook alone; a badge argument left
+        behind here would keep drawing it."""
+        import inspect
+        source = inspect.getsource(shorts_pipeline._publish_queued)
+        self.assertIn("_burn_hook(destination, metadata.hook)", source)
+
+    def test_the_overlay_can_still_draw_one(self):
+        """Kept so the idea can be retested without rebuilding it."""
+        import inspect
+        self.assertIn(
+            "badge", inspect.signature(shorts_pipeline.video_overlay.add_hook).parameters
         )
 
-    def test_the_badge_numbers_the_next_video(self):
-        self._publish(42)
-        self.assertEqual(shorts_pipeline._badge_text(self.root), "№43 · @unfoldableslab")
-
-    def test_the_first_video_is_number_one(self):
-        self.assertEqual(shorts_pipeline._badge_text(self.root), "№1 · @unfoldableslab")
-
-    def test_the_badge_carries_the_handle(self):
-        self.assertIn(shorts_pipeline.CHANNEL_HANDLE, shorts_pipeline._badge_text(self.root))
-
     def test_a_failed_overlay_still_publishes_the_clip(self):
-        """A missing badge costs some conversion; refusing to publish costs the
+        """A missing hook costs some reach; refusing to publish costs the
         whole video."""
         from channel_ops import video_overlay
 
@@ -830,12 +862,12 @@ class BadgeTests(unittest.TestCase):
         clip.write_bytes(b"video")
         self.assertEqual(shorts_pipeline._burn_hook(clip, "", ""), clip)
 
-    def test_the_badge_is_recorded_for_later_comparison(self):
-        """Whether the badge moved conversion has to be answerable from the
-        data, not from memory."""
+    def test_the_badge_field_survives_in_the_record(self):
+        """The before/after split is only readable while every record carries
+        the field — dropping it would erase which videos had one."""
         import inspect
         source = inspect.getsource(shorts_pipeline._publish_queued)
-        self.assertIn('"badge": badge', source)
+        self.assertIn('"badge": ""', source)
 
 
 class CatchUpRunTests(unittest.TestCase):
