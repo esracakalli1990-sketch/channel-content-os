@@ -221,6 +221,16 @@ class GeminiProvider(AIProvider):
         except URLError as exc:
             # A dropped connection is as temporary as a 503.
             raise _Transient(f"connection failed ({exc.reason})") from exc
+        except OSError as exc:
+            # A read timeout does NOT arrive as URLError: urllib only wraps
+            # failures raised while opening the connection, and this one comes
+            # out of the socket read inside getresponse(). So it used to escape
+            # both handlers above, skipping every retry and every model
+            # failover, and taking the publish down with it — on 25 August a
+            # slow answer to a caption request left a finished video sitting in
+            # the queue past its slot. It is as temporary as any other network
+            # failure and is treated as one.
+            raise _Transient(f"request timed out ({exc})") from exc
 
         # Parse response
         try:

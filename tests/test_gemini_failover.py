@@ -71,3 +71,37 @@ class FailoverTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TimeoutClassificationTests(unittest.TestCase):
+    """A read timeout used to escape every handler.
+
+    urllib wraps failures raised while *opening* a connection in URLError, but
+    a timeout on the socket read surfaces as a bare TimeoutError from
+    getresponse(). It therefore skipped the retries and the model failover
+    entirely and propagated out of the pipeline: on 25 August a slow answer to
+    a caption request left a finished video sitting in the queue past its slot.
+    """
+
+    def _call(self, error):
+        provider = gp.GeminiProvider.__new__(gp.GeminiProvider)
+        provider._api_key = "k"
+        provider._model = "gemini-flash-latest"
+
+        def explode(*args, **kwargs):
+            raise error
+
+        original = gp.urlopen
+        gp.urlopen = explode
+        self.addCleanup(setattr, gp, "urlopen", original)
+        return provider
+
+    def test_a_read_timeout_is_transient(self):
+        provider = self._call(TimeoutError("The read operation timed out"))
+        with self.assertRaises(gp._Transient):
+            provider._generate_once("hi", None)
+
+    def test_other_socket_errors_are_transient_too(self):
+        provider = self._call(ConnectionResetError("peer hung up"))
+        with self.assertRaises(gp._Transient):
+            provider._generate_once("hi", None)
