@@ -427,12 +427,24 @@ class ReleaseSlotTests(unittest.TestCase):
         from datetime import UTC, datetime
         self.morning = datetime(2026, 8, 10, 7, 0, tzinfo=UTC)
 
-    def test_three_videos_take_three_different_slots(self):
+    def test_a_days_videos_take_a_different_slot_each(self):
+        """The count comes from the schedule: it was three a day and is two,
+        and a test that writes the number down goes quietly meaningless the
+        next time it changes."""
+        slots = sorted(shorts_pipeline.PUBLISH_SLOTS_UTC)
         taken = []
-        for _ in range(3):
+        for _ in slots:
             taken.append(shorts_pipeline.next_slot(taken, self.morning))
-        self.assertEqual(len(set(taken)), 3)
-        self.assertEqual([slot.hour for slot in taken], sorted(shorts_pipeline.PUBLISH_SLOTS_UTC))
+        self.assertEqual(len(set(taken)), len(slots))
+        self.assertEqual([slot.hour for slot in taken], slots)
+
+    def test_one_more_than_the_days_slots_rolls_to_tomorrow(self):
+        slots = sorted(shorts_pipeline.PUBLISH_SLOTS_UTC)
+        taken = []
+        for _ in range(len(slots) + 1):
+            taken.append(shorts_pipeline.next_slot(taken, self.morning))
+        self.assertEqual(taken[-1].hour, slots[0])
+        self.assertEqual(taken[-1].day, taken[0].day + 1)
 
     def test_slots_are_always_in_the_future(self):
         """Past the day's last slot, the next one belongs to tomorrow.
@@ -594,11 +606,14 @@ class LeadTimeTests(unittest.TestCase):
         from datetime import UTC, datetime
 
         night = datetime(2026, 8, 12, 22, 30, tzinfo=UTC)
+        slots = sorted(shorts_pipeline.PUBLISH_SLOTS_UTC)
         taken = []
-        for _ in range(3):
+        for _ in slots:
             taken.append(shorts_pipeline.next_slot(taken, night))
-        self.assertEqual([slot.hour for slot in taken], [13, 17, 23])
-        self.assertEqual([slot.day for slot in taken], [13, 13, 13])
+        self.assertEqual([slot.hour for slot in taken], slots)
+        # All on the 13th: none of the batch slips back onto the 12th, whose
+        # remaining slot is inside the lead time.
+        self.assertEqual({slot.day for slot in taken}, {13})
 
     def test_a_new_batch_does_not_take_a_slot_the_old_one_holds(self):
         from datetime import UTC, datetime

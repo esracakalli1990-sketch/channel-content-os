@@ -87,7 +87,7 @@ def build_parser() -> argparse.ArgumentParser:
     # A day's worth in one batch. Splitting them across the day meant making a
     # video whenever the reminder landed, which kept missing the hours worth
     # publishing in; the clips are now made in one sitting and released later.
-    prompts.add_argument("--count", type=int, default=3, help="How many concepts to send")
+    prompts.add_argument("--count", type=int, default=2, help="How many concepts to send")
     # Used by the catch-up runs so a retry after an upstream outage does not
     # send a second batch once the first one got through.
     prompts.add_argument(

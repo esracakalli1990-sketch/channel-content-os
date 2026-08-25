@@ -56,12 +56,24 @@ QUEUE_FILE = "data/shorts_queue.json"
 #
 #   13:00 UTC — evening across South East Asia (20:00 in Jakarta and Hanoi,
 #               18:30 in India), morning in the United States
-#   17:00 UTC — American midday (13:00 New York, 10:00 Los Angeles)
 #   23:00 UTC — American prime time (19:00 New York, 16:00 Los Angeles)
+#
+# Two a day, not three. On 25 August two consecutive uploads took 9 and 5
+# views in eight hours while the back catalogue earned 53,000 in the same day
+# — and YouTube reported both as processed, accepted, unrejected, 9:16 and the
+# right length. Nothing was wrong with the videos; they were simply never put
+# into the feed. Four weeks of three machine-made uploads a day, right after
+# the channel's best day ever, is the likeliest thing to have tripped a
+# volume check, so the rate comes down while that is tested. The 17:00 slot
+# is the one dropped: it sat between the other two, and cutting it leaves ten
+# hours between releases instead of four.
+#
+# The three slots performed alike (medians 3,076 / 3,316 / 3,671 over 26
+# mature videos), so this costs nothing in placement.
 #
 # Only the file id is queued, never the video: Telegram keeps file ids valid
 # indefinitely, so the clip is fetched again at publish time.
-PUBLISH_SLOTS_UTC = (13, 17, 23)
+PUBLISH_SLOTS_UTC = (13, 23)
 
 # How far ahead the first release must be. The prompts arrive at midnight
 # Turkish time (21:00 UTC) and the clips are made straight away, which puts
