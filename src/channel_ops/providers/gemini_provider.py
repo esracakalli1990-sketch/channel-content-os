@@ -31,6 +31,13 @@ _BACKOFF_SECONDS = 4
 # Without a ceiling the last waits would double to 128s and push a scheduled
 # job past the point where it is worth still waiting.
 _MAX_BACKOFF_SECONDS = 45
+# How long to wait for one answer. It was 120s, which is far longer than this
+# model needs — a caption set comes back in seconds — and the length worked
+# against the failover it was supposed to survive: four attempts on each of
+# three models at two minutes apiece is nearly half an hour of waiting before
+# a queued video gets its captions, and the slot is long gone. A short ceiling
+# is what makes moving to another model quick enough to matter.
+_READ_TIMEOUT_SECONDS = 60
 
 # Model names that exist but cannot serve a text prompt.
 _UNSUITABLE = ("embedding", "aqa", "imagen", "veo", "tts", "image-generation")
@@ -201,7 +208,7 @@ class GeminiProvider(AIProvider):
         )
 
         try:
-            with urlopen(request, timeout=120) as response:
+            with urlopen(request, timeout=_READ_TIMEOUT_SECONDS) as response:
                 payload = json.load(response)
         except HTTPError as exc:
             error_body = ""
