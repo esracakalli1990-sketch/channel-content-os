@@ -68,7 +68,10 @@
     "three-toed sloth",
     "toco toucan",
     "walrus",
-    "fennec fox"
+    "fennec fox",
+    "swordfish",
+    "platypus",
+    "flamingo"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -84,7 +87,6 @@
     "flattened kite wedge",
     "arched hexagonal block",
     "faceted oval ingot",
-    "flattened crescent wedge",
     "segmented cylindrical barrel",
     "asymmetrical conical spire",
     "flattened trapezoid",
@@ -107,13 +109,11 @@
     "faceted ovoid nodule",
     "chamfered triangular block",
     "curved rectangular brick",
-    "ribbed cylindrical spool",
     "fluted keel block",
     "beveled hexagonal cartridge",
     "faceted pentagonal prism",
     "heavy ribbed barrel",
     "smooth faceted rhomboid",
-    "smooth convex teardrop",
     "smooth concave pod",
     "ribbed hemispherical dome",
     "tapered polyhedral wedge",
@@ -125,6 +125,9 @@
     "smooth carved soapstone pebble",
     "canted triangular ingot",
     "stepped rectangular plinth",
-    "beveled pentagonal tablet"
+    "beveled pentagonal tablet",
+    "flattened crescent wedge",
+    "ribbed cylindrical spool",
+    "smooth convex teardrop"
   ]
 }
