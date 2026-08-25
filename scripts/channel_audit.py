@@ -41,7 +41,10 @@ def _data_stats(video_ids: list[str]) -> dict[str, dict]:
     for start in range(0, len(video_ids), BATCH):
         chunk = video_ids[start:start + BATCH]
         params = urlencode({
-            "part": "statistics,contentDetails,snippet,status",
+            # processingDetails and the full status block are what separate
+            # "nobody watched it" from "YouTube never finished with it": a
+            # rejected or still-processing video is public and unwatchable.
+            "part": "statistics,contentDetails,snippet,status,processingDetails",
             "id": ",".join(chunk),
         })
         request = Request(f"{DATA_URL}?{params}", headers={"Authorization": f"Bearer {token}"})
@@ -49,12 +52,21 @@ def _data_stats(video_ids: list[str]) -> dict[str, dict]:
             payload = json.load(response)
         for item in payload.get("items", []):
             stats = item.get("statistics", {})
+            status = item.get("status", {})
+            details = item.get("processingDetails", {})
+            content = item.get("contentDetails", {})
             out[item["id"]] = {
                 "views": int(stats.get("viewCount", 0)),
                 "likes": int(stats.get("likeCount", 0)),
                 "comments": int(stats.get("commentCount", 0)),
-                "duration": item.get("contentDetails", {}).get("duration", ""),
-                "privacy": item.get("status", {}).get("privacyStatus", ""),
+                "duration": content.get("duration", ""),
+                "privacy": status.get("privacyStatus", ""),
+                "upload": status.get("uploadStatus", ""),
+                "rejection": status.get("rejectionReason", ""),
+                "failure": status.get("failureReason", ""),
+                "processing": details.get("processingStatus", ""),
+                "kids": status.get("madeForKids", ""),
+                "embeddable": status.get("embeddable", ""),
                 "title": item.get("snippet", {}).get("title", ""),
             }
     return out
@@ -185,8 +197,9 @@ def _emit(dump: dict) -> None:
 
     print("\n### VIDEOLAR")
     print("\t".join((
-        "no", "yayin", "yaratik", "id", "gorunurluk", "izlenme", "begeni",
-        "yorum", "izl%", "izl_sn", "abone", "paylasim", "kanca", "rozet", "sablon",
+        "no", "yayin", "yaratik", "id", "gorunurluk", "yukleme", "islem",
+        "ret", "sure", "cocuk", "izlenme", "begeni", "yorum", "izl%",
+        "izl_sn", "abone", "paylasim", "kanca", "rozet", "sablon",
     )))
     for index, record in enumerate(dump.get("published") or [], 1):
         vid = record.get("youtube_video_id", "")
@@ -198,6 +211,11 @@ def _emit(dump: dict) -> None:
             record.get("creature", ""),
             vid,
             data.get("privacy", "-"),
+            data.get("upload", "-"),
+            data.get("processing", "-"),
+            data.get("rejection") or data.get("failure") or "-",
+            (data.get("duration", "") or "-").replace("PT", ""),
+            data.get("kids", "-"),
             data.get("views", "-"),
             data.get("likes", "-"),
             data.get("comments", "-"),
