@@ -44,7 +44,12 @@ def _data_stats(video_ids: list[str]) -> dict[str, dict]:
             # processingDetails and the full status block are what separate
             # "nobody watched it" from "YouTube never finished with it": a
             # rejected or still-processing video is public and unwatchable.
-            "part": "statistics,contentDetails,snippet,status,processingDetails",
+            # fileDetails carries the pixel dimensions of what was actually
+            # uploaded. A clip that stops being 9:16 stops being a Short and
+            # leaves the Shorts feed entirely, which looks exactly like being
+            # throttled — so it has to be ruled in or out, not assumed.
+            "part": ("statistics,contentDetails,snippet,status,"
+                     "processingDetails,fileDetails"),
             "id": ",".join(chunk),
         })
         request = Request(f"{DATA_URL}?{params}", headers={"Authorization": f"Bearer {token}"})
@@ -66,10 +71,20 @@ def _data_stats(video_ids: list[str]) -> dict[str, dict]:
                 "failure": status.get("failureReason", ""),
                 "processing": details.get("processingStatus", ""),
                 "kids": status.get("madeForKids", ""),
+                "size": _resolution(item.get("fileDetails", {})),
                 "embeddable": status.get("embeddable", ""),
                 "title": item.get("snippet", {}).get("title", ""),
             }
     return out
+
+
+def _resolution(file_details: dict) -> str:
+    """WxH of the first video stream, or "-" when YouTube did not report one."""
+    for stream in file_details.get("videoStreams") or []:
+        width, height = stream.get("widthPixels"), stream.get("heightPixels")
+        if width and height:
+            return f"{width}x{height}"
+    return "-"
 
 
 def _rows(
@@ -198,7 +213,7 @@ def _emit(dump: dict) -> None:
     print("\n### VIDEOLAR")
     print("\t".join((
         "no", "yayin", "yaratik", "id", "gorunurluk", "yukleme", "islem",
-        "ret", "sure", "cocuk", "izlenme", "begeni", "yorum", "izl%",
+        "ret", "sure", "cocuk", "boyut", "izlenme", "begeni", "yorum", "izl%",
         "izl_sn", "abone", "paylasim", "kanca", "rozet", "sablon",
     )))
     for index, record in enumerate(dump.get("published") or [], 1):
@@ -216,6 +231,7 @@ def _emit(dump: dict) -> None:
             data.get("rejection") or data.get("failure") or "-",
             (data.get("duration", "") or "-").replace("PT", ""),
             data.get("kids", "-"),
+            data.get("size", "-"),
             data.get("views", "-"),
             data.get("likes", "-"),
             data.get("comments", "-"),
@@ -228,7 +244,7 @@ def _emit(dump: dict) -> None:
             (record.get("template_version") or "-")[:8],
         )))
 
-    for section in ("daily", "traffic", "countries", "devices", "subs_status"):
+    for section in ("daily", "traffic", "devices", "subs_status", "countries"):
         block = (dump.get("analytics") or {}).get(section) or {}
         if not block.get("rows"):
             continue
@@ -236,6 +252,14 @@ def _emit(dump: dict) -> None:
         print("\t".join(block.get("columns") or []))
         for row in block["rows"]:
             print("\t".join(str(cell) for cell in row))
+
+    # Repeated at the end: a log is read from the bottom, and the copy at the
+    # top scrolls out of reach behind two hundred lines of table.
+    print("\n### TOPLAMLAR (tekrar)")
+    for key, value in (dump.get("totals") or {}).items():
+        print(f"{key}\t{value}")
+    for key, value in (dump.get("errors") or {}).items():
+        print(f"HATA {key}\t{value}")
 
 
 if __name__ == "__main__":
