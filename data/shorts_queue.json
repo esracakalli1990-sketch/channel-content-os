@@ -32,5 +32,22 @@
       "shell_mechanic": "The heavy titanium top plate unlatches and hinges upward while the side panels swing out to form bulk flippers",
       "emerging_parts": "A pair of long polished ivory tusks, a whiskered muzzle plate, and two broad trailing paddles"
     }
+  },
+  {
+    "queued_at": "2026-08-25T00:36:46+00:00",
+    "publish_at": "2026-08-25T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIBrGqM451PJNt0zyzFF0ek-LCcidObAALBHgAC2b5oUE65maTsT2SPPQQ",
+    "file_size": 2369423,
+    "caption": "3",
+    "concept": {
+      "shape": "beveled pentagonal tablet",
+      "material": "warm sandblasted sandstone ceramic and brushed copper fittings",
+      "internal_detail": "fine copper watchwork and delicate spring-driven balance wheels",
+      "button": "a domed copper contact disc centered on the top panel",
+      "button_short": "the domed copper contact disc at the center",
+      "creature": "fennec fox",
+      "shell_mechanic": "The side ceramic facets swing outward and downward to establish the flank contours",
+      "emerging_parts": "Two enormous acoustic-dish ears, a slender pointed snout with glass optic eyes, and four telescoping paw struts"
+    }
   }
 ]
