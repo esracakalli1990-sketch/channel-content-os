@@ -15,5 +15,22 @@
       "shell_mechanic": "The upper triangular shell plates separate along a central spine and slide backward to form folded wings",
       "emerging_parts": "An oversized brightly anodized curved bill, a keen ocular sensor, and a pair of articulated clawed feet"
     }
+  },
+  {
+    "queued_at": "2026-08-25T00:34:43+00:00",
+    "publish_at": "2026-08-25T17:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIBqmqM4wJp_xDKdYWMRLyQGwiouzzHAALAHgAC2b5oUJepN24tPqYCPQQ",
+    "file_size": 1863326,
+    "caption": "2",
+    "concept": {
+      "shape": "stepped rectangular plinth",
+      "material": "bead-blasted slate-grey titanium with carved synthetic ivory accents",
+      "internal_detail": "heavy brass reduction gearboxes and miniature pneumatic actuators",
+      "button": "a knurled bronze rocker switch set flush into the top face",
+      "button_short": "the knurled bronze rocker switch on the top face",
+      "creature": "walrus",
+      "shell_mechanic": "The heavy titanium top plate unlatches and hinges upward while the side panels swing out to form bulk flippers",
+      "emerging_parts": "A pair of long polished ivory tusks, a whiskered muzzle plate, and two broad trailing paddles"
+    }
   }
 ]
