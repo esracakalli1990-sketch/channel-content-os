@@ -1044,6 +1044,94 @@ class ResendCommandTests(unittest.TestCase):
         self.assertFalse(shorts_pipeline.PROMPT_COMMANDS & shorts_pipeline.REPORT_COMMANDS)
 
 
+class QueueOrderTests(unittest.TestCase):
+    """The number written on a clip matches it to its idea inside one batch.
+    It is not a release order, and a leftover from an earlier day sits ahead
+    of today's "1" — which read as the numbering having gone wrong when it had
+    not. The real order is now both shown and askable.
+    """
+
+    def setUp(self):
+        self._workspace = TemporaryDirectory()
+        self.root = Path(self._workspace.name)
+        (self.root / "data").mkdir()
+        self.addCleanup(self._workspace.cleanup)
+        self.sent = []
+        original = shorts_pipeline.notifications.send_message
+        shorts_pipeline.notifications.send_message = self.sent.append
+        self.addCleanup(
+            setattr, shorts_pipeline.notifications, "send_message", original
+        )
+
+    def _write(self, queue):
+        (self.root / shorts_pipeline.QUEUE_FILE).write_text(
+            json.dumps(queue), encoding="utf-8"
+        )
+
+    @staticmethod
+    def _entry(creature, publish_at):
+        return {"publish_at": publish_at, "concept": {"creature": creature}}
+
+    def test_a_clip_behind_a_leftover_is_told_so(self):
+        queue = [
+            self._entry("fennec fox", "2026-08-26T13:00:00+00:00"),
+            self._entry("swordfish", "2026-08-26T23:00:00+00:00"),
+        ]
+        line = shorts_pipeline._position_line(queue, queue[1])
+        self.assertIn("2.", line)
+        self.assertIn("fennec fox", line)
+
+    def test_the_first_in_line_gets_no_position_line(self):
+        """Nothing is ahead of it, so there is no order to explain."""
+        queue = [self._entry("fennec fox", "2026-08-26T13:00:00+00:00")]
+        self.assertEqual(shorts_pipeline._position_line(queue, queue[0]), "")
+
+    def test_position_follows_the_slot_not_the_arrival_order(self):
+        """The leftover was queued a day earlier but appended last."""
+        queue = [
+            self._entry("swordfish", "2026-08-26T23:00:00+00:00"),
+            self._entry("fennec fox", "2026-08-26T13:00:00+00:00"),
+        ]
+        self.assertEqual(shorts_pipeline._position_line(queue, queue[1]), "")
+        self.assertIn("2.", shorts_pipeline._position_line(queue, queue[0]))
+
+    def test_the_queue_command_lists_releases_in_order(self):
+        self._write([
+            self._entry("flamingo", "2026-08-27T23:00:00+00:00"),
+            self._entry("fennec fox", "2026-08-26T13:00:00+00:00"),
+            self._entry("swordfish", "2026-08-26T23:00:00+00:00"),
+        ])
+        shorts_pipeline._send_queue(self.root)
+        message = " ".join(self.sent)
+        self.assertLess(message.index("fennec fox"), message.index("swordfish"))
+        self.assertLess(message.index("swordfish"), message.index("flamingo"))
+
+    def test_the_queue_command_says_so_when_nothing_waits(self):
+        self._write([])
+        shorts_pipeline._send_queue(self.root)
+        self.assertIn("boş", " ".join(self.sent))
+
+    def test_a_broken_queue_file_does_not_stop_a_publish(self):
+        (self.root / shorts_pipeline.QUEUE_FILE).write_text("[{}]", encoding="utf-8")
+        shorts_pipeline._send_queue(self.root)  # must not raise
+
+    def test_both_clocks_are_shown(self):
+        from datetime import UTC, datetime
+        label = shorts_pipeline._slot_label(
+            datetime(2026, 8, 26, 23, 0, tzinfo=UTC)
+        )
+        self.assertIn("26.08 23:00 UTC", label)
+        self.assertIn("02:00 TRT", label)
+
+    def test_the_command_words_cover_the_obvious_turkish(self):
+        for word in ("kuyruk", "sıra", "queue"):
+            self.assertIn(word, shorts_pipeline.QUEUE_COMMANDS)
+
+    def test_the_commands_do_not_overlap_each_other(self):
+        for other in (shorts_pipeline.REPORT_COMMANDS, shorts_pipeline.PROMPT_COMMANDS):
+            self.assertFalse(shorts_pipeline.QUEUE_COMMANDS & other)
+
+
 class IntakeIsolationTests(unittest.TestCase):
     """Reading the inbox and releasing a queued video are independent jobs.
     They were chained, so one failed Telegram fetch left a video whose slot

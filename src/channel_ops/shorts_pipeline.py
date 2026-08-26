@@ -90,6 +90,13 @@ REPORT_COMMANDS = frozenset({"rapor", "report", "istatistik", "stats"})
 # is the same as no idea at all.
 PROMPT_COMMANDS = frozenset({"promptlar", "prompt", "fikirler", "fikir", "ideas"})
 
+# Typed into the Telegram chat to see what is waiting to go out and when.
+# The number written on a clip is only how it is matched to its idea inside
+# one batch; it says nothing about release order, and a leftover from an
+# earlier day sits ahead of today's "1". That looked like the numbering had
+# gone wrong when it had not, so the real order can now be asked for.
+QUEUE_COMMANDS = frozenset({"kuyruk", "queue", "sira", "sıra"})
+
 # Concepts older than this are no longer offered as a match for an arriving clip.
 PENDING_EXPIRY_DAYS = 14
 
@@ -394,6 +401,8 @@ def _accept_incoming(provider: AIProvider, root: Path) -> list[dict]:
         _send_report(root)
     if PROMPT_COMMANDS.intersection(commands):
         _resend_prompts(root)
+    if QUEUE_COMMANDS.intersection(commands):
+        _send_queue(root)
 
     videos = telegram_inbox.extract_videos(updates)
     if not videos:
@@ -464,6 +473,33 @@ def _queued_times(queue: list[dict]) -> list[datetime]:
     return times
 
 
+def _slot_label(moment: datetime) -> str:
+    """"26.08 23:00 UTC (02:00 TRT)" — both clocks, because the schedule is
+    kept in UTC and read by someone living in UTC+3."""
+    return (
+        f"{moment.strftime('%d.%m %H:%M')} UTC "
+        f"({(moment + timedelta(hours=3)).strftime('%H:%M')} TRT)"
+    )
+
+
+def _position_line(queue: list[dict], item: dict) -> str:
+    """Where this clip sits in the real release order, and what is ahead.
+
+    Without it the notice reads as though the clip written "1" should go out
+    first, when a leftover from an earlier day can hold the slot in front of
+    it. Empty when nothing is ahead: there is no order to explain.
+    """
+    ordered = sorted(queue, key=lambda entry: entry.get("publish_at", ""))
+    ahead = [
+        entry for entry in ordered
+        if entry.get("publish_at", "") < item["publish_at"]
+    ]
+    if not ahead:
+        return ""
+    names = ", ".join(_escape(entry["concept"]["creature"]) for entry in ahead[-2:])
+    return f"\nKuyrukta <b>{len(ahead) + 1}.</b> sıra — önünde: {names}"
+
+
 def enqueue(video: telegram_inbox.IncomingVideo, pending: list[dict], root: Path) -> dict:
     """Match an arriving clip to a concept and hold it for its release slot."""
     entry = match_pending(video.caption, pending)
@@ -495,8 +531,8 @@ def enqueue(video: telegram_inbox.IncomingVideo, pending: list[dict], root: Path
     concept = Concept(**entry["concept"])
     notifications.send_message(
         f"🗓 <b>Sıraya alındı</b> — {_escape(concept.creature)}\n"
-        f"Yayın saati: <b>{publish_at.strftime('%d.%m %H:%M')} UTC</b> "
-        f"({(publish_at + timedelta(hours=3)).strftime('%H:%M')} TRT)"
+        f"Yayın saati: <b>{_slot_label(publish_at)}</b>"
+        f"{_position_line(queue, item)}"
     )
     logger.info("Queued %s for %s", concept.creature, publish_at.isoformat())
     return item
@@ -639,6 +675,29 @@ def _burn_hook(clip: Path, hook: str, badge: str = "") -> Path:
     except (video_overlay.OverlayUnavailable, OSError) as exc:
         logger.warning("Publishing without the overlays: %s", exc)
         return clip
+
+
+def _send_queue(root: Path) -> None:
+    """Answer a /kuyruk command. Never raises — the same rule as the other
+    commands: an answer nobody asked for must not stop a waiting publish."""
+    try:
+        queue = sorted(
+            _read_json(_data_path(QUEUE_FILE, root), []),
+            key=lambda entry: entry.get("publish_at", ""),
+        )
+        if not queue:
+            notifications.send_message(
+                "🗓 <b>Yayın kuyruğu boş</b>\nBekleyen video yok."
+            )
+            return
+        lines = [f"🗓 <b>Yayın kuyruğu</b> — {len(queue)} video\n"]
+        for index, entry in enumerate(queue, 1):
+            moment = datetime.fromisoformat(entry["publish_at"])
+            creature = _escape(entry["concept"]["creature"])
+            lines.append(f"{index}. <b>{creature}</b> — {_slot_label(moment)}")
+        notifications.send_message("\n".join(lines))
+    except (RuntimeError, OSError, KeyError, ValueError):
+        logger.exception("Could not send the queue")
 
 
 def _resend_prompts(root: Path) -> None:
