@@ -32,5 +32,22 @@
       "shell_mechanic": "The gunmetal casing splits apart horizontally and the upper and lower halves swing wide on brass hinges",
       "emerging_parts": "A long serrated spear-snout and two sweeping pectoral fins"
     }
+  },
+  {
+    "queued_at": "2026-08-26T02:56:13+00:00",
+    "publish_at": "2026-08-27T13:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIBvGqOVZXGSrsYyINy_VQD5izWcPfuAAIJIAAC2b5wUJj-zYpYo4GZPQQ",
+    "file_size": 2510382,
+    "caption": "2",
+    "concept": {
+      "shape": "ribbed cylindrical spool",
+      "material": "oxidized copper and forged iron",
+      "internal_detail": "coiled brass copper ribbons and ratchets",
+      "button": "a small iron button set flush against the bottom rim",
+      "button_short": "the small iron button set flush against the bottom rim",
+      "creature": "platypus",
+      "shell_mechanic": "The copper ribbed casing unrolls outward in four curved segments like blooming petals",
+      "emerging_parts": "A wide flat leathery bill and a broad webbed tail"
+    }
   }
 ]
