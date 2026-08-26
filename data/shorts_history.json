@@ -71,7 +71,9 @@
     "fennec fox",
     "swordfish",
     "platypus",
-    "flamingo"
+    "flamingo",
+    "hammerhead shark",
+    "shoebill"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -128,6 +130,8 @@
     "beveled pentagonal tablet",
     "flattened crescent wedge",
     "ribbed cylindrical spool",
-    "smooth convex teardrop"
+    "smooth convex teardrop",
+    "tapered delta ingot",
+    "canted hexagonal monolith"
   ]
 }

@@ -1,56 +1,36 @@
 [
   {
     "index": 1,
-    "batch": "2026-08-25T20:54:06.749702+00:00",
-    "created_at": "2026-08-25T20:54:06.749702+00:00",
+    "batch": "2026-08-26T23:52:13.188001+00:00",
+    "created_at": "2026-08-26T23:52:13.188001+00:00",
     "concept": {
-      "shape": "flattened crescent wedge",
-      "material": "brushed gunmetal steel and polished brass",
-      "internal_detail": "exposed micro-pulleys and tension springs",
-      "button": "a tiny raised brass stud on the curved rim",
-      "button_short": "the tiny raised brass stud on the curved rim",
-      "creature": "swordfish",
-      "shell_mechanic": "The gunmetal casing splits apart horizontally and the upper and lower halves swing wide on brass hinges",
-      "emerging_parts": "A long serrated spear-snout and two sweeping pectoral fins"
+      "shape": "tapered delta ingot",
+      "material": "matte gunmetal titanium and brushed naval brass",
+      "internal_detail": "interlocking steel drive rods and micro-hydraulic linkages",
+      "button": "a flush brass toggle button inset on the dorsal ridge",
+      "button_short": "the flush brass toggle button on the dorsal ridge",
+      "creature": "hammerhead shark",
+      "shell_mechanic": "The dorsal plates pivot laterally while the ventral hull drops down",
+      "emerging_parts": "A wide T-shaped cephalofoil head, two pectoral fins, and a tall crescent tail"
     },
-    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, flattened crescent wedge-shaped object made of brushed gunmetal steel and polished brass. The outer shell is completely closed, solid and seamless, with no gears, springs or moving parts visible anywhere on its surface. The toy features a tiny raised brass stud on the curved rim. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
-    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the tiny raised brass stud on the curved rim with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical swordfish. The unfolding and transformation process is logical and physically consistent. The gunmetal casing splits apart horizontally and the upper and lower halves swing wide on brass hinges, revealing the movement of internal mechanical components and gears. A long serrated spear-snout and two sweeping pectoral fins physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical swordfish's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. In the last second the finished swordfish settles into a still pose, resting on the same spot where the closed toy was placed, and the shot holds completely steady with no further movement and nothing entering the frame, so the clip cuts back to its opening without a jolt when it loops. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice.",
-    "used_at": "2026-08-26T02:54:10+00:00"
+    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, tapered delta ingot-shaped object made of matte gunmetal titanium and brushed naval brass. The outer shell is completely closed, solid and seamless, with no gears, springs or moving parts visible anywhere on its surface. The toy features a flush brass toggle button inset on the dorsal ridge. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
+    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the flush brass toggle button on the dorsal ridge with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical hammerhead shark. The unfolding and transformation process is logical and physically consistent. The dorsal plates pivot laterally while the ventral hull drops down, revealing the movement of internal mechanical components and gears. A wide T-shaped cephalofoil head, two pectoral fins, and a tall crescent tail physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical hammerhead shark's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. In the last second the finished hammerhead shark settles into a still pose, resting on the same spot where the closed toy was placed, and the shot holds completely steady with no further movement and nothing entering the frame, so the clip cuts back to its opening without a jolt when it loops. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice."
   },
   {
     "index": 2,
-    "batch": "2026-08-25T20:54:06.749702+00:00",
-    "created_at": "2026-08-25T20:54:06.749702+00:00",
+    "batch": "2026-08-26T23:52:13.188001+00:00",
+    "created_at": "2026-08-26T23:52:13.188001+00:00",
     "concept": {
-      "shape": "ribbed cylindrical spool",
-      "material": "oxidized copper and forged iron",
-      "internal_detail": "coiled brass copper ribbons and ratchets",
-      "button": "a small iron button set flush against the bottom rim",
-      "button_short": "the small iron button set flush against the bottom rim",
-      "creature": "platypus",
-      "shell_mechanic": "The copper ribbed casing unrolls outward in four curved segments like blooming petals",
-      "emerging_parts": "A wide flat leathery bill and a broad webbed tail"
+      "shape": "canted hexagonal monolith",
+      "material": "oxidized charcoal bronze and patinated pewter",
+      "internal_detail": "counterbalanced clockwork gears, steel tension springs, and jointed linkages",
+      "button": "a knurled bronze button seated along the top edge",
+      "button_short": "the knurled bronze button along the top edge",
+      "creature": "shoebill",
+      "shell_mechanic": "The front housing divides along a central seam and swings backward as wing panels",
+      "emerging_parts": "A massive bulbous shoe-shaped beak, a crested head, and two spindly folded legs"
     },
-    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, ribbed cylindrical spool-shaped object made of oxidized copper and forged iron. The outer shell is completely closed, solid and seamless, with no gears, springs or moving parts visible anywhere on its surface. The toy features a small iron button set flush against the bottom rim. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
-    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the small iron button set flush against the bottom rim with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical platypus. The unfolding and transformation process is logical and physically consistent. The copper ribbed casing unrolls outward in four curved segments like blooming petals, revealing the movement of internal mechanical components and gears. A wide flat leathery bill and a broad webbed tail physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical platypus's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. In the last second the finished platypus settles into a still pose, resting on the same spot where the closed toy was placed, and the shot holds completely steady with no further movement and nothing entering the frame, so the clip cuts back to its opening without a jolt when it loops. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice.",
-    "used_at": "2026-08-26T02:56:13+00:00"
-  },
-  {
-    "index": 3,
-    "batch": "2026-08-25T20:54:06.749702+00:00",
-    "created_at": "2026-08-25T20:54:06.749702+00:00",
-    "concept": {
-      "shape": "smooth convex teardrop",
-      "material": "aged tortoiseshell resin and gilded wire",
-      "internal_detail": "interlocking golden linkage bars and miniature cams",
-      "button": "a polished amber pushbutton at the narrow tip",
-      "button_short": "the polished amber pushbutton at the narrow tip",
-      "creature": "flamingo",
-      "shell_mechanic": "The resin shell parts down the middle and retracts inward into the base",
-      "emerging_parts": "An impossibly long curved neck and two spindly jointed legs"
-    },
-    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, smooth convex teardrop-shaped object made of aged tortoiseshell resin and gilded wire. The outer shell is completely closed, solid and seamless, with no gears, springs or moving parts visible anywhere on its surface. The toy features a polished amber pushbutton at the narrow tip. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
-    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the polished amber pushbutton at the narrow tip with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical flamingo. The unfolding and transformation process is logical and physically consistent. The resin shell parts down the middle and retracts inward into the base, revealing the movement of internal mechanical components and gears. An impossibly long curved neck and two spindly jointed legs physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical flamingo's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. In the last second the finished flamingo settles into a still pose, resting on the same spot where the closed toy was placed, and the shot holds completely steady with no further movement and nothing entering the frame, so the clip cuts back to its opening without a jolt when it loops. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice.",
-    "used_at": "2026-08-26T02:58:16+00:00"
+    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, canted hexagonal monolith-shaped object made of oxidized charcoal bronze and patinated pewter. The outer shell is completely closed, solid and seamless, with no gears, springs or moving parts visible anywhere on its surface. The toy features a knurled bronze button seated along the top edge. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
+    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the knurled bronze button along the top edge with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical shoebill. The unfolding and transformation process is logical and physically consistent. The front housing divides along a central seam and swings backward as wing panels, revealing the movement of internal mechanical components and gears. A massive bulbous shoe-shaped beak, a crested head, and two spindly folded legs physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical shoebill's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. In the last second the finished shoebill settles into a still pose, resting on the same spot where the closed toy was placed, and the shot holds completely steady with no further movement and nothing entering the frame, so the clip cuts back to its opening without a jolt when it loops. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice."
   }
 ]
