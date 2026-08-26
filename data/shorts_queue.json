@@ -15,5 +15,22 @@
       "shell_mechanic": "The side ceramic facets swing outward and downward to establish the flank contours",
       "emerging_parts": "Two enormous acoustic-dish ears, a slender pointed snout with glass optic eyes, and four telescoping paw struts"
     }
+  },
+  {
+    "queued_at": "2026-08-26T02:54:10+00:00",
+    "publish_at": "2026-08-26T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIBumqOVUCVpPRJTgIo9usMhe7N0M79AAIIIAAC2b5wUAr_92tCDK9XPQQ",
+    "file_size": 2465826,
+    "caption": "1",
+    "concept": {
+      "shape": "flattened crescent wedge",
+      "material": "brushed gunmetal steel and polished brass",
+      "internal_detail": "exposed micro-pulleys and tension springs",
+      "button": "a tiny raised brass stud on the curved rim",
+      "button_short": "the tiny raised brass stud on the curved rim",
+      "creature": "swordfish",
+      "shell_mechanic": "The gunmetal casing splits apart horizontally and the upper and lower halves swing wide on brass hinges",
+      "emerging_parts": "A long serrated spear-snout and two sweeping pectoral fins"
+    }
   }
 ]
