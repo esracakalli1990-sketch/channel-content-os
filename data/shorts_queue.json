@@ -32,5 +32,22 @@
       "shell_mechanic": "The dorsal plates pivot laterally while the ventral hull drops down",
       "emerging_parts": "A wide T-shaped cephalofoil head, two pectoral fins, and a tall crescent tail"
     }
+  },
+  {
+    "queued_at": "2026-08-27T14:06:57+00:00",
+    "publish_at": "2026-08-28T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIBz2qQRGVxPHaFg-kIYRFv0Sm2EdxIAAL_GwAC7cyBUG-dYKzsROB9PQQ",
+    "file_size": 3151365,
+    "caption": "2",
+    "concept": {
+      "shape": "canted hexagonal monolith",
+      "material": "oxidized charcoal bronze and patinated pewter",
+      "internal_detail": "counterbalanced clockwork gears, steel tension springs, and jointed linkages",
+      "button": "a knurled bronze button seated along the top edge",
+      "button_short": "the knurled bronze button along the top edge",
+      "creature": "shoebill",
+      "shell_mechanic": "The front housing divides along a central seam and swings backward as wing panels",
+      "emerging_parts": "A massive bulbous shoe-shaped beak, a crested head, and two spindly folded legs"
+    }
   }
 ]
