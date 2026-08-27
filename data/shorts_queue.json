@@ -1,22 +1,5 @@
 [
   {
-    "queued_at": "2026-08-26T02:56:13+00:00",
-    "publish_at": "2026-08-27T13:00:00+00:00",
-    "file_id": "BQACAgQAAxkBAAIBvGqOVZXGSrsYyINy_VQD5izWcPfuAAIJIAAC2b5wUJj-zYpYo4GZPQQ",
-    "file_size": 2510382,
-    "caption": "2",
-    "concept": {
-      "shape": "ribbed cylindrical spool",
-      "material": "oxidized copper and forged iron",
-      "internal_detail": "coiled brass copper ribbons and ratchets",
-      "button": "a small iron button set flush against the bottom rim",
-      "button_short": "the small iron button set flush against the bottom rim",
-      "creature": "platypus",
-      "shell_mechanic": "The copper ribbed casing unrolls outward in four curved segments like blooming petals",
-      "emerging_parts": "A wide flat leathery bill and a broad webbed tail"
-    }
-  },
-  {
     "queued_at": "2026-08-26T02:58:16+00:00",
     "publish_at": "2026-08-27T23:00:00+00:00",
     "file_id": "BQACAgQAAxkBAAIBvmqOVdc4TuovjXltTH8zGhbB-5vcAAIKIAAC2b5wUHuwq41HeDiuPQQ",
@@ -31,6 +14,23 @@
       "creature": "flamingo",
       "shell_mechanic": "The resin shell parts down the middle and retracts inward into the base",
       "emerging_parts": "An impossibly long curved neck and two spindly jointed legs"
+    }
+  },
+  {
+    "queued_at": "2026-08-27T13:55:39+00:00",
+    "publish_at": "2026-08-28T13:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIBy2qQIWb9QAQbxEuv0GLoqljjeXhlAAK8GwAC7cyBUM6rZrtBw0tMPQQ",
+    "file_size": 4480071,
+    "caption": "1",
+    "concept": {
+      "shape": "tapered delta ingot",
+      "material": "matte gunmetal titanium and brushed naval brass",
+      "internal_detail": "interlocking steel drive rods and micro-hydraulic linkages",
+      "button": "a flush brass toggle button inset on the dorsal ridge",
+      "button_short": "the flush brass toggle button on the dorsal ridge",
+      "creature": "hammerhead shark",
+      "shell_mechanic": "The dorsal plates pivot laterally while the ventral hull drops down",
+      "emerging_parts": "A wide T-shaped cephalofoil head, two pectoral fins, and a tall crescent tail"
     }
   }
 ]
