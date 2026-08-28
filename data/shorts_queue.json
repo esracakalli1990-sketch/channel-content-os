@@ -32,5 +32,22 @@
       "shell_mechanic": "The front housing divides along a central seam and swings backward as wing panels",
       "emerging_parts": "A massive bulbous shoe-shaped beak, a crested head, and two spindly folded legs"
     }
+  },
+  {
+    "queued_at": "2026-08-28T04:34:30+00:00",
+    "publish_at": "2026-08-29T13:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIB2GqRD85ayspPq5fzFyxLKzfOXm1aAAIvGwAC1suIUJknCz4bGQcxPQQ",
+    "file_size": 3265761,
+    "caption": "1",
+    "concept": {
+      "shape": "smooth asymmetrical pod",
+      "material": "polished bone white ceramic with gold leaf inlay",
+      "internal_detail": "interlocking platinum linkages and fine silver hairsprings",
+      "button": "a flush porcelain disc set into the base",
+      "button_short": "the flush porcelain disc",
+      "creature": "marine iguana",
+      "shell_mechanic": "The smooth asymmetrical pod splits cleanly along its dorsal ridge and the outer shell halves slide apart to the sides",
+      "emerging_parts": "A short flat snout and a high jagged crest of dorsal scales"
+    }
   }
 ]
