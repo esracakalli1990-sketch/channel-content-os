@@ -1,38 +1,36 @@
 [
   {
     "index": 1,
-    "batch": "2026-08-26T23:52:13.188001+00:00",
-    "created_at": "2026-08-26T23:52:13.188001+00:00",
+    "batch": "2026-08-28T04:28:43.153187+00:00",
+    "created_at": "2026-08-28T04:28:43.153187+00:00",
     "concept": {
-      "shape": "tapered delta ingot",
-      "material": "matte gunmetal titanium and brushed naval brass",
-      "internal_detail": "interlocking steel drive rods and micro-hydraulic linkages",
-      "button": "a flush brass toggle button inset on the dorsal ridge",
-      "button_short": "the flush brass toggle button on the dorsal ridge",
-      "creature": "hammerhead shark",
-      "shell_mechanic": "The dorsal plates pivot laterally while the ventral hull drops down",
-      "emerging_parts": "A wide T-shaped cephalofoil head, two pectoral fins, and a tall crescent tail"
+      "shape": "smooth asymmetrical pod",
+      "material": "polished bone white ceramic with gold leaf inlay",
+      "internal_detail": "interlocking platinum linkages and fine silver hairsprings",
+      "button": "a flush porcelain disc set into the base",
+      "button_short": "the flush porcelain disc",
+      "creature": "marine iguana",
+      "shell_mechanic": "The smooth asymmetrical pod splits cleanly along its dorsal ridge and the outer shell halves slide apart to the sides",
+      "emerging_parts": "A short flat snout and a high jagged crest of dorsal scales"
     },
-    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, tapered delta ingot-shaped object made of matte gunmetal titanium and brushed naval brass. The outer shell is completely closed, solid and seamless, with no gears, springs or moving parts visible anywhere on its surface. The toy features a flush brass toggle button inset on the dorsal ridge. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
-    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the flush brass toggle button on the dorsal ridge with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical hammerhead shark. The unfolding and transformation process is logical and physically consistent. The dorsal plates pivot laterally while the ventral hull drops down, revealing the movement of internal mechanical components and gears. A wide T-shaped cephalofoil head, two pectoral fins, and a tall crescent tail physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical hammerhead shark's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. In the last second the finished hammerhead shark settles into a still pose, resting on the same spot where the closed toy was placed, and the shot holds completely steady with no further movement and nothing entering the frame, so the clip cuts back to its opening without a jolt when it loops. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice.",
-    "used_at": "2026-08-27T13:55:39+00:00"
+    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, smooth asymmetrical pod-shaped object made of polished bone white ceramic with gold leaf inlay. The outer shell is completely closed, solid and seamless, with no gears, springs or moving parts visible anywhere on its surface. The toy features a flush porcelain disc set into the base. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
+    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the flush porcelain disc with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical marine iguana. The unfolding and transformation process is logical and physically consistent. The smooth asymmetrical pod splits cleanly along its dorsal ridge and the outer shell halves slide apart to the sides, revealing the movement of internal mechanical components and gears. A short flat snout and a high jagged crest of dorsal scales physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical marine iguana's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. In the last second the finished marine iguana settles into a still pose, resting on the same spot where the closed toy was placed, and the shot holds completely steady with no further movement and nothing entering the frame, so the clip cuts back to its opening without a jolt when it loops. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice."
   },
   {
     "index": 2,
-    "batch": "2026-08-26T23:52:13.188001+00:00",
-    "created_at": "2026-08-26T23:52:13.188001+00:00",
+    "batch": "2026-08-28T04:28:43.153187+00:00",
+    "created_at": "2026-08-28T04:28:43.153187+00:00",
     "concept": {
-      "shape": "canted hexagonal monolith",
-      "material": "oxidized charcoal bronze and patinated pewter",
-      "internal_detail": "counterbalanced clockwork gears, steel tension springs, and jointed linkages",
-      "button": "a knurled bronze button seated along the top edge",
-      "button_short": "the knurled bronze button along the top edge",
-      "creature": "shoebill",
-      "shell_mechanic": "The front housing divides along a central seam and swings backward as wing panels",
-      "emerging_parts": "A massive bulbous shoe-shaped beak, a crested head, and two spindly folded legs"
+      "shape": "faceted biconical crystal",
+      "material": "translucent deep blue glass with silver wire wrapping",
+      "internal_detail": "tiny rotating copper coils and micro-piston cylinders",
+      "button": "a polished silver facet near the lower apex",
+      "button_short": "the polished silver facet",
+      "creature": "blue dragon sea slug",
+      "shell_mechanic": "The faceted biconical crystal fractures at its equator and the upper and lower cones telescope outward in opposite directions",
+      "emerging_parts": "Four long swept-back wing-like cerata and a tapered ventral tail"
     },
-    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, canted hexagonal monolith-shaped object made of oxidized charcoal bronze and patinated pewter. The outer shell is completely closed, solid and seamless, with no gears, springs or moving parts visible anywhere on its surface. The toy features a knurled bronze button seated along the top edge. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
-    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the knurled bronze button along the top edge with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical shoebill. The unfolding and transformation process is logical and physically consistent. The front housing divides along a central seam and swings backward as wing panels, revealing the movement of internal mechanical components and gears. A massive bulbous shoe-shaped beak, a crested head, and two spindly folded legs physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical shoebill's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. In the last second the finished shoebill settles into a still pose, resting on the same spot where the closed toy was placed, and the shot holds completely steady with no further movement and nothing entering the frame, so the clip cuts back to its opening without a jolt when it loops. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice.",
-    "used_at": "2026-08-27T14:06:57+00:00"
+    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, faceted biconical crystal-shaped object made of translucent deep blue glass with silver wire wrapping. The outer shell is completely closed, solid and seamless, with no gears, springs or moving parts visible anywhere on its surface. The toy features a polished silver facet near the lower apex. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
+    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the polished silver facet with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical blue dragon sea slug. The unfolding and transformation process is logical and physically consistent. The faceted biconical crystal fractures at its equator and the upper and lower cones telescope outward in opposite directions, revealing the movement of internal mechanical components and gears. Four long swept-back wing-like cerata and a tapered ventral tail physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical blue dragon sea slug's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. In the last second the finished blue dragon sea slug settles into a still pose, resting on the same spot where the closed toy was placed, and the shot holds completely steady with no further movement and nothing entering the frame, so the clip cuts back to its opening without a jolt when it loops. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice."
   }
 ]

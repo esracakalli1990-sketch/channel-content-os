@@ -73,7 +73,9 @@
     "platypus",
     "flamingo",
     "hammerhead shark",
-    "shoebill"
+    "shoebill",
+    "marine iguana",
+    "blue dragon sea slug"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -123,7 +125,6 @@
     "grooved cubic block",
     "curved asymmetrical pod",
     "heavy ribbed brass cylinder",
-    "faceted biconical crystal",
     "smooth carved soapstone pebble",
     "canted triangular ingot",
     "stepped rectangular plinth",
@@ -132,6 +133,8 @@
     "ribbed cylindrical spool",
     "smooth convex teardrop",
     "tapered delta ingot",
-    "canted hexagonal monolith"
+    "canted hexagonal monolith",
+    "smooth asymmetrical pod",
+    "faceted biconical crystal"
   ]
 }
