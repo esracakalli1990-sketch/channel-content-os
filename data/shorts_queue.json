@@ -1,22 +1,5 @@
 [
   {
-    "queued_at": "2026-08-27T13:55:39+00:00",
-    "publish_at": "2026-08-28T13:00:00+00:00",
-    "file_id": "BQACAgQAAxkBAAIBy2qQIWb9QAQbxEuv0GLoqljjeXhlAAK8GwAC7cyBUM6rZrtBw0tMPQQ",
-    "file_size": 4480071,
-    "caption": "1",
-    "concept": {
-      "shape": "tapered delta ingot",
-      "material": "matte gunmetal titanium and brushed naval brass",
-      "internal_detail": "interlocking steel drive rods and micro-hydraulic linkages",
-      "button": "a flush brass toggle button inset on the dorsal ridge",
-      "button_short": "the flush brass toggle button on the dorsal ridge",
-      "creature": "hammerhead shark",
-      "shell_mechanic": "The dorsal plates pivot laterally while the ventral hull drops down",
-      "emerging_parts": "A wide T-shaped cephalofoil head, two pectoral fins, and a tall crescent tail"
-    }
-  },
-  {
     "queued_at": "2026-08-27T14:06:57+00:00",
     "publish_at": "2026-08-28T23:00:00+00:00",
     "file_id": "BQACAgQAAxkBAAIBz2qQRGVxPHaFg-kIYRFv0Sm2EdxIAAL_GwAC7cyBUG-dYKzsROB9PQQ",
