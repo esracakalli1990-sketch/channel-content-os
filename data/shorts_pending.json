@@ -1,38 +1,36 @@
 [
   {
     "index": 1,
-    "batch": "2026-08-29T02:55:43.120844+00:00",
-    "created_at": "2026-08-29T02:55:43.120844+00:00",
+    "batch": "2026-08-29T22:44:02.644692+00:00",
+    "created_at": "2026-08-29T22:44:02.644692+00:00",
     "concept": {
-      "shape": "heavy cast bronze cylinder",
-      "material": "patinated bronze and polished brass gears",
-      "internal_detail": "interlocking differential gears and coiled copper hairsprings",
-      "button": "a small raised copper stud set flush into the base",
-      "button_short": "the small raised copper stud at the base",
-      "creature": "blue-ringed octopus",
-      "shell_mechanic": "The cylindrical housing separates vertically into eight curving segments that swing outward like flower petals",
-      "emerging_parts": "Eight flexible articulated metal tentacles tipped with pulsing blue optical lenses"
+      "shape": "faceted biconical crystal",
+      "material": "polished translucent quartz and aged brass",
+      "internal_detail": "intricate miniature copper escapements and glowing vacuum tubes",
+      "button": "a small raised brass stud at the apex",
+      "button_short": "the small raised brass stud at the apex",
+      "creature": "great horned owl",
+      "shell_mechanic": "The crystal facets slide apart along micro-grooves",
+      "emerging_parts": "Two prominent feathered facial discs and a hooked brass beak"
     },
-    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, heavy cast bronze cylinder-shaped object made of patinated bronze and polished brass gears. The outer shell is completely closed, solid and seamless, with no gears, springs or moving parts visible anywhere on its surface. The toy features a small raised copper stud set flush into the base. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
-    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the small raised copper stud at the base with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical blue-ringed octopus. The unfolding and transformation process is logical and physically consistent. The cylindrical housing separates vertically into eight curving segments that swing outward like flower petals, revealing the movement of internal mechanical components and gears. Eight flexible articulated metal tentacles tipped with pulsing blue optical lenses physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical blue-ringed octopus's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. In the last second the finished blue-ringed octopus settles into a still pose, resting on the same spot where the closed toy was placed, and the shot holds completely steady with no further movement and nothing entering the frame, so the clip cuts back to its opening without a jolt when it loops. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice.",
-    "used_at": "2026-08-29T11:25:21+00:00"
+    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, faceted biconical crystal-shaped object made of polished translucent quartz and aged brass. The outer shell is completely closed, solid and seamless, with no gears, springs or moving parts visible anywhere on its surface. The toy features a small raised brass stud at the apex. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
+    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the small raised brass stud at the apex with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical great horned owl. The unfolding and transformation process is logical and physically consistent. The crystal facets slide apart along micro-grooves, revealing the movement of internal mechanical components and gears. Two prominent feathered facial discs and a hooked brass beak physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical great horned owl's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. In the last second the finished great horned owl settles into a still pose, resting on the same spot where the closed toy was placed, and the shot holds completely steady with no further movement and nothing entering the frame, so the clip cuts back to its opening without a jolt when it loops. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice."
   },
   {
     "index": 2,
-    "batch": "2026-08-29T02:55:43.120844+00:00",
-    "created_at": "2026-08-29T02:55:43.120844+00:00",
+    "batch": "2026-08-29T22:44:02.644692+00:00",
+    "created_at": "2026-08-29T22:44:02.644692+00:00",
     "concept": {
-      "shape": "faceted beryl green rhomboid",
-      "material": "translucent synthetic emerald and white gold wire",
-      "internal_detail": "fine filigree linkages and spring-loaded brass levers",
-      "button": "a tiny faceted diamond button on the side facet",
-      "button_short": "the tiny faceted diamond button on the side",
-      "creature": "veiled chameleon",
-      "shell_mechanic": "The crystalline block splits down the dorsal ridge and the two emerald halves fold backward",
-      "emerging_parts": "A long accordion-telescoping tongue and an independently rotating turret eye"
+      "shape": "ribbed tubular cylinder",
+      "material": "brushed gunmetal and blued steel",
+      "internal_detail": "interlocking steel gears and tension springs",
+      "button": "a fluted steel ring around the base",
+      "button_short": "the fluted steel ring around the base",
+      "creature": "nine-banded armadillo",
+      "shell_mechanic": "The cylindrical ribs cascade outward in overlapping tiers",
+      "emerging_parts": "A curved armored snout and four stout clawed feet"
     },
-    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, faceted beryl green rhomboid-shaped object made of translucent synthetic emerald and white gold wire. The outer shell is completely closed, solid and seamless, with no gears, springs or moving parts visible anywhere on its surface. The toy features a tiny faceted diamond button on the side facet. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
-    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the tiny faceted diamond button on the side with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical veiled chameleon. The unfolding and transformation process is logical and physically consistent. The crystalline block splits down the dorsal ridge and the two emerald halves fold backward, revealing the movement of internal mechanical components and gears. A long accordion-telescoping tongue and an independently rotating turret eye physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical veiled chameleon's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. In the last second the finished veiled chameleon settles into a still pose, resting on the same spot where the closed toy was placed, and the shot holds completely steady with no further movement and nothing entering the frame, so the clip cuts back to its opening without a jolt when it loops. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice.",
-    "used_at": "2026-08-29T11:27:24+00:00"
+    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, ribbed tubular cylinder-shaped object made of brushed gunmetal and blued steel. The outer shell is completely closed, solid and seamless, with no gears, springs or moving parts visible anywhere on its surface. The toy features a fluted steel ring around the base. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
+    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the fluted steel ring around the base with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical nine-banded armadillo. The unfolding and transformation process is logical and physically consistent. The cylindrical ribs cascade outward in overlapping tiers, revealing the movement of internal mechanical components and gears. A curved armored snout and four stout clawed feet physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical nine-banded armadillo's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. In the last second the finished nine-banded armadillo settles into a still pose, resting on the same spot where the closed toy was placed, and the shot holds completely steady with no further movement and nothing entering the frame, so the clip cuts back to its opening without a jolt when it loops. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice."
   }
 ]
