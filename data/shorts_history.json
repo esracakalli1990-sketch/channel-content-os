@@ -75,7 +75,9 @@
     "hammerhead shark",
     "shoebill",
     "marine iguana",
-    "blue dragon sea slug"
+    "blue dragon sea slug",
+    "blue-ringed octopus",
+    "veiled chameleon"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -135,6 +137,8 @@
     "tapered delta ingot",
     "canted hexagonal monolith",
     "smooth asymmetrical pod",
-    "faceted biconical crystal"
+    "faceted biconical crystal",
+    "heavy cast bronze cylinder",
+    "faceted beryl green rhomboid"
   ]
 }
