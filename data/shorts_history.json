@@ -81,7 +81,9 @@
     "great horned owl",
     "nine-banded armadillo",
     "peacock",
-    "narwhal"
+    "narwhal",
+    "great hornbill",
+    "giant anteater"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -145,6 +147,8 @@
     "faceted biconical crystal",
     "ribbed tubular cylinder",
     "scalloped fan block",
-    "streamlined torpedo billet"
+    "streamlined torpedo billet",
+    "fluted triangular keel",
+    "curved asymmetric billet"
   ]
 }

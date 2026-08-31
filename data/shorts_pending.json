@@ -35,38 +35,36 @@
   },
   {
     "index": 1,
-    "batch": "2026-08-30T22:53:11.511065+00:00",
-    "created_at": "2026-08-30T22:53:11.511065+00:00",
+    "batch": "2026-08-31T23:58:33.798830+00:00",
+    "created_at": "2026-08-31T23:58:33.798830+00:00",
     "concept": {
-      "shape": "scalloped fan block",
-      "material": "enameled sapphire steel and iridescent brass foil",
-      "internal_detail": "nested brass clockwork linkages and miniature tension wire pulleys",
-      "button": "a flush lapis lazuli pushbutton set into the polished brass spine",
-      "button_short": "the flush lapis lazuli pushbutton on the spine",
-      "creature": "peacock",
-      "shell_mechanic": "The scalloped dorsal plates hinge outward along twin articulated rails",
-      "emerging_parts": "A slender crested head, two articulated brass talons, and a vast semicircular fan of linked enameled plumage"
+      "shape": "fluted triangular keel",
+      "material": "matte black titanium and warm amber resin",
+      "internal_detail": "clockwork escapements, miniature linkages, and amber-tinted gear trains",
+      "button": "a flush obsidian push-pin set into the upper dorsal ridge",
+      "button_short": "the flush obsidian push-pin on the ridge",
+      "creature": "great hornbill",
+      "shell_mechanic": "The dorsal casing hinges upward on twin cantilevered struts",
+      "emerging_parts": "A massive amber-crested bill, two folded feathered brass wings, and a splayed tail fan"
     },
-    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, scalloped fan block-shaped object made of enameled sapphire steel and iridescent brass foil. The outer shell is completely closed, solid and seamless, with no gears, springs or moving parts visible anywhere on its surface. The toy features a flush lapis lazuli pushbutton set into the polished brass spine. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
-    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the flush lapis lazuli pushbutton on the spine with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical peacock. The unfolding and transformation process is logical and physically consistent. The scalloped dorsal plates hinge outward along twin articulated rails, revealing the movement of internal mechanical components and gears. A slender crested head, two articulated brass talons, and a vast semicircular fan of linked enameled plumage physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical peacock's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. In the last second the finished peacock settles into a still pose, resting on the same spot where the closed toy was placed, and the shot holds completely steady with no further movement and nothing entering the frame, so the clip cuts back to its opening without a jolt when it loops. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice.",
-    "used_at": "2026-08-31T14:15:35+00:00"
+    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, fluted triangular keel-shaped object made of matte black titanium and warm amber resin. The outer shell is completely closed, solid and seamless, with no gears, springs or moving parts visible anywhere on its surface. The toy features a flush obsidian push-pin set into the upper dorsal ridge. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
+    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the flush obsidian push-pin on the ridge with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical great hornbill. The unfolding and transformation process is logical and physically consistent. The dorsal casing hinges upward on twin cantilevered struts, revealing the movement of internal mechanical components and gears. A massive amber-crested bill, two folded feathered brass wings, and a splayed tail fan physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical great hornbill's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. In the last second the finished great hornbill settles into a still pose, resting on the same spot where the closed toy was placed, and the shot holds completely steady with no further movement and nothing entering the frame, so the clip cuts back to its opening without a jolt when it loops. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice."
   },
   {
     "index": 2,
-    "batch": "2026-08-30T22:53:11.511065+00:00",
-    "created_at": "2026-08-30T22:53:11.511065+00:00",
+    "batch": "2026-08-31T23:58:33.798830+00:00",
+    "created_at": "2026-08-31T23:58:33.798830+00:00",
     "concept": {
-      "shape": "streamlined torpedo billet",
-      "material": "matte pearl ceramic and polished titanium trim",
-      "internal_detail": "concentric titanium drive rings and jeweled gear escapements",
-      "button": "a circular brushed nickel button recessed along the dorsal ridge",
-      "button_short": "the circular brushed nickel button on the dorsal ridge",
-      "creature": "narwhal",
-      "shell_mechanic": "The sleek ceramic casing slides apart in three interlocking segments",
-      "emerging_parts": "Two stabilizing pectoral flippers, a notched caudal fluke, and an exceptionally long telescoping spiral tusk"
+      "shape": "curved asymmetric billet",
+      "material": "brushed gunmetal and layered carbon-fibre laminate",
+      "internal_detail": "tiny reduction gearboxes, tensioned tendon cables, and silver escapement wheels",
+      "button": "a knurled titanium push-plate along the spine",
+      "button_short": "the knurled titanium push-plate along the spine",
+      "creature": "giant anteater",
+      "shell_mechanic": "The lateral side plates swing outward on dual pivot hinges",
+      "emerging_parts": "An enormous expanding plume tail of sprung carbon slats, four clawed limbs, and a narrow tubular snout"
     },
-    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, streamlined torpedo billet-shaped object made of matte pearl ceramic and polished titanium trim. The outer shell is completely closed, solid and seamless, with no gears, springs or moving parts visible anywhere on its surface. The toy features a circular brushed nickel button recessed along the dorsal ridge. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
-    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the circular brushed nickel button on the dorsal ridge with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical narwhal. The unfolding and transformation process is logical and physically consistent. The sleek ceramic casing slides apart in three interlocking segments, revealing the movement of internal mechanical components and gears. Two stabilizing pectoral flippers, a notched caudal fluke, and an exceptionally long telescoping spiral tusk physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical narwhal's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. In the last second the finished narwhal settles into a still pose, resting on the same spot where the closed toy was placed, and the shot holds completely steady with no further movement and nothing entering the frame, so the clip cuts back to its opening without a jolt when it loops. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice.",
-    "used_at": "2026-08-31T14:17:37+00:00"
+    "text_to_image": "First-person perspective. The protagonist is holding a small mechanical toy in one hand. Below the hand is a wooden table that fully covers the background. The toy is small enough to fit perfectly in one hand and is currently in its untransformed state. It is a compact, curved asymmetric billet-shaped object made of brushed gunmetal and layered carbon-fibre laminate. The outer shell is completely closed, solid and seamless, with no gears, springs or moving parts visible anywhere on its surface. The toy features a knurled titanium push-plate along the spine. Soft diffused daylight from the upper left, shallow depth of field. Photorealistic, ultra-detailed, high quality.",
+    "image_to_video": "First-person perspective, filmed in one continuous long take, strictly no cuts or camera transitions allowed. The camera remains steady and does not move. The protagonist presses the knurled titanium push-plate along the spine with their finger, then places the toy onto the wooden table below. The transformation begins immediately and completes fully within the shot. The toy begins unfolding and transforming until it becomes the form of a miniature mechanical giant anteater. The unfolding and transformation process is logical and physically consistent. The lateral side plates swing outward on dual pivot hinges, revealing the movement of internal mechanical components and gears. An enormous expanding plume tail of sprung carbon slats, four clawed limbs, and a narrow tubular snout physically push out into place. The transformation process is relatively simple and not overly complicated. Strictly no parts appear or disappear out of nowhere. After transformation, the final mechanical giant anteater's size remains believable and perfectly consistent with what the original toy could realistically unfold into, with absolutely no magical volume expansion. In the last second the finished giant anteater settles into a still pose, resting on the same spot where the closed toy was placed, and the shot holds completely steady with no further movement and nothing entering the frame, so the clip cuts back to its opening without a jolt when it loops. Audio: crisp mechanical clicks, servo whirs and ratcheting gears, ending with a soft metallic latch as the transformation completes. No music, no voice."
   }
 ]
