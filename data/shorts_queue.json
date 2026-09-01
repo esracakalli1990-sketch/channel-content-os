@@ -15,5 +15,22 @@
       "shell_mechanic": "The sleek ceramic casing slides apart in three interlocking segments",
       "emerging_parts": "Two stabilizing pectoral flippers, a notched caudal fluke, and an exceptionally long telescoping spiral tusk"
     }
+  },
+  {
+    "queued_at": "2026-09-01T02:48:21+00:00",
+    "publish_at": "2026-09-01T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAICCWqWPLFMnsABPh06SRmN9wABqtCmswACWiAAAkLosFDqxJja8PSvUD0E",
+    "file_size": 3161016,
+    "caption": "1",
+    "concept": {
+      "shape": "fluted triangular keel",
+      "material": "matte black titanium and warm amber resin",
+      "internal_detail": "clockwork escapements, miniature linkages, and amber-tinted gear trains",
+      "button": "a flush obsidian push-pin set into the upper dorsal ridge",
+      "button_short": "the flush obsidian push-pin on the ridge",
+      "creature": "great hornbill",
+      "shell_mechanic": "The dorsal casing hinges upward on twin cantilevered struts",
+      "emerging_parts": "A massive amber-crested bill, two folded feathered brass wings, and a splayed tail fan"
+    }
   }
 ]
