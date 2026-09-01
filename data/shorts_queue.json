@@ -32,5 +32,22 @@
       "shell_mechanic": "The dorsal casing hinges upward on twin cantilevered struts",
       "emerging_parts": "A massive amber-crested bill, two folded feathered brass wings, and a splayed tail fan"
     }
+  },
+  {
+    "queued_at": "2026-09-01T02:50:23+00:00",
+    "publish_at": "2026-09-02T13:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAICC2qWPRdOeX8kp67h_uIcxhgnOmCfAAJbIAACQuiwUOGPt-9kgaPgPQQ",
+    "file_size": 3979323,
+    "caption": "2",
+    "concept": {
+      "shape": "curved asymmetric billet",
+      "material": "brushed gunmetal and layered carbon-fibre laminate",
+      "internal_detail": "tiny reduction gearboxes, tensioned tendon cables, and silver escapement wheels",
+      "button": "a knurled titanium push-plate along the spine",
+      "button_short": "the knurled titanium push-plate along the spine",
+      "creature": "giant anteater",
+      "shell_mechanic": "The lateral side plates swing outward on dual pivot hinges",
+      "emerging_parts": "An enormous expanding plume tail of sprung carbon slats, four clawed limbs, and a narrow tubular snout"
+    }
   }
 ]
