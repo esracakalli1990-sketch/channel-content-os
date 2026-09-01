@@ -8,14 +8,19 @@ name: Shorts — gelen kutusu
 # GitHub bu repoda 15 dakikalık cron'u çalıştırmıyor, araya 2-3 saat giriyor.
 on:
   schedule:
-    # Üç saatte bir. Altı saatte birdi ve kapsamda delik bıraktı: 22 Ağustos
-    # gecesi tur 18:42'de (35 dk gecikmeyle) başlayıp 00:13'te bitti, 00:07
-    # turu da geciktiği için ortada dinleyen kalmadı ve gönderilen video
-    # sıraya alınmadı. Tur 5,5 saat sürüyor, cron 3 saatte bir düşünce
-    # çalışan turun üstüne her zaman bekleyen bir tur oluyor; biri bitince
-    # diğeri hemen devralıyor. Dakika 7, saat başındaki yığılmadan uzak
-    # durmak için.
-    - cron: "7 */3 * * *"
+    # İki saatte bir. Önce altı, sonra üç saatteydi; ikisi de kapsamda delik
+    # bıraktı. 22 Ağustos gecesi tur 18:42'de (35 dk gecikmeyle) başlayıp
+    # 00:13'te bitti, 00:07 turu da geciktiği için ortada dinleyen kalmadı ve
+    # gönderilen video sıraya alınmadı. 1 Eylül'de üç saatlik cron'la yine
+    # dinleyensiz bir an yakalandı. Tur 5,5 saat sürüyor; iki saatte bir
+    # düşünce çalışan turun arkasında her zaman bekleyen bir tur oluyor ve
+    # GitHub bir tetiği tamamen atlasa bile bir sonraki iki saat içinde
+    # geliyor. Dakika 7, saat başındaki yığılmadan uzak durmak için.
+    #
+    # Bunun yerine saat başı bakan bir Claude bekçisi vardı; kullanıcının
+    # kullanım hakkını yediği için 1 Eylül'de kaldırıldı. Kapsamı artık
+    # sadece bu cron tutuyor.
+    - cron: "7 */2 * * *"
   workflow_dispatch:
 
 # Aynı anda iki tur çalışırsa aynı videoyu iki kez yükleyebilir. Bekleyen tur
