@@ -83,7 +83,9 @@
     "peacock",
     "narwhal",
     "great hornbill",
-    "giant anteater"
+    "giant anteater",
+    "sword-billed hummingbird",
+    "pelican eel"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -131,7 +133,6 @@
     "tapered polyhedral wedge",
     "grooved cubic block",
     "curved asymmetrical pod",
-    "heavy ribbed brass cylinder",
     "smooth carved soapstone pebble",
     "canted triangular ingot",
     "stepped rectangular plinth",
@@ -149,6 +150,8 @@
     "scalloped fan block",
     "streamlined torpedo billet",
     "fluted triangular keel",
-    "curved asymmetric billet"
+    "curved asymmetric billet",
+    "heavy ribbed brass cylinder",
+    "cupped bivalve disc"
   ]
 }
