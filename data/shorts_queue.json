@@ -1,19 +1,37 @@
 [
-  {
-    "queued_at": "2026-09-01T02:50:23+00:00",
-    "publish_at": "2026-09-02T13:00:00+00:00",
-    "file_id": "BQACAgQAAxkBAAICC2qWPRdOeX8kp67h_uIcxhgnOmCfAAJbIAACQuiwUOGPt-9kgaPgPQQ",
-    "file_size": 3979323,
-    "caption": "2",
-    "concept": {
-      "shape": "curved asymmetric billet",
-      "material": "brushed gunmetal and layered carbon-fibre laminate",
-      "internal_detail": "tiny reduction gearboxes, tensioned tendon cables, and silver escapement wheels",
-      "button": "a knurled titanium push-plate along the spine",
-      "button_short": "the knurled titanium push-plate along the spine",
-      "creature": "giant anteater",
-      "shell_mechanic": "The lateral side plates swing outward on dual pivot hinges",
-      "emerging_parts": "An enormous expanding plume tail of sprung carbon slats, four clawed limbs, and a narrow tubular snout"
-    }
+ {
+  "queued_at": "2026-09-01T02:48:21+00:00",
+  "publish_at": "2026-09-02T00:21:27+00:00",
+  "file_id": "BQACAgQAAxkBAAICCWqWPLFMnsABPh06SRmN9wABqtCmswACWiAAAkLosFDqxJja8PSvUD0E",
+  "file_size": 3161016,
+  "caption": "1",
+  "concept": {
+   "shape": "fluted triangular keel",
+   "material": "matte black titanium and warm amber resin",
+   "internal_detail": "clockwork escapements, miniature linkages, and amber-tinted gear trains",
+   "button": "a flush obsidian push-pin set into the upper dorsal ridge",
+   "button_short": "the flush obsidian push-pin on the ridge",
+   "creature": "great hornbill",
+   "shell_mechanic": "The dorsal casing hinges upward on twin cantilevered struts",
+   "emerging_parts": "A massive amber-crested bill, two folded feathered brass wings, and a splayed tail fan"
+  },
+  "first_publish_at": "2026-09-01T23:00:00+00:00"
+ },
+ {
+  "queued_at": "2026-09-01T02:50:23+00:00",
+  "publish_at": "2026-09-02T13:00:00+00:00",
+  "file_id": "BQACAgQAAxkBAAICC2qWPRdOeX8kp67h_uIcxhgnOmCfAAJbIAACQuiwUOGPt-9kgaPgPQQ",
+  "file_size": 3979323,
+  "caption": "2",
+  "concept": {
+   "shape": "curved asymmetric billet",
+   "material": "brushed gunmetal and layered carbon-fibre laminate",
+   "internal_detail": "tiny reduction gearboxes, tensioned tendon cables, and silver escapement wheels",
+   "button": "a knurled titanium push-plate along the spine",
+   "button_short": "the knurled titanium push-plate along the spine",
+   "creature": "giant anteater",
+   "shell_mechanic": "The lateral side plates swing outward on dual pivot hinges",
+   "emerging_parts": "An enormous expanding plume tail of sprung carbon slats, four clawed limbs, and a narrow tubular snout"
   }
+ }
 ]
