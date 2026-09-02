@@ -85,7 +85,9 @@
     "great hornbill",
     "giant anteater",
     "sword-billed hummingbird",
-    "pelican eel"
+    "pelican eel",
+    "giant clam",
+    "venus flytrap"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -142,7 +144,6 @@
     "smooth convex teardrop",
     "tapered delta ingot",
     "canted hexagonal monolith",
-    "smooth asymmetrical pod",
     "heavy cast bronze cylinder",
     "faceted beryl green rhomboid",
     "faceted biconical crystal",
@@ -152,6 +153,8 @@
     "fluted triangular keel",
     "curved asymmetric billet",
     "heavy ribbed brass cylinder",
-    "cupped bivalve disc"
+    "cupped bivalve disc",
+    "cupped bivalve pod",
+    "smooth asymmetrical pod"
   ]
 }
