@@ -97,6 +97,21 @@ PROMPT_COMMANDS = frozenset({"promptlar", "prompt", "fikirler", "fikir", "ideas"
 # gone wrong when it had not, so the real order can now be asked for.
 QUEUE_COMMANDS = frozenset({"kuyruk", "queue", "sira", "sıra"})
 
+# How many times a queued video is offered to YouTube before it is given up on.
+# It used to be once: a single failure dropped the clip from the queue and the
+# only trace left was a Telegram message. On 1 September YouTube answered the
+# great hornbill upload with HTTP 409 "Requested entity already exists" — no
+# video was created (the channel still held 77, exactly as many as the publish
+# record) — and the clip was discarded on that one answer. A refused upload is
+# usually momentary; the file id behind it stays valid indefinitely, so there
+# is no reason to spend a video on the first bad reply.
+MAX_PUBLISH_ATTEMPTS = 3
+
+# Waited out between attempts, multiplied by the attempt number. Retrying two
+# minutes later — the poll interval — would spend all three attempts inside six
+# minutes on whatever momentary condition caused the first refusal.
+RETRY_BACKOFF_MINUTES = 20
+
 # Concepts older than this are no longer offered as a match for an arriving clip.
 PENDING_EXPIRY_DAYS = 14
 
@@ -561,15 +576,58 @@ def publish_due(provider: AIProvider, root: Path | None = None) -> list[dict]:
         try:
             records.append(_publish_queued(item, provider, root))
         except telegram_inbox.VideoTooLargeError as exc:
+            # Not retried: the clip is over Telegram's download ceiling and
+            # will be just as large on the next attempt.
             notifications.send_message(f"⚠️ <b>Video alınamadı</b>\n{_escape(str(exc))}")
         except RuntimeError as exc:
             logger.exception("Publishing failed")
-            notifications.send_message(f"❌ <b>Yükleme başarısız</b>\n{_escape(str(exc))}")
+            retry = _schedule_retry(item, now)
+            if retry is not None:
+                remaining.append(retry)
+            _report_failure(item, exc, retry)
 
-    # Written whatever happened: a failed item is dropped rather than retried
-    # forever, and the failure was already reported to Telegram.
+    # Written whatever happened, so an item that used up its attempts is gone
+    # and a retry keeps its new slot.
     _write_json(path, remaining)
     return records
+
+
+def _schedule_retry(item: dict, now: datetime) -> dict | None:
+    """The same item moved to a later slot, or None once attempts run out."""
+    attempts = int(item.get("attempts", 0)) + 1
+    if attempts >= MAX_PUBLISH_ATTEMPTS:
+        return None
+    retry = dict(item)
+    retry["attempts"] = attempts
+    # Kept so the record still shows when the clip was meant to go out; the
+    # working slot moves, the intent does not.
+    retry.setdefault("first_publish_at", item.get("publish_at", ""))
+    retry["publish_at"] = (
+        now + timedelta(minutes=RETRY_BACKOFF_MINUTES * attempts)
+    ).isoformat(timespec="seconds")
+    return retry
+
+
+def _report_failure(item: dict, exc: Exception, retry: dict | None) -> None:
+    """Say what failed and whether the video is still coming. Never raises."""
+    creature = _escape(item.get("concept", {}).get("creature", "video"))
+    if retry is None:
+        tail = (
+            f"<b>{creature}</b> {MAX_PUBLISH_ATTEMPTS} denemede yayınlanamadı, "
+            "kuyruktan çıkarıldı."
+        )
+    else:
+        tail = (
+            f"<b>{creature}</b> tekrar denenecek — "
+            f"{_slot_label(datetime.fromisoformat(retry['publish_at']))} "
+            f"({retry['attempts']}/{MAX_PUBLISH_ATTEMPTS})."
+        )
+    try:
+        notifications.send_message(
+            f"❌ <b>Yükleme başarısız</b>\n{_escape(str(exc))}\n\n{tail}"
+        )
+    except Exception:  # noqa: BLE001 - a silent failure would hide the retry
+        logger.exception("Could not report the publishing failure")
 
 
 def _publish_queued(item: dict, provider: AIProvider, root: Path) -> dict:

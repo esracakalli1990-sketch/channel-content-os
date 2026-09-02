@@ -587,6 +587,135 @@ class QueueFlowTests(unittest.TestCase):
         self.assertIn("Yayın saati", self.sent[0])
 
 
+class PublishRetryTests(unittest.TestCase):
+    """A refused upload must not cost the video. YouTube answered the great
+    hornbill with HTTP 409 on 1 September, no video was created, and the clip
+    was dropped from the queue on that single answer."""
+
+    def setUp(self):
+        self._workspace = TemporaryDirectory()
+        self.root = Path(self._workspace.name)
+        (self.root / "data").mkdir()
+        self.addCleanup(self._workspace.cleanup)
+        self.sent = []
+        self.attempts = []
+        self.fail_with = RuntimeError("YouTube upload failed (HTTP 409)")
+
+        from channel_ops import shorts_metadata
+
+        def fake_upload(path, title, description, **kw):
+            self.attempts.append(title)
+            if self.fail_with is not None:
+                raise self.fail_with
+            return {"id": "vid123", "status": {"privacyStatus": kw.get("privacy")}}
+
+        patches = [
+            (shorts_pipeline.notifications, "send_message", self.sent.append),
+            (shorts_pipeline.telegram_inbox, "download_file",
+             lambda file_id, size, destination: destination.write_bytes(b"video")),
+            (shorts_pipeline.youtube_uploader, "upload_video", fake_upload),
+            (shorts_pipeline, "generate_metadata",
+             lambda provider, concept, *, recent_hooks=None:
+                 shorts_metadata.fallback_metadata(concept)),
+            (shorts_pipeline, "_burn_hook", lambda clip, hook, badge="": clip),
+            (shorts_pipeline, "_publish_to_instagram", lambda p, c: ("", "")),
+        ]
+        for target, name, replacement in patches:
+            original = getattr(target, name)
+            setattr(target, name, replacement)
+            self.addCleanup(setattr, target, name, original)
+
+    def _queue(self, items):
+        path = self.root / shorts_pipeline.QUEUE_FILE
+        path.write_text(json.dumps(items), encoding="utf-8")
+
+    def _read_queue(self):
+        path = self.root / shorts_pipeline.QUEUE_FILE
+        return json.loads(path.read_text(encoding="utf-8")) if path.exists() else []
+
+    def _due_item(self, **extra):
+        from datetime import UTC, datetime, timedelta
+
+        item = {
+            "queued_at": "2026-09-01T02:48:00+00:00",
+            "publish_at": (datetime.now(UTC) - timedelta(minutes=1)).isoformat(),
+            "file_id": "F1",
+            "file_size": 3161016,
+            "concept": _concept("great hornbill").__dict__ | {},
+        }
+        item.update(extra)
+        return item
+
+    def test_a_refused_upload_stays_in_the_queue(self):
+        self._queue([self._due_item()])
+        shorts_pipeline.publish_due(object(), self.root)
+        queue = self._read_queue()
+        self.assertEqual(len(queue), 1, "the clip must not be discarded")
+        self.assertEqual(queue[0]["file_id"], "F1")
+        self.assertEqual(queue[0]["attempts"], 1)
+
+    def test_the_retry_waits_rather_than_firing_on_the_next_poll(self):
+        from datetime import UTC, datetime
+
+        self._queue([self._due_item()])
+        shorts_pipeline.publish_due(object(), self.root)
+        again = datetime.fromisoformat(self._read_queue()[0]["publish_at"])
+        self.assertGreater(
+            (again - datetime.now(UTC)).total_seconds(),
+            shorts_pipeline.RETRY_BACKOFF_MINUTES * 60 - 120,
+        )
+
+    def test_the_original_slot_is_remembered(self):
+        item = self._due_item()
+        self._queue([item])
+        shorts_pipeline.publish_due(object(), self.root)
+        self.assertEqual(self._read_queue()[0]["first_publish_at"], item["publish_at"])
+
+    def test_the_clip_is_given_up_on_after_the_last_attempt(self):
+        self._queue([self._due_item(attempts=shorts_pipeline.MAX_PUBLISH_ATTEMPTS - 1)])
+        shorts_pipeline.publish_due(object(), self.root)
+        self.assertEqual(self._read_queue(), [])
+        self.assertIn("kuyruktan çıkarıldı", self.sent[-1])
+
+    def test_a_retry_that_works_publishes_the_clip(self):
+        self._queue([self._due_item()])
+        shorts_pipeline.publish_due(object(), self.root)
+
+        self.fail_with = None
+        queue = self._read_queue()
+        queue[0]["publish_at"] = self._due_item()["publish_at"]
+        self._queue(queue)
+
+        published = shorts_pipeline.publish_due(object(), self.root)
+        self.assertEqual(len(published), 1)
+        self.assertEqual(len(self.attempts), 2)
+        self.assertEqual(self._read_queue(), [])
+
+    def test_the_failure_notice_names_the_clip_and_the_attempt(self):
+        self._queue([self._due_item()])
+        shorts_pipeline.publish_due(object(), self.root)
+        notice = self.sent[-1]
+        self.assertIn("great hornbill", notice)
+        self.assertIn("409", notice)
+        self.assertIn(f"1/{shorts_pipeline.MAX_PUBLISH_ATTEMPTS}", notice)
+
+    def test_an_oversized_clip_is_not_retried(self):
+        from channel_ops import telegram_inbox
+
+        def too_large(file_id, size, destination):
+            raise telegram_inbox.VideoTooLargeError("20 MB sınırı aşıldı")
+
+        original = shorts_pipeline.telegram_inbox.download_file
+        shorts_pipeline.telegram_inbox.download_file = too_large
+        self.addCleanup(
+            setattr, shorts_pipeline.telegram_inbox, "download_file", original
+        )
+
+        self._queue([self._due_item()])
+        shorts_pipeline.publish_due(object(), self.root)
+        self.assertEqual(self._read_queue(), [], "a too-large clip stays too large")
+
+
 class LeadTimeTests(unittest.TestCase):
     """Prompts arrive around midnight Turkish time and the clips are made at
     once, so without a minimum lead the batch's first video would drop into a
@@ -632,6 +761,18 @@ class BatchNumberingTests(unittest.TestCase):
     A running counter would have made tonight's first idea #11 while the
     caption still said 1, publishing it under a previous day's concept."""
 
+    def _batch(self, days_ago):
+        """A batch stamp counted back from today.
+
+        These were fixed dates in August. Ideas expire after
+        PENDING_EXPIRY_DAYS, so once the calendar moved past that every entry
+        here became stale, match_pending returned None and all four tests
+        failed on their own age rather than on anything in the code.
+        """
+        from datetime import UTC, datetime, timedelta
+
+        return (datetime.now(UTC) - timedelta(days=days_ago)).isoformat()
+
     def _entry(self, index, creature, batch):
         return {
             "index": index,
@@ -642,33 +783,33 @@ class BatchNumberingTests(unittest.TestCase):
 
     def test_a_number_picks_from_the_newest_batch(self):
         pending = [
-            self._entry(1, "moth", "2026-08-11T21:00:00+00:00"),
-            self._entry(1, "scorpion", "2026-08-12T21:00:00+00:00"),
+            self._entry(1, "moth", self._batch(2)),
+            self._entry(1, "scorpion", self._batch(1)),
         ]
         chosen = shorts_pipeline.match_pending("1", pending)
         self.assertEqual(chosen["concept"]["creature"], "scorpion")
 
     def test_an_older_idea_is_still_reachable_by_name(self):
         pending = [
-            self._entry(1, "moth", "2026-08-11T21:00:00+00:00"),
-            self._entry(1, "scorpion", "2026-08-12T21:00:00+00:00"),
+            self._entry(1, "moth", self._batch(2)),
+            self._entry(1, "scorpion", self._batch(1)),
         ]
         chosen = shorts_pipeline.match_pending("the moth one", pending)
         self.assertEqual(chosen["concept"]["creature"], "moth")
 
     def test_a_number_outside_the_newest_batch_falls_back(self):
         pending = [
-            self._entry(7, "moth", "2026-08-11T21:00:00+00:00"),
-            self._entry(1, "scorpion", "2026-08-12T21:00:00+00:00"),
+            self._entry(7, "moth", self._batch(2)),
+            self._entry(1, "scorpion", self._batch(1)),
         ]
         chosen = shorts_pipeline.match_pending("7", pending)
         self.assertEqual(chosen["concept"]["creature"], "moth")
 
     def test_entries_without_a_batch_never_outrank_a_real_one(self):
         """Ideas stored before batches existed must not win a bare number."""
-        old = {"index": 1, "created_at": "2026-08-01T00:00:00+00:00",
+        old = {"index": 1, "created_at": self._batch(3),
                "concept": _concept("moth").__dict__ | {}}
-        pending = [old, self._entry(1, "scorpion", "2026-08-12T21:00:00+00:00")]
+        pending = [old, self._entry(1, "scorpion", self._batch(1))]
         chosen = shorts_pipeline.match_pending("1", pending)
         self.assertEqual(chosen["concept"]["creature"], "scorpion")
 
