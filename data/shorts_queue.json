@@ -15,5 +15,22 @@
       "shell_mechanic": "The lateral side plates swing outward on dual pivot hinges",
       "emerging_parts": "An enormous expanding plume tail of sprung carbon slats, four clawed limbs, and a narrow tubular snout"
     }
+  },
+  {
+    "queued_at": "2026-09-02T11:45:03+00:00",
+    "publish_at": "2026-09-02T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAICFmqYC-emTDLPb31R03u0ODACqToJAAKCIAACcG_AUEPlClVz68eiPQQ",
+    "file_size": 4589725,
+    "caption": "1",
+    "concept": {
+      "shape": "heavy ribbed brass cylinder",
+      "material": "polished brass and aged copper wires",
+      "internal_detail": "tiny interlocking cogwheels and hairspring regulators",
+      "button": "a small raised copper stud set into the endplate",
+      "button_short": "the small raised copper stud",
+      "creature": "sword-billed hummingbird",
+      "shell_mechanic": "The heavy brass cylinder splits longitudinally into two curved halves that hinge outward",
+      "emerging_parts": "An impossibly long slender needle beak and two delicate wire-framed wings"
+    }
   }
 ]
