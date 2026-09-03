@@ -87,7 +87,9 @@
     "sword-billed hummingbird",
     "pelican eel",
     "giant clam",
-    "venus flytrap"
+    "venus flytrap",
+    "goliath bird-eating spider",
+    "common squid"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -155,6 +157,8 @@
     "heavy ribbed brass cylinder",
     "cupped bivalve disc",
     "cupped bivalve pod",
-    "smooth asymmetrical pod"
+    "smooth asymmetrical pod",
+    "grooved barrel",
+    "ribbed cone"
   ]
 }
