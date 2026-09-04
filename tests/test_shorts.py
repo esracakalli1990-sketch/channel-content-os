@@ -941,32 +941,63 @@ class CreatureVarietyTests(unittest.TestCase):
 
 
 class SubjectChoiceTests(unittest.TestCase):
-    """The subject decides the video's fate, so the rule that picks it is
-    bound here rather than left to survive on good intentions.
+    """The 24 August subject rule is out again, and stays out until something
+    is measured for it rather than argued for it.
 
-    Of the first fifty-five videos, eleven passed ten thousand views and those
-    eleven carried seventy-six per cent of all views. What they share is one
-    feature large enough to read from the silhouette — the tarsier's eyes, the
-    fiddler crab's claw, the rhinoceros beetle's horn. The ones that went
-    nowhere are creatures whose interest lives in fine detail."""
+    It told the model to pick a creature with one feature readable from the
+    silhouette, reasoning from eleven hits among the first fifty-five videos.
+    Nineteen videos later: no video above 3,915 views, against five over ten
+    thousand in the nineteen before it, and the median fell from 2,978 to
+    1,734. That is not proof the rule caused it — the channel also lost the 22
+    August hits and dropped from three videos a day to two in the same window —
+    but a rule justified by hits that then presided over nineteen hitless
+    videos has no evidence left holding it up.
 
-    def test_the_instructions_ask_for_one_readable_feature(self):
+    Kept as a test rather than deleted so the removal is deliberate: putting
+    the wording back should mean re-arguing it, not quietly re-adding it."""
+
+    def test_the_subject_rule_is_not_in_the_instructions(self):
         text = shorts_prompts._CONCEPT_INSTRUCTIONS
-        self.assertIn("silhouette", text)
-        self.assertIn("one dominant, instantly readable feature", text)
+        self.assertNotIn("CHOOSING THE SUBJECT", text)
+        self.assertNotIn("one dominant, instantly readable feature", text)
 
-    def test_the_rule_comes_before_the_writing_rules(self):
-        """Placed after the grammar rules it reads as an afterthought, and the
-        model treats it as one."""
+    def test_the_hard_rules_still_open_the_instructions(self):
+        """Removing the block must not take the rules that follow it with it."""
         text = shorts_prompts._CONCEPT_INSTRUCTIONS
-        self.assertLess(text.index("CHOOSING THE SUBJECT"), text.index("PLAUSIBLE FOLDING"))
+        self.assertIn("Hard rules, in priority order:", text)
+        self.assertIn("PLAUSIBLE FOLDING", text)
+        self.assertLess(
+            text.index("Hard rules, in priority order:"),
+            text.index("PLAUSIBLE FOLDING"),
+        )
 
-    def test_the_evidence_travels_with_the_rule(self):
-        """A bare instruction gets softened by the next person who edits it;
-        the examples are what make it checkable."""
-        text = shorts_prompts._CONCEPT_INSTRUCTIONS
-        for creature in ("Tarsier", "Fiddler crab", "Rhinoceros beetle"):
-            self.assertIn(creature, text)
+
+class IdeaVersionTests(unittest.TestCase):
+    """template_version fingerprints only the secret Flow template, so the
+    subject rule went in on 24 August and out again today without changing a
+    single recorded value — the audit table read the same hash on both sides
+    and the before/after split had to be rebuilt by hand from publish dates.
+    The next edit to these instructions has to be readable off the record."""
+
+    def test_the_fingerprint_follows_the_instructions(self):
+        first = shorts_prompts.idea_version()
+        original = shorts_prompts._CONCEPT_INSTRUCTIONS
+        try:
+            shorts_prompts._CONCEPT_INSTRUCTIONS = original + "\nPick shiny things.\n"
+            self.assertNotEqual(shorts_prompts.idea_version(), first)
+        finally:
+            shorts_prompts._CONCEPT_INSTRUCTIONS = original
+        self.assertEqual(shorts_prompts.idea_version(), first)
+
+    def test_it_is_short_enough_to_read_in_a_table(self):
+        self.assertEqual(len(shorts_prompts.idea_version()), 12)
+
+    def test_it_is_not_the_template_fingerprint(self):
+        """Two independently changing things need two markers; one hash for
+        both is how the 24 August change went unrecorded."""
+        self.assertNotEqual(
+            shorts_prompts.idea_version(), shorts_prompts.template_version()
+        )
 
 
 class BadgeTests(unittest.TestCase):
@@ -1122,15 +1153,28 @@ class ResendCommandTests(unittest.TestCase):
     def _read(self):
         return json.loads((self.root / shorts_pipeline.PENDING_FILE).read_text(encoding="utf-8"))
 
+    def _batch(self, days_ago):
+        """A batch stamp counted back from today.
+
+        These were fixed August dates. Ideas go stale after
+        PENDING_EXPIRY_DAYS, so once the calendar passed that the pool read as
+        empty and four of these tests failed on their own age rather than on
+        anything in the code — the same rot already fixed in
+        BatchNumberingTests, missed here.
+        """
+        from datetime import UTC, datetime, timedelta
+
+        return (datetime.now(UTC) - timedelta(days=days_ago)).isoformat()
+
     def _entry(self, index, creature, batch):
         return {"index": index, "batch": batch, "created_at": batch,
                 "concept": _concept(creature).__dict__ | {}}
 
     def test_two_batches_are_renumbered_into_one_sequence(self):
         self._write([
-            self._entry(1, "brown pelican", "2026-08-19T20:52:00+00:00"),
-            self._entry(2, "periodical cicada", "2026-08-19T20:52:00+00:00"),
-            self._entry(1, "raven", "2026-08-21T20:49:00+00:00"),
+            self._entry(1, "brown pelican", self._batch(3)),
+            self._entry(2, "periodical cicada", self._batch(3)),
+            self._entry(1, "raven", self._batch(1)),
         ])
         shorts_pipeline.resend_pending(self.root)
         entries = self._read()
@@ -1140,9 +1184,9 @@ class ResendCommandTests(unittest.TestCase):
     def test_a_number_matches_the_idea_that_was_listed(self):
         """The whole point: after resending, "2" is the second one shown."""
         self._write([
-            self._entry(1, "brown pelican", "2026-08-19T20:52:00+00:00"),
-            self._entry(2, "periodical cicada", "2026-08-19T20:52:00+00:00"),
-            self._entry(1, "raven", "2026-08-21T20:49:00+00:00"),
+            self._entry(1, "brown pelican", self._batch(3)),
+            self._entry(2, "periodical cicada", self._batch(3)),
+            self._entry(1, "raven", self._batch(1)),
         ])
         shorts_pipeline.resend_pending(self.root)
         chosen = shorts_pipeline.match_pending("2", self._read())
@@ -1150,9 +1194,9 @@ class ResendCommandTests(unittest.TestCase):
 
     def test_used_ideas_are_not_resent(self):
         self._write([
-            self._entry(1, "brown pelican", "2026-08-19T20:52:00+00:00"),
-            dict(self._entry(2, "moth", "2026-08-19T20:52:00+00:00"),
-                 used_at="2026-08-20T00:00:00+00:00"),
+            self._entry(1, "brown pelican", self._batch(3)),
+            dict(self._entry(2, "moth", self._batch(3)),
+                 used_at=self._batch(2)),
         ])
         pairs = shorts_pipeline.resend_pending(self.root)
         self.assertEqual([p.concept.creature for p in pairs], ["brown pelican"])
@@ -1173,7 +1217,7 @@ class ResendCommandTests(unittest.TestCase):
             raise RuntimeError("template missing")
 
         shorts_pipeline.shorts_prompts.render = explode
-        self._write([self._entry(1, "brown pelican", "2026-08-19T20:52:00+00:00")])
+        self._write([self._entry(1, "brown pelican", self._batch(3))])
         shorts_pipeline._resend_prompts(self.root)  # must not raise
         self.assertIn("gönderilemedi", " ".join(self.sent))
 

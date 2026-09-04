@@ -214,7 +214,7 @@ def _emit(dump: dict) -> None:
     print("\t".join((
         "no", "yayin", "yaratik", "id", "gorunurluk", "yukleme", "islem",
         "ret", "sure", "cocuk", "boyut", "izlenme", "begeni", "yorum", "izl%",
-        "izl_sn", "abone", "paylasim", "kanca", "rozet", "sablon",
+        "izl_sn", "abone", "paylasim", "kanca", "rozet", "sablon", "fikir",
     )))
     for index, record in enumerate(dump.get("published") or [], 1):
         vid = record.get("youtube_video_id", "")
@@ -242,6 +242,7 @@ def _emit(dump: dict) -> None:
             "var" if record.get("hook") else "yok",
             "var" if record.get("badge") else "yok",
             (record.get("template_version") or "-")[:8],
+            (record.get("idea_version") or "-")[:8],
         )))
 
     for section in ("daily", "traffic", "devices", "subs_status", "countries"):

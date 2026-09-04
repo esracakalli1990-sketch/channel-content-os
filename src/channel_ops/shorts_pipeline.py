@@ -681,6 +681,11 @@ def _publish_queued(item: dict, provider: AIProvider, root: Path) -> dict:
         # comparing videos before and after, which is guesswork without a
         # marker on each record.
         "template_version": shorts_prompts.template_version(),
+        # And which wording chose the subject. Separate from the above because
+        # they change independently: the 24 August subject rule left
+        # template_version untouched, so nothing on the record distinguished the
+        # videos it produced.
+        "idea_version": shorts_prompts.idea_version(),
     }
     _record_published(record, root)
 
