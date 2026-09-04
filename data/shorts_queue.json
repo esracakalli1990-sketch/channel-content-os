@@ -32,5 +32,22 @@
       "shell_mechanic": "The grooved gunmetal cylinder splits along four vertical seams and the quarter-panels slide outward",
       "emerging_parts": "Eight long multi-jointed metallic legs tipped with tiny hooks and a compact cephalothorax"
     }
+  },
+  {
+    "queued_at": "2026-09-04T12:39:49+00:00",
+    "publish_at": "2026-09-05T13:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAICMGqau6eHf-FrOR6sHxVf4Zb_vJktAAKoJAACPLXZUIx5wuHfD4T1PQQ",
+    "file_size": 3906573,
+    "caption": "2",
+    "concept": {
+      "shape": "ribbed cone",
+      "material": "polished silver and burnished copper filigree",
+      "internal_detail": "interlocking concentric brass rings and fine wire springs",
+      "button": "a tiny turquoise cabochon set into the apex of the cone",
+      "button_short": "the tiny turquoise cabochon at the apex",
+      "creature": "common squid",
+      "shell_mechanic": "The ribbed silver cone unfurls along spiral score lines like blooming petals",
+      "emerging_parts": "Ten slender spring-loaded tentacles and a pointed tubular mantle"
+    }
   }
 ]
