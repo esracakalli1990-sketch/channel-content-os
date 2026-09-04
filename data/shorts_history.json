@@ -89,7 +89,9 @@
     "giant clam",
     "venus flytrap",
     "goliath bird-eating spider",
-    "common squid"
+    "common squid",
+    "spiny pufferfish",
+    "pocket theodolite"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -159,6 +161,8 @@
     "cupped bivalve pod",
     "smooth asymmetrical pod",
     "grooved barrel",
-    "ribbed cone"
+    "ribbed cone",
+    "tessellated icosahedron",
+    "fluted octagonal drum"
   ]
 }
