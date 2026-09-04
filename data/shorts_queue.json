@@ -15,5 +15,22 @@
       "shell_mechanic": "The amber pod splits into two equal halves that fold backward on pin joints",
       "emerging_parts": "Two serrated lobe-traps lined with fine trigger hairs"
     }
+  },
+  {
+    "queued_at": "2026-09-04T12:37:46+00:00",
+    "publish_at": "2026-09-04T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAICLmqau0aUzfgZr_He0Y2lTD7g1gjJAAKjJAACPLXZUM67Y6R7rVn4PQQ",
+    "file_size": 3386629,
+    "caption": "1",
+    "concept": {
+      "shape": "grooved barrel",
+      "material": "weathered gunmetal and exposed brass gears",
+      "internal_detail": "tethered mainspring barrel and tiny brass escapement wheel",
+      "button": "a small raised steel stud at the flat end of the cylinder",
+      "button_short": "the small raised steel stud",
+      "creature": "goliath bird-eating spider",
+      "shell_mechanic": "The grooved gunmetal cylinder splits along four vertical seams and the quarter-panels slide outward",
+      "emerging_parts": "Eight long multi-jointed metallic legs tipped with tiny hooks and a compact cephalothorax"
+    }
   }
 ]
