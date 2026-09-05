@@ -32,5 +32,22 @@
       "shell_mechanic": "The cylindrical drum casing unlatches and hinges downward into three splayed leveling pads",
       "emerging_parts": "An extendable brass telescope barrel, dual graduated vertical circles, and a miniature circular compass"
     }
+  },
+  {
+    "queued_at": "2026-09-05T22:04:45+00:00",
+    "publish_at": "2026-09-06T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAICRWqckaYlfKD9xVmpE4JP7mDQgrOYAALMHAAChCjpULGPVQABRIg3HT0E",
+    "file_size": 2986860,
+    "caption": "1",
+    "concept": {
+      "shape": "faceted biconical crystal",
+      "material": "polished translucent quartz and aged brass",
+      "internal_detail": "intricate miniature copper escapements and glowing vacuum tubes",
+      "button": "a small raised brass stud at the apex",
+      "button_short": "the small raised brass stud at the apex",
+      "creature": "great horned owl",
+      "shell_mechanic": "The crystal facets slide apart along micro-grooves",
+      "emerging_parts": "Two prominent feathered facial discs and a hooked brass beak"
+    }
   }
 ]
