@@ -91,7 +91,9 @@
     "goliath bird-eating spider",
     "common squid",
     "spiny pufferfish",
-    "pocket theodolite"
+    "pocket theodolite",
+    "steam-powered walking winch",
+    "hydraulic excavator"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -163,6 +165,8 @@
     "grooved barrel",
     "ribbed cone",
     "tessellated icosahedron",
-    "fluted octagonal drum"
+    "fluted octagonal drum",
+    "ribbed cylinder",
+    "facetted triangular block"
   ]
 }
