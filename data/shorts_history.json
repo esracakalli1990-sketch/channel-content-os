@@ -93,7 +93,9 @@
     "spiny pufferfish",
     "pocket theodolite",
     "steam-powered walking winch",
-    "hydraulic excavator"
+    "hydraulic excavator",
+    "box jellyfish",
+    "leaf-mimic katydid"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -137,7 +139,6 @@
     "heavy ribbed barrel",
     "smooth faceted rhomboid",
     "smooth concave pod",
-    "ribbed hemispherical dome",
     "tapered polyhedral wedge",
     "grooved cubic block",
     "curved asymmetrical pod",
@@ -161,12 +162,13 @@
     "heavy ribbed brass cylinder",
     "cupped bivalve disc",
     "cupped bivalve pod",
-    "smooth asymmetrical pod",
     "grooved barrel",
     "ribbed cone",
     "tessellated icosahedron",
     "fluted octagonal drum",
     "ribbed cylinder",
-    "facetted triangular block"
+    "facetted triangular block",
+    "ribbed hemispherical dome",
+    "smooth asymmetrical pod"
   ]
 }
