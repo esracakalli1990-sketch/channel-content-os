@@ -1,22 +1,5 @@
 [
   {
-    "queued_at": "2026-09-06T23:47:38+00:00",
-    "publish_at": "2026-09-07T23:00:00+00:00",
-    "file_id": "BQACAgQAAxkBAAICVWqd-4_2-wzOoLrzSAeCYzUT-cJgAALeIgACPYTxUPXb6JVpX2VZPQQ",
-    "file_size": 2979364,
-    "caption": "1",
-    "concept": {
-      "shape": "ribbed cylinder",
-      "material": "patinated gunmetal and polished copper",
-      "internal_detail": "interlocking brass piston rods and miniscule gear trains",
-      "button": "a copper piston pin at the top end",
-      "button_short": "the copper piston pin at the top",
-      "creature": "steam-powered walking winch",
-      "shell_mechanic": "The cylindrical housing splits longitudinally into three curved segments that swing outward on miniature hinges",
-      "emerging_parts": "Four brass legs with spade feet and a rotating cable drum"
-    }
-  },
-  {
     "queued_at": "2026-09-06T23:49:41+00:00",
     "publish_at": "2026-09-08T13:00:00+00:00",
     "file_id": "BQACAgQAAxkBAAICV2qd-7s55NE94mWpes6abTekVtwWAALfIgACPYTxUEPldnGcYuuDPQQ",
