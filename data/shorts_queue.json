@@ -32,5 +32,22 @@
       "shell_mechanic": "The bivalve mother-of-pearl disc splits cleanly along its central silver seam and the two heavy halves gape outward like opening valves",
       "emerging_parts": "Two delicate feathered feeding palps and four pairs of flat folded walking limbs"
     }
+  },
+  {
+    "queued_at": "2026-09-08T23:51:40+00:00",
+    "publish_at": "2026-09-10T13:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAICcWqgn1-6xM6gLrr9LjvCkgI0c9Q6AAKiIQACoxcAAVHp-VqqcsxLKj0E",
+    "file_size": 3288419,
+    "caption": "2",
+    "concept": {
+      "shape": "fluted octagonal drum",
+      "material": "weathered gunmetal and polished copper rings",
+      "internal_detail": "interlocking copper cams and tension springs",
+      "button": "a copper rivet on the top face",
+      "button_short": "the copper rivet on the top face",
+      "creature": "pill millipede",
+      "shell_mechanic": "The gunmetal drum unrolls and separates into a series of overlapping curved segments that slide outward along internal tracks",
+      "emerging_parts": "A dense row of short articulated legs and two tiny trembling antennae"
+    }
   }
 ]
