@@ -15,5 +15,22 @@
       "shell_mechanic": "The triangular sides slide outward on internal guide rails and drop away to expose the chassis",
       "emerging_parts": "Two continuous rubber-tread tracks and an articulated boom arm with bucket"
     }
+  },
+  {
+    "queued_at": "2026-09-08T11:06:13+00:00",
+    "publish_at": "2026-09-08T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAICZGqf7Bd89dbXqUVxxo8tezB_6BdlAAIlIAACoxcAAVGqGv6X6Uu8Yj0E",
+    "file_size": 3065424,
+    "caption": "1",
+    "concept": {
+      "shape": "ribbed hemispherical dome",
+      "material": "patinated bronze and polished copper",
+      "internal_detail": "tinned brass clockwork gears and coiled hairsprings",
+      "button": "a small brass pushpin at the apex",
+      "button_short": "the small brass pushpin at the apex",
+      "creature": "box jellyfish",
+      "shell_mechanic": "The bronze dome splits vertically into four equal segments and hinges outward",
+      "emerging_parts": "Four trailing translucent silicone tentacles and a central bell margin"
+    }
   }
 ]
