@@ -95,7 +95,9 @@
     "steam-powered walking winch",
     "hydraulic excavator",
     "box jellyfish",
-    "leaf-mimic katydid"
+    "leaf-mimic katydid",
+    "porcelain crab",
+    "pill millipede"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -160,15 +162,15 @@
     "fluted triangular keel",
     "curved asymmetric billet",
     "heavy ribbed brass cylinder",
-    "cupped bivalve disc",
     "cupped bivalve pod",
     "grooved barrel",
     "ribbed cone",
     "tessellated icosahedron",
-    "fluted octagonal drum",
     "ribbed cylinder",
     "facetted triangular block",
     "ribbed hemispherical dome",
-    "smooth asymmetrical pod"
+    "smooth asymmetrical pod",
+    "cupped bivalve disc",
+    "fluted octagonal drum"
   ]
 }
