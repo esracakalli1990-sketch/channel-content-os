@@ -15,5 +15,22 @@
       "shell_mechanic": "The wooden pod splits cleanly down its lateral seam and folds flat",
       "emerging_parts": "Two delicate pleated wing cases and long jointed hind legs"
     }
+  },
+  {
+    "queued_at": "2026-09-08T23:49:37+00:00",
+    "publish_at": "2026-09-09T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAICb2qgnqUQ8c-EfCtSERL-or6RBEQlAAKhIQACoxcAAVGloYbfaf2ilz0E",
+    "file_size": 2678176,
+    "caption": "1",
+    "concept": {
+      "shape": "cupped bivalve disc",
+      "material": "polished mother-of-pearl and oxidized silver hinges",
+      "internal_detail": "iridescent nacre plates and tiny brass pivot pins",
+      "button": "a small platinum pearl set into the rim",
+      "button_short": "the platinum pearl on the rim",
+      "creature": "porcelain crab",
+      "shell_mechanic": "The bivalve mother-of-pearl disc splits cleanly along its central silver seam and the two heavy halves gape outward like opening valves",
+      "emerging_parts": "Two delicate feathered feeding palps and four pairs of flat folded walking limbs"
+    }
   }
 ]
