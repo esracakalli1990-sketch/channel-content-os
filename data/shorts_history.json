@@ -97,7 +97,9 @@
     "box jellyfish",
     "leaf-mimic katydid",
     "porcelain crab",
-    "pill millipede"
+    "pill millipede",
+    "harvestman",
+    "rotary cup anemometer"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -171,6 +173,8 @@
     "ribbed hemispherical dome",
     "smooth asymmetrical pod",
     "cupped bivalve disc",
-    "fluted octagonal drum"
+    "fluted octagonal drum",
+    "beveled circular medallion",
+    "fluted cylindrical thimble"
   ]
 }
