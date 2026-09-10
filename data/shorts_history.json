@@ -99,7 +99,9 @@
     "porcelain crab",
     "pill millipede",
     "harvestman",
-    "rotary cup anemometer"
+    "rotary cup anemometer",
+    "lined chiton",
+    "poison dart frog"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -175,6 +177,8 @@
     "cupped bivalve disc",
     "fluted octagonal drum",
     "beveled circular medallion",
-    "fluted cylindrical thimble"
+    "fluted cylindrical thimble",
+    "vaulted elliptical slab",
+    "truncated pyramidal block"
   ]
 }
