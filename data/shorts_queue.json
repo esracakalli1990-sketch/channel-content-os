@@ -15,5 +15,22 @@
       "shell_mechanic": "The gunmetal drum unrolls and separates into a series of overlapping curved segments that slide outward along internal tracks",
       "emerging_parts": "A dense row of short articulated legs and two tiny trembling antennae"
     }
+  },
+  {
+    "queued_at": "2026-09-10T10:53:17+00:00",
+    "publish_at": "2026-09-10T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAICfGqii61r24qkltzv9kqm8tPOs_-lAAL3IAACFEMRUfikOL307jAEPQQ",
+    "file_size": 2477527,
+    "caption": "1",
+    "concept": {
+      "shape": "beveled circular medallion",
+      "material": "matte blackened titanium with cold-rolled steel trims",
+      "internal_detail": "hairspring tensioners and micro-machined brass planetary gearing",
+      "button": "a flush knurled bronze button at the geometric center",
+      "button_short": "the flush knurled bronze button",
+      "creature": "harvestman",
+      "shell_mechanic": "The circular medallion separates horizontally into upper and lower hull plates on miniature internal scissor linkages",
+      "emerging_parts": "Eight multi-jointed spindly legs and two hooked pedipalps"
+    }
   }
 ]
