@@ -15,5 +15,22 @@
       "shell_mechanic": "The vaulted bronze plates expand outward along a flexible spine",
       "emerging_parts": "A flexible segmented foot and a fringed outer girdle"
     }
+  },
+  {
+    "queued_at": "2026-09-11T13:25:20+00:00",
+    "publish_at": "2026-09-12T13:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAICjGqkAAHYQghIbBhpulpDpz501rIo1gACax0AAn91IVHLuC4saW82TT0E",
+    "file_size": 1905131,
+    "caption": "2",
+    "concept": {
+      "shape": "truncated pyramidal block",
+      "material": "cobalt blue enamel and polished yellow gold",
+      "internal_detail": "miniature gold gear trains and coiled silver wire springs",
+      "button": "a flush circular sapphire button set into the dorsal surface",
+      "button_short": "the flush circular sapphire button on the dorsal surface",
+      "creature": "poison dart frog",
+      "shell_mechanic": "The faceted enamel dorsal plates unlatch and swing upward on miniature scissor hinges",
+      "emerging_parts": "Four jointed golden limbs and an articulating jawed head"
+    }
   }
 ]
