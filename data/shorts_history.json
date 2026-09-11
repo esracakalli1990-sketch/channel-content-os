@@ -101,7 +101,9 @@
     "harvestman",
     "rotary cup anemometer",
     "lined chiton",
-    "poison dart frog"
+    "poison dart frog",
+    "cryptic dwarf seahorse",
+    "marine nudibranch"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -158,7 +160,6 @@
     "tapered delta ingot",
     "canted hexagonal monolith",
     "heavy cast bronze cylinder",
-    "faceted beryl green rhomboid",
     "faceted biconical crystal",
     "ribbed tubular cylinder",
     "scalloped fan block",
@@ -179,6 +180,8 @@
     "beveled circular medallion",
     "fluted cylindrical thimble",
     "vaulted elliptical slab",
-    "truncated pyramidal block"
+    "truncated pyramidal block",
+    "smooth carved nephrite pebble",
+    "faceted beryl green rhomboid"
   ]
 }
