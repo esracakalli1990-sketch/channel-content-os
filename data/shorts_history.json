@@ -103,7 +103,9 @@
     "lined chiton",
     "poison dart frog",
     "cryptic dwarf seahorse",
-    "marine nudibranch"
+    "marine nudibranch",
+    "clockwork orrery",
+    "star-nosed mole"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -182,6 +184,8 @@
     "vaulted elliptical slab",
     "truncated pyramidal block",
     "smooth carved nephrite pebble",
-    "faceted beryl green rhomboid"
+    "faceted beryl green rhomboid",
+    "domed octagonal case",
+    "blunt tapered ingot"
   ]
 }
