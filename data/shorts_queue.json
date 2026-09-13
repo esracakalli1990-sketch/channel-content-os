@@ -15,5 +15,22 @@
       "shell_mechanic": "The domed octagonal casing unlatches and its eight triangular facets swing outward into a calibrated ring",
       "emerging_parts": "A central miniature sun sphere and three telescoping geared planet arms"
     }
+  },
+  {
+    "queued_at": "2026-09-13T13:42:02+00:00",
+    "publish_at": "2026-09-14T13:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAICm2qmp9zPRGju7ENelpqozzX6zkxLAAJBJQACDbg5UZrHzsFrAd-0PQQ",
+    "file_size": 1894058,
+    "caption": "2",
+    "concept": {
+      "shape": "blunt tapered ingot",
+      "material": "matte charcoal sintered steel with brushed copper trim",
+      "internal_detail": "intermeshing micro-gearboxes, braided steel actuating cables, and counterweight linkages",
+      "button": "a recessed copper button embedded flush between the shoulder plates",
+      "button_short": "the recessed copper button",
+      "creature": "star-nosed mole",
+      "shell_mechanic": "The charcoal dorsal shell hinges upward while two lateral armor plates slide rearward",
+      "emerging_parts": "Two broad scalloped forepaws and a snout bearing twenty-two flexible copper rays"
+    }
   }
 ]
