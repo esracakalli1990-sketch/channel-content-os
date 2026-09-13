@@ -105,7 +105,9 @@
     "cryptic dwarf seahorse",
     "marine nudibranch",
     "clockwork orrery",
-    "star-nosed mole"
+    "star-nosed mole",
+    "small terrestrial tortoise",
+    "arboreal gecko"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -176,7 +178,6 @@
     "ribbed cylinder",
     "facetted triangular block",
     "ribbed hemispherical dome",
-    "smooth asymmetrical pod",
     "cupped bivalve disc",
     "fluted octagonal drum",
     "beveled circular medallion",
@@ -186,6 +187,8 @@
     "smooth carved nephrite pebble",
     "faceted beryl green rhomboid",
     "domed octagonal case",
-    "blunt tapered ingot"
+    "blunt tapered ingot",
+    "ridged hemispherical dome",
+    "smooth asymmetrical pod"
   ]
 }
