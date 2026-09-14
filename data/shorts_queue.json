@@ -32,5 +32,22 @@
       "shell_mechanic": "The steel wedge splits vertically into three hinged panels that drop flat",
       "emerging_parts": "Two wide articulating pectoral fins and a long segmented tail"
     }
+  },
+  {
+    "queued_at": "2026-09-14T23:28:22+00:00",
+    "publish_at": "2026-09-16T13:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAICsGqogsaB3JrJnqxr2ghx3FDX6SBAAAJKHQADz0lRyuNUKaoNBgs9BA",
+    "file_size": 1587120,
+    "caption": "2",
+    "concept": {
+      "shape": "grooved copper cylinder",
+      "material": "patinated copper and nickel silver",
+      "internal_detail": "tightly wound bronze mainsprings and escapement wheels",
+      "button": "a small nickel pin set flush with the fluted end",
+      "button_short": "the small nickel pin",
+      "creature": "field hare",
+      "shell_mechanic": "The grooved cylinder halves slide apart lengthwise and drop outward like hinged side panels",
+      "emerging_parts": "Two long articulated ears, four spring-loaded legs, and a pivoting head"
+    }
   }
 ]
