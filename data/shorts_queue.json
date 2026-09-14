@@ -15,5 +15,22 @@
       "shell_mechanic": "The smooth bamboo pod cracks down its ventral seam and unfolds into flexible segments",
       "emerging_parts": "Four slender toes and a long curling tail"
     }
+  },
+  {
+    "queued_at": "2026-09-14T23:26:19+00:00",
+    "publish_at": "2026-09-15T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAICrmqogobWA5hzgSEfk2FEKJdt5z0TAAJJHQADz0lRFZphyJV0WOE9BA",
+    "file_size": 1595972,
+    "caption": "1",
+    "concept": {
+      "shape": "flattened triangular wedge",
+      "material": "brushed gunmetal steel and gold leaf accents",
+      "internal_detail": "microscopic rack and pinion gear trains",
+      "button": "a flush gold-plated pressure plate at the apex",
+      "button_short": "the gold-plated pressure plate",
+      "creature": "ray",
+      "shell_mechanic": "The steel wedge splits vertically into three hinged panels that drop flat",
+      "emerging_parts": "Two wide articulating pectoral fins and a long segmented tail"
+    }
   }
 ]
