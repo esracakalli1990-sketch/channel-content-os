@@ -32,5 +32,22 @@
       "shell_mechanic": "The ridged hemispherical dome splits radially into four hinged plates that slide outward",
       "emerging_parts": "Four scaled legs and a small reptilian head"
     }
+  },
+  {
+    "queued_at": "2026-09-14T09:38:11+00:00",
+    "publish_at": "2026-09-15T13:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAICpGqnwB32pk00FLwPYZ9667lrQMWkAALRIAADz0FRt1-Lqadzr0Y9BA",
+    "file_size": 1686362,
+    "caption": "2",
+    "concept": {
+      "shape": "smooth asymmetrical pod",
+      "material": "lacquered bamboo and brass wire",
+      "internal_detail": "tiny elastic rubber bands and wooden levers",
+      "button": "a protruding wooden peg near the base",
+      "button_short": "the protruding wooden peg near the base",
+      "creature": "arboreal gecko",
+      "shell_mechanic": "The smooth bamboo pod cracks down its ventral seam and unfolds into flexible segments",
+      "emerging_parts": "Four slender toes and a long curling tail"
+    }
   }
 ]
