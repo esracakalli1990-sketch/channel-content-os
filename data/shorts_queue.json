@@ -15,5 +15,22 @@
       "shell_mechanic": "The charcoal dorsal shell hinges upward while two lateral armor plates slide rearward",
       "emerging_parts": "Two broad scalloped forepaws and a snout bearing twenty-two flexible copper rays"
     }
+  },
+  {
+    "queued_at": "2026-09-14T09:36:08+00:00",
+    "publish_at": "2026-09-14T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIComqnv-ZW9hUzChoZQ79PR6bbL9avAALQIAADz0FRAhWKXqtG6449BA",
+    "file_size": 1736351,
+    "caption": "1",
+    "concept": {
+      "shape": "ridged hemispherical dome",
+      "material": "polished chrome and gunmetal steel",
+      "internal_detail": "interlocking differential gears and copper coils",
+      "button": "a flush steel stud on the upper curve",
+      "button_short": "the flush steel stud on the curve",
+      "creature": "small terrestrial tortoise",
+      "shell_mechanic": "The ridged hemispherical dome splits radially into four hinged plates that slide outward",
+      "emerging_parts": "Four scaled legs and a small reptilian head"
+    }
   }
 ]
