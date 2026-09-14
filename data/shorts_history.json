@@ -107,7 +107,9 @@
     "clockwork orrery",
     "star-nosed mole",
     "small terrestrial tortoise",
-    "arboreal gecko"
+    "arboreal gecko",
+    "ray",
+    "field hare"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -189,6 +191,8 @@
     "domed octagonal case",
     "blunt tapered ingot",
     "ridged hemispherical dome",
-    "smooth asymmetrical pod"
+    "smooth asymmetrical pod",
+    "flattened triangular wedge",
+    "grooved copper cylinder"
   ]
 }
