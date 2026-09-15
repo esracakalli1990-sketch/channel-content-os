@@ -109,7 +109,9 @@
     "small terrestrial tortoise",
     "arboreal gecko",
     "ray",
-    "field hare"
+    "field hare",
+    "horned viper",
+    "folding bellows camera"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -193,6 +195,8 @@
     "ridged hemispherical dome",
     "smooth asymmetrical pod",
     "flattened triangular wedge",
-    "grooved copper cylinder"
+    "grooved copper cylinder",
+    "faceted annular ring",
+    "chamfered rectangular cassette"
   ]
 }
