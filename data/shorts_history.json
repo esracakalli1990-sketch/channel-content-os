@@ -111,7 +111,9 @@
     "ray",
     "field hare",
     "horned viper",
-    "folding bellows camera"
+    "folding bellows camera",
+    "nautical sextant",
+    "ocean sunfish"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -197,6 +199,8 @@
     "flattened triangular wedge",
     "grooved copper cylinder",
     "faceted annular ring",
-    "chamfered rectangular cassette"
+    "chamfered rectangular cassette",
+    "sixty-degree circular sector",
+    "thick biconvex lens"
   ]
 }
