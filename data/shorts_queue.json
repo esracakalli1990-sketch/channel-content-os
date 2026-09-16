@@ -15,5 +15,22 @@
       "shell_mechanic": "The interlocking annular segments unlatch and flex outward in an uncoiling sweep",
       "emerging_parts": "A horned triangular cranium and a slender ribbed rattle"
     }
+  },
+  {
+    "queued_at": "2026-09-16T21:13:49+00:00",
+    "publish_at": "2026-09-17T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAICvWqrBif-AWxTTe-dfF6cRObjrCIuAAJDHgACq_1ZUSLS8KOeFeKIPQQ",
+    "file_size": 1460444,
+    "caption": "2",
+    "concept": {
+      "shape": "chamfered rectangular cassette",
+      "material": "stamped black vulcanite and polished nickel plating",
+      "internal_detail": "crimped calfskin bellows and counterweighted scissor linkages",
+      "button": "a knurled nickel release button flush with the upper edge",
+      "button_short": "the knurled nickel release button",
+      "creature": "folding bellows camera",
+      "shell_mechanic": "The hinged faceplate drops downward on sprung steel pivots",
+      "emerging_parts": "A tiered brass lens standard and twin diagonal support struts"
+    }
   }
 ]
