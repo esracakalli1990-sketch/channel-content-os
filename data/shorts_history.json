@@ -113,7 +113,9 @@
     "horned viper",
     "folding bellows camera",
     "nautical sextant",
-    "ocean sunfish"
+    "ocean sunfish",
+    "sugar glider",
+    "axolotl"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -201,6 +203,8 @@
     "faceted annular ring",
     "chamfered rectangular cassette",
     "sixty-degree circular sector",
-    "thick biconvex lens"
+    "thick biconvex lens",
+    "bowed quadrilateral plate",
+    "broad bilobed plaque"
   ]
 }
