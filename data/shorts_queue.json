@@ -32,5 +32,22 @@
       "shell_mechanic": "The arcuate brass casing splits along its curved limb and pivots open by sixty degrees",
       "emerging_parts": "A brass sighting telescope, a pivoted index arm, and two hinged mirror brackets"
     }
+  },
+  {
+    "queued_at": "2026-09-17T20:47:01+00:00",
+    "publish_at": "2026-09-18T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAICyGqsUVOMj1qDqjt0x0JkqhB4yvVdAAJvHwACq_1hUfRNDbJFJBNVPQQ",
+    "file_size": 1502036,
+    "caption": "2",
+    "concept": {
+      "shape": "thick biconvex lens",
+      "material": "brushed titanium and midnight-blue anodized aluminum",
+      "internal_detail": "nested concentric gear trains and tiny planetary pivots",
+      "button": "a flush circular steel button centered on the dorsal ridge",
+      "button_short": "the flush circular steel button on the dorsal ridge",
+      "creature": "ocean sunfish",
+      "shell_mechanic": "The lateral titanium plates slide forward along the midline while the dorsal and ventral margins swing outward",
+      "emerging_parts": "Two tall counter-pivoting vertical fins and a scalloped rear rudder"
+    }
   }
 ]
