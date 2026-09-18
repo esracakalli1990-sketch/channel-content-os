@@ -153,6 +153,17 @@ def main() -> None:
             sort="-views",
             max_results=200,
         ),
+        # Kapak tartismasini zevkten cikarip olcume baglayan sorgu. Shorts'ta
+        # gosterim/tiklanma kavrami yok -- akis videoyu kendisi oynatiyor --
+        # ama uzun videoda izlenmenin tamami once tiklanmaya bagli, ve 4.000
+        # saat hedefinin tamami oraya dayaniyor.
+        "ctr": dict(
+            dimensions="video",
+            metrics="impressions,impressionClickThroughRate,views",
+            days=90,
+            sort="-impressions",
+            max_results=25,
+        ),
         "daily": dict(
             dimensions="day",
             metrics="views,estimatedMinutesWatched,subscribersGained,subscribersLost",
@@ -245,7 +256,7 @@ def _emit(dump: dict) -> None:
             (record.get("idea_version") or "-")[:8],
         )))
 
-    for section in ("daily", "traffic", "devices", "subs_status", "countries"):
+    for section in ("ctr", "daily", "traffic", "devices", "subs_status", "countries"):
         block = (dump.get("analytics") or {}).get(section) or {}
         if not block.get("rows"):
             continue
