@@ -144,6 +144,10 @@ def build_parser() -> argparse.ArgumentParser:
     thumbnail.add_argument(
         "--video-id", default="", help="Which compilation; defaults to the most recent",
     )
+    thumbnail.add_argument(
+        "--preview", action="store_true",
+        help="Print the thumbnail base64-encoded for review instead of attaching it",
+    )
 
     report = subparsers.add_parser(
         "shorts-report", help="Send a YouTube and Instagram performance report to Telegram"
@@ -331,8 +335,18 @@ def main() -> None:
         )
 
     elif args.command == "shorts-thumbnail":
-        from .shorts_compilation import set_thumbnail
-        print(f"Kapak kondu: https://youtube.com/watch?v={set_thumbnail(video_id=args.video_id)}")
+        if args.preview:
+            from .shorts_compilation import preview_thumbnail
+            # Delimited so the image can be lifted back out of the job log.
+            print("THUMB_BEGIN")
+            print(preview_thumbnail(video_id=args.video_id))
+            print("THUMB_END")
+        else:
+            from .shorts_compilation import set_thumbnail
+            print(
+                "Kapak kondu: https://youtube.com/watch?v="
+                f"{set_thumbnail(video_id=args.video_id)}"
+            )
 
     elif args.command == "shorts-report":
         import re as _re

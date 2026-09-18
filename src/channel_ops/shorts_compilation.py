@@ -524,15 +524,34 @@ def build_thumbnail(clip: Path, count: int, destination: Path) -> Path:
     return destination
 
 
-def set_thumbnail(root: Path | None = None, video_id: str = "") -> str:
-    """Build and attach the thumbnail for a compilation.
+def preview_thumbnail(root: Path | None = None, video_id: str = "") -> str:
+    """Build the thumbnail and return it base64-encoded, without attaching it.
 
-    Defaults to the most recent one, so a compilation published before the
-    thumbnail existed can be fixed without rebuilding the video.
+    The image is made where the Telegram credentials are — inside the runner —
+    so the only way to look at it before it goes on the channel is to carry it
+    out through the job log. A JPEG at quality 88 keeps that log a few hundred
+    kilobytes instead of a couple of megabytes; the thumbnail that actually
+    gets uploaded is still the PNG.
     """
+    import base64
     import tempfile
 
     root = root or find_project_root()
+    record, opening, file_id, file_size = _compilation_clip(root, video_id)
+    with tempfile.TemporaryDirectory() as workspace:
+        clip = Path(workspace) / "opening.mp4"
+        telegram_inbox.download_file(file_id, file_size, clip)
+        image = build_thumbnail(clip, record["clip_count"], Path(workspace) / "thumb.png")
+
+        from PIL import Image
+
+        preview = Path(workspace) / "thumb.jpg"
+        Image.open(image).convert("RGB").save(preview, "JPEG", quality=88, optimize=True)
+        return base64.b64encode(preview.read_bytes()).decode("ascii")
+
+
+def _compilation_clip(root: Path, video_id: str) -> tuple[dict, str, str, int]:
+    """The record for a compilation and the Telegram id of its opening clip."""
     history = _read_json(_path(LONG_PUBLISHED_FILE, root), [])
     if not history:
         raise CompilationError("No compilation has been published yet.")
@@ -547,8 +566,20 @@ def set_thumbnail(root: Path | None = None, video_id: str = "") -> str:
     ids = recover_file_ids(root)
     if opening not in ids:
         raise CompilationError(f"No Telegram file id for the opening clip ({opening}).")
-
     file_id, file_size = ids[opening]
+    return record, opening, file_id, file_size
+
+
+def set_thumbnail(root: Path | None = None, video_id: str = "") -> str:
+    """Build and attach the thumbnail for a compilation.
+
+    Defaults to the most recent one, so a compilation published before the
+    thumbnail existed can be fixed without rebuilding the video.
+    """
+    import tempfile
+
+    root = root or find_project_root()
+    record, opening, file_id, file_size = _compilation_clip(root, video_id)
     with tempfile.TemporaryDirectory() as workspace:
         clip = Path(workspace) / "opening.mp4"
         telegram_inbox.download_file(file_id, file_size, clip)

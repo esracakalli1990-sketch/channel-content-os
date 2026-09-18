@@ -7,7 +7,8 @@ name: Shorts — araçlar
 #   audience : izleyicilerin hangi ülkelerde olduğunu yazar; yayın saatlerini
 #              tahminle değil veriyle seçmek için
 #   channel  : kanal toplamları ve para kazanma eşiklerine mesafe
-#   thumbnail: son derlemenin kapağını üretip videoya koyar
+#   thumbnail        : son derlemenin kapağını üretip videoya koyar
+#   thumbnail-preview: kapağı üretir ama koymaz, loga base64 basar (önce bakmak için)
 #   audit    : her videonun ve her günün ham verisini JSON olarak loga
 #              basar; "bu değişiklik işe yaradı mı" sorusu ancak tam
 #              veriyle cevaplanıyor, telefona giden rapor son on videoyu
@@ -19,7 +20,7 @@ on:
         description: "Hangi iş?"
         required: true
         type: choice
-        options: [resend, audience, channel, audit, thumbnail]
+        options: [resend, audience, channel, audit, thumbnail, thumbnail-preview]
 
 concurrency:
   group: shorts-tools
@@ -42,7 +43,7 @@ jobs:
           python-version: "3.12"
 
       - name: Kapak bağımlılıkları
-        if: inputs.job == 'thumbnail'
+        if: startsWith(inputs.job, 'thumbnail')
         run: pip install --quiet imageio-ffmpeg Pillow
 
       - name: Çalıştır
@@ -57,6 +58,8 @@ jobs:
         run: |
           if [ "${{ inputs.job }}" = "audit" ]; then
             python scripts/channel_audit.py
+          elif [ "${{ inputs.job }}" = "thumbnail-preview" ]; then
+            python -m channel_ops shorts-thumbnail --preview
           else
             python -m channel_ops "shorts-${{ inputs.job }}"
           fi
