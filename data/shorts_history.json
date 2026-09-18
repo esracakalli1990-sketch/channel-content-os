@@ -115,7 +115,9 @@
     "nautical sextant",
     "ocean sunfish",
     "sugar glider",
-    "axolotl"
+    "axolotl",
+    "basking shark",
+    "sea otter"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -205,6 +207,8 @@
     "sixty-degree circular sector",
     "thick biconvex lens",
     "bowed quadrilateral plate",
-    "broad bilobed plaque"
+    "broad bilobed plaque",
+    "ribbed globular spool",
+    "cupped elliptical pod"
   ]
 }
