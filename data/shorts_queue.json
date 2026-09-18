@@ -1,22 +1,5 @@
 [
   {
-    "queued_at": "2026-09-17T20:44:58+00:00",
-    "publish_at": "2026-09-18T13:00:00+00:00",
-    "file_id": "BQACAgQAAxkBAAICxmqsUNiJHaMD9BQP_Y2vWNlNMNKCAAJuHwACq_1hUYkkn7doJAwBPQQ",
-    "file_size": 1821608,
-    "caption": "1",
-    "concept": {
-      "shape": "sixty-degree circular sector",
-      "material": "aged lacquered brass and gunmetal",
-      "internal_detail": "precision miniature bevel gears, silver vernier graduations, and tinted glass filters",
-      "button": "a knurled brass release button seated in the pivot joint",
-      "button_short": "the knurled brass release button at the pivot",
-      "creature": "nautical sextant",
-      "shell_mechanic": "The arcuate brass casing splits along its curved limb and pivots open by sixty degrees",
-      "emerging_parts": "A brass sighting telescope, a pivoted index arm, and two hinged mirror brackets"
-    }
-  },
-  {
     "queued_at": "2026-09-17T20:47:01+00:00",
     "publish_at": "2026-09-18T23:00:00+00:00",
     "file_id": "BQACAgQAAxkBAAICyGqsUVOMj1qDqjt0x0JkqhB4yvVdAAJvHwACq_1hUfRNDbJFJBNVPQQ",
