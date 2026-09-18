@@ -7,6 +7,7 @@ name: Shorts — araçlar
 #   audience : izleyicilerin hangi ülkelerde olduğunu yazar; yayın saatlerini
 #              tahminle değil veriyle seçmek için
 #   channel  : kanal toplamları ve para kazanma eşiklerine mesafe
+#   thumbnail: son derlemenin kapağını üretip videoya koyar
 #   audit    : her videonun ve her günün ham verisini JSON olarak loga
 #              basar; "bu değişiklik işe yaradı mı" sorusu ancak tam
 #              veriyle cevaplanıyor, telefona giden rapor son on videoyu
@@ -18,7 +19,7 @@ on:
         description: "Hangi iş?"
         required: true
         type: choice
-        options: [resend, audience, channel, audit]
+        options: [resend, audience, channel, audit, thumbnail]
 
 concurrency:
   group: shorts-tools
@@ -32,10 +33,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Kapak işi klip file_id'lerini kuyruk dosyasının geçmişinden okuyor.
+          fetch-depth: 0
 
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+
+      - name: Kapak bağımlılıkları
+        if: inputs.job == 'thumbnail'
+        run: pip install --quiet imageio-ffmpeg Pillow
 
       - name: Çalıştır
         env:
