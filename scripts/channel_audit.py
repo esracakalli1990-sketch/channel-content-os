@@ -153,17 +153,10 @@ def main() -> None:
             sort="-views",
             max_results=200,
         ),
-        # Kapak tartismasini zevkten cikarip olcume baglayan sorgu. Shorts'ta
-        # gosterim/tiklanma kavrami yok -- akis videoyu kendisi oynatiyor --
-        # ama uzun videoda izlenmenin tamami once tiklanmaya bagli, ve 4.000
-        # saat hedefinin tamami oraya dayaniyor.
-        "ctr": dict(
-            dimensions="video",
-            metrics="impressions,impressionClickThroughRate,views",
-            days=90,
-            sort="-impressions",
-            max_results=25,
-        ),
+        # Gosterim ve tiklanma orani burada YOK ve konamaz: denendi, Analytics
+        # API "Unknown identifier (impressions)" diyor. Bunlar Studio'ya ozel
+        # metrikler. Uzun videonun kapagi ancak Studio'dan okunarak
+        # degerlendirilebilir -- API'den olculebilirmis gibi plan yapilmasin.
         "daily": dict(
             dimensions="day",
             metrics="views,estimatedMinutesWatched,subscribersGained,subscribersLost",
