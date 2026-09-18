@@ -192,7 +192,18 @@ def set_thumbnail(youtube_video_id: str, thumbnail_path: Path) -> dict:
         with urlopen(request, timeout=30) as response:
             return json.load(response)
     except HTTPError as exc:
-        raise RuntimeError(f"Thumbnail upload failed (HTTP {exc.code})") from exc
+        # The bare status was not enough to act on: a 403 here is almost always
+        # "this channel has not been verified for custom thumbnails", which is
+        # a setting only a human can change, and it read the same as a scope or
+        # quota problem.
+        detail = ""
+        try:
+            detail = exc.read().decode("utf-8", errors="replace")[:400]
+        except Exception:  # noqa: BLE001
+            pass
+        raise RuntimeError(
+            f"Thumbnail upload failed (HTTP {exc.code}): {detail}"
+        ) from exc
 
 
 def save_upload_record(video_directory: Path, upload_result: dict) -> Path:
