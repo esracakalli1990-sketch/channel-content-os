@@ -553,7 +553,21 @@ def set_thumbnail(root: Path | None = None, video_id: str = "") -> str:
         clip = Path(workspace) / "opening.mp4"
         telegram_inbox.download_file(file_id, file_size, clip)
         image = build_thumbnail(clip, record["clip_count"], Path(workspace) / "thumb.png")
-        youtube_uploader.set_thumbnail(record["youtube_video_id"], image)
+        try:
+            youtube_uploader.set_thumbnail(record["youtube_video_id"], image)
+        except RuntimeError as exc:
+            # A 403 in the youtube.thumbnail domain is not a bug to fix in code.
+            # Custom thumbnails are switched off until the channel itself is
+            # verified by phone, and no scope or retry gets past it — the upload
+            # scope is clearly present, since the video went up with it.
+            if "403" in str(exc):
+                raise CompilationError(
+                    "YouTube refused the thumbnail: this channel is not verified for "
+                    "custom thumbnails yet. Verify it once at youtube.com/verify "
+                    "(Studio > Settings > Channel > Feature eligibility), then run "
+                    "shorts-thumbnail again. Nothing in the pipeline needs changing."
+                ) from exc
+            raise
 
     logger.info("Thumbnail set on %s from %s", record["youtube_video_id"], opening)
     return record["youtube_video_id"]
