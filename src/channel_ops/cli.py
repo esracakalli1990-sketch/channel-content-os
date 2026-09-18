@@ -120,6 +120,23 @@ def build_parser() -> argparse.ArgumentParser:
         "telegram-whoami", help="Print the chat ID of everyone who has messaged the bot"
     )
 
+    compilation = subparsers.add_parser(
+        "shorts-compilation",
+        help="Build a long-form compilation from published clips and upload it",
+    )
+    compilation.add_argument(
+        "--minutes", type=int, default=11,
+        help="Roughly how long the compilation should run",
+    )
+    compilation.add_argument(
+        "--reuse", action="store_true",
+        help="Allow clips from an earlier compilation when there are too few new ones",
+    )
+    compilation.add_argument(
+        "--privacy", default="public", choices=["public", "unlisted", "private"],
+        help="Upload visibility; the first build goes out unlisted to be looked at first",
+    )
+
     report = subparsers.add_parser(
         "shorts-report", help="Send a YouTube and Instagram performance report to Telegram"
     )
@@ -291,6 +308,19 @@ def main() -> None:
         print("İzleyicilerin ülkeleri (son 90 gün):")
         for code, views in rows:
             print(f"  {code:<4} {views:>8,} izlenme  %{views / total * 100:.0f}")
+
+    elif args.command == "shorts-compilation":
+        # Long-form, because Shorts watch time does not count toward the 4,000
+        # hours the Partner Programme asks for and the ten-million-Shorts route
+        # is a tenfold gap away.
+        from .shorts_compilation import publish as publish_compilation
+        record = publish_compilation(
+            minutes=args.minutes, reuse=args.reuse, privacy=args.privacy
+        )
+        print(
+            f"Derleme yayınlandı: {record['youtube_url']} "
+            f"({record['minutes']} dk, {record['clip_count']} klip)"
+        )
 
     elif args.command == "shorts-report":
         import re as _re

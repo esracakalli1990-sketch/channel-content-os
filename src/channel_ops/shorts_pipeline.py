@@ -58,22 +58,28 @@ QUEUE_FILE = "data/shorts_queue.json"
 #               18:30 in India), morning in the United States
 #   23:00 UTC — American prime time (19:00 New York, 16:00 Los Angeles)
 #
-# Two a day, not three. On 25 August two consecutive uploads took 9 and 5
-# views in eight hours while the back catalogue earned 53,000 in the same day
-# — and YouTube reported both as processed, accepted, unrejected, 9:16 and the
-# right length. Nothing was wrong with the videos; they were simply never put
-# into the feed. Four weeks of three machine-made uploads a day, right after
-# the channel's best day ever, is the likeliest thing to have tripped a
-# volume check, so the rate comes down while that is tested. The 17:00 slot
-# is the one dropped: it sat between the other two, and cutting it leaves ten
-# hours between releases instead of four.
+# Two a day, not three. On 25 August two consecutive uploads took 9 and 5 views
+# in eight hours while the back catalogue earned 53,000 the same day. The volume
+# theory that produced this cut was later disproved — dead videos kept arriving
+# at two a day — but the rate stays here for now because nothing argues for
+# raising it either.
 #
-# The three slots performed alike (medians 3,076 / 3,316 / 3,671 over 26
-# mature videos), so this costs nothing in placement.
+# 17:00 replaced 13:00 on 18 September, on the record of all 108 videos:
 #
-# Only the file id is queued, never the video: Telegram keeps file ids valid
-# indefinitely, so the clip is fetched again at publish time.
-PUBLISH_SLOTS_UTC = (13, 23)
+#   23:00-01:00   35 videos   median 2,064   hit rate 20%
+#   17:00-22:00   25 videos   median 2,164   hit rate 16%
+#   11:00-15:00   47 videos   median 2,025   hit rate 11%
+#
+# Within the two-slot era alone the gap is wider: 23:00 ran a median of 2,049
+# against 1,536, and took four of the five hits. The midday slot was chosen from
+# where the viewers live; the evening bands simply do better, and three of the
+# last four hits went out at night. One slot moves, so the next measurement can
+# read it.
+#
+# The evening figures come partly from the old three-a-day era, when those
+# videos had longer to accumulate, so the 17:00 number is the softer of the two
+# claims. 23:00 is the one the current data supports outright.
+PUBLISH_SLOTS_UTC = (17, 23)
 
 # How far ahead the first release must be. The prompts arrive at midnight
 # Turkish time (21:00 UTC) and the clips are made straight away, which puts
@@ -670,6 +676,13 @@ def _publish_queued(item: dict, provider: AIProvider, root: Path) -> dict:
         "instagram_caption": metadata.instagram(),
         "tiktok_caption": metadata.tiktok(),
         "size_mb": round(int(item.get("file_size", 0)) / (1024 * 1024), 1),
+        # Kept so the clip can be fetched again long after publishing — the
+        # long-form compilations are cut from these. Telegram file ids stay
+        # valid indefinitely and are useless without the bot token, and the
+        # release queue has always carried them in this public repository, so
+        # recording them here adds no exposure and removes the need to dig
+        # through git history for every clip.
+        "file_id": item.get("file_id", ""),
         # When the clip arrived versus when it went out, so a slot's effect on
         # reach can be read back from the record.
         "queued_at": item.get("queued_at", ""),
