@@ -385,6 +385,16 @@ def publish(
     }
     _append(record, root)
 
+    # Long-form lives or dies on the click. A failure here must not undo an
+    # upload that already worked, so it is reported and left for the standalone
+    # command to retry.
+    try:
+        set_thumbnail(root, video_id)
+        record["thumbnail"] = True
+    except Exception as exc:  # noqa: BLE001
+        logger.exception("Thumbnail failed")
+        notifications.send_message(f"⚠️ <b>Kapak konulamadı</b>\n{exc}")
+
     notifications.send_message(
         f"🎬 <b>Derleme yayınlandı</b>\n\n"
         f"<b>{title}</b>\n"
@@ -405,3 +415,145 @@ def _append(record: dict, root: Path) -> None:
     history.append(record)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(history, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
+# ---------------------------------------------------------------------------
+# Thumbnail
+# ---------------------------------------------------------------------------
+#
+# Shorts need no thumbnail — the feed plays them. Long-form is the opposite:
+# nothing is watched that is not first clicked, and YouTube's automatic pick is
+# whatever frame it happens to like, which for a compilation of unfoldings is
+# usually a blurred mid-transformation smear. The promise of this channel is
+# "solid object becomes machine", so the thumbnail is that promise: the closed
+# object on the left, what it became on the right.
+
+THUMB_W, THUMB_H = 1280, 720
+SEAM = 8
+
+# Far enough in that the shell is still shut, and far enough along that the
+# creature has finished unfolding. The clips run nine to eleven seconds.
+BEFORE_AT = 0.3
+AFTER_RATIO = 0.92
+
+
+def _frame(video: Path, at: float, destination: Path) -> None:
+    command = [
+        _ffmpeg(), "-y", "-v", "error", "-ss", f"{at:.2f}", "-i", str(video),
+        "-frames:v", "1", "-q:v", "2", str(destination),
+    ]
+    result = subprocess.run(command, capture_output=True, text=True)
+    if result.returncode != 0 or not destination.exists():
+        raise CompilationError(f"Could not take a frame at {at:.1f}s: {result.stderr.strip()[:160]}")
+
+
+def _fill(image, width: int, height: int):
+    """Cover the box, cropping the overflow around the centre."""
+    from PIL import Image
+
+    scale = max(width / image.width, height / image.height)
+    resized = image.resize(
+        (max(1, round(image.width * scale)), max(1, round(image.height * scale))),
+        Image.LANCZOS,
+    )
+    left = (resized.width - width) // 2
+    top = (resized.height - height) // 2
+    return resized.crop((left, top, left + width, top + height))
+
+
+def build_thumbnail(clip: Path, count: int, destination: Path) -> Path:
+    """A before-and-after thumbnail cut from the compilation's opening clip."""
+    from PIL import Image, ImageDraw, ImageFont
+
+    from .video_overlay import _font_path
+
+    workspace = destination.parent
+    before_png = workspace / "before.png"
+    after_png = workspace / "after.png"
+    length = _duration(clip) or 10.0
+    _frame(clip, BEFORE_AT, before_png)
+    _frame(clip, length * AFTER_RATIO, after_png)
+
+    # The band is painted over the panels, so the panels stop short of it and
+    # the seam does not run down through the lettering.
+    band = 150
+    panel_h = THUMB_H - band
+    half = (THUMB_W - SEAM) // 2
+    canvas = Image.new("RGB", (THUMB_W, THUMB_H), (255, 255, 255))
+    canvas.paste(_fill(Image.open(before_png).convert("RGB"), half, panel_h), (0, 0))
+    canvas.paste(
+        _fill(Image.open(after_png).convert("RGB"), half, panel_h), (half + SEAM, 0)
+    )
+
+    draw = ImageDraw.Draw(canvas, "RGBA")
+
+    # A caption band rather than text straight onto the frame: the clips are
+    # shot on a pale wooden table and white letters vanish into it.
+    #
+    # Three words, not four. A YouTube thumbnail is about 170 pixels wide on a
+    # phone, which is where nearly all of this channel's viewing happens, and
+    # "66 MECHANICAL TRANSFORMATIONS" at that size is a grey smear. Fewer
+    # characters buy bigger letters.
+    draw.rectangle([(0, panel_h), (THUMB_W, THUMB_H)], fill=(12, 12, 14))
+    font = ImageFont.truetype(_font_path(), 96)
+    caption = f"{count} UNFOLDING MACHINES"
+    while draw.textlength(caption, font=font) > THUMB_W * 0.90 and font.size > 40:
+        font = ImageFont.truetype(_font_path(), font.size - 2)
+    width = draw.textlength(caption, font=font)
+    draw.text(
+        ((THUMB_W - width) / 2, panel_h + (band - font.size) / 2 - 8),
+        caption, font=font, fill=(255, 255, 255),
+    )
+
+    # The arrow sits on the seam and says which way to read the two halves.
+    radius = 62
+    centre = (THUMB_W // 2, panel_h // 2)
+    draw.ellipse(
+        [(centre[0] - radius, centre[1] - radius), (centre[0] + radius, centre[1] + radius)],
+        fill=(255, 255, 255), outline=(0, 0, 0), width=5,
+    )
+    arrow = ImageFont.truetype(_font_path(), 86)
+    glyph = "››"  # two single guillemets: present in DejaVu, reads as motion
+    glyph_width = draw.textlength(glyph, font=arrow)
+    draw.text(
+        (centre[0] - glyph_width / 2, centre[1] - arrow.size * 0.62),
+        glyph, font=arrow, fill=(15, 15, 15),
+    )
+
+    canvas.save(destination, "PNG", optimize=True)
+    return destination
+
+
+def set_thumbnail(root: Path | None = None, video_id: str = "") -> str:
+    """Build and attach the thumbnail for a compilation.
+
+    Defaults to the most recent one, so a compilation published before the
+    thumbnail existed can be fixed without rebuilding the video.
+    """
+    import tempfile
+
+    root = root or find_project_root()
+    history = _read_json(_path(LONG_PUBLISHED_FILE, root), [])
+    if not history:
+        raise CompilationError("No compilation has been published yet.")
+    record = next(
+        (r for r in reversed(history) if r["youtube_video_id"] == video_id),
+        history[-1] if not video_id else None,
+    )
+    if record is None:
+        raise CompilationError(f"No compilation recorded for video {video_id}.")
+
+    opening = (record.get("creatures") or [None])[0]
+    ids = recover_file_ids(root)
+    if opening not in ids:
+        raise CompilationError(f"No Telegram file id for the opening clip ({opening}).")
+
+    file_id, file_size = ids[opening]
+    with tempfile.TemporaryDirectory() as workspace:
+        clip = Path(workspace) / "opening.mp4"
+        telegram_inbox.download_file(file_id, file_size, clip)
+        image = build_thumbnail(clip, record["clip_count"], Path(workspace) / "thumb.png")
+        youtube_uploader.set_thumbnail(record["youtube_video_id"], image)
+
+    logger.info("Thumbnail set on %s from %s", record["youtube_video_id"], opening)
+    return record["youtube_video_id"]

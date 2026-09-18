@@ -133,3 +133,51 @@ class FreshnessTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ThumbnailTests(unittest.TestCase):
+    """Shorts need no thumbnail because the feed plays them. Long-form is the
+    opposite: nothing is watched that is not first clicked."""
+
+    def setUp(self):
+        self._workspace = TemporaryDirectory()
+        self.dir = Path(self._workspace.name)
+        self.addCleanup(self._workspace.cleanup)
+        try:
+            import imageio_ffmpeg  # noqa: F401
+            from PIL import Image  # noqa: F401
+        except ImportError:  # pragma: no cover - depends on the machine
+            self.skipTest("needs Pillow and imageio-ffmpeg")
+        self.clip = self.dir / "clip.mp4"
+        import subprocess
+        subprocess.run(
+            [sc._ffmpeg(), "-y", "-v", "error", "-f", "lavfi",
+             "-i", "testsrc=size=720x1280:duration=10:rate=30",
+             "-c:v", "libx264", "-preset", "ultrafast", "-pix_fmt", "yuv420p",
+             str(self.clip)], check=True,
+        )
+
+    def test_it_is_the_size_youtube_asks_for(self):
+        from PIL import Image
+        out = sc.build_thumbnail(self.clip, 66, self.dir / "t.png")
+        self.assertEqual(Image.open(out).size, (sc.THUMB_W, sc.THUMB_H))
+
+    def test_it_stays_under_the_two_megabyte_ceiling(self):
+        out = sc.build_thumbnail(self.clip, 66, self.dir / "t.png")
+        self.assertLess(out.stat().st_size, 2 * 1024 * 1024)
+
+    def test_the_caption_shrinks_rather_than_running_off_the_edge(self):
+        """A four-digit count must not push the words past the frame."""
+        from PIL import Image, ImageDraw, ImageFont
+        from channel_ops.video_overlay import _font_path
+        draw = ImageDraw.Draw(Image.new("RGB", (sc.THUMB_W, sc.THUMB_H)))
+        caption = f"{9999} UNFOLDING MACHINES"
+        font = ImageFont.truetype(_font_path(), 96)
+        while draw.textlength(caption, font=font) > sc.THUMB_W * 0.90 and font.size > 40:
+            font = ImageFont.truetype(_font_path(), font.size - 2)
+        self.assertLessEqual(draw.textlength(caption, font=font), sc.THUMB_W)
+
+    def test_the_two_halves_come_from_different_moments(self):
+        """Before and after: one frame with the shell shut, one with it open."""
+        self.assertLess(sc.BEFORE_AT, 1.0)
+        self.assertGreater(sc.AFTER_RATIO, 0.8)

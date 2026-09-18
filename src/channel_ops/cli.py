@@ -137,6 +137,14 @@ def build_parser() -> argparse.ArgumentParser:
         help="Upload visibility; the first build goes out unlisted to be looked at first",
     )
 
+    thumbnail = subparsers.add_parser(
+        "shorts-thumbnail",
+        help="Build and attach the before/after thumbnail for a compilation",
+    )
+    thumbnail.add_argument(
+        "--video-id", default="", help="Which compilation; defaults to the most recent",
+    )
+
     report = subparsers.add_parser(
         "shorts-report", help="Send a YouTube and Instagram performance report to Telegram"
     )
@@ -321,6 +329,10 @@ def main() -> None:
             f"Derleme yayınlandı: {record['youtube_url']} "
             f"({record['minutes']} dk, {record['clip_count']} klip)"
         )
+
+    elif args.command == "shorts-thumbnail":
+        from .shorts_compilation import set_thumbnail
+        print(f"Kapak kondu: https://youtube.com/watch?v={set_thumbnail(video_id=args.video_id)}")
 
     elif args.command == "shorts-report":
         import re as _re

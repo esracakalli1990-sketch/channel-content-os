@@ -58,8 +58,9 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: ffmpeg
-        run: pip install --quiet imageio-ffmpeg
+      - name: ffmpeg ve Pillow
+        # Pillow kapak için: kapaksız uzun video tıklanmıyor.
+        run: pip install --quiet imageio-ffmpeg Pillow
 
       - name: Derle ve yükle
         env:
