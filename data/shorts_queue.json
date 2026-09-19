@@ -15,5 +15,22 @@
       "shell_mechanic": "The bilobed plaque glides apart along a central spine seam to form a dorsal crest",
       "emerging_parts": "Six frilled feathery gill stalks, four jointed webbed legs, and a wide flattened head"
     }
+  },
+  {
+    "queued_at": "2026-09-19T15:11:36+00:00",
+    "publish_at": "2026-09-20T17:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIC3WqupfkjTakNA6axCQy633Bc-CKBAAJmIAACNBZ4USZ6z2UJRDe_PQQ",
+    "file_size": 1410087,
+    "caption": "1",
+    "concept": {
+      "shape": "ribbed globular spool",
+      "material": "oxidized copper and forged iron",
+      "internal_detail": "tightly wound brass spring coils and miniature escapement gears",
+      "button": "a tiny raised iron rivet set into the side of the spool",
+      "button_short": "the tiny raised iron rivet",
+      "creature": "basking shark",
+      "shell_mechanic": "The grooved metallic flanges slide apart in opposite directions",
+      "emerging_parts": "A wide blunt head and five pairs of wide gill slits"
+    }
   }
 ]
