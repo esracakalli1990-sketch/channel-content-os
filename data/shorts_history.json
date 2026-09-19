@@ -117,7 +117,9 @@
     "sugar glider",
     "axolotl",
     "basking shark",
-    "sea otter"
+    "sea otter",
+    "atlantic puffin",
+    "twin-propeller survey drone"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -209,6 +211,8 @@
     "bowed quadrilateral plate",
     "broad bilobed plaque",
     "ribbed globular spool",
-    "cupped elliptical pod"
+    "cupped elliptical pod",
+    "beveled ovate monocoque",
+    "chamfered square cuboid"
   ]
 }
