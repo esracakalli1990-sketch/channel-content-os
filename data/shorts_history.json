@@ -119,7 +119,9 @@
     "basking shark",
     "sea otter",
     "atlantic puffin",
-    "twin-propeller survey drone"
+    "twin-propeller survey drone",
+    "bison",
+    "grey wolf"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -213,6 +215,8 @@
     "ribbed globular spool",
     "cupped elliptical pod",
     "beveled ovate monocoque",
-    "chamfered square cuboid"
+    "chamfered square cuboid",
+    "stepped pyramidal spire",
+    "ribbed drop pod"
   ]
 }
