@@ -49,5 +49,22 @@
       "shell_mechanic": "The titanium dorsal shell splits along the central seam and the lateral halves rotate outward like folded wings",
       "emerging_parts": "A striped triangular beak, a crested head, and two jointed orange paddle feet"
     }
+  },
+  {
+    "queued_at": "2026-09-20T06:47:59+00:00",
+    "publish_at": "2026-09-21T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIC6GqvgT7wLZ5lw3EAATovI618KGMKsgACBCAAAvCRgVG3mux2B7Yhlz0E",
+    "file_size": 1484271,
+    "caption": "2",
+    "concept": {
+      "shape": "chamfered square cuboid",
+      "material": "matte carbon fiber and anodized aircraft-grade aluminum",
+      "internal_detail": "miniature brushless motor stators and coiled ribbon wiring",
+      "button": "a flush square tactile switch illuminated by ice-blue electroluminescence",
+      "button_short": "the flush square tactile switch on the upper face",
+      "creature": "twin-propeller survey drone",
+      "shell_mechanic": "The upper carbon-fiber cowlings pivot outward on twin articulated hinges",
+      "emerging_parts": "Two folding propeller pylons, four hinged landing struts, and a swiveling sensor turret"
+    }
   }
 ]
