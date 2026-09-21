@@ -121,7 +121,9 @@
     "atlantic puffin",
     "twin-propeller survey drone",
     "bison",
-    "grey wolf"
+    "grey wolf",
+    "thorny devil",
+    "white sturgeon"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -217,6 +219,8 @@
     "beveled ovate monocoque",
     "chamfered square cuboid",
     "stepped pyramidal spire",
-    "ribbed drop pod"
+    "ribbed drop pod",
+    "creased lozenge tablet",
+    "keeled lancet bar"
   ]
 }
