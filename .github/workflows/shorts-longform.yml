@@ -11,11 +11,24 @@ name: Shorts — uzun video derlemesi
 # Ham madde bedava: her klip Telegram'dan geçti, file_id'ler süresiz geçerli ve
 # hem yayın kaydında hem deponun geçmişinde duruyor.
 on:
-  schedule:
-    # Ayın 1'i. Haftalık olmuyor: katalog günde iki klip büyüyor, on dakikalık
-    # bir derleme ~60 klip yiyor. Yeterli yeni klip yoksa iş zaten kendisi
-    # reddediyor, yinelenen içerik yüklemektense hata vermeyi tercih ediyor.
-    - cron: "0 20 1 * *"
+  # AYLIK CRON 21 EYLÜL 2026'DA KAPATILDI. Aşağıdaki satır bilerek yorumda.
+  #
+  # İlk derleme (7X5KTxg9Bgg) 18 Eylül'de yayınlandı ve kanalın o güne kadarki
+  # en büyük dalgasına -- 414.288 izlenme kazanan chiton Short'una -- sabitlenmiş
+  # bir yorumla bağlandı. 53 saatte 107 izlenme, 0 beğeni, 0 yorum aldı.
+  # Dönüşüm: %0,026, yani ~3.900 izlenmede bir tıklama. Bu haliyle 4.000 saatlik
+  # eşiğe ölçülebilir bir katkı vermiyor.
+  #
+  # Boru hattı sağlam ve çalışıyor; sorun onda değil, varsayımda: "Shorts
+  # izleyicisi aynı kliplerin uzun derlemesini izler" varsayımı tutmadı.
+  # workflow_dispatch duruyor, yani elle her an çalıştırılabilir. Cron'un geri
+  # açılması, derlemenin gerçek izlenme süresi ölçüldükten sonra karara bağlı
+  # (Analytics API 21 Eylül'de ~5 gün geriden geliyordu, retention okunamadı).
+  # Ölçülmeden ikinci bir derleme üretmek, aynı deneyi cevabı beklemeden
+  # tekrarlamak olur.
+  #
+  #  schedule:
+  #    - cron: "0 20 1 * *"
   workflow_dispatch:
     inputs:
       minutes:
