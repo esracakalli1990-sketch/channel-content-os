@@ -118,14 +118,30 @@ def _rows(
     return {"columns": headers, "rows": payload.get("rows") or []}
 
 
+def _load(path: Path) -> list:
+    """The publish records at path, or an empty list when there are none yet."""
+    if not path.exists():
+        return []
+    return json.loads(path.read_text("utf-8"))
+
+
 def main() -> None:
     root = find_project_root()
-    published = json.loads((root / "data" / "shorts_published.json").read_text("utf-8"))
-    video_ids = [r["youtube_video_id"] for r in published if r.get("youtube_video_id")]
+    published = _load(root / "data" / "shorts_published.json")
+    # The long-form compilations live in their own file. They have to be asked
+    # for by id alongside the Shorts or the audit is blind to the only videos
+    # that can produce watch hours -- which is the whole point of making them.
+    long_form = _load(root / "data" / "long_published.json")
+    video_ids = [
+        r["youtube_video_id"]
+        for r in published + long_form
+        if r.get("youtube_video_id")
+    ]
 
     dump: dict = {
         "collected_at": datetime.now(UTC).isoformat(timespec="seconds"),
         "published": published,
+        "long_form": long_form,
         "totals": {},
         "data_api": {},
         "analytics": {},
@@ -184,6 +200,25 @@ def main() -> None:
             dump["errors"][name] = f"scope: {exc}"
         except Exception as exc:
             dump["errors"][name] = str(exc)
+
+    # Where each long-form video's views actually came from. The channel-wide
+    # traffic mix is dominated by Shorts and says nothing about whether YouTube
+    # is serving a compilation on its own or whether every view arrived through
+    # a link we placed ourselves. Only a per-video filter separates the two.
+    for record in long_form:
+        vid = record.get("youtube_video_id")
+        if not vid:
+            continue
+        try:
+            dump["analytics"][f"traffic_{vid}"] = _rows(
+                dimensions="insightTrafficSourceType",
+                metrics="views,estimatedMinutesWatched",
+                days=28,
+                sort="-views",
+                filters=f"video=={vid}",
+            )
+        except Exception as exc:
+            dump["errors"][f"traffic_{vid}"] = str(exc)
 
     _emit(dump)
 
@@ -249,7 +284,47 @@ def _emit(dump: dict) -> None:
             (record.get("idea_version") or "-")[:8],
         )))
 
-    for section in ("ctr", "daily", "traffic", "devices", "subs_status", "countries"):
+    long_form = dump.get("long_form") or []
+    if long_form:
+        # Watch HOURS, not views, are what the 4,000-hour threshold is counted
+        # in, and estimatedMinutesWatched is the figure YouTube itself counts --
+        # so it is printed rather than re-derived from views x duration, which
+        # only approximates it.
+        print("\n### UZUN VIDEOLAR")
+        print("\t".join((
+            "no", "yayin", "id", "dk", "klip", "gorunurluk", "izlenme",
+            "begeni", "yorum", "izl%", "izl_sn", "izleme_saati", "esik%",
+            "abone", "paylasim",
+        )))
+        for index, record in enumerate(long_form, 1):
+            vid = record.get("youtube_video_id", "")
+            data = stats.get(vid, {})
+            live = by_id.get(vid, {})
+            minutes_watched = live.get("estimatedMinutesWatched", 0) or 0
+            hours = minutes_watched / 60
+            print("\t".join(str(cell) for cell in (
+                index,
+                (record.get("published_at") or "")[:16],
+                vid,
+                record.get("minutes", "-"),
+                record.get("clip_count", "-"),
+                data.get("privacy", "-"),
+                data.get("views", "-"),
+                data.get("likes", "-"),
+                data.get("comments", "-"),
+                round(live.get("averageViewPercentage", 0) or 0, 1) or "-",
+                round(live.get("averageViewDuration", 0) or 0) or "-",
+                round(hours, 1),
+                round(hours / 4000 * 100, 3),
+                live.get("subscribersGained", "-"),
+                live.get("shares", "-"),
+            )))
+
+    sections = ["ctr", "daily", "traffic", "devices", "subs_status", "countries"]
+    sections += sorted(
+        name for name in (dump.get("analytics") or {}) if name.startswith("traffic_")
+    )
+    for section in sections:
         block = (dump.get("analytics") or {}).get(section) or {}
         if not block.get("rows"):
             continue
