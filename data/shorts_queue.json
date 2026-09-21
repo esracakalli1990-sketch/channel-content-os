@@ -49,5 +49,22 @@
       "shell_mechanic": "The tiered copper plates telescope downward and fan outward along micro-hinges",
       "emerging_parts": "Four jointed iron legs and a heavy horned head"
     }
+  },
+  {
+    "queued_at": "2026-09-21T12:11:31+00:00",
+    "publish_at": "2026-09-22T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIC9GqxHqdoul6C9jaMJI_IyC1YpHhDAAJDJAACn4aJUTpA-Uc8ZHd_PQQ",
+    "file_size": 2653541,
+    "caption": "2",
+    "concept": {
+      "shape": "ribbed drop pod",
+      "material": "cast pewter and exposed copper wiring",
+      "internal_detail": "vibrating quartz oscillators and silver commutators",
+      "button": "a depressed pewter stud on the base",
+      "button_short": "the pewter stud on the base",
+      "creature": "grey wolf",
+      "shell_mechanic": "The fluted pewter housing splits down the dorsal ridge and the halves fold flat",
+      "emerging_parts": "Four slender metallic legs and a pointed snout"
+    }
   }
 ]
