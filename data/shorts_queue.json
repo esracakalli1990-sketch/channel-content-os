@@ -32,5 +32,22 @@
       "shell_mechanic": "The upper carbon-fiber cowlings pivot outward on twin articulated hinges",
       "emerging_parts": "Two folding propeller pylons, four hinged landing struts, and a swiveling sensor turret"
     }
+  },
+  {
+    "queued_at": "2026-09-21T12:09:25+00:00",
+    "publish_at": "2026-09-22T17:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIC8mqxHlTi08iN-5pAVAAB-SrGF46nogACQiQAAp-GiVGfBOgnvBKASz0E",
+    "file_size": 2709991,
+    "caption": "1",
+    "concept": {
+      "shape": "stepped pyramidal spire",
+      "material": "oxidized copper and forged iron",
+      "internal_detail": "tiny brass escapement wheels and coiled hairsprings",
+      "button": "a small iron rivet at the apex",
+      "button_short": "the iron rivet at the apex",
+      "creature": "bison",
+      "shell_mechanic": "The tiered copper plates telescope downward and fan outward along micro-hinges",
+      "emerging_parts": "Four jointed iron legs and a heavy horned head"
+    }
   }
 ]
