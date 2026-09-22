@@ -32,5 +32,22 @@
       "shell_mechanic": "The fluted pewter housing splits down the dorsal ridge and the halves fold flat",
       "emerging_parts": "Four slender metallic legs and a pointed snout"
     }
+  },
+  {
+    "queued_at": "2026-09-22T14:06:42+00:00",
+    "publish_at": "2026-09-23T17:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIC_Wqyi25ufAkxC_dcCyT7TNnlVw9cAALuIQACn4aZUZb_WcgZy-QlPQQ",
+    "file_size": 3523664,
+    "caption": "1",
+    "concept": {
+      "shape": "creased lozenge tablet",
+      "material": "weathered red sandstone composite and brushed copper",
+      "internal_detail": "counter-meshing miniature gears and articulated scissor linkages",
+      "button": "a polished turquoise push-stud set flush into the dorsal ridge",
+      "button_short": "the polished turquoise push-stud on the ridge",
+      "creature": "thorny devil",
+      "shell_mechanic": "The creased dorsal plates hinge outward along lateral pivot pins",
+      "emerging_parts": "A horned spiny head, four splayed clawed limbs, and a rigid spiked tail"
+    }
   }
 ]
