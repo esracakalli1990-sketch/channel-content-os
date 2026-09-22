@@ -49,5 +49,22 @@
       "shell_mechanic": "The creased dorsal plates hinge outward along lateral pivot pins",
       "emerging_parts": "A horned spiny head, four splayed clawed limbs, and a rigid spiked tail"
     }
+  },
+  {
+    "queued_at": "2026-09-22T14:08:46+00:00",
+    "publish_at": "2026-09-23T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIC_2qyi5hjUR4_4mtgWwTFhSLL2J0nAALvIQACn4aZUTd3kCbI2XfLPQQ",
+    "file_size": 2696071,
+    "caption": "2",
+    "concept": {
+      "shape": "keeled lancet bar",
+      "material": "burnished pewter and river-tumbled slate",
+      "internal_detail": "articulated leaf-spring spines and brass reduction gear trains",
+      "button": "a countersunk mother-of-pearl actuator on the forward crest",
+      "button_short": "the countersunk mother-of-pearl actuator on the crest",
+      "creature": "white sturgeon",
+      "shell_mechanic": "The lateral armored flanks expand outward along miniature sliding rails",
+      "emerging_parts": "A heterocercal tail fin, ventral pectoral fins, and a tapered barbel-bearing snout"
+    }
   }
 ]
