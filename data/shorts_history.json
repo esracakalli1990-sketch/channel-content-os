@@ -123,7 +123,9 @@
     "bison",
     "grey wolf",
     "thorny devil",
-    "white sturgeon"
+    "white sturgeon",
+    "house mouse",
+    "common vampire bat"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -221,6 +223,8 @@
     "stepped pyramidal spire",
     "ribbed drop pod",
     "creased lozenge tablet",
-    "keeled lancet bar"
+    "keeled lancet bar",
+    "ribbed cylindrical pod",
+    "faceted biconical spindle"
   ]
 }
