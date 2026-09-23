@@ -125,7 +125,9 @@
     "thorny devil",
     "white sturgeon",
     "house mouse",
-    "common vampire bat"
+    "common vampire bat",
+    "short-beaked echidna",
+    "zebra jumping spider"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -225,6 +227,8 @@
     "creased lozenge tablet",
     "keeled lancet bar",
     "ribbed cylindrical pod",
-    "faceted biconical spindle"
+    "faceted biconical spindle",
+    "canted parabolic shell",
+    "squat cuboctahedron"
   ]
 }
