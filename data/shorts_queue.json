@@ -49,5 +49,22 @@
       "shell_mechanic": "The canted parabolic shell splits down its spine and unlatches into flared defensive quill plates",
       "emerging_parts": "A slender tubular snout and four paddle-like clawed feet"
     }
+  },
+  {
+    "queued_at": "2026-09-23T23:26:13+00:00",
+    "publish_at": "2026-09-25T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIDFWq0X_SWSanY7CYcoy-J-r_KqUHUAAIFIwACDK2pURzKOvr5F4NtPQQ",
+    "file_size": 2643277,
+    "caption": "2",
+    "concept": {
+      "shape": "squat cuboctahedron",
+      "material": "brushed black titanium and polished obsidian",
+      "internal_detail": "microscopic steel rack-and-pinion linkages and ruby jewel bearings",
+      "button": "a circular sapphire push-stud inset upon the top facet",
+      "button_short": "the circular sapphire push-stud on the top facet",
+      "creature": "zebra jumping spider",
+      "shell_mechanic": "The upper facets of the cuboctahedron hinge outward to form the abdomen and head plates",
+      "emerging_parts": "Eight multi-jointed springing legs and a pair of tiny pedipalps"
+    }
   }
 ]
