@@ -154,9 +154,15 @@ def _format_prompt_message(index: int, pair: PromptPair) -> str:
     on each — the user is on a phone and has to paste them into Flow.
     """
     concept = pair.concept
+    # The idea arrives in English because the prompts must be English, but the
+    # person filming it reads Turkish and has had to ask what the animal was.
+    # Absent on concepts made before the line existed, and on any the model
+    # skipped it for -- in both cases the message simply goes out without it.
+    turkish = f"🇹🇷 {_escape(concept.turkish)}\n" if concept.turkish else ""
     return (
         f"🧩 <b>#{index} — {concept.creature.title()}</b>\n"
-        f"<i>{concept.shape} · {concept.material}</i>\n\n"
+        f"<i>{concept.shape} · {concept.material}</i>\n"
+        f"{turkish}\n"
         f"<b>1) Görsel promptu (Text → Image)</b>\n"
         f"<pre>{_escape(pair.text_to_image)}</pre>\n"
         f"<b>2) Video promptu (Image → Video)</b>\n"

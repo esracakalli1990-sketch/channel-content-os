@@ -16,7 +16,7 @@ from channel_ops.shorts_metadata import (
     fallback_metadata,
     generate_metadata,
 )
-from channel_ops.shorts_prompts import Concept
+from channel_ops.shorts_prompts import Concept, PromptPair
 
 
 def _concept(creature="pangolin", shape="a brushed steel capsule"):
@@ -998,6 +998,68 @@ class IdeaVersionTests(unittest.TestCase):
         self.assertNotEqual(
             shorts_prompts.idea_version(), shorts_prompts.template_version()
         )
+
+
+class TurkishLineTests(unittest.TestCase):
+    """The prompts must be English; the person filming them reads Turkish.
+
+    Until this line existed they had to ask what "short-beaked echidna" was
+    before they could judge whether Flow had drawn the right animal."""
+
+    _JSON_FIELDS = {
+        "shape": "canted parabolic shell",
+        "material": "antiqued bronze and dark walnut wood",
+        "internal_detail": "brass chainmail",
+        "button": "a recessed button",
+        "button_short": "the recessed button",
+        "creature": "short-beaked echidna",
+        "shell_mechanic": "The shell opens along its spine",
+        "emerging_parts": "A long snout and clawed feet",
+    }
+
+    def test_the_line_is_carried_through_parsing(self):
+        line = "Kısa gagalı ekidna (dikenli, yumurtlayan memeli) — eğik kabuk"
+        payload = json.dumps([self._JSON_FIELDS | {"turkish": line}])
+        self.assertEqual(shorts_prompts.parse_concepts(payload)[0].turkish, line)
+
+    def test_a_missing_line_does_not_cost_the_video(self):
+        """A courtesy has no business failing a concept. Nearly every outage in
+        this pipeline has been one thing taking down an unrelated thing."""
+        concepts = shorts_prompts.parse_concepts(json.dumps([self._JSON_FIELDS]))
+        self.assertEqual(concepts[0].turkish, "")
+        self.assertEqual(concepts[0].creature, "short-beaked echidna")
+
+    def test_the_line_is_not_put_through_the_english_cleaner(self):
+        """_clean_slot strips articles and capitals so a fragment fits an
+        English sentence. This line is not going into a sentence."""
+        line = "Bir kısa gagalı ekidna. Eğik parabolik kabuk."
+        payload = json.dumps([self._JSON_FIELDS | {"turkish": line}])
+        self.assertEqual(shorts_prompts.parse_concepts(payload)[0].turkish, line)
+
+    def test_telegram_shows_it_when_there_is_one(self):
+        concept = Concept(**self._JSON_FIELDS, turkish="Kısa gagalı ekidna")
+        message = shorts_pipeline._format_prompt_message(
+            1, PromptPair(concept, "t2i", "i2v")
+        )
+        self.assertIn("🇹🇷 Kısa gagalı ekidna", message)
+
+    def test_telegram_is_unchanged_when_there_is_none(self):
+        concept = Concept(**self._JSON_FIELDS)
+        message = shorts_pipeline._format_prompt_message(
+            1, PromptPair(concept, "t2i", "i2v")
+        )
+        self.assertNotIn("🇹🇷", message)
+        self.assertIn("Short-Beaked Echidna", message)
+
+    def test_it_does_not_disturb_the_subject_fingerprint(self):
+        """idea_version records which instructions chose the subject. The
+        Turkish line chooses nothing, so it is kept out of that text — folding
+        it in would have split every before/after comparison at this commit."""
+        self.assertNotIn(
+            shorts_prompts._TURKISH_INSTRUCTIONS,
+            shorts_prompts._CONCEPT_INSTRUCTIONS,
+        )
+        self.assertEqual(shorts_prompts.idea_version(), "730ac4e9c9e2")
 
 
 class BadgeTests(unittest.TestCase):

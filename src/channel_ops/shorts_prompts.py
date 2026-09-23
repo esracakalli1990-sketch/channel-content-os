@@ -131,6 +131,26 @@ different — five of the last thirteen videos were all a "capsule", which makes
 the series look like one object filmed over and over: {avoid_shapes}
 """
 
+# Asked for in the same call, but deliberately NOT part of
+# _CONCEPT_INSTRUCTIONS: idea_version() hashes that text to record which
+# instructions chose the subject. A Turkish courtesy line chooses nothing, and
+# folding it in would change the fingerprint on every past-versus-future
+# comparison for no reason.
+_TURKISH_INSTRUCTIONS = """\
+
+Additionally, give each concept a "turkish" field: one line of Turkish for the
+person who has to film it, who does not read English. Name the creature in
+Turkish, add a few plain words saying what kind of animal or machine it is so
+they can picture it, then the shape and material in Turkish. No prompt text, no
+camera directions. Example for a short-beaked echidna:
+
+  "Kisa gagali ekidna (Avustralya'da yasayan, dikenli, yumurtlayan memeli) —
+  egik parabolik kabuk, eskitilmis bronz ve koyu ceviz agaci"
+
+Write it in real Turkish with its proper letters. It is not one of the template
+slots and is never used in a prompt.
+"""
+
 # Slots dropped into the middle of a sentence; they must not start with a
 # capital or an article. The rest begin a sentence and keep their capital.
 _MID_SENTENCE = frozenset(
@@ -210,6 +230,10 @@ class Concept:
     creature: str
     shell_mechanic: str
     emerging_parts: str
+    # What the person filming is told, in their own language. Defaulted because
+    # a missing courtesy line must never cost a video: if the model skips it,
+    # the concept is still complete and still ships.
+    turkish: str = ""
 
 
 @dataclass(frozen=True)
@@ -395,6 +419,10 @@ def parse_concepts(raw: str) -> list[Concept]:
         missing = [slot for slot, value in cleaned.items() if not value]
         if missing:
             raise RuntimeError(f"Concept {index} is missing: {', '.join(missing)}")
+        # Not run through _clean_slot: that strips articles and capitals to fit
+        # an English sentence, which would mangle a Turkish line that is not
+        # going into a sentence at all.
+        cleaned["turkish"] = str(item.get("turkish", "")).strip()
         concepts.append(Concept(**cleaned))
     return concepts
 
@@ -476,7 +504,7 @@ def generate_concepts(
             avoid=", ".join(names) if names else "(none yet)",
             avoid_families=", ".join(sorted(banned_families)) if banned_families else "(none yet)",
             avoid_shapes=", ".join(shape_list) if shape_list else "(none yet)",
-        )
+        ) + _TURKISH_INSTRUCTIONS
         return parse_concepts(provider.generate(f"Invent {wanted} new concepts.", system_prompt=instructions))
 
     kept: list[Concept] = []
