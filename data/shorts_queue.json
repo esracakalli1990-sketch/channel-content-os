@@ -32,5 +32,22 @@
       "shell_mechanic": "The cylindrical casing splits laterally along hidden hinges and folds outward like twin doors",
       "emerging_parts": "A pointed snout, two delicate rounded ears, and a long segmented tail"
     }
+  },
+  {
+    "queued_at": "2026-09-23T21:29:28+00:00",
+    "publish_at": "2026-09-24T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIDDGq0REboU-ZOE6VUH7nqE42d7ClZAALyIgACDK2pUWh8kb10g7ewPQQ",
+    "file_size": 2539486,
+    "caption": "2",
+    "concept": {
+      "shape": "faceted biconical spindle",
+      "material": "polished silver and translucent glass",
+      "internal_detail": "interlocking brass gears and fine oscillating hairsprings",
+      "button": "a tiny flush emerald cabochon near the waist",
+      "button_short": "the tiny flush emerald cabochon",
+      "creature": "common vampire bat",
+      "shell_mechanic": "The biconical case separates at the center equator and retracts downward in interlocking segments",
+      "emerging_parts": "Leathery folded wing membranes and a short pointed muzzle"
+    }
   }
 ]
