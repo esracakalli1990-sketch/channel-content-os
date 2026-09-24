@@ -127,7 +127,9 @@
     "house mouse",
     "common vampire bat",
     "short-beaked echidna",
-    "zebra jumping spider"
+    "zebra jumping spider",
+    "leaf-cutter ant",
+    "ruby-throated hummingbird"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -229,6 +231,8 @@
     "ribbed cylindrical pod",
     "faceted biconical spindle",
     "canted parabolic shell",
-    "squat cuboctahedron"
+    "squat cuboctahedron",
+    "grooved concave wedge",
+    "ribbed elliptical pod"
   ]
 }
