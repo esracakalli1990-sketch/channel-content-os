@@ -34,5 +34,23 @@
       "emerging_parts": "Two folded metallic wings, a needle-thin beak, and a fan-shaped tail",
       "turkish": "Yakut gerdanli sinek kusu (hizli kanat cirpan, cicek nektariyla beslenen kus) — kaburgali eliptik koza, fircalanmis titanyum ve koyu kehribar recine"
     }
+  },
+  {
+    "queued_at": "2026-09-25T23:39:20+00:00",
+    "publish_at": "2026-09-27T17:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIDLWq3BgyQPCCOPo7LF-wXOpXT0TqpAAK2IgACtxW4UalwF6tIgLiXPQQ",
+    "file_size": 2523575,
+    "caption": "1",
+    "concept": {
+      "shape": "heavy ribbed brass cylinder",
+      "material": "polished machine-turned brass and nickel steel",
+      "internal_detail": "intricate miniature gears, miniature pistons, and coiled copper springs",
+      "button": "a small brass push-stud set flush into the metal rim",
+      "button_short": "the small brass push-stud at the rim",
+      "creature": "four-cylinder radial steam engine",
+      "shell_mechanic": "The heavy brass cylinder splits along its vertical seams and the four segments slide outward",
+      "emerging_parts": "Four tiny reciprocating pistons and a rotating central crankshaft",
+      "turkish": "Dort silindirli radyal buhar makinesi (kucuk pistonlari ve mili olan metal makine) — agir hatli pirinc silindir, parlatilmis pirinc ve nikel celik"
+    }
   }
 ]
