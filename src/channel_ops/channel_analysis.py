@@ -231,6 +231,11 @@ def videos(dump: dict, now: datetime | None = None) -> list[dict]:
             "template": (record.get("template_version") or "-")[:8],
             "idea": (record.get("idea_version") or "-")[:8],
             "kind": "makine" if _is_machine(creature) else "canli",
+            # Grouped by the metal rather than the exact phrase: "patinated
+            # bronze plates" and "antiqued bronze" are the same answer to the
+            # question being asked, and left as written every video would be
+            # its own group and nothing could ever be compared.
+            "metal": _metal(record.get("material", "") or record.get("title", "")),
             "dead": age >= MATURITY_HOURS and views < DEAD_VIEWS,
             "hit": views >= HIT_VIEWS,
         })
@@ -247,6 +252,28 @@ def _weekday(published_at: str) -> str:
 
 def _is_machine(creature: str) -> bool:
     return any(word in creature for word in _MACHINE_WORDS)
+
+
+# The materials viewers actually type into search. Anything else is "diğer"
+# rather than its own group, so the comparison stays answerable.
+_METALS = ("bronze", "brass", "copper", "titanium", "steel", "pewter",
+           "gunmetal", "ceramic", "obsidian", "aluminium", "aluminum")
+
+
+def _metal(material: str) -> str:
+    """The metal in a material phrase -- or, for older records, in the title.
+
+    Nothing published before today carries the material field, and waiting
+    months for enough new records would mean the question could not be asked
+    until long after it stopped being interesting. The title is written from
+    the same concept and names the material almost every time: "Why does this
+    wedge of brass have a hidden hinge?". Reading it back is a fallback, not a
+    second source -- when both exist the material field wins.
+    """
+    for metal in _METALS:
+        if metal in material.lower():
+            return metal
+    return "diğer"
 
 
 # -----------------------------------------------------------------------
@@ -418,7 +445,8 @@ def cohorts(rows: list[dict], metric: str = "views") -> list[dict]:
     mature = [row for row in rows if row["mature"] and row.get(metric) is not None]
     out = []
     for name, key in (("Şablon", "template"), ("Fikir talimatı", "idea"),
-                      ("Yayın saati", "hour"), ("Konu türü", "kind")):
+                      ("Yayın saati", "hour"), ("Konu türü", "kind"),
+                      ("Malzeme", "metal")):
         groups: dict[str, list[float]] = {}
         for row in mature:
             groups.setdefault(row[key], []).append(float(row[metric]))
@@ -450,7 +478,8 @@ def hit_profile(rows: list[dict]) -> dict:
         profile["note"] = "karşılaştırma için iki grup da gerekiyor"
         return profile
     for name, key in (("Şablon", "template"), ("Konu türü", "kind"),
-                      ("Yayın saati", "hour"), ("Gün", "weekday")):
+                      ("Yayın saati", "hour"), ("Gün", "weekday"),
+                      ("Malzeme", "metal")):
         values = {row[key] for row in mature if row[key]}
         for value in sorted(values):
             in_hits = sum(1 for row in hits if row[key] == value) / len(hits)
