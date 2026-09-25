@@ -75,14 +75,28 @@ def render(dump: dict, rows: list[dict], gates: dict, history: list[dict],
         for key, value in dump["errors"].items():
             add(f"  {key}: {value}")
 
-    add("\n### 1. PARA KAZANMA EŞİĞİ")
-    add("İki kapı da geçilmeli: 1.000 abone VE (4.000 saat VEYA 10M Shorts).")
+    add("\n### 1. PARA KAZANMA EŞİKLERİ")
+    add("")
+    add("  ── ALT KADEME (hayran desteği; REKLAM GELİRİ YOK) ──")
+    add(f"  Son 90 günde yükleme: {gates['uploads_90d']} / {ca.EARLY_UPLOAD_GOAL} "
+        f"{'✓' if gates['uploads_90d'] >= ca.EARLY_UPLOAD_GOAL else '✗'}")
+    add("")
+    for key in ("early_subscribers", "early_watch_hours", "early_shorts_views"):
+        for line in _gate_lines(gates[key]):
+            add("  " + line)
+        add("")
+    add("  Gereken: 500 abone + 3 yükleme + (3.000 saat VEYA 3M Shorts)")
+    add("")
+    add("  ── ÜST KADEME (reklam geliri) ──")
     add("")
     for key in ("subscribers", "watch_hours", "shorts_views"):
         for line in _gate_lines(gates[key]):
             add("  " + line)
         add("")
-    add(f"  Not: {gates['window_note']}")
+    add("  Gereken: 1.000 abone + (4.000 saat VEYA 10M Shorts)")
+    add(f"\n  Not: {gates['window_note']}")
+    add("  Not: eşik rakamları YouTube'un yayınlanmış kurallarından; YouTube")
+    add("       bunları zaman zaman değiştiriyor, Studio'daki rakamla karşılaştır.")
 
     add("\n### 2. BU HAFTA NE DEĞİŞTİ")
     snap = ca.snapshot(dump, rows, gates)
@@ -194,7 +208,14 @@ def render(dump: dict, rows: list[dict], gates: dict, history: list[dict],
 
 
 def telegram_summary(gates: dict, snap: dict, history: list[dict]) -> str:
-    lines = ["📊 <b>Kanal analizi</b>", ""]
+    lines = ["📊 <b>Kanal analizi</b>", "", "<b>Alt kademe</b> (reklam yok):"]
+    for key in ("early_subscribers", "early_watch_hours", "early_shorts_views"):
+        gate = gates[key]
+        eta = f" → {gate['eta']}" if gate["eta"] else f" — {gate['note']}"
+        lines.append(f"{gate['name']}: <b>{_thousands(gate['value'])}</b>"
+                     f"/{_thousands(gate['goal'])} (%{gate['percent']}){eta}")
+    lines.append("")
+    lines.append("<b>Üst kademe</b> (reklam geliri):")
     for key in ("subscribers", "watch_hours", "shorts_views"):
         gate = gates[key]
         eta = f" → {gate['eta']}" if gate["eta"] else f" — {gate['note']}"

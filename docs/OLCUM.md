@@ -11,6 +11,24 @@
 | `data/channel_metrics.json` | Her ölçümün kalıcı kaydı. Hız ve "geçen haftaya göre" farkları buradan gelir. |
 | `data/studio_manual.json` | Studio'dan elle girilen gösterim/CTR kayıtları. |
 
+## İki kademe
+
+Rapor iki ayrı eşik takımı gösteriyor. Karıştırmamak önemli:
+
+| | Alt kademe | Üst kademe |
+|---|---|---|
+| Abone | 500 | 1.000 |
+| Son 90 günde yükleme | 3 | — |
+| İzlenme saati (12 ay) | 3.000 | 4.000 |
+| **veya** 90 günlük Shorts | 3.000.000 | 10.000.000 |
+| **Ne veriyor** | Hayran desteği (Super Thanks, üyelik, mağaza) | **Reklam geliri** |
+
+Alt kademe reklam geliri **vermiyor**. Her kademede abone şartı ve izlenme
+şartı birlikte gerekiyor; alternatif olanlar sadece iki izlenme yolu.
+
+Eşik rakamları YouTube'un yayınlanmış kurallarından geliyor ve YouTube bunları
+zaman zaman değiştiriyor — Studio'nun kendi gösterdiği rakamla karşılaştır.
+
 ## Ne zaman çalışıyor
 
 - **Haftalık:** her Cuma 22:00 UTC

@@ -192,6 +192,33 @@ class ThresholdTests(unittest.TestCase):
         self.assertIn("watch_hours", gates)
         self.assertIn("shorts_views", gates)
 
+    def test_the_lower_tier_is_tracked_as_well(self):
+        """Reporting only the upper tier showed 17% when the nearest real
+        milestone stood at 58% -- the difference between "far off" and "more
+        than halfway"."""
+        gates = ca.thresholds(_dump([]), [])
+        for key in ("early_subscribers", "early_watch_hours", "early_shorts_views"):
+            self.assertIn(key, gates)
+        self.assertEqual(gates["early_shorts_views"]["goal"], 3_000_000)
+        self.assertEqual(gates["shorts_views"]["goal"], 10_000_000)
+
+    def test_the_same_figure_is_measured_against_both_tiers(self):
+        """One view count, two goals. If the two ever disagree about the
+        numerator, one of them is lying."""
+        records = [_record("v1")]
+        stats = {"v1": {"views": 1_748_243, "seconds": 9}}
+        live = [["v1", 1_748_243, 350000, 12, 130.0, 500, 3000, 20, 10]]
+        gates = ca.thresholds(_dump(records, stats=stats, live_rows=live), [])
+        self.assertEqual(gates["early_shorts_views"]["value"],
+                         gates["shorts_views"]["value"])
+        self.assertAlmostEqual(gates["early_shorts_views"]["percent"], 58.27, places=1)
+
+    def test_uploads_inside_the_window_are_counted(self):
+        records = [_record(f"v{i}", hours_ago=24 * i) for i in range(1, 5)]
+        old_one = _record("old", hours_ago=24 * 120)
+        gates = ca.thresholds(_dump(records + [old_one]), [])
+        self.assertEqual(gates["uploads_90d"], 4)
+
 
 class HitProfileTests(unittest.TestCase):
     def test_a_trait_common_to_everything_shows_no_lift(self):

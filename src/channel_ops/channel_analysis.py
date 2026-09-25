@@ -40,10 +40,33 @@ from .config_loader import find_project_root
 METRICS_FILE = "data/channel_metrics.json"
 STUDIO_FILE = "data/studio_manual.json"
 
-# Partner Programme. Both gates must be passed: a thousand subscribers AND one
-# of the two watch-time routes. They are not three independent paths, and
-# presenting them as such once already sent this channel down a route that was
-# arithmetically closed.
+# The Partner Programme has TWO tiers and only the upper one pays for ads.
+# Tracking the upper one alone was a reporting mistake: it showed 17% when the
+# nearest real milestone was at 58%, which is the difference between "far off"
+# and "more than halfway".
+#
+#   Early access -- fan funding only (Super Thanks, memberships, Shopping).
+#   NO advertising revenue.
+#     500 subscribers
+#     + 3 public uploads in the last 90 days
+#     + (3,000 watch hours in 12 months OR 3 million Shorts views in 90 days)
+#
+#   Full programme -- advertising revenue.
+#     1,000 subscribers
+#     + (4,000 watch hours in 12 months OR 10 million Shorts views in 90 days)
+#
+# Within each tier the subscriber count and the watch-time route are both
+# required; the two watch-time routes are the alternatives. Presenting them as
+# independent paths once already sent this channel down one that was closed.
+#
+# These figures come from the programme's published rules and YouTube changes
+# them from time to time. They are worth re-checking in Studio against what it
+# shows for this channel rather than trusted indefinitely from here.
+EARLY_SUBSCRIBER_GOAL = 500
+EARLY_WATCH_HOUR_GOAL = 3_000
+EARLY_SHORTS_VIEW_GOAL = 3_000_000
+EARLY_UPLOAD_GOAL = 3
+
 SUBSCRIBER_GOAL = 1_000
 WATCH_HOUR_GOAL = 4_000
 SHORTS_VIEW_GOAL = 10_000_000
@@ -253,18 +276,52 @@ def thresholds(dump: dict, history: list[dict]) -> dict:
     subscribers = int(totals.get("subscribers") or 0)
     watch_hours = long_minutes_90d / 60
 
+    uploads_90d = _recent_uploads(dump)
+
     return {
-        # The 4,000 hours are counted over twelve months and this window is
+        # The watch-hour goals are counted over twelve months and this window is
         # ninety days. The channel is younger than ninety days, so the two are
         # the same number today; the day that stops being true this figure
         # starts understating and the note has to change with it.
         "window_note": "izlenme saati 90 günlük pencereden; kanal 90 günden genç olduğu sürece = 12 ay",
+        "uploads_90d": uploads_90d,
+        # Lower tier first: it is the one that is actually near, and a
+        # scoreboard that leads with the unreachable number is a scoreboard
+        # nobody reads twice.
+        "early_subscribers": _gate("Abone (alt kademe)", subscribers,
+                                   EARLY_SUBSCRIBER_GOAL, history, "subscribers"),
+        "early_watch_hours": _gate("İzlenme saati (alt kademe)", round(watch_hours, 1),
+                                   EARLY_WATCH_HOUR_GOAL, history, "watch_hours"),
+        "early_shorts_views": _gate(f"{SHORTS_VIEW_WINDOW_DAYS} günlük Shorts (alt kademe)",
+                                    short_views_90d, EARLY_SHORTS_VIEW_GOAL,
+                                    history, "shorts_views_90d"),
         "subscribers": _gate("Abone", subscribers, SUBSCRIBER_GOAL, history, "subscribers"),
         "watch_hours": _gate("İzlenme saati (uzun video)", round(watch_hours, 1),
                              WATCH_HOUR_GOAL, history, "watch_hours"),
         "shorts_views": _gate(f"{SHORTS_VIEW_WINDOW_DAYS} günlük Shorts izlenmesi",
                               short_views_90d, SHORTS_VIEW_GOAL, history, "shorts_views_90d"),
     }
+
+
+def _recent_uploads(dump: dict) -> int:
+    """Public uploads inside the ninety-day window.
+
+    The lower tier requires three. This channel publishes twice a day, so it is
+    never the binding condition -- it is counted anyway because a condition
+    nobody checks is a condition nobody notices failing.
+    """
+    cutoff = datetime.now(UTC) - timedelta(days=SHORTS_VIEW_WINDOW_DAYS)
+    count = 0
+    for record in (dump.get("published") or []) + (dump.get("long_form") or []):
+        try:
+            when = datetime.fromisoformat(record.get("published_at", ""))
+        except (TypeError, ValueError):
+            continue
+        if when.tzinfo is None:
+            when = when.replace(tzinfo=UTC)
+        if when >= cutoff:
+            count += 1
+    return count
 
 
 def _gate(name: str, value: float, goal: float, history: list[dict], key: str) -> dict:
