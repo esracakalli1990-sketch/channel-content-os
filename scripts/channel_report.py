@@ -96,6 +96,8 @@ def render(dump: dict, rows: list[dict], gates: dict, history: list[dict],
             add("  " + line)
         add("")
     add("  Gereken: 500 abone + 3 yükleme + (3.000 saat VEYA 3M Shorts)")
+    if gates.get("shorts_floor_note"):
+        add(f"  ⓘ {gates['shorts_floor_note']}")
     add("")
     add("  ── ÜST KADEME (reklam geliri) ──")
     add("")

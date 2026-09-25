@@ -277,6 +277,11 @@ def thresholds(dump: dict, history: list[dict]) -> dict:
     watch_hours = long_minutes_90d / 60
 
     uploads_90d = _recent_uploads(dump)
+    # The Shorts total is summed from Analytics, which reports about two days
+    # behind. At the rate this channel runs that is hundreds of thousands of
+    # views missing, so the figure is a FLOOR, never the current value. It read
+    # 1,748,243 on a day Studio showed 2,054,924 -- not a bug, a window.
+    lag = _analytics_edge(dump, datetime.now(UTC))[1]
 
     return {
         # The watch-hour goals are counted over twelve months and this window is
@@ -284,6 +289,11 @@ def thresholds(dump: dict, history: list[dict]) -> dict:
         # the same number today; the day that stops being true this figure
         # starts understating and the note has to change with it.
         "window_note": "izlenme saati 90 günlük pencereden; kanal 90 günden genç olduğu sürece = 12 ay",
+        "shorts_floor_note": (
+            f"Shorts sayısı Analytics'ten geliyor ve {lag} gün geriden — "
+            "gerçek rakam bundan YÜKSEK. Studio'daki 90 günlük sayıyla karşılaştır."
+            if lag else ""
+        ),
         "uploads_90d": uploads_90d,
         # Lower tier first: it is the one that is actually near, and a
         # scoreboard that leads with the unreachable number is a scoreboard
@@ -292,13 +302,13 @@ def thresholds(dump: dict, history: list[dict]) -> dict:
                                    EARLY_SUBSCRIBER_GOAL, history, "subscribers"),
         "early_watch_hours": _gate("İzlenme saati (alt kademe)", round(watch_hours, 1),
                                    EARLY_WATCH_HOUR_GOAL, history, "watch_hours"),
-        "early_shorts_views": _gate(f"{SHORTS_VIEW_WINDOW_DAYS} günlük Shorts (alt kademe)",
+        "early_shorts_views": _gate(f"{SHORTS_VIEW_WINDOW_DAYS} günlük Shorts ≥ (alt kademe)",
                                     short_views_90d, EARLY_SHORTS_VIEW_GOAL,
                                     history, "shorts_views_90d"),
         "subscribers": _gate("Abone", subscribers, SUBSCRIBER_GOAL, history, "subscribers"),
         "watch_hours": _gate("İzlenme saati (uzun video)", round(watch_hours, 1),
                              WATCH_HOUR_GOAL, history, "watch_hours"),
-        "shorts_views": _gate(f"{SHORTS_VIEW_WINDOW_DAYS} günlük Shorts izlenmesi",
+        "shorts_views": _gate(f"{SHORTS_VIEW_WINDOW_DAYS} günlük Shorts ≥",
                               short_views_90d, SHORTS_VIEW_GOAL, history, "shorts_views_90d"),
     }
 

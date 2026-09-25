@@ -217,6 +217,20 @@ class ThresholdTests(unittest.TestCase):
                          gates["shorts_views"]["value"])
         self.assertAlmostEqual(gates["early_shorts_views"]["percent"], 58.27, places=1)
 
+    def test_a_lagging_shorts_figure_is_labelled_a_floor(self):
+        """It read 1,748,243 on a day Studio showed 2,054,924. The number was
+        right for its window; presenting it as the current total was not."""
+        dump = _dump([])
+        dump["analytics"]["daily"] = {
+            "columns": ["day", "views", "estimatedMinutesWatched",
+                        "subscribersGained", "subscribersLost"],
+            "rows": [["2026-09-20", 16852, 1587, 18, 5]],
+        }
+        gates = ca.thresholds(dump, [])
+        self.assertIn("gün geriden", gates["shorts_floor_note"])
+        self.assertIn("≥", gates["shorts_views"]["name"])
+        self.assertIn("≥", gates["early_shorts_views"]["name"])
+
     def test_uploads_inside_the_window_are_counted(self):
         records = [_record(f"v{i}", hours_ago=24 * i) for i in range(1, 5)]
         old_one = _record("old", hours_ago=24 * 120)
