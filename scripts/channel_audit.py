@@ -1,226 +1,23 @@
-"""Dump everything the channel's own APIs know, as JSON, for a full review.
+"""Dump everything the channel's own APIs know, as tables, for a full review.
 
-The performance report that goes to Telegram is written for a phone: ten
-videos, rounded numbers, no history. Judging whether a change to the pipeline
-helped needs the opposite — every video, every day, and the fields that say
-which version of the pipeline produced it. This prints that as one JSON blob
-so it can be read out of the workflow log.
+The collection itself lives in channel_ops.channel_data so the analysis reads
+exactly the same numbers; this file is only the printing.
 
 Read-only. Nothing here writes to the repo or to YouTube.
 """
 from __future__ import annotations
 
-import json
 import sys
-from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
-from urllib.parse import urlencode
-from urllib.request import Request, urlopen
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
+from channel_ops.channel_data import collect, per_video  # noqa: E402
 from channel_ops.config_loader import find_project_root  # noqa: E402
-from channel_ops.youtube_analytics import (  # noqa: E402
-    ANALYTICS_URL,
-    DATA_URL,
-    AnalyticsScopeMissing,
-    _analytics_query,
-    _channel_selector,
-    get_channel_totals,
-)
-from channel_ops.youtube_auth import get_access_token  # noqa: E402
-
-# The Data API takes fifty ids per call; asking one at a time would be fifty
-# round trips for the same answer.
-BATCH = 50
-
-
-def _data_stats(video_ids: list[str]) -> dict[str, dict]:
-    token = get_access_token()
-    out: dict[str, dict] = {}
-    for start in range(0, len(video_ids), BATCH):
-        chunk = video_ids[start:start + BATCH]
-        params = urlencode({
-            # processingDetails and the full status block are what separate
-            # "nobody watched it" from "YouTube never finished with it": a
-            # rejected or still-processing video is public and unwatchable.
-            # fileDetails carries the pixel dimensions of what was actually
-            # uploaded. A clip that stops being 9:16 stops being a Short and
-            # leaves the Shorts feed entirely, which looks exactly like being
-            # throttled — so it has to be ruled in or out, not assumed.
-            "part": ("statistics,contentDetails,snippet,status,"
-                     "processingDetails,fileDetails"),
-            "id": ",".join(chunk),
-        })
-        request = Request(f"{DATA_URL}?{params}", headers={"Authorization": f"Bearer {token}"})
-        with urlopen(request, timeout=30) as response:
-            payload = json.load(response)
-        for item in payload.get("items", []):
-            stats = item.get("statistics", {})
-            status = item.get("status", {})
-            details = item.get("processingDetails", {})
-            content = item.get("contentDetails", {})
-            out[item["id"]] = {
-                "views": int(stats.get("viewCount", 0)),
-                "likes": int(stats.get("likeCount", 0)),
-                "comments": int(stats.get("commentCount", 0)),
-                "duration": content.get("duration", ""),
-                "privacy": status.get("privacyStatus", ""),
-                "upload": status.get("uploadStatus", ""),
-                "rejection": status.get("rejectionReason", ""),
-                "failure": status.get("failureReason", ""),
-                "processing": details.get("processingStatus", ""),
-                "kids": status.get("madeForKids", ""),
-                "size": _resolution(item.get("fileDetails", {})),
-                "embeddable": status.get("embeddable", ""),
-                "title": item.get("snippet", {}).get("title", ""),
-            }
-    return out
-
-
-def _resolution(file_details: dict) -> str:
-    """WxH of the first video stream, or "-" when YouTube did not report one."""
-    for stream in file_details.get("videoStreams") or []:
-        width, height = stream.get("widthPixels"), stream.get("heightPixels")
-        if width and height:
-            return f"{width}x{height}"
-    return "-"
-
-
-def _rows(
-    dimensions: str,
-    metrics: str,
-    *,
-    days: int,
-    sort: str = "",
-    filters: str = "",
-    max_results: int = 0,
-) -> dict:
-    """One Analytics query returned with its column names attached."""
-    end = date.today()
-    params = {
-        "ids": _channel_selector(),
-        "startDate": (end - timedelta(days=days)).isoformat(),
-        "endDate": end.isoformat(),
-        "metrics": metrics,
-        "dimensions": dimensions,
-    }
-    if sort:
-        params["sort"] = sort
-    if filters:
-        params["filters"] = filters
-    if max_results:
-        # The video dimension is a "top videos" report; without maxResults the
-        # API answers with no rows at all rather than an error.
-        params["maxResults"] = max_results
-    payload = _analytics_query(params, timeout=60)
-    headers = [c.get("name", "") for c in payload.get("columnHeaders", [])]
-    return {"columns": headers, "rows": payload.get("rows") or []}
-
-
-def _load(path: Path) -> list:
-    """The publish records at path, or an empty list when there are none yet."""
-    if not path.exists():
-        return []
-    return json.loads(path.read_text("utf-8"))
 
 
 def main() -> None:
-    root = find_project_root()
-    published = _load(root / "data" / "shorts_published.json")
-    # The long-form compilations live in their own file. They have to be asked
-    # for by id alongside the Shorts or the audit is blind to the only videos
-    # that can produce watch hours -- which is the whole point of making them.
-    long_form = _load(root / "data" / "long_published.json")
-    video_ids = [
-        r["youtube_video_id"]
-        for r in published + long_form
-        if r.get("youtube_video_id")
-    ]
-
-    dump: dict = {
-        "collected_at": datetime.now(UTC).isoformat(timespec="seconds"),
-        "published": published,
-        "long_form": long_form,
-        "totals": {},
-        "data_api": {},
-        "analytics": {},
-        "errors": {},
-    }
-
-    try:
-        dump["totals"] = get_channel_totals()
-    except Exception as exc:  # a missing figure must not cost the rest
-        dump["errors"]["totals"] = str(exc)
-
-    try:
-        dump["data_api"] = _data_stats(video_ids)
-    except Exception as exc:
-        dump["errors"]["data_api"] = str(exc)
-
-    # Per-video lifetime analytics, day-by-day channel views, and the traffic
-    # mix. Each is asked for separately so one failure does not blank the rest.
-    queries = {
-        "per_video": dict(
-            dimensions="video",
-            metrics=("views,estimatedMinutesWatched,averageViewDuration,"
-                     "averageViewPercentage,subscribersGained,likes,shares,comments"),
-            days=90,
-            sort="-views",
-            max_results=200,
-        ),
-        # Gosterim ve tiklanma orani burada YOK ve konamaz: denendi, Analytics
-        # API "Unknown identifier (impressions)" diyor. Bunlar Studio'ya ozel
-        # metrikler. Uzun videonun kapagi ancak Studio'dan okunarak
-        # degerlendirilebilir -- API'den olculebilirmis gibi plan yapilmasin.
-        "daily": dict(
-            dimensions="day",
-            metrics="views,estimatedMinutesWatched,subscribersGained,subscribersLost",
-            days=45,
-            sort="day",
-        ),
-        "traffic": dict(
-            dimensions="insightTrafficSourceType",
-            metrics="views,estimatedMinutesWatched",
-            days=28,
-            sort="-views",
-        ),
-        "countries": dict(
-            dimensions="country", metrics="views", days=28, sort="-views", max_results=15
-        ),
-        "devices": dict(dimensions="deviceType", metrics="views", days=28, sort="-views"),
-        "subs_status": dict(
-            dimensions="subscribedStatus", metrics="views,averageViewPercentage", days=28
-        ),
-    }
-    for name, kwargs in queries.items():
-        try:
-            dump["analytics"][name] = _rows(**kwargs)
-        except AnalyticsScopeMissing as exc:
-            dump["errors"][name] = f"scope: {exc}"
-        except Exception as exc:
-            dump["errors"][name] = str(exc)
-
-    # Where each long-form video's views actually came from. The channel-wide
-    # traffic mix is dominated by Shorts and says nothing about whether YouTube
-    # is serving a compilation on its own or whether every view arrived through
-    # a link we placed ourselves. Only a per-video filter separates the two.
-    for record in long_form:
-        vid = record.get("youtube_video_id")
-        if not vid:
-            continue
-        try:
-            dump["analytics"][f"traffic_{vid}"] = _rows(
-                dimensions="insightTrafficSourceType",
-                metrics="views,estimatedMinutesWatched",
-                days=28,
-                sort="-views",
-                filters=f"video=={vid}",
-            )
-        except Exception as exc:
-            dump["errors"][f"traffic_{vid}"] = str(exc)
-
-    _emit(dump)
+    _emit(collect(find_project_root()))
 
 
 def _emit(dump: dict) -> None:
@@ -241,13 +38,7 @@ def _emit(dump: dict) -> None:
         print("(yok)")
 
     stats = dump.get("data_api") or {}
-    by_id = {}
-    for section in ("per_video",):
-        block = (dump.get("analytics") or {}).get(section) or {}
-        columns = block.get("columns") or []
-        for row in block.get("rows") or []:
-            record = dict(zip(columns, row))
-            by_id[record.get("video")] = record
+    by_id = per_video(dump)
 
     print("\n### VIDEOLAR")
     print("\t".join((

@@ -1,0 +1,95 @@
+name: Kanal analizi
+
+# Haftalık ve aylık performans analizi.
+#
+# Denetim işinden (shorts-tools.yml → audit) farkı: o ham tabloları basıyor,
+# bu karar veriyor. Üç soruya cevap veriyor —
+#   1. Para kazanma eşiklerine ne kadar kaldı, ölçülen hızla ne zaman?
+#   2. Değiştirdiğimiz şeylerden hangisi gerçekten rakamları oynatıyor?
+#   3. Hangi videolar başarısız ve ortak yanları ne?
+#
+# Her çalıştırma data/channel_metrics.json'a bir kayıt ekliyor. Bu dosya
+# olmadan her rapor kendi taban çizgisini yeniden uyduruyordu; haftalarca
+# "medyan 6.017" diye alıntılanan bir rakamın arkasında hiçbir şey yoktu.
+# Hız hesapları ve "geçen haftaya göre" farkları o dosyadan geliyor.
+on:
+  schedule:
+    # Cuma 22:00 UTC — haftanın videoları olgunlaşmış olur.
+    - cron: "0 22 * * 5"
+    # Ayın 1'i 22:00 UTC. Aylık rapor haftalığın yaptığı her şeyi yapıp
+    # üstüne bir haftada yeterli video birikmeyen karşılaştırmaları ekliyor.
+    - cron: "0 22 1 * *"
+  workflow_dispatch:
+    inputs:
+      period:
+        description: "Hangi rapor?"
+        required: false
+        type: choice
+        options: [weekly, monthly]
+        default: weekly
+
+concurrency:
+  group: kanal-analizi
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  analiz:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Raporu çıkar
+        env:
+          PYTHONPATH: src
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+        run: |
+          # Ayın 1'indeki cron aylık raporu tetikliyor; elle çalıştırmada
+          # seçim girdiden geliyor.
+          PERIOD="${{ inputs.period }}"
+          if [ -z "$PERIOD" ]; then
+            if [ "${{ github.event.schedule }}" = "0 22 1 * *" ]; then
+              PERIOD=monthly
+            else
+              PERIOD=weekly
+            fi
+          fi
+          echo "Rapor: $PERIOD"
+          python scripts/channel_report.py "$PERIOD"
+
+      - name: Ölçümü kaydet
+        # Kayıt tutulmazsa hız da fark da hesaplanamıyor, yani bu adım
+        # raporun kendisi kadar önemli.
+        if: always()
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/channel_metrics.json
+          if git diff --cached --quiet; then
+            echo "Yeni ölçüm yok."
+          else
+            git commit -m "olcum: kanal anlik goruntusu"
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi
+
+      - name: Hata bildir
+        if: failure()
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          curl -s -X POST \
+            "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            -d chat_id="${TELEGRAM_CHAT_ID}" \
+            -d text="⚠️ Kanal analizi çalışmadı. İş kaydına bak." >/dev/null
