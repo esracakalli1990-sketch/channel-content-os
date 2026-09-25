@@ -324,7 +324,8 @@ def _recent_uploads(dump: dict) -> int:
     return count
 
 
-def _gate(name: str, value: float, goal: float, history: list[dict], key: str) -> dict:
+def _gate(name: str, value: float, goal: float, history: list[dict], key: str,
+          now: datetime | None = None) -> dict:
     """One threshold with its progress and, when measurable, an arrival date."""
     gate = {
         "name": name,
@@ -336,7 +337,8 @@ def _gate(name: str, value: float, goal: float, history: list[dict], key: str) -
         "eta": None,
         "note": "",
     }
-    rate = _rate_per_day(history, key, value)
+    now = now or datetime.now(UTC)
+    rate = _rate_per_day(history, key, value, now)
     if rate is None:
         gate["note"] = "hız için en az iki ölçüm gerekiyor"
         return gate
@@ -355,12 +357,13 @@ def _gate(name: str, value: float, goal: float, history: list[dict], key: str) -
         years = days / 365
         gate["note"] = f"bu hızla ulaşılamaz (~{years:.0f} yıl)"
         return gate
-    gate["eta"] = (datetime.now(UTC) + timedelta(days=days)).date().isoformat()
+    gate["eta"] = (now + timedelta(days=days)).date().isoformat()
     gate["note"] = f"ölçülen hızla {round(days)} gün"
     return gate
 
 
-def _rate_per_day(history: list[dict], key: str, current: float) -> float | None:
+def _rate_per_day(history: list[dict], key: str, current: float,
+                  now: datetime | None = None) -> float | None:
     """Growth per day, measured against the oldest snapshot inside two weeks.
 
     Against the oldest rather than the previous one because a single viral
@@ -368,7 +371,7 @@ def _rate_per_day(history: list[dict], key: str, current: float) -> float | None
     briefly running at 140,000 views a day, which extrapolated to passing a
     threshold that it is nowhere near.
     """
-    now = datetime.now(UTC)
+    now = now or datetime.now(UTC)
     usable = []
     for snapshot in history:
         try:
@@ -475,6 +478,90 @@ def retention_band(rows: list[dict]) -> dict:
     result = compare("hit", hits, "hit değil", rest)
     result["dimension"] = "İzlenme yüzdesi"
     return result
+
+
+# -----------------------------------------------------------------------
+# Is the data actually current?
+# -----------------------------------------------------------------------
+
+# A channel taking ten thousand views an hour cannot report a bit-identical
+# view count an hour later. When it does, the API is serving a cached answer.
+FROZEN_AFTER_MINUTES = 30
+
+
+def staleness(dump: dict, history: list[dict], now: datetime | None = None) -> dict:
+    """Whether these numbers moved since last time, and how far Analytics lags.
+
+    Added after a report presented an hour-old cached response as current:
+    subscribers, views, median and hit count were all identical to the previous
+    run while Studio showed roughly ten thousand views an hour arriving. The
+    report was not wrong about what the API said; it was wrong to present it
+    without saying the API had stopped answering. A measurement system that
+    cannot notice it has gone blind is worse than no measurement system,
+    because it is trusted.
+    """
+    now = now or datetime.now(UTC)
+    result: dict = {"frozen": False, "warnings": []}
+
+    totals = dump.get("totals") or {}
+    current_views = int(totals.get("views") or 0)
+    previous = history[-1] if history else None
+    if previous and previous.get("views") is not None:
+        try:
+            when = datetime.fromisoformat(previous["at"])
+        except (KeyError, ValueError):
+            when = None
+        if when is not None:
+            if when.tzinfo is None:
+                when = when.replace(tzinfo=UTC)
+            minutes = (now - when).total_seconds() / 60
+            if (int(previous["views"]) == current_views
+                    and minutes >= FROZEN_AFTER_MINUTES):
+                result["frozen"] = True
+                result["frozen_minutes"] = round(minutes)
+                result["warnings"].append(
+                    f"Data API DONMUŞ: toplam izlenme {minutes:.0f} dakikadır "
+                    f"birebir aynı ({current_views}). Bu rapordaki gerçek zamanlı "
+                    "sayılar güvenilmez; Studio'ya bak."
+                )
+
+    last_day, lag = _analytics_edge(dump, now)
+    result["analytics_last_day"] = last_day
+    result["analytics_lag_days"] = lag
+    if lag is not None and lag > 3:
+        result["warnings"].append(
+            f"Analytics {lag} gün geriden geliyor (son dolu gün {last_day}). "
+            "İzlenme yüzdesi ve trafik kaynağı bu tarihe kadar; son günlerin "
+            "sıfır görünmesi düşüş değil, veri yokluğu."
+        )
+    return result
+
+
+def _analytics_edge(dump: dict, now: datetime) -> tuple[str | None, int | None]:
+    """The most recent day Analytics has any views for, and how stale that is.
+
+    Trailing zero days are skipped rather than treated as the edge: a genuine
+    zero-view day and a not-yet-reported day look identical in this table, and
+    once already a run of unreported days was read as a collapse in views.
+    """
+    block = (dump.get("analytics") or {}).get("daily") or {}
+    columns = block.get("columns") or []
+    if "day" not in columns:
+        return None, None
+    day_at = columns.index("day")
+    views_at = columns.index("views") if "views" in columns else None
+    last = None
+    for row in block.get("rows") or []:
+        if views_at is not None and not row[views_at]:
+            continue
+        last = row[day_at]
+    if not last:
+        return None, None
+    try:
+        when = datetime.fromisoformat(str(last)).replace(tzinfo=UTC)
+    except ValueError:
+        return last, None
+    return last, (now.date() - when.date()).days
 
 
 # -----------------------------------------------------------------------

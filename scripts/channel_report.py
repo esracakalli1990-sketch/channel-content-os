@@ -61,6 +61,7 @@ def _delta(history: list[dict], key: str, current) -> str:
 
 def render(dump: dict, rows: list[dict], gates: dict, history: list[dict],
            studio: list[dict], monthly: bool) -> str:
+    """The whole report as one string."""
     out: list[str] = []
     add = out.append
     mature = [row for row in rows if row["mature"]]
@@ -74,6 +75,15 @@ def render(dump: dict, rows: list[dict], gates: dict, history: list[dict],
         add("\n⚠️  EKSİK VERİ")
         for key, value in dump["errors"].items():
             add(f"  {key}: {value}")
+
+    # Printed before anything else it would undermine. A frozen counter makes
+    # every figure below it a quotation of an old answer, and the reader has to
+    # know that before they read them, not after.
+    fresh = ca.staleness(dump, history)
+    if fresh["warnings"]:
+        add("\n🚨 VERİ TAZELİĞİ")
+        for warning in fresh["warnings"]:
+            add(f"  {warning}")
 
     add("\n### 1. PARA KAZANMA EŞİKLERİ")
     add("")
@@ -207,7 +217,8 @@ def render(dump: dict, rows: list[dict], gates: dict, history: list[dict],
     return "\n".join(out)
 
 
-def telegram_summary(gates: dict, snap: dict, history: list[dict]) -> str:
+def telegram_summary(gates: dict, snap: dict, history: list[dict],
+                     stale: dict | None = None) -> str:
     lines = ["📊 <b>Kanal analizi</b>", "", "<b>Alt kademe</b> (reklam yok):"]
     for key in ("early_subscribers", "early_watch_hours", "early_shorts_views"):
         gate = gates[key]
@@ -228,6 +239,11 @@ def telegram_summary(gates: dict, snap: dict, history: list[dict]) -> str:
                  f"{_delta(history, 'median_views', snap['median_views'])}")
     lines.append(f"Ölü video: {snap['dead_count']}/{snap['mature_count']}"
                  f"{_delta(history, 'dead_count', snap['dead_count'])}")
+    if stale and stale.get("warnings"):
+        lines.append("")
+        lines.append("🚨 <b>Veri tazeliği</b>")
+        for warning in stale["warnings"]:
+            lines.append(warning)
     lines.append("")
     lines.append("Tam rapor iş kaydında.")
     return "\n".join(lines)
@@ -250,7 +266,8 @@ def main() -> None:
     if "--no-telegram" not in argv:
         try:
             from channel_ops.notifications import send_message
-            send_message(telegram_summary(gates, snap, history))
+            send_message(telegram_summary(gates, snap, history,
+                                          ca.staleness(dump, history)))
         except Exception as exc:  # a failed notification must not lose the report
             print(f"\n[telegram gönderilemedi: {exc}]")
     # Saved last: a snapshot written before the report is rendered would be

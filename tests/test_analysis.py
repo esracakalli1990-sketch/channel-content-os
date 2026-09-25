@@ -118,10 +118,14 @@ class MaturityTests(unittest.TestCase):
 
 
 class RateTests(unittest.TestCase):
-    """Per-day growth, and the reason it is not measured over two days."""
+    """Per-day growth, and the reason it is not measured over two days.
+
+    Every case here pins the clock. Twice before, tests in this repo aged into
+    failure because they compared a fixed date against a moving one; widening
+    the tolerance hides that instead of removing it."""
 
     def test_two_measurements_are_needed(self):
-        gate = ca._gate("Abone", 500, 1000, [], "subscribers")
+        gate = ca._gate("Abone", 500, 1000, [], "subscribers", now=NOW)
         self.assertIsNone(gate["rate_per_day"])
         self.assertIn("en az iki ölçüm", gate["note"])
 
@@ -132,30 +136,30 @@ class RateTests(unittest.TestCase):
             {"at": (NOW - timedelta(days=10)).isoformat(), "subscribers": 300},
             {"at": (NOW - timedelta(days=1)).isoformat(), "subscribers": 520},
         ]
-        rate = ca._rate_per_day(history, "subscribers", 541)
-        self.assertAlmostEqual(rate, (541 - 300) / 10, delta=1.0)
+        rate = ca._rate_per_day(history, "subscribers", 541, now=NOW)
+        self.assertAlmostEqual(rate, (541 - 300) / 10, places=6)
 
     def test_snapshots_older_than_the_window_are_ignored(self):
         history = [{"at": (NOW - timedelta(days=90)).isoformat(), "subscribers": 1}]
-        self.assertIsNone(ca._rate_per_day(history, "subscribers", 541))
+        self.assertIsNone(ca._rate_per_day(history, "subscribers", 541, now=NOW))
 
     def test_a_distant_projection_is_refused_not_printed(self):
         """A gate crawling toward 4,000 hours once produced "2122-07-17". That
         is arithmetic, not a forecast, and a date invites planning around it."""
         history = [{"at": (NOW - timedelta(days=7)).isoformat(), "watch_hours": 0.5}]
-        gate = ca._gate("İzlenme saati", 0.8, 4000, history, "watch_hours")
+        gate = ca._gate("İzlenme saati", 0.8, 4000, history, "watch_hours", now=NOW)
         self.assertIsNone(gate["eta"])
         self.assertIn("ulaşılamaz", gate["note"])
         self.assertIn("yıl", gate["note"])
 
     def test_a_small_rate_is_not_rounded_away_to_zero(self):
         history = [{"at": (NOW - timedelta(days=10)).isoformat(), "watch_hours": 0.1}]
-        gate = ca._gate("İzlenme saati", 0.5, 4000, history, "watch_hours")
+        gate = ca._gate("İzlenme saati", 0.5, 4000, history, "watch_hours", now=NOW)
         self.assertGreater(gate["rate_per_day"], 0)
 
     def test_a_flat_figure_reports_unreachable_rather_than_a_date(self):
         history = [{"at": (NOW - timedelta(days=7)).isoformat(), "watch_hours": 0.7}]
-        gate = ca._gate("İzlenme saati", 0.7, 4000, history, "watch_hours")
+        gate = ca._gate("İzlenme saati", 0.7, 4000, history, "watch_hours", now=NOW)
         self.assertIsNone(gate["eta"])
         self.assertIn("ulaşılamaz", gate["note"])
 
@@ -248,6 +252,69 @@ class DurationTests(unittest.TestCase):
     def test_an_unparseable_duration_is_zero_not_a_crash(self):
         self.assertEqual(parse_duration(""), 0)
         self.assertEqual(parse_duration("garbage"), 0)
+
+
+class StalenessTests(unittest.TestCase):
+    """Added after a report quoted an hour-old cached response as current.
+
+    Subscribers, views, median and hit count were all bit-identical to the
+    previous run while Studio showed roughly ten thousand views an hour
+    arriving. A measurement system that cannot notice it has gone blind is
+    worse than none, because it is trusted."""
+
+    def _daily(self, rows):
+        return {"columns": ["day", "views", "estimatedMinutesWatched",
+                            "subscribersGained", "subscribersLost"], "rows": rows}
+
+    def test_an_unchanged_counter_is_called_out(self):
+        dump = _dump([], totals={"views": 2048124, "subscribers": 1070})
+        history = [{"at": (NOW - timedelta(hours=1)).isoformat(), "views": 2048124}]
+        result = ca.staleness(dump, history, now=NOW)
+        self.assertTrue(result["frozen"])
+        self.assertTrue(any("DONMUŞ" in w for w in result["warnings"]))
+
+    def test_a_moving_counter_is_not(self):
+        dump = _dump([], totals={"views": 2060000, "subscribers": 1070})
+        history = [{"at": (NOW - timedelta(hours=1)).isoformat(), "views": 2048124}]
+        self.assertFalse(ca.staleness(dump, history, now=NOW)["frozen"])
+
+    def test_two_runs_minutes_apart_are_not_called_frozen(self):
+        """Back-to-back runs legitimately see the same number; the check must
+        not cry wolf or it will be ignored when it matters."""
+        dump = _dump([], totals={"views": 2048124})
+        history = [{"at": (NOW - timedelta(minutes=5)).isoformat(), "views": 2048124}]
+        self.assertFalse(ca.staleness(dump, history, now=NOW)["frozen"])
+
+    def test_the_first_ever_run_has_nothing_to_compare(self):
+        self.assertFalse(ca.staleness(_dump([]), [], now=NOW)["frozen"])
+
+    def test_trailing_unreported_days_are_not_the_edge(self):
+        """A reported zero and a not-yet-reported day look identical here, and
+        a run of them was once read as a collapse in views."""
+        dump = _dump([])
+        dump["analytics"]["daily"] = self._daily([
+            ["2026-09-20", 16852, 1587, 18, 5],
+            ["2026-09-21", 20873, 1900, 8, 8],
+            ["2026-09-22", 0, 0, 0, 0],
+            ["2026-09-23", 0, 0, 0, 0],
+        ])
+        result = ca.staleness(dump, [], now=NOW)
+        self.assertEqual(result["analytics_last_day"], "2026-09-21")
+        self.assertEqual(result["analytics_lag_days"], 4)
+        self.assertTrue(any("geriden" in w for w in result["warnings"]))
+
+    def test_current_analytics_raises_no_warning(self):
+        dump = _dump([])
+        dump["analytics"]["daily"] = self._daily([
+            ["2026-09-24", 16852, 1587, 18, 5],
+            ["2026-09-25", 20873, 1900, 8, 8],
+        ])
+        result = ca.staleness(dump, [], now=NOW)
+        self.assertEqual(result["analytics_lag_days"], 0)
+        self.assertEqual(result["warnings"], [])
+
+    def test_a_missing_daily_table_is_not_a_crash(self):
+        self.assertIsNone(ca.staleness(_dump([]), [], now=NOW)["analytics_last_day"])
 
 
 class HistoryTests(unittest.TestCase):
