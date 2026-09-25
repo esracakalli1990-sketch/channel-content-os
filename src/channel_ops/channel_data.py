@@ -229,6 +229,29 @@ def collect(root: Path | None = None) -> dict:
         "subs_status": dict(
             dimensions="subscribedStatus", metrics="views,averageViewPercentage", days=28
         ),
+        # Age and sex were missing from every report until Studio screenshots
+        # showed the audience is nothing like the one assumed. They use their
+        # own metric -- viewerPercentage -- and cannot be mixed with views,
+        # which is why they were never picked up by copying an existing query.
+        "demographics": dict(
+            dimensions="ageGroup,gender", metrics="viewerPercentage", days=28,
+            sort="-viewerPercentage",
+        ),
+        # Which app the share button handed the video to.
+        "sharing": dict(
+            dimensions="sharingService", metrics="shares", days=28, sort="-shares",
+        ),
+        # The actual words typed into YouTube search, and the actual sites the
+        # links came from. insightTrafficSourceDetail is meaningless without a
+        # filter naming which source it is detailing.
+        "search_terms": dict(
+            dimensions="insightTrafficSourceDetail", metrics="views", days=28,
+            sort="-views", max_results=15, filters="insightTrafficSourceType==YT_SEARCH",
+        ),
+        "external_sites": dict(
+            dimensions="insightTrafficSourceDetail", metrics="views", days=28,
+            sort="-views", max_results=15, filters="insightTrafficSourceType==EXT_URL",
+        ),
     }
     for name, kwargs in queries.items():
         try:

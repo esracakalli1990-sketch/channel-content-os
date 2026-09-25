@@ -171,7 +171,11 @@ def render(dump: dict, rows: list[dict], gates: dict, history: list[dict],
 
     add("\n### 6. TRAFİK VE İZLEYİCİ")
     for section, title in (("traffic", "Trafik kaynağı"), ("devices", "Cihaz"),
-                           ("subs_status", "Abone durumu"), ("countries", "Ülke")):
+                           ("subs_status", "Abone durumu"), ("countries", "Ülke"),
+                           ("demographics", "Yaş ve cinsiyet"),
+                           ("sharing", "Paylaşım uygulaması"),
+                           ("search_terms", "Arama terimi"),
+                           ("external_sites", "Harici site")):
         block = (dump.get("analytics") or {}).get(section) or {}
         if not block.get("rows"):
             continue
