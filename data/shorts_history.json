@@ -129,7 +129,9 @@
     "short-beaked echidna",
     "zebra jumping spider",
     "leaf-cutter ant",
-    "ruby-throated hummingbird"
+    "ruby-throated hummingbird",
+    "four-cylinder radial steam engine",
+    "giant pacific octopus"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -192,7 +194,6 @@
     "streamlined torpedo billet",
     "fluted triangular keel",
     "curved asymmetric billet",
-    "heavy ribbed brass cylinder",
     "cupped bivalve pod",
     "grooved barrel",
     "ribbed cone",
@@ -200,7 +201,6 @@
     "ribbed cylinder",
     "facetted triangular block",
     "ribbed hemispherical dome",
-    "cupped bivalve disc",
     "fluted octagonal drum",
     "beveled circular medallion",
     "fluted cylindrical thimble",
@@ -233,6 +233,8 @@
     "canted parabolic shell",
     "squat cuboctahedron",
     "grooved concave wedge",
-    "ribbed elliptical pod"
+    "ribbed elliptical pod",
+    "heavy ribbed brass cylinder",
+    "cupped bivalve disc"
   ]
 }
