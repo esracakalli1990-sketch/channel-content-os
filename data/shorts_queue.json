@@ -50,5 +50,23 @@
       "emerging_parts": "Six jointed wire legs, two delicate antennae, and an articulated abdomen",
       "turkish": "Yaprak kesen karinca (ormanlarda yaprak tasiyan, guclu ceneli bocek) — oluklu ic bukey kama, oksitlenmis kalay ve cilali kiraz agaci"
     }
+  },
+  {
+    "queued_at": "2026-09-25T01:06:17+00:00",
+    "publish_at": "2026-09-26T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIDIGq1yOn3Im_L2KCXA2oXDUCPM4Q7AAISIQACWQeoUZY0W1TNo08uPQQ",
+    "file_size": 2922861,
+    "caption": "2",
+    "concept": {
+      "shape": "ribbed elliptical pod",
+      "material": "brushed titanium and dark amber resin",
+      "internal_detail": "tiny copper pistons, intricate coaxial cogs, and silver linkages",
+      "button": "a tiny circular brass stud set into the ribbed side",
+      "button_short": "the tiny circular brass stud",
+      "creature": "ruby-throated hummingbird",
+      "shell_mechanic": "The titanium pod unfolds its curved upper plates outward like expanding breast feathers",
+      "emerging_parts": "Two folded metallic wings, a needle-thin beak, and a fan-shaped tail",
+      "turkish": "Yakut gerdanli sinek kusu (hizli kanat cirpan, cicek nektariyla beslenen kus) — kaburgali eliptik koza, fircalanmis titanyum ve koyu kehribar recine"
+    }
   }
 ]
