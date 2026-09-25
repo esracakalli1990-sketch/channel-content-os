@@ -672,6 +672,14 @@ def _publish_queued(item: dict, provider: AIProvider, root: Path) -> dict:
     record = {
         "published_at": datetime.now(UTC).isoformat(timespec="seconds"),
         "creature": concept.creature,
+        # The object, alongside the creature. Search tells us the audience
+        # arrives on "steampunk", "automata", "bronze", "brass", "titanium",
+        # "cylinder", "locks" -- material and shape words, with one creature
+        # name in the whole list. The pipeline has always varied these and
+        # nothing has ever been able to ask whether they matter, because only
+        # the creature reached the record.
+        "material": concept.material,
+        "shape": concept.shape,
         "title": title,
         "youtube_video_id": youtube_id,
         "youtube_url": f"https://youtube.com/watch?v={youtube_id}",

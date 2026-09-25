@@ -331,6 +331,42 @@ class StalenessTests(unittest.TestCase):
         self.assertIsNone(ca.staleness(_dump([]), [], now=NOW)["analytics_last_day"])
 
 
+class MaterialTests(unittest.TestCase):
+    """Search says the audience arrives on materials, not creatures.
+
+    The twenty-eight-day search terms were steampunk, venus flytrap, automata,
+    titanium, cylinder, locks, bronze, brass -- one creature name in eight.
+    The pipeline has always varied the material and nothing could ask whether
+    it mattered, because only the creature reached the record."""
+
+    def test_the_metal_is_read_from_the_material(self):
+        self.assertEqual(ca._metal("patinated bronze plates and dark vulcanite"),
+                         "bronze")
+        self.assertEqual(ca._metal("brushed titanium"), "titanium")
+
+    def test_older_records_fall_back_to_the_title(self):
+        """Nothing published before the field existed carries it, and waiting
+        months would mean the question could not be asked until it stopped
+        being interesting."""
+        record = _record("v1", creature="nautical sextant")
+        record["title"] = "Why does this wedge of brass have a hidden hinge?"
+        row = ca.videos(_dump([record], stats={"v1": {"views": 500}}), now=NOW)[0]
+        self.assertEqual(row["metal"], "brass")
+
+    def test_the_material_field_wins_when_both_exist(self):
+        record = _record("v1")
+        record["material"] = "polished copper"
+        record["title"] = "Why does this wedge of brass have a hidden hinge?"
+        row = ca.videos(_dump([record], stats={"v1": {"views": 500}}), now=NOW)[0]
+        self.assertEqual(row["metal"], "copper")
+
+    def test_an_unrecognised_material_is_grouped_not_given_its_own_bucket(self):
+        """Left as written, every video would be its own group and nothing
+        could ever be compared."""
+        self.assertEqual(ca._metal("mottled amber resin"), "diğer")
+        self.assertEqual(ca._metal(""), "diğer")
+
+
 class HistoryTests(unittest.TestCase):
     def test_a_snapshot_survives_a_round_trip(self):
         with TemporaryDirectory() as tmp:
