@@ -52,5 +52,23 @@
       "emerging_parts": "Four tiny reciprocating pistons and a rotating central crankshaft",
       "turkish": "Dort silindirli radyal buhar makinesi (kucuk pistonlari ve mili olan metal makine) — agir hatli pirinc silindir, parlatilmis pirinc ve nikel celik"
     }
+  },
+  {
+    "queued_at": "2026-09-25T23:41:24+00:00",
+    "publish_at": "2026-09-27T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIDL2q3BlAotEoiSWf2NheGW0i9s6W3AAK3IgACtxW4UY3ZrtMv7ELkPQQ",
+    "file_size": 2965541,
+    "caption": "2",
+    "concept": {
+      "shape": "cupped bivalve disc",
+      "material": "mother-of-pearl plates with fine silver hinges",
+      "internal_detail": "delicate spring-loaded pearl levers and micro-linkage arms",
+      "button": "a tiny silver pearl catch at the rim",
+      "button_short": "the tiny silver pearl catch",
+      "creature": "giant pacific octopus",
+      "shell_mechanic": "The bivalve disc hinges apart into two symmetrical halves that fold completely back",
+      "emerging_parts": "Eight flexible suction-cup tentacles and a rounded central mantle",
+      "turkish": "Dev Pasifik ahtapotu (sekiz kollu yumusak deniz canlisi) — cukur cift kapakli disk, sedef plakalar ve ince gumus menteseler"
+    }
   }
 ]
