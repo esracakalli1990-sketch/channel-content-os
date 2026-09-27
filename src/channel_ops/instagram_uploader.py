@@ -10,9 +10,11 @@ Publishing is three steps, not one. Instagram will not accept the file from us
 public URL. We hand over that URL, poll until Instagram has finished
 transcoding, and only then publish the container.
 
-Tokens last 60 days. :func:`token_days_remaining` reports what is left so the
-scheduled job can warn over Telegram in time; nothing here rewrites the secret,
-which stays a manual step.
+Tokens last 60 days. :func:`refresh_token` trades the current one for a
+replacement good for another sixty, which the weekly ``instagram-token`` job
+writes straight back into the repository secret -- so in normal running the
+deadline never arrives. Two cases still need a person: an already-expired token
+cannot be refreshed, and neither can one under a day old.
 """
 from __future__ import annotations
 
@@ -118,13 +120,18 @@ def _describe(exc: HTTPError) -> str:
 # Token lifetime
 # -----------------------------------------------------------------------
 
-def token_days_remaining() -> int:
-    """Return the days left on the access token.
+def refresh_token() -> tuple[str, int]:
+    """Refresh the access token and return ``(new_token, days_valid)``.
 
-    Uses the refresh endpoint, which reports the remaining lifetime. It also
-    returns a *new* token, which we deliberately ignore: storing it would mean
-    writing to a repository secret, and the agreed approach is to warn and let
-    the token be replaced by hand.
+    The endpoint both reports the remaining lifetime and issues a replacement
+    token good for another sixty days. Whoever calls this must store the new
+    value: the old one is not extended, so a refresh whose result is thrown
+    away buys nothing.
+
+    Two things Instagram requires and neither is recoverable here: the token
+    must be at least twenty-four hours old, and it must not have expired yet.
+    Once it is dead no amount of refreshing brings it back and a human has to
+    issue a new one from the app dashboard.
     """
     _, token = _credentials()
     url = f"{GRAPH_BASE}/refresh_access_token?" + urlencode(
@@ -138,7 +145,18 @@ def token_days_remaining() -> int:
     except URLError as exc:
         raise InstagramError(f"Could not reach Instagram: {exc.reason}") from exc
 
-    return int(payload.get("expires_in", 0)) // 86400
+    new_token = str(payload.get("access_token", "")).strip()
+    days = int(payload.get("expires_in", 0)) // 86400
+    if not new_token:
+        raise InstagramError(
+            f"Instagram reported {days} day(s) left but returned no new token."
+        )
+    return new_token, days
+
+
+def token_days_remaining() -> int:
+    """Return the days left on the access token."""
+    return refresh_token()[1]
 
 
 def token_warning() -> str | None:

@@ -21,7 +21,10 @@ media = ["Pillow>=10.0", "pysrt>=1.1"]
 # Kanca yazisini videoya basmak icin: Pillow yaziyi cizer, imageio-ffmpeg
 # tasinabilir ffmpeg ikilisini getirir (calisma ortaminda sistem ffmpeg'i yok).
 overlay = ["Pillow>=10.0", "imageio-ffmpeg>=0.4"]
-all = ["edge-tts>=6.1", "Pillow>=10.0", "pysrt>=1.1", "imageio-ffmpeg>=0.4"]
+# GitHub only accepts Actions secrets sealed with libsodium, which is what the
+# Instagram token refresh writes back through.
+secrets = ["PyNaCl>=1.5"]
+all = ["edge-tts>=6.1", "Pillow>=10.0", "pysrt>=1.1", "imageio-ffmpeg>=0.4", "PyNaCl>=1.5"]
 dev = ["pytest>=7.0", "pytest-cov>=4.0"]
 
 [project.scripts]

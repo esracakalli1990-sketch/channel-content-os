@@ -1,0 +1,51 @@
+name: Instagram token yenile
+
+# Instagram token'ı 60 günde doluyor. 27 Eylül'de bir tanesi 60. günü doldurup
+# sessizce öldü ve ilk işaret bir yayının patlaması oldu.
+#
+# Yenileme endpoint'i token'ı UZATMIYOR, yerine yenisini veriyor. Yani yenileyip
+# sonucu saklamamak hiçbir işe yaramıyor -- bu iş yeni değeri doğrudan
+# IG_ACCESS_TOKEN secret'ına yazıyor.
+#
+# Haftalık, çünkü her yenileme saati 60 güne sıfırlıyor: haftada bir çalışan bir
+# iş token'ı hiçbir zaman bir haftadan eski bırakmıyor. Bir çalıştırma kaçarsa
+# elde hâlâ elli küsur gün var.
+#
+# GEREKEN: GH_SECRET_TOKEN. Actions'ın kendi GITHUB_TOKEN'ı secret YAZAMIYOR,
+# hiçbir izin ayarı bunu vermiyor. Depo secret'larına yazma yetkisi olan bir
+# kişisel erişim token'ı şart. Yoksa iş hata verip Telegram'dan haber veriyor,
+# başka bir şeyi bozmuyor.
+on:
+  schedule:
+    - cron: "0 5 * * 1" # Pazartesi 08:00 TRT
+  workflow_dispatch:
+
+concurrency:
+  group: instagram-token
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  yenile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: PyNaCl
+        # GitHub secret'ları libsodium ile mühürlenmiş olarak kabul ediyor.
+        run: pip install --quiet PyNaCl
+
+      - name: Yenile ve secret'a yaz
+        env:
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          GH_SECRET_TOKEN: ${{ secrets.GH_SECRET_TOKEN }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python scripts/refresh_instagram_token.py
