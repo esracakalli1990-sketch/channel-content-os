@@ -476,4 +476,28 @@ def send_report(root: Path | None = None, *, limit: int = 10) -> str:
     for number, part in enumerate(parts, start=1):
         suffix = f"\n\n<i>({number}/{len(parts)})</i>" if len(parts) > 1 else ""
         notifications.send_message(part + suffix)
+    _warn_about_instagram_token()
     return message
+
+
+def _warn_about_instagram_token() -> None:
+    """Send the expiry warning if the Instagram token is running out.
+
+    instagram_uploader.token_warning() was written to give a week's notice and
+    then never called from anywhere, so on 27 September the token reached its
+    sixtieth day and died in silence -- the first anyone knew was a publish
+    failing. This is the only job on the schedule that already holds the
+    Instagram credentials, which makes it the place the check belongs.
+
+    Wrapped so it cannot cost the report: the numbers are why this job runs,
+    and a token check failing is not a reason to lose them.
+    """
+    from . import instagram_uploader, notifications
+
+    try:
+        warning = instagram_uploader.token_warning()
+    except Exception as exc:  # noqa: BLE001 - never worth the report
+        logger.warning("Instagram token check failed: %s", exc)
+        return
+    if warning:
+        notifications.send_message(warning)

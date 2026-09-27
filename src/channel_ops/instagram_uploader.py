@@ -35,7 +35,12 @@ CONTAINER_POLL_SECONDS = 5
 CONTAINER_TIMEOUT_SECONDS = 300
 
 # Warn once the token has less than this left of its 60 days.
-TOKEN_WARNING_DAYS = 7
+#
+# Fourteen, not seven: the only job that checks runs weekly, and a seven-day
+# window checked every seven days can fall entirely between two runs. That is
+# not a hypothetical -- the token expired on 27 September without a single
+# warning going out. Two weeks guarantees at least one, usually two.
+TOKEN_WARNING_DAYS = 14
 
 
 class InstagramError(RuntimeError):

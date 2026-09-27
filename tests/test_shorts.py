@@ -1503,3 +1503,64 @@ class SignatureMoveTests(unittest.TestCase):
         text = shorts_prompts._CONCEPT_INSTRUCTIONS
         self.assertIn("signature_move", text)
         self.assertIn("MECHANICAL SIGNATURE MOVE", text)
+
+
+class InstagramTokenWarningTests(unittest.TestCase):
+    """The warning existed for weeks and warned nobody.
+
+    instagram_uploader.token_warning() was written to give notice before the
+    sixty-day token died, and was never called from anywhere. On 27 September
+    the token expired in silence and the first sign of it was a publish
+    failing. These tests hold the wiring in place."""
+
+    def _patch(self, monkey: dict):
+        from channel_ops import instagram_uploader, notifications, reporting
+        originals = {}
+        for target, name, value in monkey["set"]:
+            originals[(target, name)] = getattr(target, name)
+            setattr(target, name, value)
+        self.addCleanup(
+            lambda: [setattr(t, n, v) for (t, n), v in originals.items()]
+        )
+        return instagram_uploader, notifications, reporting
+
+    def test_the_report_sends_the_warning(self):
+        from channel_ops import instagram_uploader, notifications, reporting
+        sent = []
+        self._patch({"set": [
+            (instagram_uploader, "token_warning", lambda: "⚠️ 3 gün kaldı"),
+            (notifications, "send_message", lambda text, **kw: sent.append(text)),
+        ]})
+        reporting._warn_about_instagram_token()
+        self.assertEqual(sent, ["⚠️ 3 gün kaldı"])
+
+    def test_nothing_is_sent_when_the_token_is_healthy(self):
+        from channel_ops import instagram_uploader, notifications, reporting
+        sent = []
+        self._patch({"set": [
+            (instagram_uploader, "token_warning", lambda: None),
+            (notifications, "send_message", lambda text, **kw: sent.append(text)),
+        ]})
+        reporting._warn_about_instagram_token()
+        self.assertEqual(sent, [])
+
+    def test_a_failing_check_does_not_cost_the_report(self):
+        """The numbers are why that job runs. A token check is not worth them."""
+        from channel_ops import instagram_uploader, notifications, reporting
+
+        def explode():
+            raise RuntimeError("Instagram unreachable")
+
+        sent = []
+        self._patch({"set": [
+            (instagram_uploader, "token_warning", explode),
+            (notifications, "send_message", lambda text, **kw: sent.append(text)),
+        ]})
+        reporting._warn_about_instagram_token()  # must not raise
+        self.assertEqual(sent, [])
+
+    def test_the_window_is_wider_than_the_check_interval(self):
+        """A seven-day window checked every seven days can fall between two
+        runs and warn nobody -- which is exactly what happened."""
+        from channel_ops import instagram_uploader
+        self.assertGreater(instagram_uploader.TOKEN_WARNING_DAYS, 7)
