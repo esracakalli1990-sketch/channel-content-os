@@ -15,12 +15,13 @@ The template exposes these slots:
 ===================  ============================================
 ``shape``            closed silhouette (dome, oval, sphere, …)
 ``material``         shell material and finish
-``internal_detail``  what is glimpsed inside while still closed
+``internal_detail``  the gears the opening shell reveals inside
 ``button``           how the trigger looks, for the still frame
 ``button_short``     the same trigger, phrased for the video prompt
 ``creature``         what it unfolds into
 ``shell_mechanic``   how the shell opens
 ``emerging_parts``   which parts push out and lock into place
+``signature_move``   one short clockwork motion once assembled
 ===================  ============================================
 """
 from __future__ import annotations
@@ -63,6 +64,29 @@ _SLOTS = (
     "creature",
     "shell_mechanic",
     "emerging_parts",
+    "signature_move",
+)
+
+# The closing gesture used when a concept has none: concepts stored before the
+# slot existed, or one whose gesture was written with a living animal's verbs.
+# Deliberately generic and purely mechanical, so it suits any creature.
+FALLBACK_SIGNATURE_MOVE = (
+    "its glass eyes light up with a soft glow, and its hinged head plate "
+    "pivots once toward the camera and settles back with a crisp click"
+)
+
+# Verbs and words that describe a living animal rather than a machine. The
+# 27 September test made this rule: "slowly blinks its eyes" and "takes one
+# step forward" turned the frogmouth and the salamander into real animals on a
+# mechanical body, while the cobra, whose gesture was "its eyes light up red",
+# stayed a toy. The instruction forbids them; this catches what slips through.
+# Feathers and scales are left off: "its brass tail feathers fan out on their
+# pivots" is a machine, and a false alarm would cost a good gesture.
+_LIVING = re.compile(
+    r"\b(?:blink\w*|breath\w*|walk\w*|comes? to life|alive|living|sniff\w*|"
+    r"lick\w*|yawn\w*|chew\w*|skin|flesh|fur|"
+    r"(?:takes?|taking) (?:a|one) (?:small |slow |deliberate )*step)\b",
+    re.IGNORECASE,
 )
 
 _CONCEPT_INSTRUCTIONS = """\
@@ -111,11 +135,30 @@ Hard rules, in priority order:
    * `button_short` — KEEP "the": "the recessed titanium button at the centre".
    * `material` and `internal_detail` — noun phrases, no article needed:
      "polished obsidian-black ceramic", not "It is made of ceramic."
+   * `signature_move` — a clause with its own verb, dropped after "performs
+     one short clockwork motion that imitates its species:" and followed by a
+     full stop. Start with "its": "its ruby glass eyes light up red and its
+     hooded head plate sways once from side to side on its neck pivot".
    * `shell_mechanic` — a complete independent clause with its own subject and
      verb, because the template continues it with ", revealing the movement of
      internal mechanical components and gears". Start with the thing that
      moves: "The hexagonal shell splits along its titanium seams". NEVER open
      with "as", "when", "while" or "once" — that leaves the sentence unfinished.
+9. MECHANICAL SIGNATURE MOVE. `signature_move` is the one short gesture the
+   finished toy makes at the end, imitating its species. The toy is a machine
+   and must stay one: write the gesture ONLY with machine verbs — pivots,
+   swings on its hinge, lights up, glows, clicks, slides along its rail,
+   ratchets, snaps shut, takes a single clockwork step. NEVER use a living
+   animal's verbs or textures: blink, breathe, walk, sniff, lick, yawn, come to
+   life, alive, skin, fur, feathers, flesh. Video models read those literally
+   and turn the toy into a real animal. Keep it to one or two motions; it lasts
+   about two seconds. Examples:
+   * tawny frogmouth: "its amber glass eyes light up with a soft glow, and its
+     hinged brass beak plates swing open wide on their pivot and snap shut
+     again with a crisp click"
+   * fire salamander: "its jointed steel head pivots toward the camera on its
+     neck pin with a small click, and one front leg lifts on its hinge and sets
+     down again like a single clockwork step"
 
 Do not reuse any of these creatures: {avoid}
 
@@ -154,7 +197,15 @@ slots and is never used in a prompt.
 # Slots dropped into the middle of a sentence; they must not start with a
 # capital or an article. The rest begin a sentence and keep their capital.
 _MID_SENTENCE = frozenset(
-    {"shape", "material", "internal_detail", "button", "button_short", "creature"}
+    {
+        "shape",
+        "material",
+        "internal_detail",
+        "button",
+        "button_short",
+        "creature",
+        "signature_move",
+    }
 )
 
 # Only these two follow an article the template already supplies ("a compact,
@@ -230,6 +281,10 @@ class Concept:
     creature: str
     shell_mechanic: str
     emerging_parts: str
+    # Defaulted for the same reason as the Turkish line, and because concepts
+    # stored before this slot existed are still re-rendered by /promptlar.
+    # render() substitutes FALLBACK_SIGNATURE_MOVE when it is empty.
+    signature_move: str = ""
     # What the person filming is told, in their own language. Defaulted because
     # a missing courtesy line must never cost a video: if the model skips it,
     # the concept is still complete and still ships.
@@ -308,6 +363,8 @@ def render(concept: Concept) -> PromptPair:
     """
     t2i_template, i2v_template = load_template()
     values = asdict(concept)
+    if not values["signature_move"]:
+        values["signature_move"] = FALLBACK_SIGNATURE_MOVE
 
     def fill(template: str, label: str) -> str:
         try:
@@ -416,7 +473,13 @@ def parse_concepts(raw: str) -> list[Concept]:
         if not isinstance(item, dict):
             raise RuntimeError(f"Concept {index} is not an object.")
         cleaned = {slot: _clean_slot(item.get(slot, ""), slot) for slot in _SLOTS}
-        missing = [slot for slot, value in cleaned.items() if not value]
+        # A missing or living gesture never costs the video: render() puts the
+        # mechanical fallback in its place.
+        move = cleaned["signature_move"]
+        if move and _LIVING.search(move):
+            logger.warning("Dropped a living-animal gesture for %r: %r", cleaned["creature"], move)
+            cleaned["signature_move"] = ""
+        missing = [slot for slot, value in cleaned.items() if not value and slot != "signature_move"]
         if missing:
             raise RuntimeError(f"Concept {index} is missing: {', '.join(missing)}")
         # Not run through _clean_slot: that strips articles and capitals to fit
