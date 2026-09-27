@@ -1059,7 +1059,9 @@ class TurkishLineTests(unittest.TestCase):
             shorts_prompts._TURKISH_INSTRUCTIONS,
             shorts_prompts._CONCEPT_INSTRUCTIONS,
         )
-        self.assertEqual(shorts_prompts.idea_version(), "730ac4e9c9e2")
+        # 730ac4e9c9e2 until the 27 September mechanical signature-move rule,
+        # which is meant to move it: the audit splits before/after on it.
+        self.assertEqual(shorts_prompts.idea_version(), "18ae880d0298")
 
 
 class BadgeTests(unittest.TestCase):
@@ -1419,3 +1421,85 @@ class IntakeIsolationTests(unittest.TestCase):
         shorts_pipeline._accept_incoming = lambda provider, root: []
         records = shorts_pipeline.process_inbox(object(), root=self.root)
         self.assertEqual(records, [{"creature": "moth"}])
+
+
+class SignatureMoveTests(unittest.TestCase):
+    """The finished toy's closing gesture must stay mechanical.
+
+    On 27 September a frogmouth told to "blink" and a salamander told to "take
+    one step" came out as real animals on a mechanical body; the cobra, whose
+    eyes "light up red", stayed a toy. Rewritten with machine verbs, both came
+    out right."""
+
+    _FIELDS = TurkishLineTests._JSON_FIELDS
+
+    def setUp(self):
+        import os
+
+        template = json.dumps({
+            "t2i": "A {shape}-shaped toy.",
+            "i2v": "The mechanical {creature} performs one short clockwork motion "
+                   "that imitates its species: {signature_move}. It stays a toy.",
+        })
+        previous = os.environ.get("PROMPT_TEMPLATE")
+        os.environ["PROMPT_TEMPLATE"] = template
+
+        def restore():
+            if previous is None:
+                os.environ.pop("PROMPT_TEMPLATE", None)
+            else:
+                os.environ["PROMPT_TEMPLATE"] = previous
+
+        self.addCleanup(restore)
+
+    def _parse(self, move):
+        payload = json.dumps([self._FIELDS | {"signature_move": move}])
+        return shorts_prompts.parse_concepts(payload)[0]
+
+    def test_a_mechanical_gesture_is_kept(self):
+        move = "Its amber glass eyes light up and its hinged beak plates snap shut with a click"
+        concept = self._parse(move)
+        self.assertEqual(concept.signature_move, "i" + move[1:])
+
+    def test_a_clockwork_step_is_still_mechanical(self):
+        move = "one front leg lifts on its hinge and sets down like a single clockwork step"
+        self.assertEqual(self._parse(move).signature_move, move)
+
+    def test_living_verbs_are_dropped(self):
+        for move in (
+            "it slowly blinks its amber eyes",
+            "it takes one small deliberate step forward",
+            "it briefly comes to life and looks around",
+            "its chest rises as it breathes",
+        ):
+            with self.subTest(move=move):
+                self.assertEqual(self._parse(move).signature_move, "")
+
+    def test_a_dropped_gesture_does_not_cost_the_video(self):
+        concept = self._parse("it blinks")
+        self.assertEqual(concept.creature, "short-beaked echidna")
+
+    def test_the_fallback_fills_an_empty_gesture(self):
+        """Concepts stored before the slot existed are still resent by
+        /promptlar; they must not render "its species: ."."""
+        pair = shorts_prompts.render(Concept(**self._FIELDS))
+        self.assertIn(shorts_prompts.FALLBACK_SIGNATURE_MOVE, pair.image_to_video)
+        self.assertNotIn("species: .", pair.image_to_video)
+
+    def test_a_stored_concept_without_the_slot_still_loads(self):
+        stored = dict(self._FIELDS)
+        self.assertNotIn("signature_move", stored)
+        self.assertEqual(Concept(**stored).signature_move, "")
+
+    def test_the_gesture_reaches_the_video_prompt(self):
+        move = "its jointed steel head pivots toward the camera with a small click"
+        pair = shorts_prompts.render(self._parse(move))
+        self.assertIn(f"its species: {move}. It stays a toy.", pair.image_to_video)
+
+    def test_the_fallback_is_itself_mechanical(self):
+        self.assertIsNone(shorts_prompts._LIVING.search(shorts_prompts.FALLBACK_SIGNATURE_MOVE))
+
+    def test_the_instructions_ask_for_it(self):
+        text = shorts_prompts._CONCEPT_INSTRUCTIONS
+        self.assertIn("signature_move", text)
+        self.assertIn("MECHANICAL SIGNATURE MOVE", text)
