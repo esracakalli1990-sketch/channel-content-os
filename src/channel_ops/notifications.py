@@ -65,8 +65,20 @@ def send_message(
         logger.info("Telegram message sent (message_id=%s)", result.get("result", {}).get("message_id"))
         return result
     except HTTPError as exc:
-        logger.error("Telegram API error: HTTP %d", exc.code)
-        raise RuntimeError(f"Telegram API returned HTTP {exc.code}") from exc
+        # Telegram says exactly what was wrong -- "message is too long",
+        # "can't parse entities: unsupported start tag" -- in the body. Logging
+        # only the status code threw that away, and a 400 on the prompt job had
+        # to be diagnosed by guesswork because of it.
+        detail = ""
+        try:
+            detail = json.loads(exc.read()).get("description", "")
+        except Exception:  # noqa: BLE001 - the status code is still worth having
+            pass
+        logger.error("Telegram API error: HTTP %d %s", exc.code, detail)
+        raise RuntimeError(
+            f"Telegram API returned HTTP {exc.code}"
+            + (f": {detail}" if detail else "")
+        ) from exc
     except URLError as exc:
         logger.error("Telegram connection error: %s", exc.reason)
         raise RuntimeError(f"Could not reach Telegram: {exc.reason}") from exc

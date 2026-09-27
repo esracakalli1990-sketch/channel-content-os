@@ -1564,3 +1564,120 @@ class InstagramTokenWarningTests(unittest.TestCase):
         runs and warn nobody -- which is exactly what happened."""
         from channel_ops import instagram_uploader
         self.assertGreater(instagram_uploader.TOKEN_WARNING_DAYS, 7)
+
+
+class PromptDeliveryTests(unittest.TestCase):
+    """A Telegram 400 on 27 September discarded a whole batch of ideas.
+
+    The send raised out of the loop before the pending file was written, so
+    every idea was lost -- including the one already on the operator's phone.
+    They would have filmed it and sent it back to a pipeline holding no
+    matching prompt."""
+
+    def _pairs(self, n=2):
+        from channel_ops.shorts_prompts import PromptPair
+        return [PromptPair(_concept(f"creature {i}"), "t2i", "i2v") for i in range(n)]
+
+    def _run(self, root, send):
+        from channel_ops import notifications, shorts_pipeline
+        original_send = notifications.send_message
+        original_gen = shorts_pipeline.generate_prompt_pairs
+        notifications.send_message = send
+        shorts_pipeline.generate_prompt_pairs = lambda *a, **k: self._pairs()
+        self.addCleanup(lambda: setattr(notifications, "send_message", original_send))
+        self.addCleanup(
+            lambda: setattr(shorts_pipeline, "generate_prompt_pairs", original_gen)
+        )
+        return shorts_pipeline.send_daily_prompts(None, count=2, root=root)
+
+    def test_ideas_are_recorded_even_when_telegram_refuses(self):
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "data").mkdir()
+
+            def send(text, **kw):
+                if "🧩" in text:
+                    raise RuntimeError("Telegram API returned HTTP 400: too long")
+                return {}
+
+            self._run(root, send)
+            pending = json.loads(
+                (root / "data" / "shorts_pending.json").read_text("utf-8")
+            )
+            self.assertEqual(len(pending), 2, "fikirler kuyrukta kalmalı")
+
+    def test_one_bad_message_does_not_stop_the_others(self):
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "data").mkdir()
+            seen = []
+
+            def send(text, **kw):
+                if "#1 " in text:
+                    raise RuntimeError("Telegram API returned HTTP 400")
+                seen.append(text)
+                return {}
+
+            self._run(root, send)
+            self.assertTrue(any("#2 " in t for t in seen), "ikinci fikir gitmeli")
+
+    def test_the_failure_is_reported_not_swallowed(self):
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "data").mkdir()
+            seen = []
+
+            def send(text, **kw):
+                if "🧩" in text:
+                    raise RuntimeError("Telegram API returned HTTP 400")
+                seen.append(text)
+                return {}
+
+            self._run(root, send)
+            self.assertTrue(any("gönderilemedi" in t for t in seen))
+
+
+class PromptMessageTests(unittest.TestCase):
+    """Escaping and length, the two ways Telegram rejects a message."""
+
+    def _pair(self, **concept_kw):
+        from channel_ops.shorts_prompts import Concept, PromptPair
+        base = dict(
+            shape="ribbed puck", material="brass", internal_detail="gears",
+            button="a button", button_short="the button", creature="scarab",
+            shell_mechanic="The shell opens", emerging_parts="Legs",
+        )
+        base.update(concept_kw)
+        return PromptPair(Concept(**base), "t2i text", "i2v text")
+
+    def test_ampersands_in_model_written_fields_are_escaped(self):
+        """One "&" in a material makes Telegram reject the whole message."""
+        message = shorts_pipeline._format_prompt_message(
+            1, self._pair(material="brass & walnut", creature="stag <beetle>")
+        )
+        self.assertIn("brass &amp; walnut", message)
+        self.assertIn("&lt;Beetle&gt;", message)
+        self.assertNotIn("& walnut", message)
+
+    def test_a_short_message_stays_one_piece(self):
+        parts = shorts_pipeline._split_prompt_message(1, self._pair())
+        self.assertEqual(len(parts), 1)
+
+    def test_an_oversized_message_is_split_at_the_prompt_boundary(self):
+        from channel_ops.shorts_prompts import PromptPair
+        pair = self._pair()
+        huge = PromptPair(pair.concept, "a" * 2500, "b" * 2500)
+        parts = shorts_pipeline._split_prompt_message(1, huge)
+        self.assertEqual(len(parts), 2)
+        for part in parts:
+            self.assertLessEqual(len(part), shorts_pipeline.TELEGRAM_LIMIT)
+        # Neither <pre> block may be cut in half: a halved prompt cannot be
+        # pasted into Flow and the HTML would not parse either.
+        for part in parts:
+            self.assertEqual(part.count("<pre>"), part.count("</pre>"))
+
+    def test_the_second_part_says_which_idea_it_belongs_to(self):
+        from channel_ops.shorts_prompts import PromptPair
+        pair = self._pair()
+        huge = PromptPair(pair.concept, "a" * 2500, "b" * 2500)
+        self.assertIn("#1", shorts_pipeline._split_prompt_message(1, huge)[1])

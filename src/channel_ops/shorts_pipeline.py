@@ -159,9 +159,12 @@ def _format_prompt_message(index: int, pair: PromptPair) -> str:
     # Absent on concepts made before the line existed, and on any the model
     # skipped it for -- in both cases the message simply goes out without it.
     turkish = f"🇹🇷 {_escape(concept.turkish)}\n" if concept.turkish else ""
+    # EVERY field is escaped, not just the prompts. The creature, shape and
+    # material are model-written too, and one "&" or "<" anywhere in them makes
+    # Telegram reject the whole message as unparseable HTML.
     return (
-        f"🧩 <b>#{index} — {concept.creature.title()}</b>\n"
-        f"<i>{concept.shape} · {concept.material}</i>\n"
+        f"🧩 <b>#{index} — {_escape(concept.creature.title())}</b>\n"
+        f"<i>{_escape(concept.shape)} · {_escape(concept.material)}</i>\n"
         f"{turkish}\n"
         f"<b>1) Görsel promptu (Text → Image)</b>\n"
         f"<pre>{_escape(pair.text_to_image)}</pre>\n"
@@ -169,6 +172,38 @@ def _format_prompt_message(index: int, pair: PromptPair) -> str:
         f"<pre>{_escape(pair.image_to_video)}</pre>\n"
         f"⚙️ Flow'da en-boy oranını <b>9:16</b> seç."
     )
+
+
+# Telegram rejects anything past this with HTTP 400. Messages currently run
+# about 3,250 characters, so roughly eighty per cent of the ceiling -- close
+# enough that one verbose prompt goes over, and a video prompt has already
+# reached 2,213 on its own.
+TELEGRAM_LIMIT = 4096
+
+
+def _split_prompt_message(index: int, pair: PromptPair) -> list[str]:
+    """The message, as one part if it fits and two if it does not.
+
+    Split at the boundary between the two prompts rather than by length: each
+    prompt sits in a <pre> block for tap-to-copy, and cutting one in half would
+    both break the HTML and hand over a prompt that cannot be pasted.
+    """
+    whole = _format_prompt_message(index, pair)
+    if len(whole) <= TELEGRAM_LIMIT:
+        return [whole]
+
+    concept = pair.concept
+    turkish = f"🇹🇷 {_escape(concept.turkish)}\n" if concept.turkish else ""
+    return [
+        f"🧩 <b>#{index} — {_escape(concept.creature.title())}</b>\n"
+        f"<i>{_escape(concept.shape)} · {_escape(concept.material)}</i>\n"
+        f"{turkish}\n"
+        f"<b>1) Görsel promptu (Text → Image)</b>\n"
+        f"<pre>{_escape(pair.text_to_image)}</pre>",
+        f"<b>2) Video promptu (Image → Video)</b> <i>(#{index})</i>\n"
+        f"<pre>{_escape(pair.image_to_video)}</pre>\n"
+        f"⚙️ Flow'da en-boy oranını <b>9:16</b> seç.",
+    ]
 
 
 def _escape(text: str) -> str:
@@ -237,8 +272,14 @@ def send_daily_prompts(
             f"<i>Hangisi olduğunu yazmak için başlığa numarayı ekle.</i>"
         )
 
+    # The record is written whatever Telegram does with the message. When a
+    # send raised out of this loop the file was never written at all, so a 400
+    # on one idea discarded every idea in the batch -- including ones already
+    # on the operator's phone, which they would film and send back to a
+    # pipeline holding no matching prompt. A recorded idea nobody sees just
+    # expires; a sent idea nobody recorded breaks the video.
+    failures: list[str] = []
     for index, pair in enumerate(pairs, start=1):
-        notifications.send_message(_format_prompt_message(index, pair))
         pending.append({
             "index": index,
             "batch": batch,
@@ -247,9 +288,29 @@ def send_daily_prompts(
             "text_to_image": pair.text_to_image,
             "image_to_video": pair.image_to_video,
         })
+        try:
+            for part in _split_prompt_message(index, pair):
+                notifications.send_message(part)
+        except RuntimeError as exc:
+            # One idea failing is not a reason to drop the rest of the batch.
+            logger.error("Could not send prompt #%d: %s", index, exc)
+            failures.append(f"#{index} {pair.concept.creature}: {exc}")
 
     _write_json(path, pending)
     logger.info("Sent %d prompt pair(s); %d now pending", len(pairs), len(pending))
+
+    if failures:
+        # Reported rather than raised: the batch is on disk and the ideas that
+        # did go out are usable. Raising here would mark the run failed and say
+        # nothing about which idea was lost.
+        detail = "\n".join(f"• {line}" for line in failures)
+        try:
+            notifications.send_message(
+                f"⚠️ <b>{len(failures)} fikir gönderilemedi</b>\n{_escape(detail)}\n\n"
+                "Fikirler kuyruğa yazıldı, kaybolmadı."
+            )
+        except RuntimeError:
+            logger.error("Could not report the failed prompts either")
     return pairs
 
 
