@@ -290,13 +290,37 @@ def thresholds(dump: dict, history: list[dict]) -> dict:
         record.get("youtube_video_id")
         for record in dump.get("long_form") or []
     }
+
+    # WHICH API THE SHORTS COUNT COMES FROM, and why it matters more than it
+    # looks. Analytics reports two to three days behind. On 28 September that
+    # made the threshold read 2,259,505 while Studio showed 3,006,257 -- a gap
+    # of 746,752, enough to hide that the three-million gate had already been
+    # passed. Reporting a passed threshold as three quarters done is not a
+    # rounding error, it is the wrong answer.
+    #
+    # The Data API's per-video viewCount is near real time, but it counts a
+    # video's whole life rather than a window. While the channel is younger
+    # than the window those are the same number, so it can be used directly.
+    # The day the channel turns ninety days old that stops being true and this
+    # silently falls back to Analytics, because a lifetime total would then
+    # overstate a ninety-day threshold -- the opposite error, and a worse one.
+    oldest = _oldest_publish(dump)
+    live_counting = (
+        oldest is not None
+        and (datetime.now(UTC) - oldest).days < SHORTS_VIEW_WINDOW_DAYS
+    )
+
     short_views_90d = 0
     long_minutes_90d = 0.0
     for vid, row in live.items():
-        seconds = (stats.get(vid) or {}).get("seconds", 0)
-        is_long = vid in long_ids or seconds > SHORT_MAX_SECONDS
-        if is_long:
+        data = stats.get(vid) or {}
+        seconds = data.get("seconds", 0)
+        if vid in long_ids or seconds > SHORT_MAX_SECONDS:
+            # Watch time has no Data API equivalent, so this stays on Analytics
+            # whatever the channel's age.
             long_minutes_90d += float(row.get("estimatedMinutesWatched") or 0)
+        elif live_counting:
+            short_views_90d += int(data.get("views") or 0)
         else:
             short_views_90d += int(row.get("views") or 0)
 
@@ -304,6 +328,15 @@ def thresholds(dump: dict, history: list[dict]) -> dict:
     watch_hours = long_minutes_90d / 60
 
     uploads_90d = _recent_uploads(dump)
+    # Videos published in the window but that Analytics has not reported on at
+    # all yet are missing from `live` entirely, so counting only what `live`
+    # holds drops the newest videos -- the ones carrying a surge.
+    if live_counting:
+        for vid, data in stats.items():
+            if vid in live or vid in long_ids:
+                continue
+            if data.get("seconds", 0) <= SHORT_MAX_SECONDS:
+                short_views_90d += int(data.get("views") or 0)
     # The Shorts total is summed from Analytics, which reports about two days
     # behind. At the rate this channel runs that is hundreds of thousands of
     # views missing, so the figure is a FLOOR, never the current value. It read
@@ -317,9 +350,16 @@ def thresholds(dump: dict, history: list[dict]) -> dict:
         # starts understating and the note has to change with it.
         "window_note": "izlenme saati 90 günlük pencereden; kanal 90 günden genç olduğu sürece = 12 ay",
         "shorts_floor_note": (
-            f"Shorts sayısı Analytics'ten geliyor ve {lag} gün geriden — "
-            "gerçek rakam bundan YÜKSEK. Studio'daki 90 günlük sayıyla karşılaştır."
-            if lag else ""
+            "Shorts sayısı Data API'den, yani neredeyse anlık. Kanal 90 günden "
+            "genç olduğu için her videonun ömür boyu izlenmesi = 90 günlük "
+            "izlenmesi."
+            if live_counting
+            else (
+                f"Shorts sayısı Analytics'ten geliyor ve {lag} gün geriden — "
+                "gerçek rakam bundan YÜKSEK. Studio'daki 90 günlük sayıyla "
+                "karşılaştır."
+                if lag else ""
+            )
         ),
         "uploads_90d": uploads_90d,
         # Lower tier first: it is the one that is actually near, and a
@@ -329,15 +369,33 @@ def thresholds(dump: dict, history: list[dict]) -> dict:
                                    EARLY_SUBSCRIBER_GOAL, history, "subscribers"),
         "early_watch_hours": _gate("İzlenme saati (alt kademe)", round(watch_hours, 1),
                                    EARLY_WATCH_HOUR_GOAL, history, "watch_hours"),
-        "early_shorts_views": _gate(f"{SHORTS_VIEW_WINDOW_DAYS} günlük Shorts ≥ (alt kademe)",
+        "early_shorts_views": _gate(
+            f"{SHORTS_VIEW_WINDOW_DAYS} günlük Shorts (alt kademe)"
+            if live_counting
+            else f"{SHORTS_VIEW_WINDOW_DAYS} günlük Shorts ≥ (alt kademe)",
                                     short_views_90d, EARLY_SHORTS_VIEW_GOAL,
                                     history, "shorts_views_90d"),
         "subscribers": _gate("Abone", subscribers, SUBSCRIBER_GOAL, history, "subscribers"),
         "watch_hours": _gate("İzlenme saati (uzun video)", round(watch_hours, 1),
                              WATCH_HOUR_GOAL, history, "watch_hours"),
-        "shorts_views": _gate(f"{SHORTS_VIEW_WINDOW_DAYS} günlük Shorts ≥",
+        "shorts_views": _gate(
+            f"{SHORTS_VIEW_WINDOW_DAYS} günlük Shorts"
+            if live_counting
+            else f"{SHORTS_VIEW_WINDOW_DAYS} günlük Shorts ≥",
                               short_views_90d, SHORTS_VIEW_GOAL, history, "shorts_views_90d"),
     }
+
+
+def _oldest_publish(dump: dict) -> datetime | None:
+    """When the channel's first video went out, or None if nothing has."""
+    stamps = []
+    for record in (dump.get("published") or []) + (dump.get("long_form") or []):
+        try:
+            when = datetime.fromisoformat(record.get("published_at", ""))
+        except (TypeError, ValueError):
+            continue
+        stamps.append(when if when.tzinfo else when.replace(tzinfo=UTC))
+    return min(stamps) if stamps else None
 
 
 def _recent_uploads(dump: dict) -> int:
