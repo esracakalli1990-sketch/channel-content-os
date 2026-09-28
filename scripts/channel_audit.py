@@ -12,7 +12,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
-from channel_ops.channel_data import collect, per_video  # noqa: E402
+from channel_ops.channel_data import collect, engaged_summary, per_video  # noqa: E402
 from channel_ops.config_loader import find_project_root  # noqa: E402
 
 
@@ -111,6 +111,8 @@ def _emit(dump: dict) -> None:
                 live.get("shares", "-"),
             )))
 
+    _emit_engaged(dump)
+
     sections = ["ctr", "daily", "traffic", "devices", "subs_status", "countries"]
     sections += sorted(
         name for name in (dump.get("analytics") or {}) if name.startswith("traffic_")
@@ -131,6 +133,43 @@ def _emit(dump: dict) -> None:
         print(f"{key}\t{value}")
     for key, value in (dump.get("errors") or {}).items():
         print(f"HATA {key}\t{value}")
+
+
+# Partner Programme thresholds for the Shorts path, counted in engaged views
+# over 90 days: the lower tier (fan funding) and the upper tier (ad revenue).
+SHORTS_THRESHOLDS = (("alt_kademe_3M", 3_000_000), ("ust_kademe_10M", 10_000_000))
+
+
+def _emit_engaged(dump: dict) -> None:
+    """Engaged views: the figure the Shorts thresholds are actually counted in."""
+    summary = engaged_summary(dump)
+    if summary is None:
+        return
+    print("\n### ETKILESIMLI_GORUNTULEME_90G")
+    print(f"gun\t{summary['days']}")
+    print(f"goruntuleme\t{summary['views']}")
+    print(f"etkilesimli\t{summary['engaged']}")
+    print(f"oran%\t{round(summary['ratio'] * 100, 1)}")
+    for name, target in SHORTS_THRESHOLDS:
+        print(f"{name}%\t{round(summary['engaged'] / target * 100, 1)}")
+
+    block = (dump.get("analytics") or {}).get("engaged_per_video") or {}
+    columns = block.get("columns") or []
+    if not block.get("rows") or "engagedViews" not in columns:
+        return
+    names = {
+        record.get("youtube_video_id"): record.get("creature", "")
+        for record in (dump.get("published") or [])
+    }
+    at = {name: columns.index(name) for name in ("video", "views", "engagedViews")}
+    print("\n### ETKILESIMLI_VIDEOLAR")
+    print("id\tyaratik\tgoruntuleme\tetkilesimli\toran%")
+    for row in block["rows"]:
+        views = int(row[at["views"]] or 0)
+        engaged = int(row[at["engagedViews"]] or 0)
+        ratio = round(engaged / views * 100, 1) if views else "-"
+        vid = row[at["video"]]
+        print(f"{vid}\t{names.get(vid, '-')}\t{views}\t{engaged}\t{ratio}")
 
 
 if __name__ == "__main__":

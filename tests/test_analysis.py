@@ -401,3 +401,23 @@ class RatesTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+def test_engaged_summary_sums_daily_rows():
+    from channel_ops.channel_data import engaged_summary
+
+    dump = {"analytics": {"engaged_daily": {
+        "columns": ["day", "views", "engagedViews"],
+        "rows": [["2026-09-01", 1000, 400], ["2026-09-02", 3000, 1600]],
+    }}}
+    summary = engaged_summary(dump)
+    assert summary == {"views": 4000, "engaged": 2000, "ratio": 0.5, "days": 2}
+
+
+def test_engaged_summary_is_none_when_not_measured():
+    from channel_ops.channel_data import engaged_summary
+
+    assert engaged_summary({"analytics": {}}) is None
+    assert engaged_summary({"analytics": {"engaged_daily": {
+        "columns": ["day", "views"], "rows": [["2026-09-01", 5]],
+    }}}) is None

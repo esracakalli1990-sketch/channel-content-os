@@ -252,6 +252,20 @@ def collect(root: Path | None = None) -> dict:
             dimensions="insightTrafficSourceDetail", metrics="views", days=28,
             sort="-views", max_results=15, filters="insightTrafficSourceType==EXT_URL",
         ),
+        # Since March 2025 a Shorts "view" counts every play and replay, but the
+        # Partner Programme thresholds count engaged views only. With looping
+        # clips the two differ by about half (Studio showed 795K eligible
+        # against ~1.66M views up to 23 Sep), so the threshold has to be read
+        # from engagedViews or every distance-to-threshold is inflated. Kept as
+        # separate queries so that if the metric is ever refused, only these
+        # two sections go missing and the rest of the report is untouched.
+        "engaged_daily": dict(
+            dimensions="day", metrics="views,engagedViews", days=90, sort="day",
+        ),
+        "engaged_per_video": dict(
+            dimensions="video", metrics="views,engagedViews", days=90,
+            sort="-views", max_results=200,
+        ),
     }
     for name, kwargs in queries.items():
         try:
@@ -292,3 +306,24 @@ def per_video(dump: dict) -> dict[str, dict]:
         record = dict(zip(columns, row))
         out[record.get("video")] = record
     return out
+
+
+def engaged_summary(dump: dict) -> dict | None:
+    """90-day views vs engaged views, summed from the daily engaged report.
+
+    None when the report is missing (the query failed or returned no rows), so
+    a caller cannot mistake "not measured" for "zero".
+    """
+    block = (dump.get("analytics") or {}).get("engaged_daily") or {}
+    columns = block.get("columns") or []
+    if not block.get("rows") or "engagedViews" not in columns:
+        return None
+    views_at, engaged_at = columns.index("views"), columns.index("engagedViews")
+    views = sum(int(row[views_at] or 0) for row in block["rows"])
+    engaged = sum(int(row[engaged_at] or 0) for row in block["rows"])
+    return {
+        "views": views,
+        "engaged": engaged,
+        "ratio": engaged / views if views else 0.0,
+        "days": len(block["rows"]),
+    }
