@@ -89,5 +89,18 @@
     "median_retention": 128.1,
     "dead_count": 9,
     "hit_count": 22
+  },
+  {
+    "at": "2026-09-28T14:12:36+00:00",
+    "subscribers": 1710,
+    "views": 2618818,
+    "videos": 128,
+    "watch_hours": 2.8,
+    "shorts_views_90d": 3108912,
+    "mature_count": 123,
+    "median_views": 2332,
+    "median_retention": 128.1,
+    "dead_count": 9,
+    "hit_count": 22
   }
 ]
