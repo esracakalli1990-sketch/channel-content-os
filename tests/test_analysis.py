@@ -14,7 +14,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 
 from channel_ops import channel_analysis as ca
-from channel_ops.channel_data import parse_duration
+from channel_ops.channel_data import engaged_summary, parse_duration
 
 NOW = datetime(2026, 9, 25, 12, 0, tzinfo=UTC)
 
@@ -399,25 +399,31 @@ class RatesTests(unittest.TestCase):
         self.assertIsNone(row["likes_per_1k"])
 
 
+class EngagedSummaryTests(unittest.TestCase):
+    """90-day views against engaged views, summed from the daily report.
+
+    These arrived as module-level functions, which unittest does not collect --
+    it gathers TestCase subclasses only, so they ran nowhere and the suite
+    count did not move when they landed. Dead tests are worse than absent ones
+    because they read as cover. Rewritten as methods so they actually run."""
+
+    def test_daily_rows_are_summed(self):
+        summary = engaged_summary({"analytics": {"engaged_daily": {
+            "columns": ["day", "views", "engagedViews"],
+            "rows": [["2026-09-01", 1000, 400], ["2026-09-02", 3000, 1600]],
+        }}})
+        self.assertEqual(
+            summary, {"views": 4000, "engaged": 2000, "ratio": 0.5, "days": 2}
+        )
+
+    def test_it_is_none_when_not_measured(self):
+        """None rather than zero: a caller must not read "not measured" as
+        "no engaged views", which would report every threshold untouched."""
+        self.assertIsNone(engaged_summary({"analytics": {}}))
+        self.assertIsNone(engaged_summary({"analytics": {"engaged_daily": {
+            "columns": ["day", "views"], "rows": [["2026-09-01", 5]],
+        }}}))
+
+
 if __name__ == "__main__":
     unittest.main()
-
-
-def test_engaged_summary_sums_daily_rows():
-    from channel_ops.channel_data import engaged_summary
-
-    dump = {"analytics": {"engaged_daily": {
-        "columns": ["day", "views", "engagedViews"],
-        "rows": [["2026-09-01", 1000, 400], ["2026-09-02", 3000, 1600]],
-    }}}
-    summary = engaged_summary(dump)
-    assert summary == {"views": 4000, "engaged": 2000, "ratio": 0.5, "days": 2}
-
-
-def test_engaged_summary_is_none_when_not_measured():
-    from channel_ops.channel_data import engaged_summary
-
-    assert engaged_summary({"analytics": {}}) is None
-    assert engaged_summary({"analytics": {"engaged_daily": {
-        "columns": ["day", "views"], "rows": [["2026-09-01", 5]],
-    }}}) is None
