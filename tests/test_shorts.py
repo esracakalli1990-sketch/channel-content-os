@@ -1681,3 +1681,51 @@ class PromptMessageTests(unittest.TestCase):
         pair = self._pair()
         huge = PromptPair(pair.concept, "a" * 2500, "b" * 2500)
         self.assertIn("#1", shorts_pipeline._split_prompt_message(1, huge)[1])
+
+
+class TemplateStampTests(unittest.TestCase):
+    """The fingerprint has to record the wording the video was MADE with.
+
+    It was written at publish, but a clip filmed today goes out tomorrow or
+    later, so a video made with the old prompt could be recorded under the new
+    fingerprint. One idea queued on 25 September was mislabelled exactly that
+    way. A before/after comparison built on that answers the wrong question."""
+
+    def test_the_stamp_is_written_when_the_idea_is(self):
+        from channel_ops import notifications, shorts_pipeline
+        from channel_ops.shorts_prompts import PromptPair
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "data").mkdir()
+            original_send = notifications.send_message
+            original_gen = shorts_pipeline.generate_prompt_pairs
+            notifications.send_message = lambda *a, **k: {}
+            shorts_pipeline.generate_prompt_pairs = (
+                lambda *a, **k: [PromptPair(_concept("kiwi"), "t", "v")]
+            )
+            self.addCleanup(
+                lambda: setattr(notifications, "send_message", original_send))
+            self.addCleanup(
+                lambda: setattr(shorts_pipeline, "generate_prompt_pairs", original_gen))
+            shorts_pipeline.send_daily_prompts(None, count=1, root=root)
+            entry = json.loads(
+                (root / "data" / "shorts_pending.json").read_text("utf-8")
+            )[0]
+            self.assertTrue(entry.get("template_version"))
+            self.assertTrue(entry.get("idea_version"))
+
+    def test_the_queue_carries_the_stamp_forward(self):
+        """Between the idea and the publish sits the queue. If the stamp stops
+        there it never reaches the record and nothing was fixed."""
+        source = (Path(__file__).parent.parent / "src" / "channel_ops"
+                  / "shorts_pipeline.py").read_text("utf-8")
+        queue_block = source[source.index('"caption": video.caption,'):]
+        queue_block = queue_block[:queue_block.index("}")]
+        self.assertIn("template_version", queue_block)
+        self.assertIn("idea_version", queue_block)
+
+    def test_the_publish_record_prefers_the_queued_stamp(self):
+        source = (Path(__file__).parent.parent / "src" / "channel_ops"
+                  / "shorts_pipeline.py").read_text("utf-8")
+        self.assertIn('item.get("template_version") or', source)
+        self.assertIn('item.get("idea_version") or', source)

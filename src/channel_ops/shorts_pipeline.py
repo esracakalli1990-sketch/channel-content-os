@@ -287,6 +287,15 @@ def send_daily_prompts(
             "concept": asdict(pair.concept),
             "text_to_image": pair.text_to_image,
             "image_to_video": pair.image_to_video,
+            # Stamped HERE, where the prompts are written, not at publish.
+            # A clip filmed today goes out tomorrow or later, so stamping at
+            # publish recorded whichever template happened to be current then
+            # and attributed the video to wording it was never made with. One
+            # idea queued on 25 September with the old prompt was recorded
+            # under the new fingerprint that way, which is enough to make a
+            # before/after comparison answer the wrong question.
+            "template_version": shorts_prompts.template_version(),
+            "idea_version": shorts_prompts.idea_version(),
         })
         try:
             for part in _split_prompt_message(index, pair):
@@ -608,6 +617,9 @@ def enqueue(video: telegram_inbox.IncomingVideo, pending: list[dict], root: Path
         "file_size": video.file_size,
         "caption": video.caption,
         "concept": entry["concept"],
+        # Carried through so the fingerprints survive to the publish record.
+        "template_version": entry.get("template_version", ""),
+        "idea_version": entry.get("idea_version", ""),
     }
     queue.append(item)
     _write_json(path, queue)
@@ -768,12 +780,16 @@ def _publish_queued(item: dict, provider: AIProvider, root: Path) -> dict:
         # Which wording produced this video. Template changes are tested by
         # comparing videos before and after, which is guesswork without a
         # marker on each record.
-        "template_version": shorts_prompts.template_version(),
+        # The stamp from when the prompts were written, falling back to the
+        # current one for clips queued before this was recorded.
+        "template_version": (
+            item.get("template_version") or shorts_prompts.template_version()
+        ),
         # And which wording chose the subject. Separate from the above because
         # they change independently: the 24 August subject rule left
         # template_version untouched, so nothing on the record distinguished the
         # videos it produced.
-        "idea_version": shorts_prompts.idea_version(),
+        "idea_version": item.get("idea_version") or shorts_prompts.idea_version(),
     }
     _record_published(record, root)
 
