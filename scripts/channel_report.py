@@ -96,6 +96,8 @@ def render(dump: dict, rows: list[dict], gates: dict, history: list[dict],
             add("  " + line)
         add("")
     add("  Gereken: 500 abone + 3 yükleme + (3.000 saat VEYA 3M Shorts)")
+    add("  Shorts eşiği ETKİLEŞİMLİ görüntülemeyle sayılıyor, ham görüntülemeyle")
+    add("  değil. Bu kanalda ham görüntüleme etkileşimlinin ~2,2 katı.")
     if gates.get("shorts_floor_note"):
         add(f"  ⓘ {gates['shorts_floor_note']}")
     add("")

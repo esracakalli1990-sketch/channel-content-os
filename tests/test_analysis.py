@@ -217,20 +217,6 @@ class ThresholdTests(unittest.TestCase):
                          gates["shorts_views"]["value"])
         self.assertAlmostEqual(gates["early_shorts_views"]["percent"], 58.27, places=1)
 
-    def test_a_lagging_shorts_figure_is_labelled_a_floor(self):
-        """It read 1,748,243 on a day Studio showed 2,054,924. The number was
-        right for its window; presenting it as the current total was not."""
-        dump = _dump([])
-        dump["analytics"]["daily"] = {
-            "columns": ["day", "views", "estimatedMinutesWatched",
-                        "subscribersGained", "subscribersLost"],
-            "rows": [["2026-09-20", 16852, 1587, 18, 5]],
-        }
-        gates = ca.thresholds(dump, [])
-        self.assertIn("gün geriden", gates["shorts_floor_note"])
-        self.assertIn("≥", gates["shorts_views"]["name"])
-        self.assertIn("≥", gates["early_shorts_views"]["name"])
-
     def test_uploads_inside_the_window_are_counted(self):
         records = [_record(f"v{i}", hours_ago=24 * i) for i in range(1, 5)]
         old_one = _record("old", hours_ago=24 * 120)
@@ -238,65 +224,9 @@ class ThresholdTests(unittest.TestCase):
         self.assertEqual(gates["uploads_90d"], 4)
 
 
-class LiveCountingTests(unittest.TestCase):
-    """Which API the Shorts threshold is counted from.
-
-    On 28 September the report read 2,259,505 while Studio showed 3,006,257.
-    The gap was Analytics' two-to-three day lag, and it was large enough to
-    hide that the three-million gate had already been passed. Reporting a
-    passed threshold as three quarters done is the wrong answer, not a
-    rounding error."""
-
-    def _dump_with(self, published_days_ago, data_views, analytics_views):
-        record = _record("v1", hours_ago=24 * published_days_ago)
-        stats = {"v1": {"views": data_views, "seconds": 9}}
-        live = [["v1", analytics_views, 100, 12, 130.0, 5, 50, 2, 1]]
-        return _dump([record], stats=stats, live_rows=live)
-
-    def test_a_young_channel_is_counted_from_the_near_live_figure(self):
-        gates = ca.thresholds(self._dump_with(60, 3_006_257, 2_259_505), [])
-        self.assertEqual(gates["early_shorts_views"]["value"], 3_006_257)
-
-    def test_an_old_channel_falls_back_to_the_windowed_figure(self):
-        """Past ninety days a lifetime total overstates a ninety-day
-        threshold -- the opposite error, and the worse one."""
-        gates = ca.thresholds(self._dump_with(200, 3_006_257, 2_259_505), [])
-        self.assertEqual(gates["early_shorts_views"]["value"], 2_259_505)
-
-    def test_a_video_analytics_has_not_reported_yet_still_counts(self):
-        """The newest videos are missing from the Analytics rows entirely, and
-        those are exactly the ones carrying a surge."""
-        records = [_record("old"), _record("brandnew", hours_ago=6)]
-        stats = {"old": {"views": 1000, "seconds": 9},
-                 "brandnew": {"views": 400_000, "seconds": 9}}
-        live = [["old", 1000, 100, 12, 130.0, 5, 50, 2, 1]]
-        gates = ca.thresholds(_dump(records, stats=stats, live_rows=live), [])
-        self.assertEqual(gates["early_shorts_views"]["value"], 401_000)
-
-    def test_watch_hours_stay_on_analytics_whatever_the_age(self):
-        """The Data API has no watch-time equivalent, so there is nothing to
-        switch to and switching anything here would invent a number."""
-        records = [_record("s1")]
-        long_form = [{"youtube_video_id": "L1",
-                      "published_at": _record("L1")["published_at"]}]
-        stats = {"s1": {"views": 500, "seconds": 9},
-                 "L1": {"views": 100, "seconds": 600}}
-        live = [["s1", 500, 60, 12, 130.0, 1, 5, 0, 0],
-                ["L1", 100, 300, 180, 30.0, 2, 5, 1, 0]]
-        gates = ca.thresholds(
-            _dump(records, stats=stats, live_rows=live, long_form=long_form), []
-        )
-        self.assertEqual(gates["watch_hours"]["value"], 5.0)
-
-    def test_both_tiers_read_the_same_numerator(self):
-        gates = ca.thresholds(self._dump_with(60, 3_006_257, 2_259_505), [])
-        self.assertEqual(gates["early_shorts_views"]["value"],
-                         gates["shorts_views"]["value"])
-
-    def test_the_note_says_which_source_was_used(self):
-        young = ca.thresholds(self._dump_with(60, 10, 5), [])
-        self.assertIn("Data API", young["shorts_floor_note"])
-        self.assertNotIn("≥", young["shorts_views"]["name"])
+# LiveCountingTests buradaydi. Shorts esigini Data API'nin ham
+# goruntulemesinden saymayi koruyordu; o sayi esigin saydigi sayi degil ve
+# esigi gecilmis gibi gosterdi. Yerine tests/test_thresholds.py var.
 
 
 class HitProfileTests(unittest.TestCase):

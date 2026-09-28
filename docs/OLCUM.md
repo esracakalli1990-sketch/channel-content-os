@@ -23,6 +23,20 @@ Rapor iki ayrı eşik takımı gösteriyor. Karıştırmamak önemli:
 | **veya** 90 günlük Shorts | 3.000.000 | 10.000.000 |
 | **Ne veriyor** | Hayran desteği (Super Thanks, üyelik, mağaza) | **Reklam geliri** |
 
+### Shorts eşiği hangi sayıyla ölçülüyor
+
+**Ham görüntülemeyle DEĞİL.** Mart 2025'ten beri Shorts'ta her oynatma ve
+tekrar "görüntüleme" sayılıyor, ama eşikler **etkileşimli görüntülemeyi**
+(engagedViews) sayıyor — eski, daha katı ölçüm.
+
+Bu kanalda oran **%44,8**: 88 günde 2.259.715 ham görüntülemeye karşılık
+1.012.547 etkileşimli. Studio'nun Gelir sekmesi de aynısını söylüyor —
+23 Eylül'de 795 B geçerli Shorts görüntülemesi.
+
+28 Eylül'de eşik ham görüntülemeyle hesaplandığı için **geçilmiş** diye
+raporlandı, oysa üçte birindeydi. Rapor artık etkileşimliyi kullanıyor; o veri
+yoksa rakamı basıyor ama yanına güvenilmez uyarısı koyuyor.
+
 Alt kademe reklam geliri **vermiyor**. Her kademede abone şartı ve izlenme
 şartı birlikte gerekiyor; alternatif olanlar sadece iki izlenme yolu.
 

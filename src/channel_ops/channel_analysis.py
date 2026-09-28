@@ -291,25 +291,20 @@ def thresholds(dump: dict, history: list[dict]) -> dict:
         for record in dump.get("long_form") or []
     }
 
-    # WHICH API THE SHORTS COUNT COMES FROM, and why it matters more than it
-    # looks. Analytics reports two to three days behind. On 28 September that
-    # made the threshold read 2,259,505 while Studio showed 3,006,257 -- a gap
-    # of 746,752, enough to hide that the three-million gate had already been
-    # passed. Reporting a passed threshold as three quarters done is not a
-    # rounding error, it is the wrong answer.
+    # WHICH NUMBER THE SHORTS GATE IS COUNTED IN. Since March 2025 a Shorts
+    # "view" counts every play and every replay, but the Partner Programme
+    # thresholds count ENGAGED views -- the older, stricter measure. On this
+    # channel the two differ by more than half: 2,259,715 views against
+    # 1,012,547 engaged over the same 88 days, a ratio of 44.8%. Studio's own
+    # eligibility page agrees, showing 795K eligible against the 3M target on
+    # 23 September while raw views stood near three million.
     #
-    # The Data API's per-video viewCount is near real time, but it counts a
-    # video's whole life rather than a window. While the channel is younger
-    # than the window those are the same number, so it can be used directly.
-    # The day the channel turns ninety days old that stops being true and this
-    # silently falls back to Analytics, because a lifetime total would then
-    # overstate a ninety-day threshold -- the opposite error, and a worse one.
-    oldest = _oldest_publish(dump)
-    live_counting = (
-        oldest is not None
-        and (datetime.now(UTC) - oldest).days < SHORTS_VIEW_WINDOW_DAYS
-    )
-
+    # Counting the gate in raw views therefore reported it as PASSED when it
+    # stood at about a third. That was told to the operator as fact. Views are
+    # the right number for judging whether a video did well and the wrong one
+    # for judging distance to monetisation, and nothing else in this file cares
+    # about the difference -- only this function does.
+    engaged = _engaged_by_video(dump)
     short_views_90d = 0
     long_minutes_90d = 0.0
     for vid, row in live.items():
@@ -317,30 +312,28 @@ def thresholds(dump: dict, history: list[dict]) -> dict:
         seconds = data.get("seconds", 0)
         if vid in long_ids or seconds > SHORT_MAX_SECONDS:
             # Watch time has no Data API equivalent, so this stays on Analytics
-            # whatever the channel's age.
+            # whatever else changes.
             long_minutes_90d += float(row.get("estimatedMinutesWatched") or 0)
-        elif live_counting:
-            short_views_90d += int(data.get("views") or 0)
+        elif engaged:
+            short_views_90d += int(engaged.get(vid, 0))
         else:
-            short_views_90d += int(row.get("views") or 0)
+            # No engaged figures in this dump. Rather than quietly substitute a
+            # number that runs about twice too high, the gate is still filled
+            # in but flagged, so the report says it cannot be trusted instead
+            # of stating a wrong threshold with a confident bar next to it.
+            short_views_90d += int(data.get("views") or 0)
 
     subscribers = int(totals.get("subscribers") or 0)
     watch_hours = long_minutes_90d / 60
 
     uploads_90d = _recent_uploads(dump)
-    # Videos published in the window but that Analytics has not reported on at
-    # all yet are missing from `live` entirely, so counting only what `live`
-    # holds drops the newest videos -- the ones carrying a surge.
-    if live_counting:
-        for vid, data in stats.items():
-            if vid in live or vid in long_ids:
-                continue
-            if data.get("seconds", 0) <= SHORT_MAX_SECONDS:
-                short_views_90d += int(data.get("views") or 0)
-    # The Shorts total is summed from Analytics, which reports about two days
-    # behind. At the rate this channel runs that is hundreds of thousands of
-    # views missing, so the figure is a FLOOR, never the current value. It read
-    # 1,748,243 on a day Studio showed 2,054,924 -- not a bug, a window.
+    # Videos Analytics has not reported on at all are missing from both reports,
+    # and they are the newest ones -- exactly the ones carrying a surge. Their
+    # raw view counts are NOT added in: raw and engaged views are different
+    # measures and summing them would produce a number that is neither. The
+    # total therefore runs slightly low for a day or two after a video lands,
+    # which the note below says out loud. Undercounting a threshold is the
+    # safe direction; overcounting one is how it got reported as passed.
     lag = _analytics_edge(dump, datetime.now(UTC))[1]
 
     return {
@@ -349,17 +342,16 @@ def thresholds(dump: dict, history: list[dict]) -> dict:
         # the same number today; the day that stops being true this figure
         # starts understating and the note has to change with it.
         "window_note": "izlenme saati 90 günlük pencereden; kanal 90 günden genç olduğu sürece = 12 ay",
+        "shorts_engaged": bool(engaged),
         "shorts_floor_note": (
-            "Shorts sayısı Data API'den, yani neredeyse anlık. Kanal 90 günden "
-            "genç olduğu için her videonun ömür boyu izlenmesi = 90 günlük "
-            "izlenmesi."
-            if live_counting
-            else (
-                f"Shorts sayısı Analytics'ten geliyor ve {lag} gün geriden — "
-                "gerçek rakam bundan YÜKSEK. Studio'daki 90 günlük sayıyla "
-                "karşılaştır."
-                if lag else ""
-            )
+            "Shorts sayısı ETKİLEŞİMLİ görüntülemeden (engagedViews); eşiğin "
+            f"saydığı rakam bu. Analytics {lag} gün geriden geliyor, yani "
+            "gerçek rakam biraz daha yüksek."
+            if engaged
+            else "⚠️ ETKİLEŞİMLİ GÖRÜNTÜLEME YOK — aşağıdaki Shorts rakamı ham "
+                 "görüntüleme ve eşiğin saydığı sayı DEĞİL. Bu kanalda ham "
+                 "görüntüleme etkileşimlinin ~2,2 katı, yani eşiğe kalan mesafe "
+                 "olduğundan çok daha yakın görünüyor. Güvenme."
         ),
         "uploads_90d": uploads_90d,
         # Lower tier first: it is the one that is actually near, and a
@@ -370,19 +362,39 @@ def thresholds(dump: dict, history: list[dict]) -> dict:
         "early_watch_hours": _gate("İzlenme saati (alt kademe)", round(watch_hours, 1),
                                    EARLY_WATCH_HOUR_GOAL, history, "watch_hours"),
         "early_shorts_views": _gate(
-            f"{SHORTS_VIEW_WINDOW_DAYS} günlük Shorts (alt kademe)"
-            if live_counting
-            else f"{SHORTS_VIEW_WINDOW_DAYS} günlük Shorts ≥ (alt kademe)",
+            f"{SHORTS_VIEW_WINDOW_DAYS} günlük etkileşimli Shorts (alt kademe)"
+            if engaged
+            else f"{SHORTS_VIEW_WINDOW_DAYS} günlük Shorts ⚠️ham (alt kademe)",
                                     short_views_90d, EARLY_SHORTS_VIEW_GOAL,
                                     history, "shorts_views_90d"),
         "subscribers": _gate("Abone", subscribers, SUBSCRIBER_GOAL, history, "subscribers"),
         "watch_hours": _gate("İzlenme saati (uzun video)", round(watch_hours, 1),
                              WATCH_HOUR_GOAL, history, "watch_hours"),
         "shorts_views": _gate(
-            f"{SHORTS_VIEW_WINDOW_DAYS} günlük Shorts"
-            if live_counting
-            else f"{SHORTS_VIEW_WINDOW_DAYS} günlük Shorts ≥",
+            f"{SHORTS_VIEW_WINDOW_DAYS} günlük etkileşimli Shorts"
+            if engaged
+            else f"{SHORTS_VIEW_WINDOW_DAYS} günlük Shorts ⚠️ham",
                               short_views_90d, SHORTS_VIEW_GOAL, history, "shorts_views_90d"),
+    }
+
+
+def _engaged_by_video(dump: dict) -> dict[str, int]:
+    """Engaged views per video, or {} when the report is not in this dump.
+
+    Empty is the honest answer for "not measured" -- a caller that treats it
+    as zero would report every threshold as untouched, which is at least
+    obviously wrong rather than quietly wrong.
+    """
+    block = (dump.get("analytics") or {}).get("engaged_per_video") or {}
+    columns = block.get("columns") or []
+    if not block.get("rows") or "engagedViews" not in columns:
+        return {}
+    video_at = columns.index("video")
+    engaged_at = columns.index("engagedViews")
+    return {
+        row[video_at]: int(row[engaged_at] or 0)
+        for row in block["rows"]
+        if row[video_at]
     }
 
 
