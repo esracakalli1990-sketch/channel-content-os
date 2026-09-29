@@ -36,5 +36,26 @@
       "signature_move": "its tiered crest plates spread open like a radial fan on a tiny ratchet, and its long needle beak dips downward twice on its neck pivot with a crisp mechanical click",
       "turkish": "İbibik (yelpaze ibikli, uzun kavisli gagalı kuş) — dilimli deltoid tonoz, fırçalanmış pembe altın ve abanoz kaplama"
     }
+  },
+  {
+    "queued_at": "2026-09-29T01:22:03+00:00",
+    "publish_at": "2026-09-30T17:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIDXmq7EriNFHQfWA_k34U50ja1o640AALEHwACLDXZUb9ZatPo6_AaPQQ",
+    "file_size": 2702803,
+    "caption": "1",
+    "concept": {
+      "shape": "ribbed globular spool",
+      "material": "patinated bronze and blued steel",
+      "internal_detail": "interlocking differential gears and miniature brass escapement wheels",
+      "button": "a small spring-loaded brass pin set flush into the base",
+      "button_short": "the small spring-loaded brass pin set flush into the base",
+      "creature": "baleen whale",
+      "shell_mechanic": "The ribbed bronze casing halves separate along their central meridian and swing outward on dual internal hinges",
+      "emerging_parts": "A broad fluted tail fluke and two articulated pectoral fins",
+      "signature_move": "its broad tail fluke lifts on its hinge and arcs downward with a sharp metallic clack, and its hinged lower jaw plate drops open on its pivot and snaps shut again",
+      "turkish": "Balina (denizde yasayan buyuk memeli) — ribbed globular spool, patinated bronze and blued steel"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
   }
 ]
