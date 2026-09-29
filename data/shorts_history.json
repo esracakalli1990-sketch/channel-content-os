@@ -135,7 +135,9 @@
     "tawny frogmouth",
     "fire salamander",
     "coelacanth",
-    "eurasian hoopoe"
+    "eurasian hoopoe",
+    "baleen whale",
+    "marine turtle"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -224,13 +226,11 @@
     "thick biconvex lens",
     "bowed quadrilateral plate",
     "broad bilobed plaque",
-    "ribbed globular spool",
     "cupped elliptical pod",
     "beveled ovate monocoque",
     "chamfered square cuboid",
     "stepped pyramidal spire",
     "ribbed drop pod",
-    "creased lozenge tablet",
     "keeled lancet bar",
     "ribbed cylindrical pod",
     "faceted biconical spindle",
@@ -243,6 +243,8 @@
     "knotty tapered stump",
     "curved sigmoid ingot",
     "corrugated navicular pod",
-    "scalloped deltoid vault"
+    "scalloped deltoid vault",
+    "ribbed globular spool",
+    "creased lozenge tablet"
   ]
 }
