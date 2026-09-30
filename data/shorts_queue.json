@@ -1,26 +1,5 @@
 [
   {
-    "queued_at": "2026-09-29T01:26:06+00:00",
-    "publish_at": "2026-09-30T23:00:00+00:00",
-    "file_id": "BQACAgQAAxkBAAIDYGq7E1u_dOqUfyJfa2pH9vGxfPHdAALFHwACLDXZUaOfX4yO5ZeiPQQ",
-    "file_size": 3527513,
-    "caption": "2",
-    "concept": {
-      "shape": "creased lozenge tablet",
-      "material": "hammered copper and blackened iron",
-      "internal_detail": "intermeshing cogwheels and miniature coiled balance springs",
-      "button": "a recessed iron push-plate on the underside",
-      "button_short": "the recessed iron push-plate on the underside",
-      "creature": "marine turtle",
-      "shell_mechanic": "The heavy copper casing top lifts upward on a rear hinge while the bottom plate drops away",
-      "emerging_parts": "Four jointed flipper limbs and a small retracted head block",
-      "signature_move": "its front flippers rotate forward together on their shoulder pivots in a single jerky stroke, and its head block nods once on its neck pin",
-      "turkish": "Deniz kaplumbagasi (kabuklu surungen) — creased lozenge tablet, hammered copper and blackened iron"
-    },
-    "template_version": "22b0547924d3",
-    "idea_version": "18ae880d0298"
-  },
-  {
     "queued_at": "2026-09-30T06:32:12+00:00",
     "publish_at": "2026-10-01T17:00:00+00:00",
     "file_id": "BQACAgQAAxkBAAIDamq8rI-6BSabVC_23DMSg9N_PEL0AAIrIAACLDXpUVzJHeKhaHEbPQQ",
