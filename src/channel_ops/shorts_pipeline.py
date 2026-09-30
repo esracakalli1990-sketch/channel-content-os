@@ -308,6 +308,26 @@ def send_daily_prompts(
     _write_json(path, pending)
     logger.info("Sent %d prompt pair(s); %d now pending", len(pairs), len(pending))
 
+    # Asking for two and delivering one is not a failure the job can see: the
+    # concepts that came back were all repeats of the 139 creatures already
+    # used, the duplicate filter dropped them, and the run exited successfully
+    # having sent half of what it was asked for. On 29 September that happened
+    # and the only reason anyone noticed was the operator counting the messages
+    # on their phone. Supply is deep enough that one short night costs nothing;
+    # a run of them ending in zero ideas would, and silence is how that arrives
+    # without warning.
+    if len(pairs) < count:
+        try:
+            notifications.send_message(
+                f"ℹ️ <b>{count} fikir istendi, {len(pairs)} üretildi.</b>\n"
+                "Gemini'nin önerdiği diğerleri daha önce kullanılmış "
+                "yaratıklardı ve elendi. Yayın için sorun değil — "
+                "kuyruk doluysa etkisi yok. Üst üste tekrarlarsa "
+                "konu havuzu daralıyor demektir."
+            )
+        except RuntimeError:
+            logger.error("Could not report the short batch")
+
     if failures:
         # Reported rather than raised: the batch is on disk and the ideas that
         # did go out are usable. Raising here would mark the run failed and say

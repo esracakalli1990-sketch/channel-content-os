@@ -1729,3 +1729,53 @@ class TemplateStampTests(unittest.TestCase):
                   / "shorts_pipeline.py").read_text("utf-8")
         self.assertIn('item.get("template_version") or', source)
         self.assertIn('item.get("idea_version") or', source)
+
+
+class ShortBatchTests(unittest.TestCase):
+    """Asking for two and delivering one has to be visible.
+
+    On 29 September every concept Gemini returned repeated one of the 139
+    creatures already used. The filter dropped them, the run exited
+    successfully having sent half what it was asked for, and nothing said so --
+    the operator noticed by counting messages on their phone. One short night
+    costs nothing; a run of them ending in zero ideas would."""
+
+    def _run(self, root, produced, asked):
+        from channel_ops import notifications, shorts_pipeline
+        from channel_ops.shorts_prompts import PromptPair
+        seen = []
+        original_send = notifications.send_message
+        original_gen = shorts_pipeline.generate_prompt_pairs
+        notifications.send_message = lambda text, **kw: seen.append(text) or {}
+        shorts_pipeline.generate_prompt_pairs = lambda *a, **k: [
+            PromptPair(_concept(f"c{i}"), "t", "v") for i in range(produced)
+        ]
+        self.addCleanup(lambda: setattr(notifications, "send_message", original_send))
+        self.addCleanup(
+            lambda: setattr(shorts_pipeline, "generate_prompt_pairs", original_gen))
+        shorts_pipeline.send_daily_prompts(None, count=asked, root=root)
+        return seen
+
+    def test_a_short_batch_is_announced(self):
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "data").mkdir()
+            seen = self._run(root, produced=1, asked=2)
+            self.assertTrue(any("2 fikir istendi, 1 üretildi" in t for t in seen))
+
+    def test_a_full_batch_says_nothing_extra(self):
+        """A notice that fires every night is a notice nobody reads."""
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "data").mkdir()
+            seen = self._run(root, produced=2, asked=2)
+            self.assertFalse(any("istendi" in t for t in seen))
+
+    def test_the_ideas_that_did_arrive_are_still_recorded(self):
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "data").mkdir()
+            self._run(root, produced=1, asked=2)
+            pending = json.loads(
+                (root / "data" / "shorts_pending.json").read_text("utf-8"))
+            self.assertEqual(len(pending), 1)
