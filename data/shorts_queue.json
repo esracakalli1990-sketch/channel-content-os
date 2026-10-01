@@ -1,26 +1,5 @@
 [
   {
-    "queued_at": "2026-10-01T01:20:45+00:00",
-    "publish_at": "2026-10-01T23:00:00+00:00",
-    "file_id": "BQACAgQAAxkBAAIDdWq9tQcxNFeAAAHqKF3Y9_SCMiWKkwACMCgAAtJ56VGXQKau1Mg6ej0E",
-    "file_size": 3052160,
-    "caption": "1",
-    "concept": {
-      "shape": "fluted conical cap",
-      "material": "oxidized silver and white enamel",
-      "internal_detail": "concentric clockwork escapements and oscillating balance wheels",
-      "button": "a tiny raised silver stud near the rim",
-      "button_short": "the tiny raised silver stud",
-      "creature": "jellyfish",
-      "shell_mechanic": "The fluted silver cap flexes upward and its segmented lower margin unfurls outward in a circular ring",
-      "emerging_parts": "A cluster of fine spring-steel tentacles and a central pulsating bell mechanism",
-      "signature_move": "its silver bell pulses outward once on its internal linkages and its fine wire tentacles sway slightly on their pivots",
-      "turkish": "Denizanasi (Denizde yasayan, seffaf ve somseki benzeri canli) — oluklu konik baslik, oksitlenmis gumus ve beyaz emaye"
-    },
-    "template_version": "22b0547924d3",
-    "idea_version": "18ae880d0298"
-  },
-  {
     "queued_at": "2026-10-01T01:22:48+00:00",
     "publish_at": "2026-10-02T17:00:00+00:00",
     "file_id": "BQACAgQAAxkBAAIDd2q9tXcjyBBXkzaG4RV7E-EgQ2QAAzEoAALSeelRQc8fB7UVDEQ9BA",
