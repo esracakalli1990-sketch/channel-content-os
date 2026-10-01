@@ -138,7 +138,9 @@
     "eurasian hoopoe",
     "baleen whale",
     "marine turtle",
-    "bighorn sheep"
+    "bighorn sheep",
+    "jellyfish",
+    "pocket watch"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -247,6 +249,8 @@
     "scalloped deltoid vault",
     "ribbed globular spool",
     "creased lozenge tablet",
-    "grooved rhombic cassette"
+    "grooved rhombic cassette",
+    "fluted conical cap",
+    "grooved cylinder"
   ]
 }
