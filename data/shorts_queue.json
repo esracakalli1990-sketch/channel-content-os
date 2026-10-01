@@ -1,26 +1,5 @@
 [
   {
-    "queued_at": "2026-09-30T06:32:12+00:00",
-    "publish_at": "2026-10-01T17:00:00+00:00",
-    "file_id": "BQACAgQAAxkBAAIDamq8rI-6BSabVC_23DMSg9N_PEL0AAIrIAACLDXpUVzJHeKhaHEbPQQ",
-    "file_size": 3261708,
-    "caption": "1",
-    "concept": {
-      "shape": "grooved rhombic cassette",
-      "material": "patinated bronze and brushed nickel",
-      "internal_detail": "interlocking brass levers and delicate gear clusters",
-      "button": "a small spring-loaded brass pin protruding from the rear edge",
-      "button_short": "the small spring-loaded brass pin at the rear edge",
-      "creature": "bighorn sheep",
-      "shell_mechanic": "The rhombic bronze cassette splits along its central seam and the two heavy side plates swing outward on pivot hinges",
-      "emerging_parts": "Four articulated legs and a curled-horn head",
-      "signature_move": "its ribbed metal horns pivot forward on their hinges with a sharp click and its front leg lifts on its pivot and sets down again like a single clockwork step",
-      "turkish": "Dag kocu (daglarda yasayan, buyuk kivrimli boynuzlu memeli) — oluklu eskenar dortgen kaset, patina bronz ve fircalanmis nikel"
-    },
-    "template_version": "22b0547924d3",
-    "idea_version": "18ae880d0298"
-  },
-  {
     "queued_at": "2026-10-01T01:20:45+00:00",
     "publish_at": "2026-10-01T23:00:00+00:00",
     "file_id": "BQACAgQAAxkBAAIDdWq9tQcxNFeAAAHqKF3Y9_SCMiWKkwACMCgAAtJ56VGXQKau1Mg6ej0E",
