@@ -142,7 +142,9 @@
     "jellyfish",
     "pocket watch",
     "common snipe",
-    "horned guan"
+    "horned guan",
+    "spectacled caiman",
+    "yellow boxfish"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -255,6 +257,8 @@
     "fluted conical cap",
     "grooved cylinder",
     "ribbed pear",
-    "stepped triangular pyramid"
+    "stepped triangular pyramid",
+    "arched trapezoidal hull",
+    "tapered trigonal block"
   ]
 }
