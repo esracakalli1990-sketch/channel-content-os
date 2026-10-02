@@ -149,6 +149,39 @@ def mann_whitney_p(first: list[float], second: list[float]) -> float:
     return 2 * (1 - 0.5 * (1 + math.erf(z / math.sqrt(2))))
 
 
+def apply_holm(results: list[dict]) -> list[dict]:
+    """Correct a family of comparisons for having asked many questions.
+
+    Each report runs about sixteen rank tests. At p<0.05 one of them comes
+    back "significant" on noise alone roughly every other report, and on
+    28 September one did: "hitler daha yüksek tutundurur" passed at p=0.049,
+    then failed the following week. A threshold meant for one question cannot
+    be reused sixteen times without being tightened.
+
+    Holm-Bonferroni rather than plain Bonferroni: it is just as safe against
+    false positives and throws away less power, which matters when a real
+    effect here is worth acting on.
+
+    Both p-values are kept. The raw one says what the data did; the adjusted
+    one says whether to believe it. Dropping the raw value would hide how
+    close a call was.
+    """
+    testable = [r for r in results if r.get("p") is not None]
+    for rank, result in enumerate(sorted(testable, key=lambda r: r["p"])):
+        # Holm: the k-th smallest p is compared against alpha/(m-k).
+        adjusted = min(1.0, result["p"] * (len(testable) - rank))
+        result["p_adjusted"] = round(adjusted, 4)
+        result["tests_in_family"] = len(testable)
+        if adjusted >= SIGNIFICANCE and "daha iyi" in result.get("verdict", ""):
+            result["verdict"] = (
+                f"fark yok (ham p={result['p']:.3f} ama {len(testable)} testin "
+                f"arasında düzeltilince p={adjusted:.3f})"
+            )
+        elif adjusted < SIGNIFICANCE:
+            result["verdict"] += f" · düzeltilmiş p={adjusted:.3f}"
+    return results
+
+
 def compare(label_a: str, values_a: list[float], label_b: str, values_b: list[float]) -> dict:
     """One honest verdict about whether two groups differ."""
     n_a, n_b = len(values_a), len(values_b)
@@ -539,8 +572,41 @@ def cohorts(rows: list[dict], metric: str = "views") -> list[dict]:
         result["metric"] = metric
         if key == "kind":
             result["method"] = "tür ayrımı anahtar kelimeyle yapıldı, YouTube vermiyor"
+        if _is_time_split(mature, key, label_a, label_b):
+            # A template or an instruction set is used for a stretch of days
+            # and then replaced, so its group is a slice of time as much as a
+            # slice of content. This channel went from six thousand views a day
+            # to four hundred thousand inside three weeks; against that, any
+            # later group wins whatever it contains. The comparison is still
+            # printed -- hiding it would be worse -- but it cannot settle
+            # anything on its own.
+            result["confounded"] = (
+                "gruplar zamanda ayrık — kanal ivmesiyle karışık, "
+                "tek başına karar için kullanma"
+            )
         out.append(result)
     return out
+
+
+def _is_time_split(rows: list[dict], key: str, label_a: str, label_b: str) -> bool:
+    """Whether the two groups occupy separate stretches of the calendar.
+
+    Overlapping dates mean the two were running side by side and the
+    comparison is about them. Disjoint dates mean it is also about everything
+    else that changed in between.
+    """
+    def span(label):
+        dates = sorted(
+            row["published_at"] for row in rows
+            if row[key] == label and row.get("published_at")
+        )
+        return (dates[0], dates[-1]) if dates else None
+
+    first, second = span(label_a), span(label_b)
+    if not first or not second:
+        return False
+    early, late = sorted((first, second))
+    return early[1] < late[0]
 
 
 def hit_profile(rows: list[dict]) -> dict:

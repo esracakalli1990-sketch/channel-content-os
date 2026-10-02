@@ -44,19 +44,58 @@ def _gate_lines(gate: dict) -> list[str]:
     return [head, detail]
 
 
+# A week, give or take: snapshots do not land on an exact anniversary, and
+# insisting on one would leave the column empty most weeks.
+WEEK_DAYS = 7
+WEEK_TOLERANCE_DAYS = 2
+
+
+def _week_ago(history: list[dict], key: str) -> tuple[dict | None, float]:
+    """The snapshot closest to a week back, and how many days back it is.
+
+    Comparing against the PREVIOUS snapshot made the heading a lie: two runs
+    on the same afternoon reported thirteen hours of change as "bu hafta",
+    which on 2 October read as +90 subscribers for a week in which the real
+    figure was nearly a thousand. The nearest measurement to seven days ago is
+    what the heading promises, and when the record does not reach back that
+    far the age is printed rather than quietly substituted.
+    """
+    now = datetime.now(UTC)
+    usable = []
+    for snapshot in history:
+        if snapshot.get(key) is None:
+            continue
+        try:
+            when = datetime.fromisoformat(snapshot["at"])
+        except (KeyError, ValueError):
+            continue
+        if when.tzinfo is None:
+            when = when.replace(tzinfo=UTC)
+        usable.append(((now - when).total_seconds() / 86400, snapshot))
+    if not usable:
+        return None, 0.0
+    # Closest to a week old, not merely the oldest: the record now reaches
+    # back further than a week and the oldest row would drift out of meaning.
+    age, snapshot = min(usable, key=lambda pair: abs(pair[0] - WEEK_DAYS))
+    return snapshot, age
+
+
 def _delta(history: list[dict], key: str, current) -> str:
-    """How this figure moved since the previous measurement."""
-    previous = [s for s in history if s.get(key) is not None]
-    if not previous or current is None:
+    """How this figure moved over roughly the last week."""
+    snapshot, age = _week_ago(history, key)
+    if snapshot is None or current is None:
         return ""
-    last = previous[-1][key]
     try:
-        change = float(current) - float(last)
+        change = float(current) - float(snapshot[key])
     except (TypeError, ValueError):
         return ""
+    # The window is named whenever it is not the week the heading claims, so
+    # a short record never passes itself off as a weekly comparison.
+    window = "" if abs(age - WEEK_DAYS) <= WEEK_TOLERANCE_DAYS else f", {age:.1f} gün"
     if abs(change) < 0.05:
-        return "  (değişmedi)"
-    return f"  ({'+' if change > 0 else ''}{_thousands(round(change, 1))})"
+        return f"  (değişmedi{window})"
+    sign = "+" if change > 0 else ""
+    return f"  ({sign}{_thousands(round(change, 1))}{window})"
 
 
 def render(dump: dict, rows: list[dict], gates: dict, history: list[dict],
@@ -123,12 +162,29 @@ def render(dump: dict, rows: list[dict], gates: dict, history: list[dict],
                            ("Ölü video", "dead_count"), ("Hit", "hit_count")):
             add(f"  {label}: {_thousands(snap[key])}{_delta(history, key, snap[key])}")
 
+    # Every test in the report is one family. They are gathered before any is
+    # printed so the correction sees all of them: adjusting each group of three
+    # separately would leave the same loophole in smaller pieces.
+    groups = [
+        (title, ca.cohorts(rows, metric))
+        for metric, title in (("views", "İzlenme"),
+                              ("retention", "İzlenme yüzdesi"),
+                              ("subs_per_1k", "Bin izlenme başına abone"))
+    ]
+    band = ca.retention_band(rows)
+    every = [result for _, results in groups for result in results] + [band]
+    ca.apply_holm(every)
+    family = next((r.get("tests_in_family") for r in every
+                   if r.get("tests_in_family")), 0)
+
     add("\n### 3. NE İŞE YARIYOR")
     add("Her satır bir sıra testinden geçti. 'Fark yok' gerçek bir cevaptır.")
-    for metric, title in (("views", "İzlenme"), ("retention", "İzlenme yüzdesi"),
-                          ("subs_per_1k", "Bin izlenme başına abone")):
+    if family:
+        add(f"Bu raporda {family} test var. Tek bir testin eşiği {family} kez")
+        add("kullanılamaz — p değerleri Holm ile düzeltildi. Ham p da yazılı:")
+        add("ham p ne olduğunu, düzeltilmiş p inanılıp inanılmayacağını söyler.")
+    for title, results in groups:
         add(f"\n  — {title} —")
-        results = ca.cohorts(rows, metric)
         if not results:
             add("    (karşılaştırılacak grup yok)")
         for result in results:
@@ -138,8 +194,9 @@ def render(dump: dict, rows: list[dict], gates: dict, history: list[dict],
             add(f"      → {result['verdict']}")
             if result.get("method"):
                 add(f"      ! {result['method']}")
+            if result.get("confounded"):
+                add(f"      ⚠ {result['confounded']}")
 
-    band = ca.retention_band(rows)
     add(f"\n  — Hitlerin izlenme yüzdesi —")
     add(f"    hit (n={band['n_a']}, med={band['median_a']}) vs "
         f"diğer (n={band['n_b']}, med={band['median_b']})")
