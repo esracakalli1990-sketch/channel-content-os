@@ -19,5 +19,26 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "18ae880d0298"
+  },
+  {
+    "queued_at": "2026-10-02T17:17:34+00:00",
+    "publish_at": "2026-10-03T17:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIDimq_5vJX3CJCEbRhI3kpdN8wE7kAA7UkAAKOQQABUqgduvNB2U7KPQQ",
+    "file_size": 3079442,
+    "caption": "2",
+    "concept": {
+      "shape": "stepped triangular pyramid",
+      "material": "hammered copper and oxidized iron plates",
+      "internal_detail": "dense network of tiny rotating cams and linkage rods",
+      "button": "a small projecting brass lever on the lowest tier",
+      "button_short": "the small projecting brass lever on the lowest tier",
+      "creature": "horned guan",
+      "shell_mechanic": "The layered triangular plates slide outward on hidden guide tracks and fan apart like overlapping leaves",
+      "emerging_parts": "A jointed crest spike, two slender hinged legs, and folded wing membranes",
+      "signature_move": "its wire crest rod tilts forward on its pivot pin with a sharp click and its metal beak plates open and close once",
+      "turkish": "Hoco (agaclarda yasayan, tepelikli kus) — kademeli ucgen piramit, dovme bakir ve oksitlenmis demir plakalar"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
   }
 ]
