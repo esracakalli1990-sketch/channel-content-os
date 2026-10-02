@@ -134,3 +134,63 @@ class EngagedLookupTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class MeasureChangeTests(unittest.TestCase):
+    """A rate must not be computed across a change of ruler.
+
+    On 28 September the Shorts gate moved from raw views to engaged views and
+    the recorded figure dropped from 3,108,912 to 1,012,415 -- same channel,
+    different measure. The rate calculation compared the two, concluded the
+    threshold was going backwards, and printed "artmıyor -- bu hızla
+    ulaşılamaz" on a figure that had risen 64% in four days."""
+
+    def _history(self, rows):
+        return [
+            {"at": (NOW - timedelta(days=days)).isoformat(),
+             "shorts_views_90d": value, **({"shorts_measure": measure}
+                                           if measure else {})}
+            for days, value, measure in rows
+        ]
+
+    def test_rows_counted_the_other_way_are_ignored(self):
+        history = self._history([
+            (6, 3_108_912, "views"),      # eski olcu, kullanilmamali
+            (4, 1_012_415, "engaged"),
+        ])
+        rate = ca._rate_per_day(history, "shorts_views_90d", 1_656_383,
+                                now=NOW, measure="engaged")
+        self.assertAlmostEqual(rate, (1_656_383 - 1_012_415) / 4, delta=1)
+
+    def test_unlabelled_rows_are_ignored_too(self):
+        """Unlabelled means unknown, not "same as now". Every row written
+        before the label existed is from the old measure."""
+        history = self._history([(4, 2_259_505, None)])
+        self.assertIsNone(
+            ca._rate_per_day(history, "shorts_views_90d", 1_656_383,
+                             now=NOW, measure="engaged")
+        )
+
+    def test_without_a_measure_every_row_still_counts(self):
+        """Subscribers and watch hours never changed ruler, so they must not
+        be filtered by a label they do not carry."""
+        history = self._history([(4, 500, None)])
+        rate = ca._rate_per_day(history, "shorts_views_90d", 900, now=NOW)
+        self.assertAlmostEqual(rate, 100.0, delta=0.1)
+
+    def test_the_snapshot_records_which_measure_it_used(self):
+        dump = _dump(
+            [["v1", 1000, 100, 12, 130.0, 5, 50, 2, 1]],
+            engaged_rows=[["v1", 1000, 450]],
+        )
+        rows = ca.videos(dump, now=NOW)
+        gates = ca.thresholds(dump, [])
+        self.assertEqual(ca.snapshot(dump, rows, gates)["shorts_measure"],
+                         "engaged")
+
+    def test_a_dump_without_engaged_data_is_labelled_views(self):
+        dump = _dump([["v1", 1000, 100, 12, 130.0, 5, 50, 2, 1]])
+        rows = ca.videos(dump, now=NOW)
+        gates = ca.thresholds(dump, [])
+        self.assertEqual(ca.snapshot(dump, rows, gates)["shorts_measure"],
+                         "views")

@@ -326,6 +326,7 @@ def thresholds(dump: dict, history: list[dict]) -> dict:
     subscribers = int(totals.get("subscribers") or 0)
     watch_hours = long_minutes_90d / 60
 
+    measure = "engaged" if engaged else "views"
     uploads_90d = _recent_uploads(dump)
     # Videos Analytics has not reported on at all are missing from both reports,
     # and they are the newest ones -- exactly the ones carrying a surge. Their
@@ -366,7 +367,8 @@ def thresholds(dump: dict, history: list[dict]) -> dict:
             if engaged
             else f"{SHORTS_VIEW_WINDOW_DAYS} günlük Shorts ⚠️ham (alt kademe)",
                                     short_views_90d, EARLY_SHORTS_VIEW_GOAL,
-                                    history, "shorts_views_90d"),
+                                    history, "shorts_views_90d",
+                                    measure=measure),
         "subscribers": _gate("Abone", subscribers, SUBSCRIBER_GOAL, history, "subscribers"),
         "watch_hours": _gate("İzlenme saati (uzun video)", round(watch_hours, 1),
                              WATCH_HOUR_GOAL, history, "watch_hours"),
@@ -374,7 +376,8 @@ def thresholds(dump: dict, history: list[dict]) -> dict:
             f"{SHORTS_VIEW_WINDOW_DAYS} günlük etkileşimli Shorts"
             if engaged
             else f"{SHORTS_VIEW_WINDOW_DAYS} günlük Shorts ⚠️ham",
-                              short_views_90d, SHORTS_VIEW_GOAL, history, "shorts_views_90d"),
+                              short_views_90d, SHORTS_VIEW_GOAL, history,
+                              "shorts_views_90d", measure=measure),
     }
 
 
@@ -432,7 +435,7 @@ def _recent_uploads(dump: dict) -> int:
 
 
 def _gate(name: str, value: float, goal: float, history: list[dict], key: str,
-          now: datetime | None = None) -> dict:
+          now: datetime | None = None, measure: str | None = None) -> dict:
     """One threshold with its progress and, when measurable, an arrival date."""
     gate = {
         "name": name,
@@ -445,7 +448,7 @@ def _gate(name: str, value: float, goal: float, history: list[dict], key: str,
         "note": "",
     }
     now = now or datetime.now(UTC)
-    rate = _rate_per_day(history, key, value, now)
+    rate = _rate_per_day(history, key, value, now, measure)
     if rate is None:
         gate["note"] = "hız için en az iki ölçüm gerekiyor"
         return gate
@@ -470,7 +473,8 @@ def _gate(name: str, value: float, goal: float, history: list[dict], key: str,
 
 
 def _rate_per_day(history: list[dict], key: str, current: float,
-                  now: datetime | None = None) -> float | None:
+                  now: datetime | None = None,
+                  measure: str | None = None) -> float | None:
     """Growth per day, measured against the oldest snapshot inside two weeks.
 
     Against the oldest rather than the previous one because a single viral
@@ -488,6 +492,12 @@ def _rate_per_day(history: list[dict], key: str, current: float,
         if when.tzinfo is None:
             when = when.replace(tzinfo=UTC)
         if snapshot.get(key) is None:
+            continue
+        # Comparing a figure counted one way against the same figure counted
+        # another way produces a rate that describes the change of ruler, not
+        # the channel. Rows from before the measure was recorded carry no label
+        # and are skipped too: unlabelled means unknown, not "same as now".
+        if measure is not None and snapshot.get("shorts_measure") != measure:
             continue
         if (now - when) <= timedelta(days=14):
             usable.append((when, float(snapshot[key])))
@@ -694,6 +704,14 @@ def snapshot(dump: dict, rows: list[dict], gates: dict) -> dict:
         "median_retention": round(median(retentions), 1) if retentions else None,
         "dead_count": sum(1 for row in mature if row["dead"]),
         "hit_count": sum(1 for row in mature if row["hit"]),
+        # WHICH MEASURE shorts_views_90d holds. On 28 September the gate moved
+        # from raw views to engaged views and the recorded figure dropped from
+        # 3,108,912 to 1,012,415 -- same channel, different ruler. The rate
+        # calculation then compared the two and concluded the threshold was
+        # going backwards, printing "artmıyor — bu hızla ulaşılamaz" on a
+        # figure that had risen 64% in four days. Any later change of measure
+        # would do the same unless each row says which one it used.
+        "shorts_measure": "engaged" if gates.get("shorts_engaged") else "views",
     }
 
 
