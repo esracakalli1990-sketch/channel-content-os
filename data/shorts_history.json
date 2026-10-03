@@ -144,7 +144,9 @@
     "common snipe",
     "horned guan",
     "spectacled caiman",
-    "yellow boxfish"
+    "yellow boxfish",
+    "saltwater crustacean",
+    "millipede"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -259,6 +261,8 @@
     "ribbed pear",
     "stepped triangular pyramid",
     "arched trapezoidal hull",
-    "tapered trigonal block"
+    "tapered trigonal block",
+    "serrated oval casing",
+    "stepped cylindrical housing"
   ]
 }
