@@ -19,5 +19,26 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "18ae880d0298"
+  },
+  {
+    "queued_at": "2026-10-03T05:41:05+00:00",
+    "publish_at": "2026-10-03T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIDlWrAlSU-YBWvc0ZLfv6lH9SNOXkOAAJ6JQACjkEAAVK1W9ssBRvK5T0E",
+    "file_size": 3255561,
+    "caption": "1",
+    "concept": {
+      "shape": "arched trapezoidal hull",
+      "material": "patinated bronze and dark bog oak",
+      "internal_detail": "counter-rotating brass spur gears and miniature linkage rods",
+      "button": "a polished brass push-stud set flush into the front dorsal ridge",
+      "button_short": "the polished brass push-stud at the dorsal ridge",
+      "creature": "spectacled caiman",
+      "shell_mechanic": "The arched bronze hull splits longitudinally down its dorsal seam and hinges outward into lateral flank plates",
+      "emerging_parts": "An armored tooth-rimmed jaw, splayed clawed legs, and a segmented serrated tail",
+      "signature_move": "its hinged jaw levers open on a bronze rack gear to reveal gleaming interior pinions, and its counterweighted head snaps sideways with a dull metallic click",
+      "turkish": "Gözlüklü kayman (Orta ve Güney Amerika'da yaşayan zırhlı bir timsah türü) — kavisli yamuk gövde, patinalı bronz ve koyu bataklık meşesi"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
   }
 ]
