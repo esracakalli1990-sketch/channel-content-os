@@ -1,26 +1,5 @@
 [
   {
-    "queued_at": "2026-10-03T05:43:08+00:00",
-    "publish_at": "2026-10-04T17:00:00+00:00",
-    "file_id": "BQACAgQAAxkBAAIDl2rAlbkI61OX7wvfi6FJJOG-SId6AAJ7JQACjkEAAVL6nQVr2VAoGT0E",
-    "file_size": 3495393,
-    "caption": "2",
-    "concept": {
-      "shape": "tapered trigonal block",
-      "material": "brushed yellow brass and matte black vulcanite",
-      "internal_detail": "microscopic bronze bevel gears and polished steel cam shafts",
-      "button": "a knurled vulcanite depressor inset into the ventral keel",
-      "button_short": "the knurled vulcanite depressor at the ventral keel",
-      "creature": "yellow boxfish",
-      "shell_mechanic": "The trigonal brass casing slides apart along three spring-loaded longitudinal tracks",
-      "emerging_parts": "Two articulated pectoral fins, a dorsal fin plate, and a ringed caudal tail assembly",
-      "signature_move": "its dark glass ocular lenses click outward from their housings, and its caudal fin oscillates twice in a crisp mechanical sweep",
-      "turkish": "Sarı kutu balığı (Mercan resiflerinde yaşayan sert, kutu biçimli bir balık) — konik üçgen blok, fırçalanmış sarı pirinç ve mat siyah vulkanit"
-    },
-    "template_version": "22b0547924d3",
-    "idea_version": "18ae880d0298"
-  },
-  {
     "queued_at": "2026-10-04T01:10:59+00:00",
     "publish_at": "2026-10-04T23:00:00+00:00",
     "file_id": "BQACAgQAAxkBAAIDomrBpyzIZ2MCdFv_nFpYVg1JKgu0AAIxIQAC0oYQUoqx44TTkByiPQQ",
