@@ -1,26 +1,5 @@
 [
   {
-    "queued_at": "2026-10-04T01:10:59+00:00",
-    "publish_at": "2026-10-04T23:00:00+00:00",
-    "file_id": "BQACAgQAAxkBAAIDomrBpyzIZ2MCdFv_nFpYVg1JKgu0AAIxIQAC0oYQUoqx44TTkByiPQQ",
-    "file_size": 3212203,
-    "caption": "1",
-    "concept": {
-      "shape": "serrated oval casing",
-      "material": "brushed gunmetal and tungsten carbide",
-      "internal_detail": "miniature hydraulic pistons and spring-loaded linkage bars",
-      "button": "a flush tungsten stud on the bottom rim",
-      "button_short": "the flush tungsten stud on the bottom rim",
-      "creature": "saltwater crustacean",
-      "shell_mechanic": "The gunmetal casing splits down its dorsal ridge and the serrated side panels hinge outward",
-      "emerging_parts": "Ten segmented walking limbs and two heavy pincer arms",
-      "signature_move": "its metal pincer arms swing inward on their pivot pins and snap together with a crisp metallic click",
-      "turkish": "KarakurbaGasi yengeci (Kabuklu deniz canlisi) — tirtikli oval mahfaza, fircalanmis tuncdemir ve tungsten"
-    },
-    "template_version": "22b0547924d3",
-    "idea_version": "18ae880d0298"
-  },
-  {
     "queued_at": "2026-10-04T01:13:02+00:00",
     "publish_at": "2026-10-05T17:00:00+00:00",
     "file_id": "BQACAgQAAxkBAAIDpGrBp7KyBSp5GHyIgUEYD_aNeMVMAAIyIQAC0oYQUjN7X-ze5AgUPQQ",
