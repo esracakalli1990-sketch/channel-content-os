@@ -1,26 +1,5 @@
 [
   {
-    "queued_at": "2026-10-05T03:29:17+00:00",
-    "publish_at": "2026-10-05T23:00:00+00:00",
-    "file_id": "BQACAgQAAxkBAAIDr2rDGWXX2NQUFNYYt_2OrIu0i8LPAAKlHQACMGsYUoaALLa5kirnPQQ",
-    "file_size": 3225543,
-    "caption": "1",
-    "concept": {
-      "shape": "squat hemispherical boss",
-      "material": "matte sand-cast terracotta and brushed nickel",
-      "internal_detail": "miniature brass balance escapements and coiled wire springs",
-      "button": "a flush sandstone push-stud centered on the crown",
-      "button_short": "the flush sandstone push-stud on the crown",
-      "creature": "desert rain frog",
-      "shell_mechanic": "The terracotta shell splits along three curved dorsal seams and swings downward into side flanks",
-      "emerging_parts": "Stout jointed spade-feet and a blunt hooded snout",
-      "signature_move": "its ribbed nickel throat bellows expand on their spring and snap shut with a brisk metallic click",
-      "turkish": "Çöl yağmur kurbağası (Afrika'da yaşayan, tombul gövdeli küçük kurbağa) — basık yarım küre kabartı, mat pişmiş toprak ve fırçalanmış nikel"
-    },
-    "template_version": "22b0547924d3",
-    "idea_version": "18ae880d0298"
-  },
-  {
     "queued_at": "2026-10-05T03:33:21+00:00",
     "publish_at": "2026-10-06T17:00:00+00:00",
     "file_id": "BQACAgQAAxkBAAIDsWrDGkErjD0D6VLO_LgOCkUCtzdWAAKmHQACMGsYUtfFtaej2gABcT0E",
