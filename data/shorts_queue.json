@@ -1,26 +1,5 @@
 [
   {
-    "queued_at": "2026-10-04T01:13:02+00:00",
-    "publish_at": "2026-10-05T17:00:00+00:00",
-    "file_id": "BQACAgQAAxkBAAIDpGrBp7KyBSp5GHyIgUEYD_aNeMVMAAIyIQAC0oYQUjN7X-ze5AgUPQQ",
-    "file_size": 3441579,
-    "caption": "2",
-    "concept": {
-      "shape": "stepped cylindrical housing",
-      "material": "aged nickel-silver and blackened steel",
-      "internal_detail": "concentric ratchet disks and coiled tension springs",
-      "button": "a knurled steel thumb-stud on the upper ring",
-      "button_short": "the knurled steel thumb-stud on the upper ring",
-      "creature": "millipede",
-      "shell_mechanic": "The steel cylinder segments telescope outward along internal guide rails and the outer sleeve splits in half",
-      "emerging_parts": "Thirty pairs of short articulated leg links and two segmented antennae",
-      "signature_move": "its segmented antennae swing forward on their hinge pins and its metal leg rows ripple in sequence from head to tail",
-      "turkish": "Kirkayak (Cok bacakli bocek benzeri canli) — kademeli silindirik govde, eskimis nikel-gumus ve karartilmis celik"
-    },
-    "template_version": "22b0547924d3",
-    "idea_version": "18ae880d0298"
-  },
-  {
     "queued_at": "2026-10-05T03:29:17+00:00",
     "publish_at": "2026-10-05T23:00:00+00:00",
     "file_id": "BQACAgQAAxkBAAIDr2rDGWXX2NQUFNYYt_2OrIu0i8LPAAKlHQACMGsYUoaALLa5kirnPQQ",
