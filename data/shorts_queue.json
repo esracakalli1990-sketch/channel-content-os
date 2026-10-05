@@ -40,5 +40,26 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "18ae880d0298"
+  },
+  {
+    "queued_at": "2026-10-05T03:33:21+00:00",
+    "publish_at": "2026-10-06T17:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIDsWrDGkErjD0D6VLO_LgOCkUCtzdWAAKmHQACMGsYUtfFtaej2gABcT0E",
+    "file_size": 2694877,
+    "caption": "2",
+    "concept": {
+      "shape": "beveled ellipsoidal block",
+      "material": "dark burr walnut and brushed phosphor bronze",
+      "internal_detail": "interlocking spur gears and miniature counterweights",
+      "button": "a small polished bronze plunger inset into the dorsal spine",
+      "button_short": "the small polished bronze plunger on the dorsal spine",
+      "creature": "kiwi",
+      "shell_mechanic": "The walnut casing unlatches along its keel and the lateral plates glide outward on tiny bronze tracks",
+      "emerging_parts": "Two stout hinged claw-struts and a slender tapered probe bill",
+      "signature_move": "its jointed neck rod dips forward on a pivot and its tapered probe bill taps twice against the ground plate with a crisp click",
+      "turkish": "Kivi (Yeni Zelanda'ya özgü, uçamayan uzun gagalı kuş) — eğimli elipsoit blok, koyu ceviz ağacı kökü ve fırçalanmış fosfor bronz"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
   }
 ]
