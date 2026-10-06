@@ -1,1 +1,23 @@
-[]
+[
+  {
+    "queued_at": "2026-10-06T18:04:21+00:00",
+    "publish_at": "2026-10-06T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIDwmrFN---0T-uNVncX0dN-hg4WMfPAAKcIQAC0gEpUm50kLAmkoduPQQ",
+    "file_size": 3459716,
+    "caption": "1",
+    "concept": {
+      "shape": "fluted pinecone scale",
+      "material": "oxidized copper and dark iron",
+      "internal_detail": "fine steel hairsprings and miniature brass levers",
+      "button": "a depressed brass button at the pointed tip",
+      "button_short": "the depressed brass button at the pointed tip",
+      "creature": "squirrel",
+      "shell_mechanic": "The fluted copper scales hinge outward from the central axis like blooming flower petals",
+      "emerging_parts": "Two articulated forepaws, a small pivoting snout, and a bushy iron-wire tail",
+      "signature_move": "its pivoting snout clicks upward on its hinge, and its iron-wire tail swings in a short arc on its base pivot",
+      "turkish": "Sincap (ormanlarda yasayan, uzun kuyruklu kemirgen) — yivli camalak pulu, oksitlenmis bakir ve koyu demir"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
+  }
+]
