@@ -148,7 +148,9 @@
     "saltwater crustacean",
     "millipede",
     "desert rain frog",
-    "kiwi"
+    "kiwi",
+    "squirrel",
+    "common toad"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -267,6 +269,8 @@
     "serrated oval casing",
     "stepped cylindrical housing",
     "squat hemispherical boss",
-    "beveled ellipsoidal block"
+    "beveled ellipsoidal block",
+    "fluted pinecone scale",
+    "smooth river stone"
   ]
 }
