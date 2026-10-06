@@ -150,7 +150,9 @@
     "desert rain frog",
     "kiwi",
     "squirrel",
-    "common toad"
+    "common toad",
+    "peafowl",
+    "thresher shark"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -271,6 +273,8 @@
     "squat hemispherical boss",
     "beveled ellipsoidal block",
     "fluted pinecone scale",
-    "smooth river stone"
+    "smooth river stone",
+    "ribbed fan vault",
+    "smooth asymmetrical crescent"
   ]
 }
