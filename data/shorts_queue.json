@@ -1,1 +1,23 @@
-[]
+[
+  {
+    "queued_at": "2026-10-08T04:14:35+00:00",
+    "publish_at": "2026-10-08T17:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAID0mrHGGSPX8l7qWDQW6P649c71aICAAKlIAACM084UjzTEENWXqBEPQQ",
+    "file_size": 3522411,
+    "caption": "1",
+    "concept": {
+      "shape": "folded fan",
+      "material": "oxidized copper and forged iron",
+      "internal_detail": "bronze pinions and miniature tension springs",
+      "button": "a smooth brass peg on the spine of the fan",
+      "button_short": "the smooth brass peg on the spine",
+      "creature": "bat",
+      "shell_mechanic": "The rigid copper plates slide apart along their guide rails",
+      "emerging_parts": "Two jointed metal wing ribs and a small skull-like housing",
+      "signature_move": "its metal wing ribs snap open to their full span and its head housing pivots downward on its neck pin with a sharp metallic click",
+      "turkish": "Yarasa (ucabilen, memeli gece hayvani) — katlanmis yelpaze, oksitlenmis bakir ve dovme demir"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
+  }
+]
