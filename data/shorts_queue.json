@@ -40,5 +40,26 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "18ae880d0298"
+  },
+  {
+    "queued_at": "2026-10-08T07:17:37+00:00",
+    "publish_at": "2026-10-09T17:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAID2WrHQ1LANBa4FCD4V6bS1ZYWVBbmAALOIAACM084UhTi56H4ljdpPQQ",
+    "file_size": 3276455,
+    "caption": "1",
+    "concept": {
+      "shape": "ribbed fan vault",
+      "material": "patinated bronze and blued steel",
+      "internal_detail": "interlocking brass gear trains and delicate tension springs",
+      "button": "a small brass push-stud at the apex of the vault",
+      "button_short": "the brass push-stud at the apex",
+      "creature": "peafowl",
+      "shell_mechanic": "The ribbed fan vault splits symmetrically along its central spine and the plates fold outward like opening wings",
+      "emerging_parts": "A slender articulated neck and a large fanned tail array",
+      "signature_move": "its tiny brass crest tilts forward on its pivot, and its fanned tail array spreads wider on its pin joints with a sharp click",
+      "turkish": "Tavus kusu (buyuk, gosterisli tuyleri olan kus) — ribbed fan vault, patinated bronze and blued steel"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
   }
 ]
