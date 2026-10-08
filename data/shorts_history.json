@@ -152,7 +152,9 @@
     "squirrel",
     "common toad",
     "peafowl",
-    "thresher shark"
+    "thresher shark",
+    "bat",
+    "bee"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -275,6 +277,8 @@
     "fluted pinecone scale",
     "smooth river stone",
     "ribbed fan vault",
-    "smooth asymmetrical crescent"
+    "smooth asymmetrical crescent",
+    "folded fan",
+    "domed pod"
   ]
 }
