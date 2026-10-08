@@ -1,26 +1,5 @@
 [
   {
-    "queued_at": "2026-10-08T04:16:39+00:00",
-    "publish_at": "2026-10-08T23:00:00+00:00",
-    "file_id": "BQACAgQAAxkBAAID1GrHGLdUmR6r3_qQHD6FuBf8J0j1AAKmIAACM084UhRIE7WYcHo0PQQ",
-    "file_size": 2898324,
-    "caption": "2",
-    "concept": {
-      "shape": "domed pod",
-      "material": "brushed aluminium and translucent yellow resin",
-      "internal_detail": "tiny copper wire coils and micro-actuators",
-      "button": "a flush nickel button on the top dome",
-      "button_short": "the flush nickel button on the top dome",
-      "creature": "bee",
-      "shell_mechanic": "The resin dome splits down the centre and swings outward to the sides",
-      "emerging_parts": "Four thin corrugated metal wings and six segmented wire legs",
-      "signature_move": "its four corrugated metal wings vibrate rapidly with a high-pitched mechanical whir and its front legs lift together in a single clockwork step",
-      "turkish": "Bal arisi (ciceklerden nektar toplayan ucucu bocek) — kubbe seklinde kovan, fircalanmis aluminyum ve yarim saydam sari recine"
-    },
-    "template_version": "22b0547924d3",
-    "idea_version": "18ae880d0298"
-  },
-  {
     "queued_at": "2026-10-08T07:17:37+00:00",
     "publish_at": "2026-10-09T17:00:00+00:00",
     "file_id": "BQACAgQAAxkBAAID2WrHQ1LANBa4FCD4V6bS1ZYWVBbmAALOIAACM084UhTi56H4ljdpPQQ",
