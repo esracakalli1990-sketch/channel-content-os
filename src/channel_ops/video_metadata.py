@@ -112,6 +112,37 @@ def planned_update(video_id: str, current: dict, *, language: str,
     return {"id": video_id, "snippet": new_snippet, "status": new_status}
 
 
+def verify(sent: dict, returned: dict) -> list[str]:
+    """Fields that did not come back the way they were sent.
+
+    The whole risk of this operation is a request that silently drops a
+    description or a tag list, and videos.update answers with the stored
+    resource, so the check costs nothing and runs on every video. An empty
+    list means the write landed exactly as intended.
+    """
+    sent_snippet = sent.get("snippet", {})
+    back_snippet = returned.get("snippet", {})
+    wrong = []
+    for field in ("title", "description", "categoryId",
+                  "defaultLanguage", "defaultAudioLanguage"):
+        if sent_snippet.get(field, "") != back_snippet.get(field, ""):
+            wrong.append(field)
+    if sorted(sent_snippet.get("tags", [])) != sorted(back_snippet.get("tags", [])):
+        wrong.append("tags")
+    # containsSyntheticMedia is write-only on some videos and simply does not
+    # come back, so a missing one is not evidence of anything. Only a value
+    # that came back contradicting what was sent is.
+    back_status = returned.get("status", {})
+    if "containsSyntheticMedia" in back_status:
+        if bool(back_status["containsSyntheticMedia"]) is not bool(
+            sent.get("status", {}).get("containsSyntheticMedia", False)
+        ):
+            wrong.append("containsSyntheticMedia")
+    if back_status.get("privacyStatus", "") != sent.get("status", {}).get("privacyStatus", ""):
+        wrong.append("privacyStatus")
+    return wrong
+
+
 def apply(body: dict) -> dict:
     """Send one prepared body to videos.update."""
     token = get_access_token()

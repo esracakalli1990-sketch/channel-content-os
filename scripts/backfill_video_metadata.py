@@ -95,7 +95,7 @@ def main() -> int:
             video_id, current[video_id], language=args.language, declare_ai=declare_ai
         )
         try:
-            video_metadata.apply(body)
+            returned = video_metadata.apply(body)
         except RuntimeError as exc:
             # One rejected video must not cost the other 147. A locked AI label
             # and a revoked scope both land here and both are worth seeing in
@@ -103,6 +103,15 @@ def main() -> int:
             failures.append((video_id, str(exc)))
             print(f"  ✗ {index}/{len(todo)}  {video_id}")
         else:
+            # videos.update returns the stored resource, so the one question
+            # that matters -- did this request erase anything? -- can be
+            # answered from the reply instead of from Studio afterwards.
+            lost = video_metadata.verify(body, returned)
+            if lost:
+                failures.append((video_id, f"ALANLAR DEĞİŞTİ: {', '.join(lost)}"))
+                print(f"  ⚠ {index}/{len(todo)}  {video_id}  {', '.join(lost)}")
+                print("     Devam edilmiyor; kalanlara dokunulmadı.")
+                break
             print(f"  ✓ {index}/{len(todo)}  {video_id}")
 
     print(f"\nGüncellendi: {len(todo) - len(failures)} / {len(todo)}")

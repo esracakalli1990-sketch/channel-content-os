@@ -128,5 +128,59 @@ class NeedsWorkTests(unittest.TestCase):
         self.assertEqual(gaps, ["defaultLanguage", "defaultAudioLanguage"])
 
 
+class VerifyTests(unittest.TestCase):
+    """The safety net: videos.update answers with the stored resource, so a
+    write that quietly dropped something can be caught on the spot instead of
+    being found in Studio days later."""
+
+    def _sent(self):
+        return _plan()
+
+    def test_an_identical_reply_reports_nothing_lost(self):
+        sent = self._sent()
+        returned = {"snippet": dict(sent["snippet"]), "status": dict(sent["status"])}
+        self.assertEqual(vm.verify(sent, returned), [])
+
+    def test_a_wiped_description_is_caught(self):
+        sent = self._sent()
+        returned = {"snippet": {**sent["snippet"], "description": ""},
+                    "status": dict(sent["status"])}
+        self.assertIn("description", vm.verify(sent, returned))
+
+    def test_dropped_tags_are_caught(self):
+        sent = self._sent()
+        returned = {"snippet": {**sent["snippet"], "tags": []},
+                    "status": dict(sent["status"])}
+        self.assertIn("tags", vm.verify(sent, returned))
+
+    def test_tag_order_alone_is_not_a_loss(self):
+        sent = self._sent()
+        returned = {"snippet": {**sent["snippet"],
+                                "tags": list(reversed(sent["snippet"]["tags"]))},
+                    "status": dict(sent["status"])}
+        self.assertEqual(vm.verify(sent, returned), [])
+
+    def test_a_changed_privacy_status_is_caught(self):
+        sent = self._sent()
+        returned = {"snippet": dict(sent["snippet"]),
+                    "status": {**sent["status"], "privacyStatus": "private"}}
+        self.assertIn("privacyStatus", vm.verify(sent, returned))
+
+    def test_a_write_only_disclosure_that_does_not_come_back_is_not_a_loss(self):
+        """Some videos do not echo containsSyntheticMedia at all. Treating a
+        missing field as a failure would stop the run on video one."""
+        sent = self._sent()
+        returned = {"snippet": dict(sent["snippet"]),
+                    "status": {k: v for k, v in sent["status"].items()
+                               if k != "containsSyntheticMedia"}}
+        self.assertEqual(vm.verify(sent, returned), [])
+
+    def test_a_disclosure_that_comes_back_false_is_a_loss(self):
+        sent = self._sent()
+        returned = {"snippet": dict(sent["snippet"]),
+                    "status": {**sent["status"], "containsSyntheticMedia": False}}
+        self.assertIn("containsSyntheticMedia", vm.verify(sent, returned))
+
+
 if __name__ == "__main__":
     unittest.main()
