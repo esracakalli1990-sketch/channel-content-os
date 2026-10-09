@@ -51,6 +51,7 @@ def upload_video(
     privacy: str = "private",
     made_for_kids: bool = False,
     language: str = DEFAULT_LANGUAGE,
+    synthetic_media: bool = True,
 ) -> dict:
     """Upload a video to YouTube.
 
@@ -70,6 +71,10 @@ def upload_video(
         BCP-47 code written to both ``defaultLanguage`` (title and
         description) and ``defaultAudioLanguage`` (what is spoken). Every
         video uploaded before this existed has neither set.
+    synthetic_media:
+        The altered-or-synthetic content disclosure. Defaults to True because
+        everything this pipeline publishes is AI-generated; a caller uploading
+        real footage has to say so.
     privacy:
         ``"private"``, ``"unlisted"`` or ``"public"``. Defaults to private, but
         the caller's choice is honoured: an earlier version quietly rewrote
@@ -104,6 +109,15 @@ def upload_video(
         "status": {
             "privacyStatus": privacy,
             "selfDeclaredMadeForKids": made_for_kids,
+            # The altered-or-synthetic content disclosure, declared by us
+            # rather than waiting for YouTube to detect it. Every clip on this
+            # channel is a realistic-looking scene that never occurred, which
+            # is the third of YouTube's own three examples, so the honest
+            # answer is always yes. Left undeclared, YouTube applies the label
+            # itself when it spots a C2PA signal and not when it doesn't --
+            # which is why some videos carry it and some don't, and why the
+            # ones without it are a detection gap rather than a win.
+            "containsSyntheticMedia": synthetic_media,
         },
     }
 

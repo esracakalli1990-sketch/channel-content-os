@@ -9,6 +9,12 @@ name: Shorts — araçlar
 #   channel  : kanal toplamları ve para kazanma eşiklerine mesafe
 #   thumbnail        : son derlemenin kapağını üretip videoya koyar
 #   thumbnail-preview: kapağı üretir ama koymaz, loga base64 basar (önce bakmak için)
+#   backfill-dry  : yayındaki videolarda eksik olan dil ve yapay zeka beyanı
+#                   alanlarını listeler, HİÇBİR ŞEY DEĞİŞTİRMEZ
+#   backfill-one  : aynısını tek videoya uygular (önce bununla dene)
+#   backfill-all  : hepsine uygular. videos.update verilen bölümün tamamını
+#                   değiştirdiği için önce backfill-dry, sonra backfill-one,
+#                   sonra bu.
 #   audit    : her videonun ve her günün ham verisini JSON olarak loga
 #              basar; "bu değişiklik işe yaradı mı" sorusu ancak tam
 #              veriyle cevaplanıyor, telefona giden rapor son on videoyu
@@ -20,7 +26,8 @@ on:
         description: "Hangi iş?"
         required: true
         type: choice
-        options: [resend, audience, channel, audit, thumbnail, thumbnail-preview]
+        options: [resend, audience, channel, audit, thumbnail, thumbnail-preview,
+                  backfill-dry, backfill-one, backfill-all]
 
 concurrency:
   group: shorts-tools
@@ -58,6 +65,12 @@ jobs:
         run: |
           if [ "${{ inputs.job }}" = "audit" ]; then
             python scripts/channel_audit.py
+          elif [ "${{ inputs.job }}" = "backfill-dry" ]; then
+            python scripts/backfill_video_metadata.py
+          elif [ "${{ inputs.job }}" = "backfill-one" ]; then
+            python scripts/backfill_video_metadata.py --limit 1 --apply
+          elif [ "${{ inputs.job }}" = "backfill-all" ]; then
+            python scripts/backfill_video_metadata.py --apply
           elif [ "${{ inputs.job }}" = "thumbnail-preview" ]; then
             python -m channel_ops shorts-thumbnail --preview
           else
