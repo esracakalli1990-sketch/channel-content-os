@@ -9,6 +9,10 @@ changes.
 """
 from __future__ import annotations
 
+import json
+import pathlib
+import shutil
+import tempfile
 import unittest
 
 from channel_ops import video_metadata as vm
@@ -180,6 +184,45 @@ class VerifyTests(unittest.TestCase):
         returned = {"snippet": dict(sent["snippet"]),
                     "status": {**sent["status"], "containsSyntheticMedia": False}}
         self.assertIn("containsSyntheticMedia", vm.verify(sent, returned))
+
+
+class DeclaredRecordTests(unittest.TestCase):
+    """containsSyntheticMedia is accepted by videos.update and never returned
+    by videos.list, so nothing can ask YouTube whether a video was declared.
+    Without the local record the repair list never shrinks: a batched run
+    rewrites its first forty videos every day and never reaches the rest.
+    That is what the first two live runs actually did."""
+
+    def setUp(self):
+        self.root = pathlib.Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, self.root, True)
+
+    def test_a_missing_record_means_nothing_is_declared(self):
+        self.assertEqual(vm.load_declared(self.root), set())
+
+    def test_what_is_saved_comes_back(self):
+        vm.save_declared(self.root, {"b", "a"})
+        self.assertEqual(vm.load_declared(self.root), {"a", "b"})
+
+    def test_the_record_is_written_sorted_so_diffs_stay_readable(self):
+        vm.save_declared(self.root, {"c", "a", "b"})
+        stored = json.loads((self.root / "data" / "ai_declared.json").read_text())
+        self.assertEqual(stored, ["a", "b", "c"])
+
+    def test_a_corrupt_record_is_survivable(self):
+        """Re-declaring a video costs 50 quota units; crashing costs the run."""
+        (self.root / "data").mkdir(parents=True)
+        (self.root / "data" / "ai_declared.json").write_text("{not json")
+        self.assertEqual(vm.load_declared(self.root), set())
+
+    def test_a_declared_video_with_the_language_set_has_no_gaps_left(self):
+        """The property the batching depends on: once both repairs are done,
+        the video leaves the list and the next batch moves on."""
+        done = {"snippet": {**CURRENT["snippet"],
+                            "defaultLanguage": LANG, "defaultAudioLanguage": LANG},
+                "status": CURRENT["status"]}
+        # declare_ai=False is what the script passes for an id in the record.
+        self.assertEqual(vm.needs_work(done, language=LANG, declare_ai=False), [])
 
 
 if __name__ == "__main__":

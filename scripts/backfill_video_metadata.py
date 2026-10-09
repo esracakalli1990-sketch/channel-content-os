@@ -56,6 +56,7 @@ def main() -> int:
         video_ids = video_ids[:args.limit]
     print(f"{len(video_ids)} video kaydı okunuyor…\n")
 
+    declared = video_metadata.load_declared(root)
     current = video_metadata.fetch(video_ids)
     missing_from_api = [v for v in video_ids if v not in current]
     if missing_from_api:
@@ -66,11 +67,15 @@ def main() -> int:
     for video_id in video_ids:
         if video_id not in current:
             continue
+        # A video already in the local record is not asked about the
+        # disclosure again: YouTube never reports it back, so the record is
+        # the only thing that knows.
+        wants_ai = declare_ai and video_id not in declared
         gaps = video_metadata.needs_work(
-            current[video_id], language=args.language, declare_ai=declare_ai
+            current[video_id], language=args.language, declare_ai=wants_ai
         )
         if gaps:
-            todo.append((video_id, gaps))
+            todo.append((video_id, gaps, wants_ai))
 
     already = len(current) - len(todo)
     print(f"Zaten doğru : {already}")
@@ -95,7 +100,7 @@ def main() -> int:
     print()
     todo = remaining
 
-    for video_id, gaps in todo[:10]:
+    for video_id, gaps, _ in todo[:10]:
         title = current[video_id]["snippet"].get("title", "")[:48]
         print(f"  {video_id}  {', '.join(gaps):<58}  {title}")
     if len(todo) > 10:
@@ -107,9 +112,9 @@ def main() -> int:
 
     print()
     failures = []
-    for index, (video_id, _) in enumerate(todo, start=1):
+    for index, (video_id, _, wants_ai) in enumerate(todo, start=1):
         body = video_metadata.planned_update(
-            video_id, current[video_id], language=args.language, declare_ai=declare_ai
+            video_id, current[video_id], language=args.language, declare_ai=wants_ai
         )
         try:
             returned = video_metadata.apply(body)
@@ -129,7 +134,13 @@ def main() -> int:
                 print(f"  ⚠ {index}/{len(todo)}  {video_id}  {', '.join(lost)}")
                 print("     Devam edilmiyor; kalanlara dokunulmadı.")
                 break
+            if wants_ai:
+                declared.add(video_id)
             print(f"  ✓ {index}/{len(todo)}  {video_id}")
+
+    # Written even on a partial run, and even after a break, so the next
+    # run starts where this one stopped rather than from the top.
+    video_metadata.save_declared(root, declared)
 
     print(f"\nGüncellendi: {len(todo) - len(failures)} / {len(todo)}")
     if failures:

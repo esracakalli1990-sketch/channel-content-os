@@ -64,6 +64,33 @@ def fetch(video_ids: list[str]) -> dict[str, dict]:
     return out
 
 
+def load_declared(root) -> set[str]:
+    """Video ids already told that they contain synthetic media.
+
+    This file exists because ``containsSyntheticMedia`` is write-only: it is
+    accepted by videos.update and never comes back from videos.list, so there
+    is no way to ask YouTube whether a video has been declared. Without a
+    local record every video looks undeclared forever, the repair list never
+    shrinks, and a batched run rewrites its first forty videos every day
+    while the rest are never reached. That is not hypothetical -- it is what
+    the first two runs did.
+    """
+    path = root / "data" / "ai_declared.json"
+    if not path.exists():
+        return set()
+    try:
+        return set(json.loads(path.read_text()))
+    except (json.JSONDecodeError, ValueError):
+        logger.warning("%s is unreadable; treating every video as undeclared", path)
+        return set()
+
+
+def save_declared(root, declared: set[str]) -> None:
+    path = root / "data" / "ai_declared.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(sorted(declared), indent=2) + "\n")
+
+
 def needs_work(current: dict, *, language: str, declare_ai: bool) -> list[str]:
     """Which of the two repairs this video is missing, as human-readable names."""
     snippet, status = current.get("snippet", {}), current.get("status", {})
