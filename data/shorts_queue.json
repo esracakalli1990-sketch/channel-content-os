@@ -40,5 +40,26 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "18ae880d0298"
+  },
+  {
+    "queued_at": "2026-10-09T08:56:11+00:00",
+    "publish_at": "2026-10-10T17:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAID6mrIkYVd2kelbFuQJVR8lfpTRF7MAAL5GgACM09IUqf8fktYRvn1PQQ",
+    "file_size": 2718948,
+    "caption": "1",
+    "concept": {
+      "shape": "grooved elliptical dome",
+      "material": "oxidized copper and brushed silver",
+      "internal_detail": "tightly packed brass gears and micro-springs",
+      "button": "a small brass stud set into the copper base",
+      "button_short": "the small brass stud",
+      "creature": "jumping spider",
+      "shell_mechanic": "The grooved dome splits apart along its silver seams and the upper halves slide outward like opening shutters",
+      "emerging_parts": "Eight jointed wire legs and a pair of large optical lenses",
+      "signature_move": "its eight wire legs shift on their micro-hinges and its dual lens assembly pivots sharply to the left on a central pin",
+      "turkish": "Zipli orumcek (sekiz bacakli, avci eklembacakli) — oluklu eliptik kubbe, oksitlenmis bakir ve fircalanmis gumus"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
   }
 ]
