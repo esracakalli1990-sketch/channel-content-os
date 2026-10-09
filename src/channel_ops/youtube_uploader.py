@@ -30,6 +30,16 @@ SHORTS_TAG = "#Shorts"
 
 PRIVACY_STATUSES = frozenset({"private", "unlisted", "public"})
 
+# Left unset, Studio shows "Seçin" for both the spoken language and the
+# title/description language, and every video uploaded so far is in that state.
+# It costs nothing and YouTube uses it for three things we want: the quality of
+# the automatic captions, whether the title and description are offered
+# translated, and which language's audience the clip is shown to. The audience
+# is 62% India watching English-language Shorts, so saying so is strictly
+# better than leaving YouTube to guess from an eleven-second clip with no
+# speech in it.
+DEFAULT_LANGUAGE = "en"
+
 
 def upload_video(
     video_path: Path,
@@ -40,6 +50,7 @@ def upload_video(
     category_id: str = "28",  # Science & Technology
     privacy: str = "private",
     made_for_kids: bool = False,
+    language: str = DEFAULT_LANGUAGE,
 ) -> dict:
     """Upload a video to YouTube.
 
@@ -55,6 +66,10 @@ def upload_video(
         List of keyword tags.
     category_id:
         YouTube category ID. 28 = Science & Technology.
+    language:
+        BCP-47 code written to both ``defaultLanguage`` (title and
+        description) and ``defaultAudioLanguage`` (what is spoken). Every
+        video uploaded before this existed has neither set.
     privacy:
         ``"private"``, ``"unlisted"`` or ``"public"``. Defaults to private, but
         the caller's choice is honoured: an earlier version quietly rewrote
@@ -79,6 +94,12 @@ def upload_video(
             "description": description[:5000],
             "tags": tags or [],
             "categoryId": category_id,
+            # defaultLanguage is the language the title and description are
+            # written in; defaultAudioLanguage is what is spoken. They are
+            # separate fields and setting only one leaves Studio still showing
+            # "Seçin" for the other.
+            "defaultLanguage": language,
+            "defaultAudioLanguage": language,
         },
         "status": {
             "privacyStatus": privacy,
