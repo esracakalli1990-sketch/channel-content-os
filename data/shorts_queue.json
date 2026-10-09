@@ -19,5 +19,26 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "18ae880d0298"
+  },
+  {
+    "queued_at": "2026-10-09T23:07:01+00:00",
+    "publish_at": "2026-10-10T23:00:00+00:00",
+    "file_id": "BAACAgQAAxkBAAID8mrJc3esQT8xr-9yWoeUW8iTGYvqAAKAHQAChVlIUsEiq4v3kSzaPQQ",
+    "file_size": 4032250,
+    "caption": "2",
+    "concept": {
+      "shape": "smooth teardrop pod",
+      "material": "anodized aluminum and polished brass",
+      "internal_detail": "spring-loaded levers and delicate wire antennae",
+      "button": "a tiny circular toggle near the pointed tip",
+      "button_short": "the tiny circular toggle",
+      "creature": "squid",
+      "shell_mechanic": "The smooth aluminum pod separates along its side seams and flips outward in four curved sections",
+      "emerging_parts": "Ten flexible spring-wire tentacles and a central conical head",
+      "signature_move": "its wire tentacles ripple simultaneously in a single wave and its central cone twists on its base pin",
+      "turkish": "Kalamar (on kollu deniz canlisi) — pruzsuz damla koza, anotlanmis aliminyum ve parlak pirinc"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
   }
 ]
