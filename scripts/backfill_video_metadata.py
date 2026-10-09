@@ -41,7 +41,9 @@ def main() -> int:
     parser.add_argument("--apply", action="store_true",
                         help="actually send the updates")
     parser.add_argument("--limit", type=int, default=0,
-                        help="only the first N videos (try 1 first)")
+                        help="only read the first N videos (try 1 first)")
+    parser.add_argument("--max", type=int, default=0, dest="max_writes",
+                        help="write at most N videos this run; see QUOTA below")
     parser.add_argument("--language", default=DEFAULT_LANGUAGE)
     parser.add_argument("--no-ai", action="store_true",
                         help="skip the synthetic-content declaration")
@@ -72,11 +74,26 @@ def main() -> int:
 
     already = len(current) - len(todo)
     print(f"Zaten doğru : {already}")
-    print(f"Düzeltilecek: {len(todo)}\n")
+    print(f"Düzeltilecek: {len(todo)}")
 
     if not todo:
-        print("Yapacak bir şey yok.")
+        print("\nYapacak bir şey yok.")
         return 0
+
+    # The quota is the reason this runs in batches rather than in one go. A
+    # videos.update costs 50 units against a 10,000/day budget that the
+    # pipeline is already spending on uploads at 1,600 each. Repairing all of
+    # them in an afternoon would leave nothing for the evening's publishing,
+    # which is the kind of unrelated breakage this project keeps producing.
+    remaining = todo
+    if args.max_writes and len(todo) > args.max_writes:
+        remaining = todo[:args.max_writes]
+        print(f"Bu turda   : {len(remaining)}  (kota: ~{len(remaining) * 50} birim)")
+        print(f"Kalan      : {len(todo) - len(remaining)}  (sonraki turlarda)")
+    else:
+        print(f"Kota       : ~{len(remaining) * 50} birim")
+    print()
+    todo = remaining
 
     for video_id, gaps in todo[:10]:
         title = current[video_id]["snippet"].get("title", "")[:48]

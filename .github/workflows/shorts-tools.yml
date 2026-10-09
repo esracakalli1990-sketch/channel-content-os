@@ -12,9 +12,13 @@ name: Shorts — araçlar
 #   backfill-dry  : yayındaki videolarda eksik olan dil ve yapay zeka beyanı
 #                   alanlarını listeler, HİÇBİR ŞEY DEĞİŞTİRMEZ
 #   backfill-one  : aynısını tek videoya uygular (önce bununla dene)
-#   backfill-all  : hepsine uygular. videos.update verilen bölümün tamamını
-#                   değiştirdiği için önce backfill-dry, sonra backfill-one,
-#                   sonra bu.
+#   backfill-batch: bir turda en çok 40 video (~2.000 kota birimi). Günlük
+#                   kota 10.000 ve her video yüklemesi 1.600 harcıyor, yani
+#                   149'u tek seferde yapmak akşamki yayınları düşürürdü.
+#   backfill-all  : hepsine uygular (~7.450 birim). Yalnızca o gün başka iş
+#                   çalışmayacaksa. videos.update verilen bölümün tamamını
+#                   değiştirdiği için sıra: backfill-dry, backfill-one,
+#                   sonra batch/all.
 #   audit    : her videonun ve her günün ham verisini JSON olarak loga
 #              basar; "bu değişiklik işe yaradı mı" sorusu ancak tam
 #              veriyle cevaplanıyor, telefona giden rapor son on videoyu
@@ -27,7 +31,7 @@ on:
         required: true
         type: choice
         options: [resend, audience, channel, audit, thumbnail, thumbnail-preview,
-                  backfill-dry, backfill-one, backfill-all]
+                  backfill-dry, backfill-one, backfill-batch, backfill-all]
 
 concurrency:
   group: shorts-tools
@@ -69,6 +73,8 @@ jobs:
             python scripts/backfill_video_metadata.py
           elif [ "${{ inputs.job }}" = "backfill-one" ]; then
             python scripts/backfill_video_metadata.py --limit 1 --apply
+          elif [ "${{ inputs.job }}" = "backfill-batch" ]; then
+            python scripts/backfill_video_metadata.py --max 40 --apply
           elif [ "${{ inputs.job }}" = "backfill-all" ]; then
             python scripts/backfill_video_metadata.py --apply
           elif [ "${{ inputs.job }}" = "thumbnail-preview" ]; then
