@@ -154,7 +154,9 @@
     "peafowl",
     "thresher shark",
     "bat",
-    "bee"
+    "bee",
+    "jumping spider",
+    "squid"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -279,6 +281,8 @@
     "ribbed fan vault",
     "smooth asymmetrical crescent",
     "folded fan",
-    "domed pod"
+    "domed pod",
+    "grooved elliptical dome",
+    "smooth teardrop pod"
   ]
 }
