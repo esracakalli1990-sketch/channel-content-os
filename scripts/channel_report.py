@@ -137,6 +137,17 @@ def render(dump: dict, rows: list[dict], gates: dict, history: list[dict],
     add("  Gereken: 500 abone + 3 yükleme + (3.000 saat VEYA 3M Shorts)")
     add("  Shorts eşiği ETKİLEŞİMLİ görüntülemeyle sayılıyor, ham görüntülemeyle")
     add("  değil. Bu kanalda ham görüntüleme etkileşimlinin ~2,2 katı.")
+    # Three clocks, not one. The ETA above is for OUR measurement, which is
+    # itself 2-3 days behind live. Studio's own eligibility card is slower
+    # still -- YouTube validates engagement before it will display it and says
+    # so in the "Güncelleme neden 1 hafta sürüyor?" dialog; on 9 October the
+    # card was showing data "3 Eki itibarıyla", six days old. So the date below
+    # is when the channel crosses, not when YouTube admits it, and the two are
+    # about a week apart. Without this line the report reads as a promise it
+    # cannot keep.
+    add("  ⓘ Yukarıdaki tarih KANALIN eşiği geçtiği tarih. YouTube'un uygunluk")
+    add("    kartı etkileşimi doğrulayana kadar ~1 hafta geriden gelir, yani")
+    add("    Studio'da onay bundan yaklaşık bir hafta sonra görünür.")
     if gates.get("shorts_floor_note"):
         add(f"  ⓘ {gates['shorts_floor_note']}")
     add("")
