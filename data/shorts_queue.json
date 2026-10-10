@@ -40,5 +40,26 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "18ae880d0298"
+  },
+  {
+    "queued_at": "2026-10-10T05:51:58+00:00",
+    "publish_at": "2026-10-11T17:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAID-GrJ0ihfP4d8EcLIpJ3Vf8_EV1nfAALVGwAChVlQUsYQN7bx2ocSPQQ",
+    "file_size": 3274836,
+    "caption": "1",
+    "concept": {
+      "shape": "ribbed globular spool",
+      "material": "oxidized silver and hammered copper wire",
+      "internal_detail": "concentric drive disks and micro-pulleys",
+      "button": "a tiny raised copper stud on the outer rim",
+      "button_short": "the raised copper stud on the outer rim",
+      "creature": "octopus",
+      "shell_mechanic": "The ribbed silver spool divides into three curving segments that slide apart along internal guide rails",
+      "emerging_parts": "Eight flexible segmented tentacles lined with tiny brass suction disks and a bulbous mantle head",
+      "signature_move": "its central mantle pivots slightly toward the camera on its hinge with a small click, and two metal tentacles curl inward and straighten out again in a single mechanical motion",
+      "turkish": ""
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
   }
 ]
