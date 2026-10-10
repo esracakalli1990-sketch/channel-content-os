@@ -156,7 +156,8 @@
     "bat",
     "bee",
     "jumping spider",
-    "squid"
+    "squid",
+    "octopus"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -263,7 +264,6 @@
     "curved sigmoid ingot",
     "corrugated navicular pod",
     "scalloped deltoid vault",
-    "ribbed globular spool",
     "creased lozenge tablet",
     "grooved rhombic cassette",
     "fluted conical cap",
@@ -283,6 +283,7 @@
     "folded fan",
     "domed pod",
     "grooved elliptical dome",
-    "smooth teardrop pod"
+    "smooth teardrop pod",
+    "ribbed globular spool"
   ]
 }
