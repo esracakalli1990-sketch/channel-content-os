@@ -157,7 +157,9 @@
     "bee",
     "jumping spider",
     "squid",
-    "octopus"
+    "octopus",
+    "kakapo",
+    "north american beaver"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -284,6 +286,8 @@
     "domed pod",
     "grooved elliptical dome",
     "smooth teardrop pod",
-    "ribbed globular spool"
+    "ribbed globular spool",
+    "humped ovate mound",
+    "broad spatulate slab"
   ]
 }
