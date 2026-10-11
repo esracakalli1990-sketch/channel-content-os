@@ -40,5 +40,26 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "18ae880d0298"
+  },
+  {
+    "queued_at": "2026-10-11T01:37:32+00:00",
+    "publish_at": "2026-10-12T17:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIEBmrK5_KJRipPb-BPNcqjyWlp3hLpAAJ3IQAC30lYUjDz6TMPDtecPQQ",
+    "file_size": 3233033,
+    "caption": "2",
+    "concept": {
+      "shape": "broad spatulate slab",
+      "material": "dark walnut burl and brushed gunmetal plating",
+      "internal_detail": "bronze worm drives and miniature geared rocker arms",
+      "button": "a flush square gunmetal actuator inlaid with crosshatched knurling",
+      "button_short": "the flush square gunmetal actuator",
+      "creature": "north american beaver",
+      "shell_mechanic": "The gunmetal upper slab swings upward on a transversal rear pin while the lower walnut casing unfolds sideways",
+      "emerging_parts": "A blunt chisel-toothed head, two folded jointed forelegs, and a broad cross-hatched paddle tail",
+      "signature_move": "its flattened tail hinge ratchets upward two notches and strikes down flat against the palm with a dull metal tap",
+      "turkish": "Kuzey Amerika kunduzu (yassı kuyruklu, kemirgen yarı sucul memeli) — geniş spatula biçimli plaka, koyu ceviz ağacı yumrusu ve fırçalanmış tunç kaplama"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
   }
 ]
