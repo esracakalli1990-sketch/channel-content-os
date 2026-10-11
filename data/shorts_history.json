@@ -159,7 +159,9 @@
     "squid",
     "octopus",
     "kakapo",
-    "north american beaver"
+    "north american beaver",
+    "trench mortar",
+    "armadillo lizard"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -288,6 +290,8 @@
     "smooth teardrop pod",
     "ribbed globular spool",
     "humped ovate mound",
-    "broad spatulate slab"
+    "broad spatulate slab",
+    "stepped octagonal prism",
+    "creased polygonal shield"
   ]
 }
