@@ -1,26 +1,5 @@
 [
   {
-    "queued_at": "2026-10-11T01:35:29+00:00",
-    "publish_at": "2026-10-11T23:00:00+00:00",
-    "file_id": "BQACAgQAAxkBAAIEBGrK55SXbb3iMo8W4Al3o8zgyNM0AAJ2IQAC30lYUmjPqs5pQclXPQQ",
-    "file_size": 2790925,
-    "caption": "1",
-    "concept": {
-      "shape": "humped ovate mound",
-      "material": "mottled verdigris copper and dull olive jade",
-      "internal_detail": "interlocking brass spur gears and miniature escapement ratchets",
-      "button": "a domed brass stud set flush into the dorsal seam",
-      "button_short": "the domed brass stud on the dorsal seam",
-      "creature": "kakapo",
-      "shell_mechanic": "The copper casing splits down the dorsal midline and both curved flank plates pivot outward on side hinges",
-      "emerging_parts": "A hooked bone beak, two disc-rimmed head plates, and two stout clawed brass feet",
-      "signature_move": "its olive head plate swivels low toward the surface on a brass ball joint, and its hooked beak clicks open and snaps shut with a dry mechanical clatter",
-      "turkish": "Kakapo (Yeni Zelanda'ya özgü, uçamayan iri gece papağanı) — kambur oval gövde, benekli bakır pası ve mat zeytin yeşili yeşim taşı"
-    },
-    "template_version": "22b0547924d3",
-    "idea_version": "18ae880d0298"
-  },
-  {
     "queued_at": "2026-10-11T01:37:32+00:00",
     "publish_at": "2026-10-12T17:00:00+00:00",
     "file_id": "BQACAgQAAxkBAAIEBmrK5_KJRipPb-BPNcqjyWlp3hLpAAJ3IQAC30lYUjDz6TMPDtecPQQ",
