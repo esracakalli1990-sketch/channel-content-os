@@ -40,5 +40,26 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "18ae880d0298"
+  },
+  {
+    "queued_at": "2026-10-12T05:52:33+00:00",
+    "publish_at": "2026-10-13T17:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIEE2rMdV0f-1XFByDfch7vIPlc5D95AAIfHAAC30loUhXqR723RqKYPQQ",
+    "file_size": 3411229,
+    "caption": "2",
+    "concept": {
+      "shape": "creased polygonal shield",
+      "material": "hammered copper and blackened iron",
+      "internal_detail": "tiny ratchets, blackened wire cables, and miniature roller pins",
+      "button": "a small square-cut copper stud centered in the crest line",
+      "button_short": "the square copper stud in the crest line",
+      "creature": "armadillo lizard",
+      "shell_mechanic": "The faceted spined backplates shift backward along curved iron slides",
+      "emerging_parts": "A triangular horned head and four jointed clawed limbs",
+      "signature_move": "its neck joint pivots sideways with a dry click and its spiny copper tail loops around to grip its snout",
+      "turkish": "Kuşaklı kertenkele (dikenli, pullu sürüngen) — köşeli kabartmalı kalkan, dövme bakır ve karartılmış demir"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
   }
 ]
