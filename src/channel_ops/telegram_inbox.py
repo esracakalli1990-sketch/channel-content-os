@@ -40,6 +40,75 @@ class VideoTooLargeError(RuntimeError):
     """Raised when a video exceeds what the Bot API is willing to hand over."""
 
 
+class OwnerUnknownError(RuntimeError):
+    """Raised when TELEGRAM_CHAT_ID is missing or unreadable.
+
+    Deliberately fatal. Without it there is no way to tell the owner's
+    messages from a stranger's, and the safe answer to "whose video is this?"
+    is to refuse, never to accept everything.
+    """
+
+
+def _owner_chat_id() -> int:
+    """The one chat the pipeline will take work from.
+
+    A security audit on 12 October found that nothing in the inbound path
+    ever compared a message's chat against this value -- it was read only by
+    ``notifications.py``, to address outgoing messages. Telegram's getUpdates
+    returns messages from every chat the bot is in, and bot privacy mode
+    covers groups, not direct messages, so any stranger who found the bot
+    could send it an MP4 and have it published to the channel. There was no
+    second gate: the private-first upload step had been removed on the
+    reasoning that clips are reviewed before they are sent to the bot, which
+    is exactly the assumption a third-party sender breaks.
+    """
+    raw = os.getenv("TELEGRAM_CHAT_ID", "").strip()
+    if not raw:
+        raise OwnerUnknownError(
+            "TELEGRAM_CHAT_ID is not set, so an incoming message cannot be "
+            "attributed to the channel owner. Run `python -m channel_ops "
+            "telegram-whoami` and store the id in the repository secrets."
+        )
+    try:
+        return int(raw)
+    except ValueError as exc:
+        raise OwnerUnknownError(
+            f"TELEGRAM_CHAT_ID is not a whole number ({raw!r}); it is the "
+            "numeric chat id, not the bot token or a username."
+        ) from exc
+
+
+def from_owner(update: dict) -> bool:
+    """Whether *update* came from the configured owner chat.
+
+    The single predicate both the video path and the command path go
+    through. Kept separate from the extractors so there is one place to be
+    right, and one place for a test to aim at.
+    """
+    chat = (update.get("message") or {}).get("chat") or {}
+    try:
+        return int(chat.get("id")) == _owner_chat_id()
+    except (TypeError, ValueError):
+        # A message with no usable chat id is not the owner's.
+        return False
+
+
+def _owner_updates(updates: list[dict]) -> list[dict]:
+    """Drop everything that did not come from the owner, and say how much.
+
+    The count is logged, never the content: an attacker's caption is not
+    something to echo into a log the owner reads.
+    """
+    kept = [update for update in updates if from_owner(update)]
+    dropped = len(updates) - len(kept)
+    if dropped:
+        logger.warning(
+            "Ignored %d update(s) from chats other than the configured owner",
+            dropped,
+        )
+    return kept
+
+
 @dataclass(frozen=True)
 class IncomingVideo:
     """A video the user sent to the bot."""
@@ -137,14 +206,16 @@ def fetch_updates(offset: int = 0, *, limit: int = 20) -> list[dict]:
 
 
 def extract_videos(updates: list[dict]) -> list[IncomingVideo]:
-    """Pick out the video messages, ignoring chatter.
+    """Pick out the owner's video messages, ignoring chatter and strangers.
 
     Videos sent from the gallery arrive as ``video``; the same file sent with
     "send as file" (which keeps Flow's quality intact) arrives as ``document``,
-    so both are accepted.
+    so both are accepted — from the owner's chat only. Everything this returns
+    is published publicly without a further review step, so the filter is the
+    only thing standing between a stranger's upload and the channel.
     """
     videos: list[IncomingVideo] = []
-    for update in updates:
+    for update in _owner_updates(updates):
         message = update.get("message") or {}
         media = message.get("video")
         if not media:
@@ -169,13 +240,15 @@ def extract_videos(updates: list[dict]) -> list[IncomingVideo]:
 
 
 def extract_commands(updates: list[dict]) -> list[str]:
-    """Return the lowercase text commands sent to the bot.
+    """Return the lowercase text commands the owner sent to the bot.
 
     A leading slash is optional so both "/rapor" and "rapor" work — the bot is
-    used from a phone where the slash is an extra keystroke.
+    used from a phone where the slash is an extra keystroke. Filtered by chat
+    for the same reason videos are: these commands spend YouTube API quota and
+    Gemini credit, and a stranger should not be able to spend either.
     """
     commands: list[str] = []
-    for update in updates:
+    for update in _owner_updates(updates):
         text = str((update.get("message") or {}).get("text", "")).strip().lower()
         if text:
             commands.append(text.lstrip("/").split("@")[0].split()[0])
@@ -229,6 +302,11 @@ def describe_chats() -> list[dict]:
 
     Backs ``channel-os telegram-whoami``: message the bot once, run the
     command, and it prints the chat ID to store as ``TELEGRAM_CHAT_ID``.
+
+    Deliberately unfiltered, and the only thing here that is. Its whole job
+    is to report the chat id before one has been configured, so filtering by
+    the configured id would make the setup step depend on its own output.
+    It reports chats; it never feeds the publishing path.
     """
     seen: dict[int, dict] = {}
     for update in fetch_updates(offset=0):
