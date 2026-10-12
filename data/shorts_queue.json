@@ -1,26 +1,5 @@
 [
   {
-    "queued_at": "2026-10-12T05:50:31+00:00",
-    "publish_at": "2026-10-12T23:00:00+00:00",
-    "file_id": "BQACAgQAAxkBAAIEEWrMdKTTs5msM7L8nG9ym4Kw1gXWAAIeHAAC30loUg7nG5BJWL0BPQQ",
-    "file_size": 3525810,
-    "caption": "1",
-    "concept": {
-      "shape": "stepped octagonal prism",
-      "material": "gunmetal steel and tarnished brass",
-      "internal_detail": "tiny steel gears, delicate eccentric pins, and coiled phosphor-bronze springs",
-      "button": "a countersunk knurled brass rivet on the top facet",
-      "button_short": "the knurled brass rivet on the top facet",
-      "creature": "trench mortar",
-      "shell_mechanic": "The faceted side plates swing outward on pinned corner brackets",
-      "emerging_parts": "A short grooved launch tube and two folding bipod struts",
-      "signature_move": "its short barrel elevates upward by ten degrees on a notched brass quadrant and ratchets securely into place",
-      "turkish": "Siper havanı (küçük mekanik topçu silahı) — sekizgen kademeli prizma, tunç çeliği ve pirinç"
-    },
-    "template_version": "22b0547924d3",
-    "idea_version": "18ae880d0298"
-  },
-  {
     "queued_at": "2026-10-12T05:52:33+00:00",
     "publish_at": "2026-10-13T17:00:00+00:00",
     "file_id": "BQACAgQAAxkBAAIEE2rMdV0f-1XFByDfch7vIPlc5D95AAIfHAAC30loUhXqR723RqKYPQQ",
