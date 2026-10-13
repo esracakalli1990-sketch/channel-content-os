@@ -161,7 +161,9 @@
     "kakapo",
     "north american beaver",
     "trench mortar",
-    "armadillo lizard"
+    "armadillo lizard",
+    "cryptic walking stick",
+    "singing whale"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -292,6 +294,8 @@
     "humped ovate mound",
     "broad spatulate slab",
     "stepped octagonal prism",
-    "creased polygonal shield"
+    "creased polygonal shield",
+    "faceted decagonal prism",
+    "curved tubular pod"
   ]
 }
