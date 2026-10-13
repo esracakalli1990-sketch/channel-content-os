@@ -40,5 +40,26 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "18ae880d0298"
+  },
+  {
+    "queued_at": "2026-10-13T06:48:04+00:00",
+    "publish_at": "2026-10-14T17:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIEI2rN07kOloa_krUV75kmZZzWC5GQAAL-IQACAu1oUgjdkdBfRUEaPQQ",
+    "file_size": 3452541,
+    "caption": "2",
+    "concept": {
+      "shape": "curved tubular pod",
+      "material": "polished nickel steel and brushed brass",
+      "internal_detail": "spiral hairsprings, tiny connecting rods, and cam cylinders",
+      "button": "a spring-loaded brass pin at the narrow tip",
+      "button_short": "the spring-loaded brass pin at the tip",
+      "creature": "singing whale",
+      "shell_mechanic": "The curved steel pod separates along its dorsal ridge and the heavy shell plates fold downward like bilateral flippers",
+      "emerging_parts": "A broad segmented tail assembly and two hinged side fins",
+      "signature_move": "its tail assembly flexes upward on its central hinge and its internal acoustic reed vibrates with a faint metallic chime",
+      "turkish": "Balina (denizde yasayan buyuk memeli) — egik borusal koza, parlak nikel celik ve fircalanmis pirinc"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
   }
 ]
