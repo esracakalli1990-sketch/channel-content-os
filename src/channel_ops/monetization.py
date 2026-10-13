@@ -42,18 +42,9 @@ logger = logging.getLogger(__name__)
 # The monetary scope. Named here so the operator message can quote it exactly.
 MONETARY_SCOPE = "https://www.googleapis.com/auth/yt-analytics-monetary.readonly"
 
-# Phrases that mean "your token may not ask this", as opposed to "this channel
-# has nothing to tell you". Deliberately a small, specific list: a broad match
-# would swallow the not-monetised case and the probe would announce a broken
-# scope every week for a channel that is simply not earning yet.
-_SCOPE_HINTS = (
-    "insufficient",
-    "scope",
-    "forbidden",
-    "permission",
-    "not authorized",
-    "unauthorized",
-)
+# Google will list a token's granted scopes, which is the only way to tell
+# the two causes of a 403 apart with certainty.
+TOKENINFO_URL = "https://oauth2.googleapis.com/tokeninfo"
 
 # How far back to ask. Short, because the question is "is it on", not "how
 # much" -- and a narrow window keeps the call cheap.
@@ -119,21 +110,54 @@ def _classify(exc: HTTPError) -> dict:
     detail = detail or f"HTTP {exc.code}"
 
     if exc.code in (401, 403):
-        lowered = detail.lower()
-        if any(hint in lowered for hint in _SCOPE_HINTS):
+        # Observed on 13 October: YouTube answers "Insufficient permission to
+        # access this report." Reading that string was the original plan and
+        # it turned out to be useless -- the same sentence fits a token that
+        # may not ask AND a channel with no revenue to report. Guessing would
+        # have meant either a broken probe reporting "not yet" forever, or a
+        # false alarm about scopes every week. So the token is asked directly
+        # instead, which answers one half of the question with certainty.
+        granted = _granted_scopes()
+        if granted is None:
+            return {
+                "state": "error",
+                "revenue": None,
+                "detail": (f"{detail} (token kapsamları okunamadı, bu yüzden "
+                           "sebebi ayırt edilemiyor)"),
+            }
+        if MONETARY_SCOPE not in granted:
             return {
                 "state": "scope_missing",
                 "revenue": None,
                 "detail": (
-                    f"{detail} — bu mesaj token kapsamını işaret ediyor. "
-                    f"YOUTUBE_REFRESH_TOKEN'ı {MONETARY_SCOPE} kapsamıyla "
-                    "yeniden üretmeden bu yoklama hiçbir zaman olumlu "
-                    "cevap veremez."
+                    f"{detail} Token'da {MONETARY_SCOPE} kapsamı YOK — "
+                    "yoklama kanala ne olursa olsun olumlu cevap veremez. "
+                    "YOUTUBE_REFRESH_TOKEN bu kapsamla yeniden üretilmeli."
                 ),
             }
+        # The scope is granted and YouTube still refuses: the only remaining
+        # reading is that there is no revenue report to serve.
         return {"state": "not_yet", "revenue": None, "detail": detail}
 
     return {"state": "error", "revenue": None, "detail": detail}
+
+
+def _granted_scopes() -> set[str] | None:
+    """The scopes the current access token actually carries, or None.
+
+    Google's tokeninfo endpoint answers this directly, which turns the
+    ambiguous 403 above into a decidable question. None means the lookup
+    itself failed, and that is reported rather than guessed around.
+    """
+    try:
+        token = get_access_token()
+        url = f"{TOKENINFO_URL}?{urlencode({'access_token': token})}"
+        with urlopen(url, timeout=15) as response:
+            payload = json.load(response)
+    except (HTTPError, URLError, ValueError, json.JSONDecodeError) as exc:
+        logger.warning("Could not read token scopes: %s", exc)
+        return None
+    return set(str(payload.get("scope", "")).split())
 
 
 def summary(result: dict) -> str:

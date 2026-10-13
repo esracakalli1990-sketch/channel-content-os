@@ -66,18 +66,36 @@ class EarningTests(unittest.TestCase):
 
 
 class RefusalTests(unittest.TestCase):
-    def test_a_scope_refusal_is_not_mistaken_for_an_unmonetised_channel(self):
-        """The whole point. If this is misread, the probe says 'not yet'
-        forever and nobody learns the token was never able to ask."""
-        result = _probe(side_effect=_http(
-            403, "Request had insufficient authentication scopes."))
+    """The 403 YouTube actually sends, observed live on 13 October, is
+    "Insufficient permission to access this report." — and it is the SAME
+    sentence whether the token may not ask or the channel has nothing to
+    report. So the message is not read at all; the token's scopes are looked
+    up instead, which decides one half with certainty."""
+
+    REAL = "Insufficient permission to access this report."
+
+    def test_the_real_message_without_the_scope_is_a_broken_probe(self):
+        """If this were misread as 'not yet', the probe would report that
+        forever and nobody would learn it could never have succeeded."""
+        with patch.object(monetization, "_granted_scopes",
+                          return_value={"https://www.googleapis.com/auth/yt-analytics.readonly"}):
+            result = _probe(side_effect=_http(403, self.REAL))
         self.assertEqual(result["state"], "scope_missing")
         self.assertIn("yt-analytics-monetary.readonly", result["detail"])
 
-    def test_a_plain_refusal_reads_as_not_monetised_yet(self):
-        result = _probe(side_effect=_http(
-            403, "The channel is not enrolled in the YouTube Partner Program."))
+    def test_the_same_message_with_the_scope_means_not_monetised_yet(self):
+        """Identical wording, opposite conclusion — which is exactly why the
+        string is not what decides."""
+        with patch.object(monetization, "_granted_scopes",
+                          return_value={monetization.MONETARY_SCOPE}):
+            result = _probe(side_effect=_http(403, self.REAL))
         self.assertEqual(result["state"], "not_yet")
+
+    def test_an_unreadable_scope_list_is_admitted_not_guessed(self):
+        with patch.object(monetization, "_granted_scopes", return_value=None):
+            result = _probe(side_effect=_http(403, self.REAL))
+        self.assertEqual(result["state"], "error")
+        self.assertIn("ayırt edilemiyor", result["detail"])
 
     def test_an_unrelated_failure_is_neither(self):
         result = _probe(side_effect=_http(500, "Backend error"))
@@ -88,9 +106,10 @@ class RefusalTests(unittest.TestCase):
         self.assertEqual(result["state"], "error")
 
     def test_youtubes_own_wording_is_kept(self):
-        """Nobody has seen this account's real refusal message yet, so the
-        report has to show whatever comes back rather than a guess."""
-        result = _probe(side_effect=_http(403, "Totally unexpected wording"))
+        """Whatever YouTube says is carried into the report verbatim, so a
+        change in its wording shows up instead of being swallowed."""
+        with patch.object(monetization, "_granted_scopes", return_value=set()):
+            result = _probe(side_effect=_http(403, "Totally unexpected wording"))
         self.assertIn("Totally unexpected wording", result["detail"])
 
 
