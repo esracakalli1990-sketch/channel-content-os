@@ -82,6 +82,9 @@ class RefusalTests(unittest.TestCase):
             result = _probe(side_effect=_http(403, self.REAL))
         self.assertEqual(result["state"], "scope_missing")
         self.assertIn("yt-analytics-monetary.readonly", result["detail"])
+        # The scopes the token DOES carry must be printed: re-minting by hand
+        # from a stale list would drop one and kill the reports.
+        self.assertIn("yt-analytics.readonly", result["detail"])
 
     def test_the_same_message_with_the_scope_means_not_monetised_yet(self):
         """Identical wording, opposite conclusion — which is exactly why the

@@ -126,13 +126,21 @@ def _classify(exc: HTTPError) -> dict:
                            "sebebi ayırt edilemiyor)"),
             }
         if MONETARY_SCOPE not in granted:
+            # The current scopes are printed because re-minting is the only
+            # fix and it is done by hand, against the one credential the whole
+            # pipeline runs on. SETUP_GUIDE lists two scopes; the token plainly
+            # carries more, since Analytics works. Re-minting from that stale
+            # list would silently kill every report. So the real list is
+            # printed here rather than remembered or guessed.
+            have = " ".join(sorted(granted)) or "(hiç)"
             return {
                 "state": "scope_missing",
                 "revenue": None,
                 "detail": (
                     f"{detail} Token'da {MONETARY_SCOPE} kapsamı YOK — "
                     "yoklama kanala ne olursa olsun olumlu cevap veremez. "
-                    "YOUTUBE_REFRESH_TOKEN bu kapsamla yeniden üretilmeli."
+                    "Yeniden üretirken MEVCUT kapsamların hepsi korunmalı, "
+                    f"yoksa raporlama durur. Şu an taşıdıkları: {have}"
                 ),
             }
         # The scope is granted and YouTube still refuses: the only remaining
