@@ -163,7 +163,9 @@
     "trench mortar",
     "armadillo lizard",
     "cryptic walking stick",
-    "singing whale"
+    "singing whale",
+    "wandering albatross",
+    "tuatara"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -296,6 +298,8 @@
     "stepped octagonal prism",
     "creased polygonal shield",
     "faceted decagonal prism",
-    "curved tubular pod"
+    "curved tubular pod",
+    "fluted parabolic trough",
+    "truncated hexagonal pyramid"
   ]
 }
