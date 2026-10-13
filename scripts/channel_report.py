@@ -15,6 +15,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
 from channel_ops import channel_analysis as ca  # noqa: E402
+from channel_ops import monetization  # noqa: E402
 from channel_ops.channel_data import collect  # noqa: E402
 from channel_ops.config_loader import find_project_root  # noqa: E402
 
@@ -99,7 +100,7 @@ def _delta(history: list[dict], key: str, current) -> str:
 
 
 def render(dump: dict, rows: list[dict], gates: dict, history: list[dict],
-           studio: list[dict], monthly: bool) -> str:
+           studio: list[dict], monthly: bool, money: dict | None = None) -> str:
     """The whole report as one string."""
     out: list[str] = []
     add = out.append
@@ -158,6 +159,13 @@ def render(dump: dict, rows: list[dict], gates: dict, history: list[dict],
             add("  " + line)
         add("")
     add("  Gereken: 1.000 abone + (4.000 saat VEYA 10M Shorts)")
+    add("")
+    # Asked of the API rather than waited for in an inbox. Creator emails on
+    # this account were switched off for months without anyone noticing, which
+    # is how a single-path notification fails: silently, and only discovered
+    # after the thing you were waiting for has already happened.
+    if money:
+        add(f"  Para kazanma durumu: {monetization.summary(money)}")
     add(f"\n  Not: {gates['window_note']}")
     add("  Not: eşik rakamları YouTube'un yayınlanmış kurallarından; YouTube")
     add("       bunları zaman zaman değiştiriyor, Studio'daki rakamla karşılaştır.")
@@ -294,7 +302,7 @@ def render(dump: dict, rows: list[dict], gates: dict, history: list[dict],
 
 
 def telegram_summary(gates: dict, snap: dict, history: list[dict],
-                     stale: dict | None = None) -> str:
+                     stale: dict | None = None, money: dict | None = None) -> str:
     lines = ["📊 <b>Kanal analizi</b>", "", "<b>Alt kademe</b> (reklam yok):"]
     for key in ("early_subscribers", "early_watch_hours", "early_shorts_views"):
         gate = gates[key]
@@ -315,6 +323,11 @@ def telegram_summary(gates: dict, snap: dict, history: list[dict],
                  f"{_delta(history, 'median_views', snap['median_views'])}")
     lines.append(f"Ölü video: {snap['dead_count']}/{snap['mature_count']}"
                  f"{_delta(history, 'dead_count', snap['dead_count'])}")
+    # Only shouted about when it changes something. A weekly "not yet" line
+    # trains the reader to skip the section the one week it matters.
+    if money and money.get("state") in ("earning", "scope_missing"):
+        lines.append("")
+        lines.append(f"<b>{monetization.summary(money)}</b>")
     if stale and stale.get("warnings"):
         lines.append("")
         lines.append("🚨 <b>Veri tazeliği</b>")
@@ -336,14 +349,20 @@ def main() -> None:
     gates = ca.thresholds(dump, history)
     studio = ca.load_studio(root)
 
-    print(render(dump, rows, gates, history, studio, monthly))
+    # A probe failure must not cost the report it is printed inside.
+    try:
+        money = monetization.probe()
+    except Exception as exc:  # noqa: BLE001
+        money = {"state": "error", "revenue": None, "detail": str(exc)}
+
+    print(render(dump, rows, gates, history, studio, monthly, money))
 
     snap = ca.snapshot(dump, rows, gates)
     if "--no-telegram" not in argv:
         try:
             from channel_ops.notifications import send_message
             send_message(telegram_summary(gates, snap, history,
-                                          ca.staleness(dump, history)))
+                                          ca.staleness(dump, history), money))
         except Exception as exc:  # a failed notification must not lose the report
             print(f"\n[telegram gönderilemedi: {exc}]")
     # Saved last: a snapshot written before the report is rendered would be
