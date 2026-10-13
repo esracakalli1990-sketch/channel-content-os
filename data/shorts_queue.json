@@ -19,5 +19,26 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "18ae880d0298"
+  },
+  {
+    "queued_at": "2026-10-13T06:46:02+00:00",
+    "publish_at": "2026-10-13T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIEIWrN00VvUB0V7q7i2dTgnp1_yeNPAAL9IQACAu1oUrc-q7GX10S2PQQ",
+    "file_size": 3418019,
+    "caption": "1",
+    "concept": {
+      "shape": "faceted decagonal prism",
+      "material": "hammered copper and oxidized silver",
+      "internal_detail": "micro-link chains, balance wheels, and escapement gears",
+      "button": "a flush copper button set into the top facet",
+      "button_short": "the flush copper button on the top facet",
+      "creature": "cryptic walking stick",
+      "shell_mechanic": "The decagonal prism splits neatly down its ten copper edges and the outer panels slide outward on parallel brass tracks",
+      "emerging_parts": "Six long jointed metal limbs and a narrow segmented torso",
+      "signature_move": "its front jointed limbs lift and set down in a precise clockwork step, and its slender head plate tilts forward on its pivot",
+      "turkish": "Yuruyen cop cekirgesi (uzun ince bocek) — yuzlu ongen prizma, dovulmus bakir ve oksitlenmis gumus"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
   }
 ]
