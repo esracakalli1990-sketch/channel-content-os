@@ -28,6 +28,7 @@ from . import (
     media_host,
     notifications,
     telegram_inbox,
+    video_metadata,
     video_overlay,
     youtube_uploader,
 )
@@ -762,6 +763,22 @@ def _publish_queued(item: dict, provider: AIProvider, root: Path) -> dict:
         reel_url, reel_media_id = _publish_to_instagram(destination, metadata.instagram())
 
     youtube_id = result.get("id", "")
+
+    # upload_video declares containsSyntheticMedia, but YouTube never reports
+    # that field back, so data/ai_declared.json is the only thing that knows.
+    # Written here as well as by the backfill, or every freshly published
+    # video reads as undeclared forever -- which is exactly what the YPP
+    # preflight found on 14 October: 150 of 158, the gap being the eight
+    # videos published since the uploader started declaring.
+    if youtube_id:
+        try:
+            declared = video_metadata.load_declared(root)
+            if youtube_id not in declared:
+                declared.add(youtube_id)
+                video_metadata.save_declared(root, declared)
+        except Exception:  # noqa: BLE001 - a bookkeeping miss must not cost the publish
+            logger.exception("Could not record the AI declaration for %s", youtube_id)
+
     record = {
         "published_at": datetime.now(UTC).isoformat(timespec="seconds"),
         "creature": concept.creature,

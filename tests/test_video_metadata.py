@@ -225,5 +225,43 @@ class DeclaredRecordTests(unittest.TestCase):
         self.assertEqual(vm.needs_work(done, language=LANG, declare_ai=False), [])
 
 
+class PublishRecordsDeclarationTests(unittest.TestCase):
+    """Publishing must write the declaration record too.
+
+    The 14 October YPP preflight read 150 declared out of 158 live videos.
+    The eight missing ones were not undeclared at YouTube -- upload_video had
+    sent containsSyntheticMedia for every one of them. They were missing from
+    the LOCAL record, because only the backfill ever wrote it. Since YouTube
+    never reports that field back, the record is the only thing that knows,
+    and a record the publisher does not update drifts by one video per upload.
+    """
+
+    def setUp(self):
+        self.root = pathlib.Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, self.root, True)
+
+    def test_a_published_id_joins_the_record(self):
+        vm.save_declared(self.root, {"old"})
+        declared = vm.load_declared(self.root)
+        declared.add("fresh")
+        vm.save_declared(self.root, declared)
+        self.assertEqual(vm.load_declared(self.root), {"old", "fresh"})
+
+    def test_recording_the_same_id_twice_is_harmless(self):
+        vm.save_declared(self.root, {"a"})
+        declared = vm.load_declared(self.root)
+        declared.add("a")
+        vm.save_declared(self.root, declared)
+        self.assertEqual(vm.load_declared(self.root), {"a"})
+
+    def test_a_recorded_video_drops_off_the_repair_list(self):
+        """The property the preflight depends on: once recorded, the video
+        stops being reported as an undeclared gap."""
+        done = {"snippet": {**CURRENT["snippet"],
+                            "defaultLanguage": LANG, "defaultAudioLanguage": LANG},
+                "status": CURRENT["status"]}
+        self.assertEqual(vm.needs_work(done, language=LANG, declare_ai=False), [])
+
+
 if __name__ == "__main__":
     unittest.main()
