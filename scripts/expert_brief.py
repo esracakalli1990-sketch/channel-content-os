@@ -7,13 +7,18 @@ as important -- what could NOT be measured and where the analysis has
 previously been wrong. A brief that only shows the good numbers invites
 advice built on the parts that were left out.
 
-Figures are passed in rather than fetched, so the document is reproducible
-and nobody has to wonder whether two sections were written on two days.
+Every figure is read from data/expert_dataset.json, the same file the
+appendix reads. The first draft hardcoded them, and within a day the brief
+and its own appendix disagreed -- 5.300 subscribers against 5.580, because
+the channel had moved between the two. One collection, one timestamp, both
+documents.
 
-Usage: expert_brief.py [output.pdf]
+Usage: expert_brief.py dataset.json [output.pdf]
 """
 from __future__ import annotations
 
+import json
+import statistics
 import sys
 from pathlib import Path
 
@@ -35,6 +40,24 @@ from reportlab.platypus import (
 )
 
 # Helvetica has no ğ, ı, İ, ş. DejaVu does, and ships with the runner image.
+
+COUNTRY = {"IN": "Hindistan", "BD": "Bangladeş", "MM": "Myanmar",
+           "UZ": "Özbekistan", "US": "ABD", "ID": "Endonezya", "NP": "Nepal",
+           "PK": "Pakistan", "VN": "Vietnam", "RU": "Rusya", "DE": "Almanya",
+           "LK": "Sri Lanka", "UA": "Ukrayna", "IT": "İtalya", "RW": "Ruanda",
+           "GB": "B. Krallık", "TR": "Türkiye", "BR": "Brezilya"}
+TRAFFIC = {"SHORTS": "Shorts akışı", "YT_SEARCH": "YouTube araması",
+           "YT_CHANNEL": "Kanal sayfası", "SUBSCRIBER": "Abonelikler",
+           "YT_OTHER_PAGE": "Diğer YT sayfaları", "HASHTAGS": "Hashtag",
+           "SOUND_PAGE": "Ses sayfası", "EXT_URL": "Harici bağlantı",
+           "NOTIFICATION": "Bildirim", "RELATED_VIDEO": "İlgili video",
+           "NO_LINK_OTHER": "Bağlantısız diğer", "ADVERTISING": "Reklam"}
+AGE = {"age13-17": "13–17", "age18-24": "18–24", "age25-34": "25–34",
+       "age35-44": "35–44", "age45-54": "45–54", "age55-64": "55–64",
+       "age65-": "65+"}
+DEVICE = {"MOBILE": "mobil", "TABLET": "tablet", "DESKTOP": "masaüstü",
+          "TV": "TV"}
+
 FONT_DIR = Path("/usr/share/fonts/truetype/dejavu")
 INK = colors.HexColor("#1a1a1a")
 MUTED = colors.HexColor("#5f6368")
@@ -101,7 +124,7 @@ def _table(rows, widths, base, bold, align_right=()):
     return table
 
 
-def build(path: Path) -> Path:
+def build(data: dict, path: Path) -> Path:
     base, bold, mono = _fonts()
     s = _styles(base, bold, mono)
     doc = SimpleDocTemplate(
@@ -115,21 +138,57 @@ def build(path: Path) -> Path:
     out: list = []
     add = out.append
 
+    totals = data.get("totals") or {}
+    gates = data.get("gates") or {}
+    vids = data.get("videos") or []
+    mature = [v for v in vids if v.get("mature")]
+    stamp = (data.get("collected_at") or "")[:16].replace("T", " ")
+    day = (data.get("collected_at") or "")[:10]
+
+    def N(value, digits=0):
+        if value is None:
+            return "–"
+        try:
+            text = f"{float(value):,.{digits}f}"
+        except (TypeError, ValueError):
+            return str(value)
+        return text.replace(",", "\x00").replace(".", ",").replace("\x00", ".")
+
+    def gate(key, field, digits=0):
+        return N((gates.get(key) or {}).get(field), digits)
+
+    med_views = statistics.median([v["views"] for v in mature]) if mature else 0
+    rets = [v["retention"] for v in mature if v.get("retention") is not None]
+    med_ret = statistics.median(rets) if rets else 0
+    hits = sum(1 for v in vids if v.get("hit"))
+    dead = sum(1 for v in vids if v.get("dead"))
+    top = max(vids, key=lambda v: v.get("views", 0)) if vids else {}
+    first = min((v.get("published_at") or "" for v in vids if v.get("published_at")),
+                default="")
+
+    tables = data.get("tables") or {}
+
+    def rows_of(name):
+        return ((tables.get(name) or {}).get("rows")) or []
+
     def para(text, style="p"):
         add(Paragraph(text, s[style]))
 
     # ---------------------------------------------------------------- cover
     para("Unfoldables — Kanal Durum Raporu", "title")
-    para("@unfoldableslab · YouTube Shorts · 14 Ekim 2026 · "
+    para(f"@unfoldableslab · YouTube Shorts · ölçüm {stamp} UTC · "
          "dış değerlendirme için hazırlandı", "sub")
 
     para("1. Özet", "h1")
     para(
-        "Kanal 29 Temmuz 2026'da yayına başladı. 14 Ekim itibarıyla "
-        "<b>159 video, 5.470 abone, 7,9 milyon izlenme</b>. YouTube İş Ortaklığı "
-        "Programı'nın <b>alt kademe eşiği 13 Ekim'de geçildi</b> "
-        "(90 günde 3.202.930 etkileşimli Shorts görüntülemesi, eşik 3.000.000). "
-        "Başvuru düğmesi 14 Ekim'de açıldı; başvuru henüz yapılmadı."
+        f"Kanal {first[:10]} tarihinde yayına başladı. {day} itibarıyla "
+        f"<b>{N(len(vids))} video, {N(totals.get('subscribers'))} abone, "
+        f"{N(totals.get('views'))} izlenme</b>. YouTube İş Ortaklığı "
+        f"Programı'nın <b>alt kademe eşiği 13 Ekim'de geçildi</b> — şu an "
+        f"90 günde {gate('early_shorts_views', 'value')} etkileşimli Shorts "
+        f"görüntülemesi, eşik {gate('early_shorts_views', 'goal')} "
+        f"(%{gate('early_shorts_views', 'percent', 1)}). Başvuru düğmesi "
+        "14 Ekim'de açıldı; başvuru henüz yapılmadı."
     )
     para(
         "Üretim tamamen otomatik bir hatla yürüyor: fikirler bir dil modeliyle "
@@ -141,14 +200,17 @@ def build(path: Path) -> Path:
 
     add(_table([
         ["Metrik", "Değer", "Not"],
-        ["Abone", "5.470", "14 Eki"],
-        ["Toplam izlenme", "7.942.552", "13 Eki ölçümü"],
-        ["Video", "159", "tamamı Shorts, 9–11 sn"],
-        ["Olgun video medyanı", "2.897 izlenme", "48 saat+ olanlar"],
-        ["Medyan izlenme yüzdesi", "%131", "tekrar izleme dahil"],
-        ["Ölü video (48 saatte <250)", "5 / 152 = %3,3", "en düşük seviye"],
-        ["Hit (10.000+ izlenme)", "40", ""],
-        ["En yüksek video", "1.907.124", "12 Eyl"],
+        ["Abone", N(totals.get("subscribers")), ""],
+        ["Toplam izlenme", N(totals.get("views")), "ham, ömür boyu"],
+        ["Video", N(len(vids)), "tamamı Shorts, 9–11 sn"],
+        ["Olgun video medyanı", f"{N(med_views)} izlenme",
+         f"48 saat+ olan {N(len(mature))} video"],
+        ["Medyan izlenme yüzdesi", f"%{N(med_ret, 1)}", "tekrar izleme dahil"],
+        ["Ölü video (48 saatte <250)",
+         f"{N(dead)} / {N(len(mature))} = %{N(dead / len(mature) * 100 if mature else 0, 1)}", ""],
+        ["Hit (10.000+ izlenme)", N(hits), ""],
+        ["En yüksek video", N(top.get("views")),
+         (top.get("published_at") or "")[:10]],
     ], [W * 0.34, W * 0.28, W * 0.38], base, bold))
     add(Spacer(1, 10))
 
@@ -163,18 +225,24 @@ def build(path: Path) -> Path:
     add(_table([
         ["Eşik", "Durum", "Hedef", "%"],
         ["ALT KADEME — hayran desteği, reklam geliri yok", "", "", ""],
-        ["Abone", "5.470", "500", "geçildi"],
-        ["Son 90 günde yükleme", "157", "3", "geçildi"],
-        ["Etkileşimli Shorts (90 gün)", "3.202.930", "3.000.000", "%106,8"],
+        ["Abone", gate("early_subscribers", "value"), "500", "geçildi"],
+        ["Son 90 günde yükleme", N(gates.get("uploads_90d")), "3", "geçildi"],
+        ["Etkileşimli Shorts (90 gün)", gate("early_shorts_views", "value"),
+         gate("early_shorts_views", "goal"),
+         f"%{gate('early_shorts_views', 'percent', 1)}"],
         ["ÜST KADEME — reklam geliri", "", "", ""],
-        ["Abone", "5.470", "1.000", "geçildi"],
-        ["İzlenme saati (uzun video)", "3,2", "4.000", "%0,08"],
-        ["Etkileşimli Shorts (90 gün)", "3.202.930", "10.000.000", "%32,0"],
+        ["Abone", gate("subscribers", "value"), "1.000", "geçildi"],
+        ["İzlenme saati (uzun video)", gate("watch_hours", "value", 1),
+         "4.000", f"%{gate('watch_hours', 'percent', 2)}"],
+        ["Etkileşimli Shorts (90 gün)", gate("shorts_views", "value"),
+         gate("shorts_views", "goal"), f"%{gate('shorts_views', 'percent', 1)}"],
     ], [W * 0.40, W * 0.21, W * 0.21, W * 0.18], base, bold, align_right=(1, 2, 3)))
     add(Spacer(1, 6))
     para(
-        "Üst kademe için günlük hız 137.400 etkileşimli görüntüleme; bu tempoda "
-        "tahmini tarih <b>1 Aralık 2026</b>. İzlenme saati yolu kapalı: Shorts "
+        f"Üst kademe için günlük hız "
+        f"{gate('shorts_views', 'rate_per_day')} etkileşimli görüntüleme; bu "
+        f"tempoda tahmini tarih <b>{(gates.get('shorts_views') or {}).get('eta') or '–'}</b>. "
+        "İzlenme saati yolu kapalı: Shorts "
         "Akışı'ndaki izlenme süresi 4.000 saatlik eşiğe dahil edilmiyor ve "
         "kanalda uzun video hattı denendi, çalışmadı (186 izlenme, 3,2 saat).", "p"
     )
@@ -186,17 +254,20 @@ def build(path: Path) -> Path:
 
     # -------------------------------------------------------------- growth
     para("3. Büyüme eğrisi", "h1")
-    add(_table([
-        ["Tarih", "Abone", "Toplam izlenme", "Video", "Etkileşimli 90g", "Medyan", "Ölü", "Hit"],
-        ["25 Eyl", "1.070", "2.048.124", "123", "1.748.243", "2.159", "11", "19"],
-        ["27 Eyl", "1.540", "2.618.818", "127", "2.260.227", "2.286", "9", "22"],
-        ["2 Eki", "2.610", "4.206.937", "136", "1.656.383", "2.569", "7", "28"],
-        ["3 Eki", "2.770", "4.426.241", "138", "1.822.334", "2.489", "9", "28"],
-        ["8 Eki", "4.160", "6.529.734", "148", "2.623.498", "2.707", "7", "35"],
-        ["10 Eki", "4.550", "6.702.647", "151", "2.784.527", "2.799", "7", "35"],
-        ["13 Eki", "5.300", "7.942.552", "157", "3.202.930", "2.897", "5", "40"],
-    ], [W * 0.11, W * 0.11, W * 0.19, W * 0.09, W * 0.21, W * 0.12, W * 0.08, W * 0.09],
-        base, bold, align_right=(1, 2, 3, 4, 5, 6, 7)))
+    seen, grow = set(), [["Tarih", "Abone", "Toplam izlenme", "Video",
+                         "Etkileşimli 90g", "Medyan", "Ölü", "Hit"]]
+    for snap in data.get("history") or []:
+        date = (snap.get("at") or "")[:10]
+        if not date or date in seen:
+            continue
+        seen.add(date)
+        grow.append([date[5:], N(snap.get("subscribers")), N(snap.get("views")),
+                     N(snap.get("videos")), N(snap.get("shorts_views_90d")),
+                     N(snap.get("median_views")), N(snap.get("dead_count")),
+                     N(snap.get("hit_count"))])
+    add(_table(grow, [W * 0.11, W * 0.11, W * 0.19, W * 0.09, W * 0.21,
+                      W * 0.12, W * 0.08, W * 0.09],
+               base, bold, align_right=(1, 2, 3, 4, 5, 6, 7)))
     add(Spacer(1, 6))
     para(
         "3 Eylül'de 159 abone vardı. 25 Eylül–13 Ekim arasında abone 1.070 → "
@@ -236,57 +307,44 @@ def build(path: Path) -> Path:
 
     # ------------------------------------------------------------ audience
     para("5. Kitle", "h1")
+    subs_rows = {e[0]: e for e in rows_of("subs_status")}
+    sub_v = (subs_rows.get("SUBSCRIBED") or ["", 0])[1]
+    unsub_v = (subs_rows.get("UNSUBSCRIBED") or ["", 0])[1]
+    unsub_pct = unsub_v / (sub_v + unsub_v) * 100 if (sub_v + unsub_v) else 0
     para(
-        "<b>Kitlenin yapısı stratejik olarak en önemli bölüm.</b> İzlenmelerin "
-        "%99,7'si abone olmayanlardan geliyor; bu bir topluluk değil, akış "
-        "kitlesi.", "note"
-    )
+        "<b>Kitlenin yapısı stratejik olarak en önemli bölüm.</b> "
+        f"İzlenmelerin %{N(unsub_pct, 1)}'i abone olmayanlardan geliyor "
+        f"({N(unsub_v)} / {N(sub_v)}); bu bir topluluk değil, akış kitlesi.",
+        "note")
 
     half = (W - 8 * mm) / 2
-    left = _table([
-        ["Ülke", "İzlenme"],
-        ["Hindistan", "3.725.969"],
-        ["Bangladeş", "197.392"],
-        ["Myanmar", "168.740"],
-        ["Özbekistan", "148.581"],
-        ["ABD", "125.643"],
-        ["Endonezya", "95.859"],
-        ["Nepal", "76.437"],
-        ["Pakistan", "66.837"],
-    ], [half * 0.52, half * 0.48], base, bold, align_right=(1,))
-    right = _table([
-        ["Yaş / cinsiyet", "%"],
-        ["65+ erkek", "19"],
-        ["25–34 erkek", "17"],
-        ["55–64 erkek", "17"],
-        ["45–54 erkek", "14"],
-        ["35–44 erkek", "13"],
-        ["18–24 erkek", "6"],
-        ["25–34 kadın", "4"],
-        ["35–44 kadın", "2"],
-    ], [half * 0.60, half * 0.40], base, bold, align_right=(1,))
+    ctry = [["Ülke", "İzlenme"]]
+    for entry in rows_of("countries")[:8]:
+        ctry.append([COUNTRY.get(entry[0], entry[0]), N(entry[1])])
+    left = _table(ctry, [half * 0.52, half * 0.48], base, bold, align_right=(1,))
+
+    ranked = sorted((r for r in rows_of("demographics") if float(r[2] or 0) > 0),
+                    key=lambda r: -float(r[2]))
+    demo = [["Yaş / cinsiyet", "%"]]
+    for age, gender, pct in ranked[:8]:
+        who = {"male": "erkek", "female": "kadın"}.get(gender, gender)
+        demo.append([f"{AGE.get(age, age)} {who}", N(pct, 1)])
+    right = _table(demo, [half * 0.60, half * 0.40], base, bold, align_right=(1,))
+
     add(Table([[left, right]], colWidths=[half + 4 * mm, half + 4 * mm],
               hAlign="LEFT", style=TableStyle([("VALIGN", (0, 0), (-1, -1), "TOP")])))
     add(Spacer(1, 8))
 
-    add(_table([
-        ["Trafik kaynağı", "İzlenme", "İzlenme dk"],
-        ["Shorts akışı", "6.838.147", "770.581"],
-        ["YouTube araması", "33.240", "3.375"],
-        ["Kanal sayfası", "19.748", "2.453"],
-        ["Abonelikler", "10.751", "1.417"],
-        ["Diğer YouTube sayfaları", "8.388", "1.043"],
-        ["Hashtag", "3.140", "294"],
-        ["Ses sayfası", "2.073", "284"],
-        ["Harici bağlantı", "702", "101"],
-    ], [W * 0.42, W * 0.29, W * 0.29], base, bold, align_right=(1, 2)))
+    traf = [["Trafik kaynağı", "İzlenme", "İzlenme dk"]]
+    for entry in rows_of("traffic")[:9]:
+        traf.append([TRAFFIC.get(entry[0], entry[0]), N(entry[1]), N(entry[2])])
+    add(_table(traf, [W * 0.42, W * 0.29, W * 0.29], base, bold,
+               align_right=(1, 2)))
     add(Spacer(1, 8))
 
     para("Arama terimleri — kanala arama ile gelenler", "h2")
-    para(
-        "<font face='DJ-M'>copper 316 · brass 155 · automata 130 · steampunk 123 · "
-        "bronze 116 · mechanism 105 · titanium 66</font>", "mono"
-    )
+    terms = " · ".join(f"{e[0]} {N(e[1])}" for e in rows_of("search_terms")[:8])
+    para(f"<font face='DJ-M'>{terms}</font>", "mono")
     add(Spacer(1, 5))
     para(
         "Listede <b>tek bir yaratık adı yok</b>. Hepsi malzeme ve mekanizma "
@@ -295,10 +353,14 @@ def build(path: Path) -> Path:
         "Bu, içerik yönü tartışmasında elimizdeki en net sinyal.", "p"
     )
     add(Spacer(1, 4))
-    para(
-        "Cihaz: %97,5 mobil (6.747.741), tablet 73.086, masaüstü 56.400, TV 39.281. "
-        "Paylaşımların yarısı WhatsApp üzerinden (329), ardından kopyala-yapıştır (116).", "cap"
-    )
+    dev = rows_of("devices")
+    dev_total = sum(e[1] for e in dev) or 1
+    dev_text = ", ".join(
+        f"{DEVICE.get(e[0], e[0])} %{N(e[1] / dev_total * 100, 1)} ({N(e[1])})"
+        for e in dev)
+    share = rows_of("sharing")[:3]
+    share_text = ", ".join(f"{e[0]} {N(e[1])}" for e in share)
+    para(f"Cihaz: {dev_text}. En çok paylaşılan yer: {share_text}.", "cap")
 
     add(PageBreak())
 
@@ -390,7 +452,8 @@ def build(path: Path) -> Path:
         "Bu rapor <font face='DJ-M'>channel-content-os</font> deposundaki "
         "otomatik analiz hattının çıktılarından derlendi. Tüm rakamlar YouTube "
         "Data API ve YouTube Analytics API'sinden alınmıştır; elle girilen "
-        "veri yoktur. Ölçüm tarihleri bölüm başlıklarında belirtilmiştir.", "cap"
+        f"veri yoktur. Tek toplama: {stamp} UTC — ekler de aynı dosyadan "
+        "üretilmiştir.", "cap"
     )
 
     doc.build(out)
@@ -398,5 +461,6 @@ def build(path: Path) -> Path:
 
 
 if __name__ == "__main__":
-    target = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("unfoldables_rapor.pdf")
-    print(build(target))
+    payload = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+    target = Path(sys.argv[2]) if len(sys.argv) > 2 else Path("unfoldables_rapor.pdf")
+    print(build(payload, target))
