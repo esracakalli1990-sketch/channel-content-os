@@ -1,26 +1,5 @@
 [
   {
-    "queued_at": "2026-10-14T09:12:54+00:00",
-    "publish_at": "2026-10-14T23:00:00+00:00",
-    "file_id": "BQACAgQAAxkBAAIENGrPR1IDWTdXjua_ITHiCHVpXp3iAALqHgACjJV5Ui3ijcUn5d3IPQQ",
-    "file_size": 3917240,
-    "caption": "1",
-    "concept": {
-      "shape": "fluted parabolic trough",
-      "material": "brushed duralumin and oiled teak strips",
-      "internal_detail": "slender pushrods, miniature wire pulleys, and counterweight brass cams",
-      "button": "a small knurled brass sliding lever recessed into the keel",
-      "button_short": "the small knurled brass sliding lever on the keel",
-      "creature": "wandering albatross",
-      "shell_mechanic": "The parabolic trough divides down its central keel and the two halves pivot upward to form high curved flank plates",
-      "emerging_parts": "Two long multi-jointed articulated wings and a needle-tipped beak housing",
-      "signature_move": "its long segmented wings extend fully outward on their scissor linkages and its slender head dips forward twice on an articulated neck pin",
-      "turkish": "Gezgin albatros (uzun kanatlı açık deniz kuşu) — yivli parabolik oluk, fırçalanmış duralümin ve yağlanmış tik ağacı"
-    },
-    "template_version": "22b0547924d3",
-    "idea_version": "18ae880d0298"
-  },
-  {
     "queued_at": "2026-10-14T09:14:58+00:00",
     "publish_at": "2026-10-15T17:00:00+00:00",
     "file_id": "BQACAgQAAxkBAAIENmrPR7kFpx2a5oFga1a5o6edVuniAALtHgACjJV5Ur6gkbz9HnyfPQQ",
