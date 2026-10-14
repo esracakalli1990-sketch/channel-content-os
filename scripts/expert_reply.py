@@ -361,8 +361,10 @@ def build(data: dict, path: Path) -> Path:
         f"<b>Süre dağılımı.</b> Brifingimiz “9–11 sn” diyordu; gerçek dağılım: "
         f"{r['seconds'].get(9, 0)} video 9 sn, {r['seconds'].get(11, 0)} video "
         f"11 sn, {r['seconds'].get(8, 0)} video 8 sn. Ayrıca “sessiz” "
-        "ifadesini doğrulamadan yazdık; ses sayfası trafiği sesin var olabileceğini "
-        "düşündürüyor, operatörden teyit alacağız."
+        "ifadesini doğrulamadan yazdık ve yanlıştı: operatör teyit etti, "
+        "videolarda konuşma yok ama mekanik ses efektleri var (dişli, kapak "
+        "açılması, düğme basma). Doğru ifade “konuşmasız, mekanik ses "
+        "efektli”."
     )
     para(
         f"<b>Toplam farkı.</b> Kanal sayacı {N(r['gap']['channel'])}, video "
@@ -524,7 +526,9 @@ def build(data: dict, path: Path) -> Path:
         "<b>Ses-dil sınıflandırıcısı.</b> “İlk 2,5 saniyede İngilizce "
         "seslendirme YouTube'un sınıflandırıcısıyla Tier-1 kümelere "
         "yönlendirilir” iddiasının dayanağı bir blog gibi görünüyor. "
-        "YouTube'un kendisinden ya da bir ölçümden doğrulayabildiniz mi?",
+        "YouTube'un kendisinden ya da bir ölçümden doğrulayabildiniz mi? "
+        "Not: kanalda konuşma yok, yalnızca mekanik ses efektleri var; "
+        "iddia konuşmasız içerik için ne ifade ediyor?",
         "<b>“Ret riskini %80 düşürür.”</b> Bu rakamı hangi veriden "
         "çıkardınız?",
         "<b>Kademe geçişi.</b> Alt kademeden üst kademeye geçişte ikinci bir "
@@ -585,8 +589,8 @@ def build(data: dict, path: Path) -> Path:
          "kohort testlerine eklenir; “vekil” olarak etiketlenir. Test sayısı "
          "artacağı için Holm düzeltmesi daha katı olur."],
         ["6", "Brifing düzeltmeleri",
-         "“9–11 sn” gerçek dağılımla, “sessiz” ise operatör teyidine kadar "
-         "kaldırılır. Toplam farkı notu eklenir. Belge yeniden üretilip "
+         "“9–11 sn” gerçek dağılımla, “sessiz” ise “konuşmasız, mekanik ses "
+         "efektli” olarak düzeltilir. Toplam farkı notu eklenir. Belge yeniden üretilip "
          "size iletilir."],
         ["7", "Önceden kayıtlı hipotez (isteğe bağlı)",
          "Sıcak/soğuk metal hipotezi, tarihi ve karar kuralı (n, test, "
@@ -603,7 +607,72 @@ def build(data: dict, path: Path) -> Path:
         "ileriye dönük ve ölçülebilir bir testle ele alınacak.", "note"
     )
 
-    para("6. Yöntem", "h1")
+    # ------------------------------------------------------------------ 7
+    live = [v for v in data["videos"] if v.get("views")]
+    why = sum(1 for v in live if v["title"].lower().startswith("why does"))
+    openers = len({" ".join(v["title"].lower().split()[:3]) for v in live})
+    top = sorted(live, key=lambda v: -v["views"])[:20]
+    share = sum(v["views"] for v in top) / sum(v["views"] for v in live) * 100
+    para("7. Revizyon paketine ön değerlendirme", "h1")
+    para(
+        "Bu notu hazırlarken siz “Kod Yamaları ve YPP Başlık/Açıklama "
+        "Revizyon Paketi”ni de ilettiniz. Henüz hiçbir şey uygulanmadı. "
+        "Ön değerlendirmemiz:"
+    )
+    para(
+        "<b>Aldığımız kısımlar.</b> Birim ayrımı, “90 günlük değer ömür boyu "
+        "toplamı aşamaz” karantinası, bozuk/silinmiş yükleme dışlaması ve "
+        "engagedViews/views vekil metriği Bölüm 5'teki 1, 2 ve 5. "
+        "maddelerimizle aynı; kavramları alacağız."
+    )
+    para("<b>Uygulamadan önce konuşmak istediklerimiz:</b>")
+    table([
+        ["Konu", "Gözlemimiz"],
+        ["Dayanak: tek kalıp",
+         f"Paket 159 videonun tamamının “Why does this…” kalıbında olduğunu "
+         f"söylüyor. Veri setimizde {why} başlık böyle başlıyor; "
+         f"{openers} farklı üç sözcüklü açılış var. Tekrarlayan içerik riski "
+         "gerçek bir soru, ama başlıklar tek kalıp değil."],
+        ["Zamanlama",
+         f"27 videonun başlık/açıklaması değişecek; ilk 20 video izlenmenin "
+         f"%{N(share, 1)}'ini taşıyor. YPP incelemesi sürerken en çok izlenen "
+         "videoların başlığını değiştirmek, arama ve öneri etkisi ölçülmeden "
+         "geri alınamaz bir risk. İnceleme bitene kadar dokunmamayı öneriyoruz."],
+        ["Kodda hazır sonuç",
+         "Test notları sonucu baştan yazıyor (“19 hitsiz videonun asıl nedeni "
+         "süre”, “11 sn %57 daha yüksek abone”, “soğuk metaller abone dönüşümünü %75 düşürür”). "
+         "Bölüm 2'deki zaman kontrollü testlerimiz bunları desteklemiyor. "
+         "Şablon testi de zaman kontrolü olmadan yapılıyor."],
+        ["Prompt kuralları",
+         "11 sn kilidi, 70/20/10 konu ağırlığı ve %85 sıcak metal, henüz "
+         "kanıtlanmamış hipotezleri kural yapıyor ve ileriye dönük test için "
+         "gereken çeşitliliği kapatıyor. Paketin kendisi “katı tekil kısıt "
+         "yazmayın” diyor; bu madde onunla çelişiyor."],
+        ["İngilizce sesli kanca",
+         "Videolarda konuşma yok; seslendirme eklemek format değişikliği. "
+         "Dayanağı Bölüm 4, soru 1'de sorduğumuz sınıflandırıcı iddiası."],
+        ["Açıklama metinleri",
+         "“Forged”, “hand-hammered”, “authentic clockwork linkages”, "
+         "“proprietary design pipeline”, “19th-century” gibi ifadeler yapay "
+         "zekâ üretimi görüntülere gerçek bir nesne ya da mekanizma izlenimi "
+         "veriyor; yapay zekâ beyanıyla ve şeffaflık amacıyla çelişebilir."],
+        ["Kod uyumu",
+         "Betik pandas/numpy gerektiriyor (depoda yok), veriyi PDF'ten "
+         "kazınmış /tmp/page_*.txt dosyalarından okuyor, sütun adları "
+         "veri setimizle uyuşmuyor ve “id <= 155” gibi sabitler içeriyor. "
+         "Dosyayı olduğu gibi eklemeyeceğiz; kavramları kendi testlerimizle "
+         "uygulayacağız."],
+    ], [0.22, 0.78])
+    para(
+        "<b>Önerimiz:</b> ölçüm düzeltmelerini uygulamak; başlık, açıklama, "
+        "prompt ve seslendirme değişikliklerini YPP kararından sonraya "
+        "bırakmak ve sonra yalnızca yeni yüklemelerde, ileriye dönük ve "
+        "ölçülebilir biçimde denemek. Başlık tekdüzeliğinin YPP reddine "
+        "yol açtığına dair bir kanıt biliyorsanız lütfen paylaşın; bu, "
+        "sıralamayı değiştirebilir.", "note"
+    )
+
+    para("8. Yöntem", "h1")
     para(
         f"Veri: tek toplama, {stamp} UTC (data/expert_dataset.json); "
         f"{r['n_all']} kayıt, bunlardan {len(r['deleted'])} silinmiş. "
