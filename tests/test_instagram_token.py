@@ -117,5 +117,29 @@ class SecretWriteTests(unittest.TestCase):
                       str(caught.exception))
 
 
+class DeleteSecretTests(unittest.TestCase):
+    """The probe that proves the PAT can write secrets writes a throwaway one
+    and deletes it, so delete has to hit the right path with the right verb --
+    and refuse a malformed repository before any call is made."""
+
+    def test_delete_uses_the_delete_verb_on_the_secret_path(self):
+        seen = {}
+
+        def fake_call(path, *, method="GET", body=None):
+            seen["path"], seen["method"] = path, method
+            return {}
+
+        with patch.object(github_secrets, "_call", side_effect=fake_call):
+            github_secrets.delete_secret("o/r", "IG_PAT_PROBE")
+        self.assertEqual(seen["method"], "DELETE")
+        self.assertEqual(seen["path"], "/repos/o/r/actions/secrets/IG_PAT_PROBE")
+
+    def test_a_malformed_repository_is_rejected_before_any_call(self):
+        with patch.object(github_secrets, "_call") as call:
+            with self.assertRaises(github_secrets.SecretWriteError):
+                github_secrets.delete_secret("just-a-name", "X")
+        call.assert_not_called()
+
+
 if __name__ == "__main__":
     unittest.main()

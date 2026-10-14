@@ -120,3 +120,19 @@ def update_secret(repository: str, name: str, value: str) -> None:
         body={"encrypted_value": _seal(value, public_key), "key_id": key_id},
     )
     logger.info("Updated secret %s on %s", name, repository)
+
+
+def delete_secret(repository: str, name: str) -> None:
+    """Remove the Actions secret *name* from *repository*.
+
+    Exists for one job: proving the personal access token can really write
+    secrets, which cannot be learned by reading the key (read and write are
+    separate permissions). The proof writes a throwaway secret and deletes it
+    again, so nothing the pipeline depends on is ever touched.
+    """
+    if "/" not in repository:
+        raise SecretWriteError(
+            f"Repository must be given as 'owner/repo', got {repository!r}."
+        )
+    _call(f"/repos/{repository}/actions/secrets/{name}", method="DELETE")
+    logger.info("Deleted secret %s on %s", name, repository)

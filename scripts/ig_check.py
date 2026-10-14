@@ -13,6 +13,12 @@ token is dead by the second look.
 
 Prints the account name and whether the id matches IG_USER_ID. Never the token.
 
+It also proves the personal access token (GH_SECRET_TOKEN) can really write
+Actions secrets, because the weekly refresh cannot show that for days. Reading
+the repository's public key would not prove it -- read and write are separate
+permissions -- so the proof is a round trip: write a throwaway secret, delete
+it. Nothing the pipeline uses is touched.
+
 Usage: ig_check.py
 """
 from __future__ import annotations
@@ -24,7 +30,37 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
-from channel_ops import instagram_uploader as ig  # noqa: E402
+from channel_ops import github_secrets, instagram_uploader as ig  # noqa: E402
+
+
+PROBE_NAME = "IG_PAT_PROBE"
+
+
+def check_pat() -> bool:
+    """Round-trip a throwaway secret to show the PAT can write them."""
+    repository = os.getenv("GITHUB_REPOSITORY", "").strip()
+    if not os.getenv("GH_SECRET_TOKEN", "").strip():
+        print("  ✗ GH_SECRET_TOKEN boş — yenileme yeni token'ı yazamaz")
+        return False
+    if not repository:
+        print("  ✗ GITHUB_REPOSITORY yok; yalnızca Actions içinde çalışır")
+        return False
+    try:
+        github_secrets.update_secret(repository, PROBE_NAME, "probe")
+    except github_secrets.SecretWriteError as exc:
+        print("  ✗ PAT secret YAZAMIYOR")
+        print(f"    {exc}")
+        return False
+    try:
+        github_secrets.delete_secret(repository, PROBE_NAME)
+    except github_secrets.SecretWriteError as exc:
+        # Written but not removed: harmless, but worth saying so it is not a
+        # mystery secret in the list later.
+        print(f"  ✓ PAT secret yazabiliyor, ama {PROBE_NAME} silinemedi: {exc}")
+        print(f"    {PROBE_NAME} secret'ını elle silebilirsin; hiçbir şey ona bağlı değil.")
+        return True
+    print("  ✓ PAT secret yazıp silebiliyor (deneme secret'ı kaldırıldı)")
+    return True
 
 
 def main() -> int:
@@ -49,7 +85,9 @@ def main() -> int:
         # A valid token for the wrong account would publish to the wrong place.
         print("  ⚠ Token başka bir hesaba ait görünüyor; paylaşım yanlış yere gider.")
         return 1
-    return 0
+
+    print("\nYenileme anahtarı (GH_SECRET_TOKEN):")
+    return 0 if check_pat() else 1
 
 
 if __name__ == "__main__":
