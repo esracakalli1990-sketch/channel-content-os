@@ -19,6 +19,9 @@ name: Shorts — araçlar
 #                   çalışmayacaksa. videos.update verilen bölümün tamamını
 #                   değiştirdiği için sıra: backfill-dry, backfill-one,
 #                   sonra batch/all.
+#   ig-check      : Instagram token'ı geçerli mi, hangi hesap? Salt okunur.
+#                   Yenileme işi 24 saatten genç token'ı reddettiği için
+#                   yeni token'ı bu sınar.
 #   export-dataset: her videonun ve her tablonun tam verisini
 #                   data/expert_dataset.json'a yazar (dış rapor eki için)
 #   ypp-preflight : başvurudan önce makineyle görülebilen engelleri tarar
@@ -37,7 +40,7 @@ on:
         type: choice
         options: [resend, audience, channel, audit, thumbnail, thumbnail-preview,
                   backfill-dry, backfill-one, backfill-batch, backfill-all,
-                  ypp-preflight, export-dataset]
+                  ypp-preflight, export-dataset, ig-check]
 
 concurrency:
   group: shorts-tools
@@ -72,6 +75,8 @@ jobs:
           YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
           YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
           YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
         run: |
           if [ "${{ inputs.job }}" = "audit" ]; then
             python scripts/channel_audit.py
@@ -79,6 +84,8 @@ jobs:
             python scripts/ypp_preflight.py
           elif [ "${{ inputs.job }}" = "export-dataset" ]; then
             python scripts/export_dataset.py
+          elif [ "${{ inputs.job }}" = "ig-check" ]; then
+            python scripts/ig_check.py
           elif [ "${{ inputs.job }}" = "backfill-dry" ]; then
             python scripts/backfill_video_metadata.py
           elif [ "${{ inputs.job }}" = "backfill-one" ]; then
