@@ -19,6 +19,9 @@ name: Shorts — araçlar
 #                   çalışmayacaksa. videos.update verilen bölümün tamamını
 #                   değiştirdiği için sıra: backfill-dry, backfill-one,
 #                   sonra batch/all.
+#   ypp-preflight : başvurudan önce makineyle görülebilen engelleri tarar
+#                   (reddedilmiş/işlenmemiş video, kısıtlı özellikler,
+#                   beyan edilmemiş yapay zeka içeriği). Hiçbir şey yazmaz.
 #   audit    : her videonun ve her günün ham verisini JSON olarak loga
 #              basar; "bu değişiklik işe yaradı mı" sorusu ancak tam
 #              veriyle cevaplanıyor, telefona giden rapor son on videoyu
@@ -31,7 +34,8 @@ on:
         required: true
         type: choice
         options: [resend, audience, channel, audit, thumbnail, thumbnail-preview,
-                  backfill-dry, backfill-one, backfill-batch, backfill-all]
+                  backfill-dry, backfill-one, backfill-batch, backfill-all,
+                  ypp-preflight]
 
 concurrency:
   group: shorts-tools
@@ -69,6 +73,8 @@ jobs:
         run: |
           if [ "${{ inputs.job }}" = "audit" ]; then
             python scripts/channel_audit.py
+          elif [ "${{ inputs.job }}" = "ypp-preflight" ]; then
+            python scripts/ypp_preflight.py
           elif [ "${{ inputs.job }}" = "backfill-dry" ]; then
             python scripts/backfill_video_metadata.py
           elif [ "${{ inputs.job }}" = "backfill-one" ]; then
