@@ -165,7 +165,9 @@
     "cryptic walking stick",
     "singing whale",
     "wandering albatross",
-    "tuatara"
+    "tuatara",
+    "underwater ROV submersible",
+    "domestic chicken"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -300,6 +302,8 @@
     "faceted decagonal prism",
     "curved tubular pod",
     "fluted parabolic trough",
-    "truncated hexagonal pyramid"
+    "truncated hexagonal pyramid",
+    "ribbed toroidal ring",
+    "creased trapezoidal prism"
   ]
 }
