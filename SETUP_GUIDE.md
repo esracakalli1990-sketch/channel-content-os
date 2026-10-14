@@ -201,15 +201,35 @@ Bu içerik genel izleyiciye yönelik, çocuklara özel değil.
 
 ---
 
-## 8. Instagram (sonra — acelesi yok)
+## 8. Instagram
 
-- [ ] Instagram → **Ayarlar → Hesap türü → Profesyonel → İşletme (Business)**
-- [ ] Facebook **Sayfası** oluştur (aynı isim) ve Instagram'a bağla
-- [ ] [developers.facebook.com](https://developers.facebook.com) → **Create App** → tip: **Business**
-- [ ] Ürün ekle: **Instagram Graph API**
-- [ ] Not et: **App ID**, **App Secret**, **Instagram Business Account ID**, **Page ID**
+Kod **Instagram girişiyle API** akışını kullanıyor (`graph.instagram.com`). Facebook
+Sayfası gerektirmez; eski rehberdeki "Facebook girişli" yol bu projede kullanılmıyor.
 
-> Meta'nın token'ı 60 günde bir yenilenmeli — Claude otomatik yenileyen kodu yazacak.
+**Token'ı üretmek (ilk kurulumda ve süresi dolduysa)**
+
+- [ ] developers.facebook.com → uygulama → sol menü **Instagram → Instagram girişiyle API kurulumu**
+- [ ] **1. Generate access tokens** bölümünü aç → hesabın yanında **Generate token** → izin ver
+- [ ] Token'ı kopyala → GitHub depo → Settings → Secrets and variables → Actions → **`IG_ACCESS_TOKEN`**
+- [ ] Uygulama modu **Development** kalabilir; Live'a çevirmeye gerek yok, webhook alanlarına dokunma
+
+**Otomatik yenileme.** Token 60 gün geçerli. `instagram-token.yml` her pazartesi yeniler ve
+yeni değeri secret'a yazar. Bunun için **`GH_SECRET_TOKEN`** gerekir: GitHub'ın kendi
+`GITHUB_TOKEN`'ı Actions secret'larına yazamaz.
+
+- [ ] github.com/settings/personal-access-tokens/new → *Only select repositories* → `channel-content-os`
+- [ ] Yalnızca **Repository → Secrets: Read and write** (Metadata: Read-only kendiliğinden gelir)
+- [ ] Süre 1 yıl → değer **`GH_SECRET_TOKEN`** secret'ına
+
+**Bilinmesi gerekenler**
+
+- Süresi **dolmuş** token yenilenemez, yeniden üretilmesi gerekir. Son ölüm 27 Eylül'dü ve
+  20 gün fark edilmedi; Telegram uyarısı artık 14 gün önceden gelir.
+- **24 saatten genç** token da yenilenemez. Yeni konan token yenileme işine bir gün "bozuk" görünür.
+  Bu yüzden onu sınamak için **`shorts-tools` → `ig-check`** işi var: token'ın geçerli olduğunu,
+  hangi hesap olduğunu ve `GH_SECRET_TOKEN`'ın secret yazıp silebildiğini kontrol eder.
+- `GH_SECRET_TOKEN` 1 yıl sonra (Ekim 2027) dolar. Dolarsa yenileme işi Telegram'a haber verir.
+- Paylaşımın gerçekten gittiğini yayın kaydında `instagram_media_id` dolu mu diye görürsün.
 
 ---
 
