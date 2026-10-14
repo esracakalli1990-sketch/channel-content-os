@@ -19,6 +19,8 @@ name: Shorts — araçlar
 #                   çalışmayacaksa. videos.update verilen bölümün tamamını
 #                   değiştirdiği için sıra: backfill-dry, backfill-one,
 #                   sonra batch/all.
+#   export-dataset: her videonun ve her tablonun tam verisini
+#                   data/expert_dataset.json'a yazar (dış rapor eki için)
 #   ypp-preflight : başvurudan önce makineyle görülebilen engelleri tarar
 #                   (reddedilmiş/işlenmemiş video, kısıtlı özellikler,
 #                   beyan edilmemiş yapay zeka içeriği). Hiçbir şey yazmaz.
@@ -35,7 +37,7 @@ on:
         type: choice
         options: [resend, audience, channel, audit, thumbnail, thumbnail-preview,
                   backfill-dry, backfill-one, backfill-batch, backfill-all,
-                  ypp-preflight]
+                  ypp-preflight, export-dataset]
 
 concurrency:
   group: shorts-tools
@@ -75,6 +77,8 @@ jobs:
             python scripts/channel_audit.py
           elif [ "${{ inputs.job }}" = "ypp-preflight" ]; then
             python scripts/ypp_preflight.py
+          elif [ "${{ inputs.job }}" = "export-dataset" ]; then
+            python scripts/export_dataset.py
           elif [ "${{ inputs.job }}" = "backfill-dry" ]; then
             python scripts/backfill_video_metadata.py
           elif [ "${{ inputs.job }}" = "backfill-one" ]; then
@@ -87,6 +91,20 @@ jobs:
             python -m channel_ops shorts-thumbnail --preview
           else
             python -m channel_ops "shorts-${{ inputs.job }}"
+          fi
+
+      - name: Veri setini işle
+        if: ${{ inputs.job == 'export-dataset' }}
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/expert_dataset.json
+          if git diff --cached --quiet; then
+            echo "Değişiklik yok."
+          else
+            git commit -m "veri: dis rapor icin tam veri seti"
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
           fi
 
       - name: Beyan kaydını işle
