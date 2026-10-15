@@ -40,5 +40,26 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "18ae880d0298"
+  },
+  {
+    "queued_at": "2026-10-15T12:24:14+00:00",
+    "publish_at": "2026-10-16T17:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIERGrQxbMF4XqZqv3BF49tDNVHaTutAAL7IQACjJWBUjb6hoWFuiXUPQQ",
+    "file_size": 3115420,
+    "caption": "2",
+    "concept": {
+      "shape": "creased trapezoidal prism",
+      "material": "patinated sheet copper and dark oiled rosewood ribs",
+      "internal_detail": "miniature brass bevel gears, coiled steel recoil springs, and linkage rods",
+      "button": "a spring-loaded brass rivet head on the top surface",
+      "button_short": "the spring-loaded brass rivet head on the top surface",
+      "creature": "domestic chicken",
+      "shell_mechanic": "The faceted side plates swing outward and upward along arched hinge pins like mechanical wings",
+      "emerging_parts": "A jointed copper-plated neck with a serrated comb plate and two thin three-toed brass legs",
+      "signature_move": "its notched wooden tail plate flicks upward twice, and its hinged neck mechanism bobs forward and down in a sharp clockwork peck",
+      "turkish": "Tavuk (kümes kuşu) — katlanmış yamuk prizma, patinalı bakır sac ve koyu gül ağacı"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
   }
 ]
