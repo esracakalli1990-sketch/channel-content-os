@@ -19,5 +19,26 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "18ae880d0298"
+  },
+  {
+    "queued_at": "2026-10-15T12:16:09+00:00",
+    "publish_at": "2026-10-15T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIEQmrQw6NsJUlPPVkxLq1QmGvyx7BOAAL3IQACjJWBUshUgFuP7KE6PQQ",
+    "file_size": 2986339,
+    "caption": "1",
+    "concept": {
+      "shape": "ribbed toroidal ring",
+      "material": "polished chrome-plated steel and flexible blackened rubber gaskets",
+      "internal_detail": "nested planetary gear clusters, micro-coaxial wiring, and illuminated blue LED indicators",
+      "button": "a small knurled steel toggle centered inside the inner rim",
+      "button_short": "the small knurled steel toggle inside the inner rim",
+      "creature": "underwater ROV submersible",
+      "shell_mechanic": "The outer toroidal ring splits into two arched thruster housings that swing outward ninety degrees",
+      "emerging_parts": "A central spherical camera turret and two miniature articulated manipulator arms",
+      "signature_move": "its twin ducted propeller hubs spin briefly with a faint mechanical whine, and its central glass camera dome pivots upward thirty degrees on its elevation bracket",
+      "turkish": "Sualtı robotu ROV (derin deniz araştırma aracı) — nervürlü dairesel halka, cilalı krom kaplama çelik ve siyah kauçuk"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
   }
 ]
