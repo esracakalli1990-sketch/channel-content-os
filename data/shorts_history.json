@@ -167,7 +167,9 @@
     "wandering albatross",
     "tuatara",
     "underwater ROV submersible",
-    "domestic chicken"
+    "domestic chicken",
+    "marine worm",
+    "pelagic siphonophore"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -251,7 +253,6 @@
     "flattened triangular wedge",
     "grooved copper cylinder",
     "faceted annular ring",
-    "chamfered rectangular cassette",
     "sixty-degree circular sector",
     "thick biconvex lens",
     "bowed quadrilateral plate",
@@ -304,6 +305,8 @@
     "fluted parabolic trough",
     "truncated hexagonal pyramid",
     "ribbed toroidal ring",
-    "creased trapezoidal prism"
+    "creased trapezoidal prism",
+    "fluted cylindrical spool",
+    "chamfered rectangular cassette"
   ]
 }
