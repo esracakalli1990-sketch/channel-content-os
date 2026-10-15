@@ -1,26 +1,5 @@
 [
   {
-    "queued_at": "2026-10-14T09:14:58+00:00",
-    "publish_at": "2026-10-15T17:00:00+00:00",
-    "file_id": "BQACAgQAAxkBAAIENmrPR7kFpx2a5oFga1a5o6edVuniAALtHgACjJV5Ur6gkbz9HnyfPQQ",
-    "file_size": 2664156,
-    "caption": "2",
-    "concept": {
-      "shape": "truncated hexagonal pyramid",
-      "material": "mottled green serpentine stone and patinated copper brackets",
-      "internal_detail": "coiled copper springs, flat ratchet pawls, and planetary brass gear trains",
-      "button": "a circular bronze push-plate flush with the top facet",
-      "button_short": "the circular bronze push-plate on the top facet",
-      "creature": "tuatara",
-      "shell_mechanic": "The hexagonal side facets hinge downward like outward petals until they rest flat",
-      "emerging_parts": "Four splayed jointed legs and an angular crest-backed lizard head",
-      "signature_move": "its spined copper dorsal ridge ratchets upward along a curved rail and its faceted head plate pivots once to the right with a faint metallic tick",
-      "turkish": "Tuatara (Yeni Zelanda'ya özgü, sırtı dikenli kadim sürüngen) — kesik altıgen piramit, benekli yeşil serpantin taşı ve patinalı bakır"
-    },
-    "template_version": "22b0547924d3",
-    "idea_version": "18ae880d0298"
-  },
-  {
     "queued_at": "2026-10-15T12:16:09+00:00",
     "publish_at": "2026-10-15T23:00:00+00:00",
     "file_id": "BQACAgQAAxkBAAIEQmrQw6NsJUlPPVkxLq1QmGvyx7BOAAL3IQACjJWBUshUgFuP7KE6PQQ",
