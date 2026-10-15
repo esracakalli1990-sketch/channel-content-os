@@ -31,6 +31,10 @@ from reportlab.platypus import (
     TableStyle,
 )
 
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
+
+from channel_ops import channel_analysis as ca  # noqa: E402
+
 FONT_DIR = Path("/usr/share/fonts/truetype/dejavu")
 INK = colors.HexColor("#1a1a1a")
 MUTED = colors.HexColor("#5f6368")
@@ -150,13 +154,15 @@ def build(dataset: dict, path: Path) -> Path:
         "yüzdesi %100'ü aşabilir — Shorts'ta tekrar izlemeler sayılır."
     )
 
-    videos = sorted(dataset.get("videos") or [],
+    videos = sorted(ca.settle_deleted(dataset.get("videos") or []),
                     key=lambda r: r.get("published_at", ""))
     head = ["#", "Tarih", "Sa", "Gün", "Yaratık", "Metal", "sn", "İzlenme",
-            "İzl%", "Ab/1k", "Beğ/1k", "Yor/1k", "Şablon"]
+            "İzl%", "Kanca%", "Ab/1k", "Beğ/1k", "Yor/1k", "Şablon"]
     rows, marks = [head], {}
     for index, row in enumerate(videos, start=1):
-        if row.get("hit"):
+        if row.get("deleted"):
+            marks[index] = colors.HexColor("#eeeeee")
+        elif row.get("hit"):
             marks[index] = HIT
         elif row.get("dead"):
             marks[index] = DEAD
@@ -170,14 +176,24 @@ def build(dataset: dict, path: Path) -> Path:
             str(row.get("seconds") or "–"),
             _num(row.get("views")),
             _num(row.get("retention"), 1),
+            _num(row.get("engaged_ratio"), 1),
             _num(row.get("subs_per_1k"), 2),
             _num(row.get("likes_per_1k"), 1),
             _num(row.get("comments_per_1k"), 2),
-            row.get("template", ""),
+            row.get("template", "") + (" silinmiş" if row.get("deleted") else ""),
         ])
-    widths = [W * w for w in (.030, .068, .026, .034, .185, .072, .028,
-                              .080, .058, .058, .060, .058, .063)]
-    add(_grid(rows, widths, size=6.4, right=(7, 8, 9, 10, 11), marks=marks))
+    widths = [W * w for w in (.030, .066, .024, .032, .170, .068, .026,
+                              .074, .054, .054, .054, .056, .054, .082)]
+    add(_grid(rows, widths, size=6.4, right=(7, 8, 9, 10, 11, 12), marks=marks))
+    add(Spacer(1, 4))
+    para(
+        "<b>Kanca%</b> = engagedViews / views (Analytics, kanalın ömrü boyunca). "
+        "Bu bir VEKİL: views tekrar izlemeleri de sayar, Studio'nun “izlemeyi "
+        "seçti / kaydırıp geçti” oranı ise yalnızca ilk gösterimi sayar; iki "
+        "sayı eşdeğer değildir. 120 saatten genç videolarda Analytics henüz "
+        "yetişmediği için boş bırakıldı. Gri satır: Data API'nin artık "
+        "döndürmediği (silinmiş) video; hiçbir hesaba girmiyor.", "cap"
+    )
     add(PageBreak())
 
     # -------------------------------------------------- EK B: daily series
@@ -277,13 +293,15 @@ def build(dataset: dict, path: Path) -> Path:
     para("EK D — Ölçüm anlık görüntüleri", "h1")
     para(
         "Her haftalık analiz çalışmasında kaydedilen anlık görüntü. "
-        "<b>shorts_measure</b> sütunu önemli: 2 Ekim'de ölçü birimi ham "
+        "<b>Ölçü</b> sütunu önemli: 28 Eylül'de ölçü birimi ham "
         "görüntülemeden etkileşimli görüntülemeye çevrildi, ve iki birim "
         "birbirine karıştırılmadan karşılaştırılamaz. Bundan önceki "
-        "kayıtlar farklı bir cetvelle alınmıştır."
+        "kayıtlar farklı bir cetvelle alınmıştır. <b>Şüpheli</b> işaretli "
+        "satırda 90 günlük değer kanalın ömür boyu toplamından büyük "
+        "(imkânsız); kayıt silinmedi ama hiçbir hıza girmiyor."
     )
     head = ["Zaman (UTC)", "Abone", "Toplam izlenme", "Video",
-            "Shorts 90g", "Ölçü", "Medyan", "İzl%", "Ölü", "Hit", "Olgun"]
+            "Shorts 90g", "Ölçü", "Medyan", "İzl%", "Ölü", "Hit", "Olgun", "Not"]
     rows = [head]
     for snap in dataset.get("history") or []:
         rows.append([
@@ -298,9 +316,10 @@ def build(dataset: dict, path: Path) -> Path:
             _num(snap.get("dead_count")),
             _num(snap.get("hit_count")),
             _num(snap.get("mature_count")),
+            "şüpheli" if ca.suspect_snapshot(snap) else "",
         ])
-    widths = [W * w for w in (.145, .080, .120, .070, .110, .085,
-                              .085, .070, .060, .060, .075)]
+    widths = [W * w for w in (.135, .075, .110, .065, .100, .080,
+                              .080, .065, .055, .055, .070, .110)]
     add(_grid(rows, widths, size=7, right=tuple(range(1, 5)) + (6, 7, 8, 9, 10)))
     add(Spacer(1, 10))
 

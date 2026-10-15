@@ -65,7 +65,7 @@ class HolmTests(unittest.TestCase):
         self.assertNotIn("p_adjusted", results[1])
 
 
-class TimeSplitTests(unittest.TestCase):
+class CommonWindowTests(unittest.TestCase):
     def _rows(self, spans):
         rows = []
         for label, start, count in spans:
@@ -76,21 +76,24 @@ class TimeSplitTests(unittest.TestCase):
                 })
         return rows
 
-    def test_groups_in_separate_stretches_are_flagged(self):
+    def test_groups_in_separate_stretches_have_no_common_window(self):
         rows = self._rows([("eski", 40, 10), ("yeni", 10, 10)])
-        self.assertTrue(ca._is_time_split(rows, "template", "eski", "yeni"))
+        self.assertIsNone(ca.common_window(rows, "template", "eski", "yeni"))
 
-    def test_groups_that_ran_side_by_side_are_not(self):
+    def test_groups_that_ran_side_by_side_share_their_overlap(self):
         rows = self._rows([("a", 30, 20), ("b", 25, 20)])
-        self.assertFalse(ca._is_time_split(rows, "template", "a", "b"))
+        first, last = ca.common_window(rows, "template", "a", "b")
+        self.assertEqual(first, (NOW - timedelta(days=25)).date().isoformat())
+        self.assertEqual(last, (NOW - timedelta(days=11)).date().isoformat())
 
-    def test_a_missing_group_is_not_flagged(self):
+    def test_a_missing_group_has_no_window(self):
         rows = self._rows([("a", 30, 5)])
-        self.assertFalse(ca._is_time_split(rows, "template", "a", "yok"))
+        self.assertIsNone(ca.common_window(rows, "template", "a", "yok"))
 
-    def test_the_warning_reaches_the_comparison(self):
-        """A template is replaced rather than run alongside its predecessor,
-        so this is the normal case for that dimension, not an edge case."""
+    def test_separate_stretches_produce_no_p_value_at_all(self):
+        """A template is replaced rather than run alongside its predecessor, so
+        this is the normal case for that dimension. The old behaviour printed
+        a p-value with a warning beside it; the p-value is what gets quoted."""
         rows = []
         for label, start in (("eski", 40), ("yeni", 10)):
             for day in range(10):
@@ -100,9 +103,32 @@ class TimeSplitTests(unittest.TestCase):
                     "retention": 120.0, "subs_per_1k": 0.4, "hit": False,
                     "published_at": (NOW - timedelta(days=start - day)).isoformat(),
                 })
-        results = ca.cohorts(rows, "views")
-        template = next(r for r in results if r["dimension"] == "Şablon")
-        self.assertIn("zamanda ayrık", template["confounded"])
+        template = next(r for r in ca.cohorts(rows, "views")
+                        if r["dimension"] == "Şablon")
+        self.assertIsNone(template["p"])
+        self.assertIn("yeterli ortak dönem yok", template["verdict"])
+
+    def test_a_spurious_gap_cannot_appear_inside_the_overlap(self):
+        """Two groups publishing the same days with a steep time trend: the
+        later group would win unrestricted. Restricted to the shared dates
+        there is nothing to find."""
+        rows = []
+        for day in range(40):
+            for label in ("a", "b"):
+                # 'b' simply starts later; value depends on the day only.
+                if label == "b" and day < 20:
+                    continue
+                rows.append({
+                    "template": label, "idea": "x", "hour": "17", "kind": "canli",
+                    "metal": "bronze", "mature": True,
+                    "views": 100.0 * (day + 1) ** 2, "retention": 1.0,
+                    "subs_per_1k": 1.0, "hit": False,
+                    "published_at": (NOW - timedelta(days=60 - day)).isoformat(),
+                })
+        template = next(r for r in ca.cohorts(rows, "views")
+                        if r["dimension"] == "Şablon")
+        self.assertEqual(template["n_a"], template["n_b"])
+        self.assertEqual(template["verdict"], "fark yok")
 
 
 if __name__ == "__main__":

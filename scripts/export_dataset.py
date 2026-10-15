@@ -66,7 +66,10 @@ def main() -> int:
 
     mature = [r for r in rows if r["mature"]]
     print(f"{path}")
-    print(f"  video      : {len(rows)} ({len(mature)} olgun)")
+    removed = [r["id"] for r in rows if r.get("deleted")]
+    hooked = sum(1 for r in rows if r.get("engaged_ratio") is not None)
+    print(f"  video      : {len(rows)} ({len(mature)} olgun, silinmiş: {len(removed)})")
+    print(f"  kanca%     : {hooked} videoda hesaplandı")
     print(f"  tablo      : {', '.join(sorted(dataset['tables']))}")
     print(f"  ölçüm      : {len(history)} anlık görüntü")
     if dataset["errors"]:

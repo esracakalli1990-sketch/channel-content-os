@@ -105,10 +105,18 @@ def render(dump: dict, rows: list[dict], gates: dict, history: list[dict],
     out: list[str] = []
     add = out.append
     mature = [row for row in rows if row["mature"]]
+    deleted = [row for row in rows if row.get("deleted")]
 
     add("=" * 58)
     add(f"{'AYLIK' if monthly else 'HAFTALIK'} KANAL ANALİZİ")
-    add(f"{dump.get('collected_at', '')}  ·  {len(rows)} video, {len(mature)} olgun (48 saat+)")
+    # Deleted videos are counted out of everything below and said once here,
+    # rather than silently vanishing from the totals or, as before, being
+    # counted as dead videos in every report.
+    add(f"{dump.get('collected_at', '')}  ·  {len(rows) - len(deleted)} video, "
+        f"{len(mature)} olgun (48 saat+), silinmiş: {len(deleted)}")
+    if deleted:
+        add("  silinmiş (Data API döndürmüyor, hiçbir hesaba girmiyor): "
+            + ", ".join(row["id"] for row in deleted))
     add("=" * 58)
 
     if dump.get("errors"):
@@ -188,10 +196,16 @@ def render(dump: dict, rows: list[dict], gates: dict, history: list[dict],
         (title, ca.cohorts(rows, metric))
         for metric, title in (("views", "İzlenme"),
                               ("retention", "İzlenme yüzdesi"),
-                              ("subs_per_1k", "Bin izlenme başına abone"))
+                              ("subs_per_1k", "Bin izlenme başına abone"),
+                              ("engaged_ratio",
+                               "Kanca vekili (engagedViews/views, %)"))
     ]
     band = ca.retention_band(rows)
-    every = [result for _, results in groups for result in results] + [band]
+    transitions = ca.template_transitions(rows)
+    trends = ca.template_trends(rows)
+    every = ([result for _, results in groups for result in results] + [band]
+             + [t["primary"] for t in transitions if t["primary"]]
+             + [t for t in trends if t.get("p") is not None])
     ca.apply_holm(every)
     family = next((r.get("tests_in_family") for r in every
                    if r.get("tests_in_family")), 0)
@@ -207,14 +221,37 @@ def render(dump: dict, rows: list[dict], gates: dict, history: list[dict],
         if not results:
             add("    (karşılaştırılacak grup yok)")
         for result in results:
-            add(f"    {result['dimension']}: {result['a']} (n={result['n_a']}, "
-                f"med={result['median_a']}) vs {result['b']} (n={result['n_b']}, "
-                f"med={result['median_b']})")
+            if result["n_a"] and result["n_b"]:
+                add(f"    {result['dimension']}: {result['a']} (n={result['n_a']}, "
+                    f"med={result['median_a']}) vs {result['b']} (n={result['n_b']}, "
+                    f"med={result['median_b']})")
+            else:
+                add(f"    {result['dimension']}: {result['a']} vs {result['b']}")
             add(f"      → {result['verdict']}")
+            if result.get("window"):
+                add(f"      ortak dönem {result['window']}, kısıtlamadan önce "
+                    f"n={result['n_before'][0]}+{result['n_before'][1]}")
             if result.get("method"):
                 add(f"      ! {result['method']}")
-            if result.get("confounded"):
-                add(f"      ⚠ {result['confounded']}")
+
+    add("\n  — Şablon geçişleri (önceki şablonun son "
+        f"{ca.TRANSITION_K} videosu vs sonrakinin ilk {ca.TRANSITION_K}) —")
+    add("    Şablonun kendisi bir şey yaptıysa geçişin iki yanı farklı olmalı.")
+    add("    Zaten yükselmekteyse benzer olurlar. Asıl test K=%d; diğer K'ler" % ca.TRANSITION_K)
+    add("    duyarlılık kontrolü, aileye girmiyor.")
+    for t in transitions:
+        main = t["primary"]
+        if not main:
+            continue
+        add(f"    {t['old']} → {t['new']}: son {main['n_a']} med={main['median_a']} vs "
+            f"ilk {main['n_b']} med={main['median_b']}")
+        add(f"      → {main['verdict']}")
+        if t["windows"]:
+            add("      duyarlılık: " + ", ".join(
+                f"K={w['k']} p={w['p']}" for w in t["windows"] if w["p"] is not None))
+    add("\n  — Şablon içinde zaman trendi (izlenme / yayın sırası) —")
+    for trend in trends:
+        add(f"    {trend['template']} (n={trend['n']}): {trend['verdict']}")
 
     add(f"\n  — Hitlerin izlenme yüzdesi —")
     add(f"    hit (n={band['n_a']}, med={band['median_a']}) vs "

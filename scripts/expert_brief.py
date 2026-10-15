@@ -39,6 +39,10 @@ from reportlab.platypus import (
     TableStyle,
 )
 
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
+
+from channel_ops import channel_analysis as ca  # noqa: E402
+
 # Helvetica has no ğ, ı, İ, ş. DejaVu does, and ships with the runner image.
 
 COUNTRY = {"IN": "Hindistan", "BD": "Bangladeş", "MM": "Myanmar",
@@ -140,7 +144,9 @@ def build(data: dict, path: Path) -> Path:
 
     totals = data.get("totals") or {}
     gates = data.get("gates") or {}
-    vids = data.get("videos") or []
+    all_rows = ca.settle_deleted(data.get("videos") or [])
+    removed = [v for v in all_rows if v.get("deleted")]
+    vids = [v for v in all_rows if not v.get("deleted")]
     mature = [v for v in vids if v.get("mature")]
     stamp = (data.get("collected_at") or "")[:16].replace("T", " ")
     day = (data.get("collected_at") or "")[:10]
@@ -167,6 +173,13 @@ def build(data: dict, path: Path) -> Path:
                 default="")
 
     tables = data.get("tables") or {}
+
+    counts = {}
+    for v in vids:
+        if v.get("seconds"):
+            counts[int(v["seconds"])] = counts.get(int(v["seconds"]), 0) + 1
+    durations = ", ".join(f"{n} video {sec} sn" for sec, n in
+                          sorted(counts.items(), key=lambda item: -item[1]))
 
     def rows_of(name):
         return ((tables.get(name) or {}).get("rows")) or []
@@ -202,7 +215,8 @@ def build(data: dict, path: Path) -> Path:
         ["Metrik", "Değer", "Not"],
         ["Abone", N(totals.get("subscribers")), ""],
         ["Toplam izlenme", N(totals.get("views")), "ham, ömür boyu"],
-        ["Video", N(len(vids)), "tamamı Shorts, 9–11 sn"],
+        ["Video", N(len(vids)),
+         f"tamamı Shorts, {durations}" + (f"; silinmiş {len(removed)} hariç" if removed else "")],
         ["Olgun video medyanı", f"{N(med_views)} izlenme",
          f"48 saat+ olan {N(len(mature))} video"],
         ["Medyan izlenme yüzdesi", f"%{N(med_ret, 1)}", "tekrar izleme dahil"],
@@ -212,7 +226,16 @@ def build(data: dict, path: Path) -> Path:
         ["En yüksek video", N(top.get("views")),
          (top.get("published_at") or "")[:10]],
     ], [W * 0.34, W * 0.28, W * 0.38], base, bold))
-    add(Spacer(1, 10))
+    add(Spacer(1, 4))
+    summed = sum(v.get("views") or 0 for v in vids)
+    para(
+        f"Toplam izlenme farkı: kanal sayacı {N(totals.get('views'))}, tek tek "
+        f"videoların toplamı {N(summed)}. Üç kaynağın gecikmesi farklı (Data "
+        "API neredeyse anlık, Analytics 2–3 gün, Studio kartı ~1 hafta) ve "
+        "kanal sayacının hangi gecikmeyle geldiği doğrulanmadı; farkın nedeni "
+        "budur, diye iddia etmiyoruz.", "cap"
+    )
+    add(Spacer(1, 6))
 
     # ------------------------------------------------------------ threshold
     para("2. Para kazanma eşikleri", "h1")
@@ -254,30 +277,43 @@ def build(data: dict, path: Path) -> Path:
 
     # -------------------------------------------------------------- growth
     para("3. Büyüme eğrisi", "h1")
+    # One row per day, and never a row whose 90-day figure exceeds the
+    # lifetime total (impossible; see ca.suspect_snapshot). The unit gets its
+    # own column: raw and engaged views are different rulers and the earlier
+    # version of this table put both in one column as if they were one series.
+    unit = {"views": "ham", "engaged": "etkileşimli"}
     seen, grow = set(), [["Tarih", "Abone", "Toplam izlenme", "Video",
-                         "Etkileşimli 90g", "Medyan", "Ölü", "Hit"]]
+                         "Shorts 90g", "Birim", "Medyan", "Ölü", "Hit"]]
     for snap in data.get("history") or []:
         date = (snap.get("at") or "")[:10]
-        if not date or date in seen:
+        if not date or date in seen or ca.suspect_snapshot(snap):
             continue
         seen.add(date)
         grow.append([date[5:], N(snap.get("subscribers")), N(snap.get("views")),
                      N(snap.get("videos")), N(snap.get("shorts_views_90d")),
+                     unit.get(snap.get("shorts_measure"), "–"),
                      N(snap.get("median_views")), N(snap.get("dead_count")),
                      N(snap.get("hit_count"))])
-    add(_table(grow, [W * 0.11, W * 0.11, W * 0.19, W * 0.09, W * 0.21,
-                      W * 0.12, W * 0.08, W * 0.09],
-               base, bold, align_right=(1, 2, 3, 4, 5, 6, 7)))
+    add(_table(grow, [W * 0.09, W * 0.10, W * 0.17, W * 0.08, W * 0.17,
+                      W * 0.13, W * 0.10, W * 0.08, W * 0.08],
+               base, bold, align_right=(1, 2, 3, 4, 6, 7, 8)))
     add(Spacer(1, 6))
     para(
         "3 Eylül'de 159 abone vardı. 25 Eylül–13 Ekim arasında abone 1.070 → "
         "5.300, toplam izlenme 2,0M → 7,9M. Ölü video oranı %8,9'dan %3,3'e "
         "düşerken hit sayısı 19'dan 40'a çıktı — yani büyüme tek bir viral "
-        "videodan değil, tabanın yükselmesinden geliyor.", "p"
+        "videodan değil, tabanın yükselmesinden geliyor. (Ölü video oranı o günlerin "
+        "raporlarından; silinmiş videonun sayıldığı eski hesapla.)", "p"
     )
     para(
-        "2 Ekim satırındaki etkileşimli düşüş (2,26M → 1,66M) hata değil: 90 "
-        "günlük kayan pencereden eski videoların düşmesi.", "cap"
+        "Shorts 90g sütunu iki farklı birimle tutuldu: 28 Eylül'e kadar ham "
+        "görüntüleme, o günden sonra etkileşimli görüntüleme (eşiğin saydığı "
+        "ölçü). Bu yüzden aradaki geçiş bir düşüş değil, ölçü değişimidir ve "
+        "farklı birimli satırlar birbiriyle karşılaştırılamaz. 28 Eylül 14:12 "
+        "tarihli kayıt (90 günlük 3.108.912, kanalın ömür boyu toplamı "
+        "2.618.818) imkânsız olduğu için tablodan çıkarıldı, nedeni bilinmiyor. "
+        "Kanal bu tarihte 61 günlüktü; 90 günlük pencereden düşen video yoktu.",
+        "cap"
     )
 
     add(PageBreak())
@@ -285,7 +321,7 @@ def build(data: dict, path: Path) -> Path:
     # ------------------------------------------------------------- format
     para("4. Format", "h1")
     para(
-        "Her video 9–11 saniyelik, dikey, sessiz bir Short. Sahne sabit: bir el "
+        "Her video 8–11 saniyelik (çoğu 9 ya da 11), dikey, konuşmasız bir Short; ses olarak mekanik efektler var (dişli, kapak açılması, düğme sesi). Sahne sabit: bir el "
         "ya da tezgâh üzerinde duran mekanik bir nesne, gizli bir düğmeye "
         "basılınca katlanarak açılıyor ve bir yaratığa ya da mekanizmaya "
         "dönüşüyor. Görüntüler <b>tamamen yapay zekâ ile üretiliyor</b>; nesneler "
@@ -296,8 +332,11 @@ def build(data: dict, path: Path) -> Path:
         "nautilus…), <b>şekil</b> (yivli küresel makara, basık kuboktahedron, "
         "oluklu içbükey kama…), <b>malzeme</b> (patine bronz ve mavileştirilmiş "
         "çelik, dövme bakır ve karartılmış demir, fırçalanmış titanyum ve koyu "
-        "amber reçine…). Başlık her zaman bir soru: <i>“Why does this curved "
-        "bronze shell have a walnut base?”</i>"
+        "amber reçine…). Başlıklar çoğunlukla bir soru: <i>“Why does this curved "
+        "bronze shell have a walnut base?”</i> kalıbıyla başlayanlar videoların "
+        f"{N(sum(1 for v in vids if v.get('title', '').lower().startswith('why does')))} "
+        f"tanesi; üç sözcüklü {N(len({' '.join(v.get('title', '').lower().split()[:3]) for v in vids}))} "
+        "farklı açılış var."
     )
     para(
         "Yapay zekâ beyanı 159 videonun tamamında açık "
