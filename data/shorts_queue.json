@@ -19,5 +19,26 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "18ae880d0298"
+  },
+  {
+    "queued_at": "2026-10-16T16:40:53+00:00",
+    "publish_at": "2026-10-16T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIET2rSU1VJ3M0U_rYE0q9-T4IleRg9AAJpIAACdnyYUtyiWbL6zkZ6PQQ",
+    "file_size": 3381585,
+    "caption": "1",
+    "concept": {
+      "shape": "fluted cylindrical spool",
+      "material": "patinated bronze and blued steel",
+      "internal_detail": "interlocking brass gears and fine helical hairsprings",
+      "button": "a small raised steel pin on the lower rim",
+      "button_short": "the small raised steel pin",
+      "creature": "marine worm",
+      "shell_mechanic": "The cylindrical casing splits longitudinally along its fluted grooves and the halves rotate apart on internal pivots",
+      "emerging_parts": "Five segmented copper rings and a pair of delicate wire antennae",
+      "signature_move": "its segmented brass rings ripple forward along their pivots in a rhythmic wave and its wire antennae sweep once from left to right",
+      "turkish": "Deniz solucani (deniz tabaninda yasayan, halkali, yumusak govceli omurgasiz) — oluklu silindirik makara, patinajli bronz ve mavilendirilmis celik"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
   }
 ]
