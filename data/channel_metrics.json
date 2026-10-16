@@ -264,5 +264,19 @@
     "dead_count": 5,
     "hit_count": 40,
     "shorts_measure": "engaged"
+  },
+  {
+    "at": "2026-10-16T11:38:16+00:00",
+    "subscribers": 5830,
+    "views": 8987622,
+    "videos": 163,
+    "watch_hours": 3.5,
+    "shorts_views_90d": 3692279,
+    "mature_count": 157,
+    "median_views": 3081,
+    "median_retention": 130.6,
+    "dead_count": 4,
+    "hit_count": 43,
+    "shorts_measure": "engaged"
   }
 ]
