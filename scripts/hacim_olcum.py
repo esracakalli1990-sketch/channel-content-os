@@ -11,9 +11,15 @@ publish day (Analytics day, Pacific time) through publish day + k. A video
 whose day + k Analytics has not reported yet is left out and counted, never
 filled in. Fixed in advance:
 
-  dead        views through day + 2 below 250  (48h rule; 56-68h depending on slot)
+  low         views through day + 2 below 2,000 (comparison's bottom 10%);
+              stop if more than 30% of the test videos are low
+  dead        views through day + 2 below 250; stop at 4 or more
+              (day + 2 is 56-68h depending on slot)
   ufuk (k)    3 for the final report on 6 Nov  (the 31 Oct videos reach it)
-  hit         10,000+ views through day + k, and live Data API views beside it
+  hit         50,000+ views through day + k (primary), 10,000+ (secondary),
+              and live Data API views beside them
+  Thresholds as written in docs/HACIM_DENEYI.md on 17 Oct (6c84d60), before
+  the test began. They are not changed afterwards.
   tests       Mann-Whitney (repo implementation), Fisher exact for counts,
               Holm over the four primary tests; p<0.05 after Holm and at least
               8 mature videos per group, otherwise "yeterli veri yok"
@@ -40,10 +46,11 @@ from channel_ops.channel_analysis import mann_whitney_p  # noqa: E402
 PACIFIC = ZoneInfo("America/Los_Angeles")
 COMPARISON = (date(2026, 10, 4), date(2026, 10, 17))
 TEST = (date(2026, 10, 18), date(2026, 10, 31))
-DEAD_K, DEAD_VIEWS = 2, 250
-HIT_VIEWS = 10_000
+DEAD_K, DEAD_VIEWS, LOW_VIEWS = 2, 250, 2_000
+HIT_VIEWS, HIT_SECONDARY = 50_000, 10_000
 MIN_GROUP = 8
 STOP_DROP = 0.30
+STOP_LOW_SHARE = 0.30
 STOP_DEAD = 4
 
 
@@ -148,7 +155,8 @@ def main() -> None:
             live=live.get(vid), has_series=bool(s),
         ))
 
-    print(f"# Hacim denemesi ölçümü  (Analytics son gün {last_day}, ufuk gün+{k}, ölü kuralı gün+{DEAD_K} < {DEAD_VIEWS})")
+    print(f"# Hacim denemesi ölçümü  (Analytics son gün {last_day}, ufuk gün+{k}, "
+          f"düşük gün+{DEAD_K} < {fmt(LOW_VIEWS)}, ölü gün+{DEAD_K} < {DEAD_VIEWS})")
     for p in ("kiyas", "deney"):
         vs = [v for v in videos if v["period"] == p]
         print(f"{p}: {len(vs)} video, gün+{k} olgun {sum(v['views'] is not None for v in vs)}, "
@@ -211,20 +219,28 @@ def main() -> None:
         print(f"DURDURMA (%30+ düşüş): {'TETİKLENDİ' if ratio < 1 - STOP_DROP else 'hayır'}")
         tests.append(("17/23 sulandırma", p2, min(len(groups['kiyas']), len(groups['deney'])) >= MIN_GROUP))
 
-    # 4. Dead videos (primary test 3, and the stop rule).
-    print(f"\n## 4. Ölü video (gün+{DEAD_K} izlenme < {DEAD_VIEWS})")
-    counts = {}
+    # 4. Low and dead videos (primary test 3, and two stop rules).
+    print(f"\n## 4. Düşük video (gün+{DEAD_K} < {fmt(LOW_VIEWS)}) ve ölü video (< {DEAD_VIEWS})")
+    counts, dead_test = {}, 0
     for p in ("kiyas", "deney"):
         vs = [v for v in videos if v["period"] == p and v["dead_views"] is not None]
+        low = [v for v in vs if v["dead_views"] < LOW_VIEWS]
         dead = [v for v in vs if v["dead_views"] < DEAD_VIEWS]
-        counts[p] = (len(dead), len(vs) - len(dead))
-        print(f"{p}: {len(dead)}/{len(vs)} ölü" + (f" ({len(dead) / len(vs) * 100:.1f}%)" if vs else "")
-              + "".join(f"\n   {v['utc_day']} {v['slot']:02d} {v['cre']} {v['dead_views']}" for v in dead))
-    print(f"DURDURMA (deneyde {STOP_DEAD}+ ölü): {'TETİKLENDİ' if counts['deney'][0] >= STOP_DEAD else 'hayır'}")
+        counts[p] = (len(low), len(vs) - len(low))
+        if p == "deney":
+            dead_test = len(dead)
+        print(f"{p}: düşük {len(low)}/{len(vs)}" + (f" ({len(low) / len(vs) * 100:.1f}%)" if vs else "")
+              + f" | ölü {len(dead)}"
+              + "".join(f"\n   {v['utc_day']} {v['slot']:02d} {v['cre']} {v['dead_views']}" for v in low))
+    low_n, total_n = counts["deney"][0], sum(counts["deney"])
+    print(f"DURDURMA (deney videolarının %{STOP_LOW_SHARE * 100:.0f}'undan fazlası düşük; 42 videoda 13+): "
+          + ("TETİKLENDİ" if total_n and low_n / total_n > STOP_LOW_SHARE else "hayır")
+          + f"  [{low_n}/{total_n} olgun deney videosu]")
+    print(f"DURDURMA (deneyde {STOP_DEAD}+ ölü, mutlak çöküş): {'TETİKLENDİ' if dead_test >= STOP_DEAD else 'hayır'}")
     if sum(counts["kiyas"]) and sum(counts["deney"]):
         p3 = fisher_p(*counts["deney"], *counts["kiyas"])
-        print(f"Fisher p={p3:.3f}")
-        tests.append(("ölü oranı", p3, min(sum(counts['kiyas']), sum(counts['deney'])) >= MIN_GROUP))
+        print(f"düşük oranı Fisher p={p3:.3f}")
+        tests.append(("düşük video oranı", p3, min(sum(counts['kiyas']), sum(counts['deney'])) >= MIN_GROUP))
 
     # 5. 11:00 alone, descriptive only.
     print(f"\n## 5. 11:00 videoları (yalnızca betimleyici, test yok)")
@@ -233,20 +249,22 @@ def main() -> None:
         e = sorted(v["engaged"] for v in morning)
         print(f"n={len(morning)} | medyan izlenme {fmt(median(v['views'] for v in morning))} | "
               f"medyan etkileşimli {fmt(median(e))} | en düşük {fmt(e[0])} en yüksek {fmt(e[-1])} | "
-              f"hit {sum(v['views'] >= HIT_VIEWS for v in morning)}")
+              f"hit {fmt(HIT_VIEWS)}+ {sum(v['views'] >= HIT_VIEWS for v in morning)} | "
+              f"{fmt(HIT_SECONDARY)}+ {sum(v['views'] >= HIT_SECONDARY for v in morning)}")
     else:
         print("olgun 11:00 videosu yok")
 
     # 6. Hits (primary test 4).
-    print(f"\n## 6. Hit ({fmt(HIT_VIEWS)}+ izlenme)")
+    print(f"\n## 6. Hit (birincil {fmt(HIT_VIEWS)}+, ikincil {fmt(HIT_SECONDARY)}+ izlenme)")
     hit = {}
     for p in ("kiyas", "deney"):
         vs = [v for v in videos if v["period"] == p and v["views"] is not None]
         h = sum(v["views"] >= HIT_VIEWS for v in vs)
         hit[p] = (h, len(vs) - h)
         lv = [v for v in videos if v["period"] == p and v["live"] is not None]
-        print(f"{p}: gün+{k} hit {h}/{len(vs)} | canlı izlenmeyle (yaşa göre eşleşmemiş) "
-              f"{sum(v['live'] >= HIT_VIEWS for v in lv)}/{len(lv)}")
+        print(f"{p}: gün+{k} {fmt(HIT_VIEWS)}+ {h}/{len(vs)} | {fmt(HIT_SECONDARY)}+ "
+              f"{sum(v['views'] >= HIT_SECONDARY for v in vs)}/{len(vs)} | canlı izlenmeyle (yaşa göre "
+              f"eşleşmemiş) {fmt(HIT_VIEWS)}+ {sum(v['live'] >= HIT_VIEWS for v in lv)}/{len(lv)}")
     if sum(hit["kiyas"]) and sum(hit["deney"]):
         p4 = fisher_p(*hit["deney"], *hit["kiyas"])
         print(f"hit oranı Fisher p={p4:.3f}  (deney günde 3 video: oran aynı kalsa bile hit SAYISI artar)")
