@@ -744,6 +744,22 @@ class LeadTimeTests(unittest.TestCase):
         # remaining slot is inside the lead time.
         self.assertEqual({slot.day for slot in taken}, {13})
 
+    def test_the_trial_runs_three_slots_with_the_first_at_eleven(self):
+        """18 October 2026: three a day again, as a trial (docs/HACIM_DENEYI.md).
+        The numbers are written down here on purpose -- changing the trial's
+        slots should be a decision, not a side effect."""
+        self.assertEqual(tuple(sorted(shorts_pipeline.PUBLISH_SLOTS_UTC)), (11, 17, 23))
+
+    def test_a_midnight_batch_of_three_goes_out_at_eleven_seventeen_twentythree(self):
+        from datetime import UTC, datetime
+
+        night = datetime(2026, 10, 17, 22, 0, tzinfo=UTC)
+        taken = []
+        for _ in range(3):
+            taken.append(shorts_pipeline.next_slot(taken, night))
+        self.assertEqual([(slot.day, slot.hour) for slot in taken],
+                         [(18, 11), (18, 17), (18, 23)])
+
     def test_a_new_batch_does_not_take_a_slot_the_old_one_holds(self):
         from datetime import UTC, datetime
 

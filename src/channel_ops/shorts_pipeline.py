@@ -80,13 +80,33 @@ QUEUE_FILE = "data/shorts_queue.json"
 # The evening figures come partly from the old three-a-day era, when those
 # videos had longer to accumulate, so the 17:00 number is the softer of the two
 # claims. 23:00 is the one the current data supports outright.
-PUBLISH_SLOTS_UTC = (17, 23)
+#
+# THREE A DAY AGAIN, as a controlled trial from 18 October 2026. The channel
+# is hit-driven -- the top ten videos carry 82% of all views -- and nothing
+# found so far makes a hit controllable, so the one lever left is the number
+# of draws. Two things argue for trying it: the 25 August volume theory that
+# cut the rate was disproved, and the weekly record shows no sign that volume
+# hurts (weeks of 18-19 videos gave 4-5 hits; weeks of 13-14 gave 7-8, with the
+# jump coming from something else). Two things argue for care: the operator
+# makes every clip by hand, and more near-identical videos is exactly what a
+# partner-programme review looks at.
+#
+# The new slot is 11:00 UTC (14:00 TRT; 16:30 in India, 07:00 New York),
+# spacing the day 6-6-12 hours. It is a choice under ignorance: nothing in
+# the current regime was ever published at that hour, and the old midday
+# record (11:00-15:00, hit rate 11% against 16-20% for the evenings) is mostly
+# from the early weeks and cannot be separated from them. So the trial judges
+# the VOLUME on the whole day and the 17:00 and 23:00 videos before and after
+# (does a third video thin out the other two?), and reads the 11:00 slot on
+# its own. Rules, metrics and the stop condition are in docs/HACIM_DENEYI.md.
+PUBLISH_SLOTS_UTC = (11, 17, 23)
 
 # How far ahead the first release must be. The prompts arrive at midnight
 # Turkish time (21:00 UTC) and the clips are made straight away, which puts
 # them in hand around 22:00 UTC — an hour before the 23:00 slot. Without this
 # the batch's first video would go out almost immediately and the day's other
-# two would trail it, instead of the batch opening at 13:00 the next day.
+# two would trail it, instead of the batch opening at the day's first slot (11:00
+# UTC) the next day.
 MIN_LEAD_HOURS = 4
 
 # Typed into the Telegram chat to ask for a performance report.
