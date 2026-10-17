@@ -1,8 +1,8 @@
 # Hacim denemesi: günde 2 yerine 3 video
 
 **Başlangıç:** 18 Ekim 2026, 11:00 UTC (ilk üçlü gün) · **Süre:** 14 gün (18–31 Ekim,
-42 video) · **Karar tarihi:** 6 Kasım (videoların olgunlaşması ve Analytics'in
-3 gün gecikmesi için) · **Karar veren:** kanal sahibi
+42 video) · **Karar tarihi:** 6 Kasım (kontroller 27 Ekim ve 3 Kasım;
+videoların olgunlaşması ve Analytics'in 3 gün gecikmesi için) · **Karar veren:** kanal sahibi
 
 ## Neden
 
@@ -42,6 +42,11 @@ Planlı bir değişiklik olursa tarihi buraya yazılır ve deney kaydırılır.
 ## Ölçüm (analiz oturumu hesaplar)
 
 Kıyas dönemi: **4–17 Ekim** (günde 2 video). Deney dönemi: 18–31 Ekim.
+Videolar **aynı yaşta** karşılaştırılır (yayın günü + 2 ya da 3 gün); deney
+videoları kıyas videolarından 14 gün gençtir, yaşı eşitlemeden kıyas yapmak
+sonucu yaşa bağlar. Kontrol tarihleri: **27 Ekim** (7. gün; 24 Ekim değil,
+çünkü Analytics 3 gün geriden geliyor), **3 Kasım** (14. gün), **6 Kasım**
+(final). Ölçüm kodu ayrı dalda (`claude/hacim-olcum`), hat koduna dokunmuyor.
 
 1. **Toplam günlük etkileşimli izlenme** (Analytics, `engaged_daily`), deney
    dönemi ve kıyas dönemi. Kanal ivmesi sürekli değiştiği için tek başına
@@ -49,10 +54,25 @@ Kıyas dönemi: **4–17 Ekim** (günde 2 video). Deney dönemi: 18–31 Ekim.
    birlikte okunur.
 2. **17:00 ve 23:00 videolarının medyan izlenmesi**, kıyas dönemine karşı
    (sulandırma kontrolü: üçüncü video diğer ikisini inceltiyor mu?).
-3. **Ölü video oranı** (48 saatte 250 altı).
+3. **Düşük video oranı** (aşağıdaki "Eşikler"e bak). Eski "250 altı" ölü
+   ölçüsü bu rejimde ayırt edici değil.
 4. **11:00 videoları** kendi başına: medyan, hit sayısı (n=14, yalnızca
    betimleyici, test yapılmaz).
-5. Hit sayısı: 10.000+ izlenme alan video sayısı, deney ve kıyas dönemi.
+5. **Hit sayısı:** birincil ölçü **50.000+** izlenme, ikincil/betimleyici
+   10.000+ (yaşa göre eşitlenmiş, iki dönemde).
+
+### Eşikler (17 Ekim'de, deney başlamadan yazıldı)
+
+Kıyas dönemi gerçek verisine bakılınca iki eski eşik ayırt edici çıktı: 2. gün
+sonunda en düşük izlenme 1.791 (yani 250 altı "ölü" oranı %0, belgenin ilk
+yazdığı %2,5 tüm geçmişin rakamıydı) ve kıyas videolarının üçte ikisi (15'te 10)
+10.000'i 3. gün sonunda zaten geçiyor. Bu yüzden:
+
+- **Düşük video:** yaşa eşitlenmiş (2. gün sonu) izlenmesi **2.000'in altında**
+  olan video (kıyas döneminin alt %10'una yuvarlandı). Beklenen oran ~%10.
+- **Hit:** birincil **50.000+**, ikincil 10.000+ (3. gün sonu).
+- Bu eşikler deney başladıktan sonra **değiştirilmez**; sonuca göre seçilmiş
+  eşik sonuç sayılmaz.
 
 Hiçbir metrik için "hacim işe yaradı" iddiası p-değeri olmadan yazılmaz. n çok
 küçük: küçük etkiler ayırt edilemez, "yeterli veri yok" meşru bir sonuçtur.
@@ -61,9 +81,11 @@ küçük: küçük etkiler ayırt edilemez, "yeterli veri yok" meşru bir sonuç
 
 - YouTube ya da AdSense'ten **tekrarlayan / özgün olmayan içerik, kısıtlama ya
   da sarı simge** gelirse; kanal e-postasını her gün tarıyorum ve haber veririm.
-- 17:00 ve 23:00 videolarının medyanı kıyas dönemine göre **%30'dan fazla**
-  düşerse (7. günde ve 14. günde bakılır).
-- 42 videonun **4 veya daha fazlası ölü** çıkarsa (~%10; kıyas dönemi ~%2,5).
+- 17:00 ve 23:00 videolarının medyanı kıyas dönemine göre (aynı yaşta)
+  **%30'dan fazla** düşerse (27 Ekim ve 3 Kasım'da bakılır).
+- Deney videolarının **%30'undan fazlası düşük** çıkarsa (2. gün sonunda
+  2.000 altı; beklenen ~%10, 42 videoda 13 ve üzeri). 250 altı mutlak çöküş
+  (4 ve üzeri video) ayrıca anında durdurur.
 - Üretim sürdürülemezse (operatör yetişemiyorsa): yarım bırakmak yerine eski
   tempoya dönmek tercih edilir.
 
