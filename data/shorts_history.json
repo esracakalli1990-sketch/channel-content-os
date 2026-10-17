@@ -171,7 +171,10 @@
     "marine worm",
     "pelagic siphonophore",
     "sea butterfly",
-    "beam engine pump"
+    "beam engine pump",
+    "common stingray",
+    "european badger",
+    "black-crowned night heron"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -310,6 +313,8 @@
     "fluted cylindrical spool",
     "chamfered rectangular cassette",
     "ribbed helical spire",
-    "faceted hexagonal spindle"
+    "flattened spade plinth",
+    "faceted hexagonal spindle",
+    "creased scaphoid ingot"
   ]
 }
