@@ -17,7 +17,14 @@ from channel_ops.config_loader import find_project_root  # noqa: E402
 
 
 def main() -> None:
-    _emit(collect(find_project_root()))
+    root = find_project_root()
+    _emit(collect(root))
+    # Volume test only (docs/HACIM_DENEYI.md); lives on its own branch.
+    try:
+        from hacim_veri import emit
+        emit(root)
+    except Exception as exc:
+        print(f"HATA hacim\t{exc}")
 
 
 def _emit(dump: dict) -> None:
