@@ -19,5 +19,26 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "18ae880d0298"
+  },
+  {
+    "queued_at": "2026-10-18T08:13:56+00:00",
+    "publish_at": "2026-10-18T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIEamrUf1j9ZruaP8HtQwaUcRQjw3-IAAJoIgACaHOgUikNv0WdXssmPQQ",
+    "file_size": 2671571,
+    "caption": "2",
+    "concept": {
+      "shape": "faceted hexagonal spindle",
+      "material": "polished silver-grey titanium and blackened steel",
+      "internal_detail": "nested planetary gear clusters and micro-coiled drive cables",
+      "button": "a tiny flush-mounted circular steel stud at the upper apex",
+      "button_short": "the circular steel stud at the upper apex",
+      "creature": "european badger",
+      "shell_mechanic": "The faceted spindle splits down its central dorsal ridge and the flanking panels hinge downward to form the sturdy flank plates",
+      "emerging_parts": "A blunt wedge head with folded snout plating and four heavy clawed leg linkages",
+      "signature_move": "its jointed head tilts downward with a crisp ratchet click and its front claw assemblies scrape backward once against the palm like a clockwork digging cycle",
+      "turkish": "Porsuk (kısa bacaklı, tıknaz, çizgili yüzlü yaban memelisi) — fasetalı altıgen mil, cilalı gümüşi-gri titanyum ve karartılmış çelik"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
   }
 ]
