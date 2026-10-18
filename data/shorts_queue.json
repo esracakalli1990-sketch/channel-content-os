@@ -40,5 +40,26 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "18ae880d0298"
+  },
+  {
+    "queued_at": "2026-10-18T08:15:58+00:00",
+    "publish_at": "2026-10-19T11:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIEbGrUf9Uk1na5OnOsjSauuCC1U5p0AAJqIgACaHOgUslCV28oOVZAPQQ",
+    "file_size": 2817700,
+    "caption": "3",
+    "concept": {
+      "shape": "creased scaphoid ingot",
+      "material": "patinated dark tombac brass and rosewood veneer",
+      "internal_detail": "slender brass escapement arms and minute coiled tension springs",
+      "button": "a square recessed mother-of-pearl stud nestled into the aft keel",
+      "button_short": "the square recessed mother-of-pearl stud",
+      "creature": "black-crowned night heron",
+      "shell_mechanic": "The scaphoid hull halves unlock along the ventral keel and pivot upward on lateral shoulder hinges to become folded plumage plates",
+      "emerging_parts": "A sharp folding beak assembly on an articulated neck bar and two folding brass stilt legs",
+      "signature_move": "its faceted amber glass eyes light up with a pale yellow beam and its scissor-hinged bill plates snap shut once with a sharp metallic snap",
+      "turkish": "Gece balıkçılı (kısa boyunlu, sivri gagalı su kuşu) — kıvrımlı sandal külçesi, patinalı koyu tombak pirinç ve pelesenk ağacı kaplama"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
   }
 ]
