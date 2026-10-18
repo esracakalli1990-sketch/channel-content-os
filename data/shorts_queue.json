@@ -1,26 +1,5 @@
 [
   {
-    "queued_at": "2026-10-18T08:11:53+00:00",
-    "publish_at": "2026-10-18T17:00:00+00:00",
-    "file_id": "BQACAgQAAxkBAAIEaGrUfzKB9guTK94qwOz94xpDw5S_AAJnIgACaHOgUkx3N2WFELwDPQQ",
-    "file_size": 3963603,
-    "caption": "1",
-    "concept": {
-      "shape": "flattened spade plinth",
-      "material": "oxidized gunmetal and brushed bronze",
-      "internal_detail": "miniature phosphor-bronze leaf springs and bevel gears",
-      "button": "a small knurled copper plunger set flush into the trailing edge",
-      "button_short": "the small knurled copper plunger",
-      "creature": "common stingray",
-      "shell_mechanic": "The flattened spade plinth unlatches along its lateral margins and the two broad pectoral plates swing outward on hidden pivot pins",
-      "emerging_parts": "A segmented whip-like tail rod and two small ventral clasper struts",
-      "signature_move": "its twin bronze pectoral plates flex once in a slow undulating wave and its slender whip tail tilts upward on its base hinge with a soft metallic click",
-      "turkish": "Vatoz balığı (yassı gövdeli, uzun kuyruklu kıkırdaklı deniz balığı) — yassı kürek kaidesi, oksitlenmiş namlu metali ve fırçalanmış bronz"
-    },
-    "template_version": "22b0547924d3",
-    "idea_version": "18ae880d0298"
-  },
-  {
     "queued_at": "2026-10-18T08:13:56+00:00",
     "publish_at": "2026-10-18T23:00:00+00:00",
     "file_id": "BQACAgQAAxkBAAIEamrUf1j9ZruaP8HtQwaUcRQjw3-IAAJoIgACaHOgUikNv0WdXssmPQQ",
