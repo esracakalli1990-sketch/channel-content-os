@@ -174,7 +174,10 @@
     "beam engine pump",
     "common stingray",
     "european badger",
-    "black-crowned night heron"
+    "black-crowned night heron",
+    "triops",
+    "horned puffin",
+    "sea urchin"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -315,6 +318,9 @@
     "ribbed helical spire",
     "flattened spade plinth",
     "faceted hexagonal spindle",
-    "creased scaphoid ingot"
+    "creased scaphoid ingot",
+    "flattened paraboloid hull",
+    "domed pentagonal vault",
+    "fluted oblate disc"
   ]
 }
