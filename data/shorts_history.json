@@ -177,7 +177,10 @@
     "black-crowned night heron",
     "triops",
     "horned puffin",
-    "sea urchin"
+    "sea urchin",
+    "common starling",
+    "broad-tailed hummingbird",
+    "leatherback sea turtle"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -321,6 +324,9 @@
     "creased scaphoid ingot",
     "flattened paraboloid hull",
     "domed pentagonal vault",
-    "fluted oblate disc"
+    "fluted oblate disc",
+    "canted scalene wedge",
+    "flattened heart plaque",
+    "ribbed boat hull"
   ]
 }
