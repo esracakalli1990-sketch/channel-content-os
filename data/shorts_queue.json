@@ -40,5 +40,26 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "18ae880d0298"
+  },
+  {
+    "queued_at": "2026-10-19T04:13:00+00:00",
+    "publish_at": "2026-10-19T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIEfWrVmFyLYrSIwszvXTQDHfQmwLRpAAI3IgAClhapUrmd4CKEPAEnPQQ",
+    "file_size": 2921323,
+    "caption": "2",
+    "concept": {
+      "shape": "domed pentagonal vault",
+      "material": "brushed gunmetal and warm nickel-plated brass with inset carnelian plates",
+      "internal_detail": "twin counter-rotating bevel gearsets, hair-thin escapement wires, and miniature brass ratchets",
+      "button": "a circular knurled nickel pin rimmed with a narrow copper washer",
+      "button_short": "the circular knurled nickel pin",
+      "creature": "horned puffin",
+      "shell_mechanic": "The domed pentagonal vault divides along its central keel seam and swings outward on twin leaf hinges to form folded flank feathers",
+      "emerging_parts": "A jointed neck stalk bearing a tall laterally-compressed grooved bill plate and two webbed brass foot struts",
+      "signature_move": "its hinged orange bill plate snaps shut with a crisp click, and its head turns forty-five degrees to the left on its swivel collar pin",
+      "turkish": "Boynuzlu martı (kalın gagalı deniz kuşu) — kubbeli beşgen tonoz, fırçalanmış tunç ve nikel kaplı pirinç"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
   }
 ]
