@@ -19,5 +19,26 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "18ae880d0298"
+  },
+  {
+    "queued_at": "2026-10-19T04:10:58+00:00",
+    "publish_at": "2026-10-19T17:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIEe2rVmCCbfzwkSa9e5haMwtFES3SSAAI2IgAClhapUqh0kpMmWtI5PQQ",
+    "file_size": 3460347,
+    "caption": "1",
+    "concept": {
+      "shape": "flattened paraboloid hull",
+      "material": "polished bog oak and tarnished silver plate with blued steel rivets",
+      "internal_detail": "articulated rib racks, coiled steel hairsprings, and micro-toothed drive racks",
+      "button": "a small flush silver bead inlaid with a ring of cold blue enamel",
+      "button_short": "the flush silver bead",
+      "creature": "triops",
+      "shell_mechanic": "The flattened paraboloid hull glides upward on internal vertical twin guide rails",
+      "emerging_parts": "A pair of segmented tail rami, three dark lens plates, and twelve articulated leaf-like paddling appendages",
+      "signature_move": "its leaf-like paddle appendages cycle once in a forward wave along their side pins, and its jointed tail spine flexes upward on its hinge",
+      "turkish": "Triops (üç gözlü tarih öncesi tatlı su kabuklusu) — yassı parabolik zırh, bataklık meşesi ve karartılmış gümüş"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
   }
 ]
