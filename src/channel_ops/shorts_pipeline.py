@@ -43,6 +43,11 @@ logger = logging.getLogger(__name__)
 PENDING_FILE = "data/shorts_pending.json"
 PUBLISHED_FILE = "data/shorts_published.json"
 QUEUE_FILE = "data/shorts_queue.json"
+# When the empty-queue reminder last went out. Kept on disk because a watch
+# run lasts five and a half hours and the next one starts from the repository;
+# held in memory, every new run would remind at once and the hourly rhythm
+# would break at each hand-over.
+QUEUE_ALERT_FILE = "data/queue_alert.json"
 
 # When queued videos go out, as UTC hours. Videos used to publish the moment
 # they were sent, which tied release time to whenever the operator happened to
@@ -141,6 +146,13 @@ RETRY_BACKOFF_MINUTES = 20
 
 # Concepts older than this are no longer offered as a match for an arriving clip.
 PENDING_EXPIRY_DAYS = 14
+
+# An empty release queue means the next slot will pass with nothing in it. On
+# 18 October the day's 11:00 slot did exactly that: the clips arrived after the
+# MIN_LEAD_HOURS cut-off and nobody noticed until the queue was read by hand.
+# The operator now hears about it, and keeps hearing about it at this interval
+# until a clip is queued -- one message is easy to miss.
+EMPTY_QUEUE_REMINDER_MINUTES = 60
 
 
 def _data_path(name: str, root: Path | None = None) -> Path:
@@ -511,6 +523,7 @@ def process_inbox(provider: AIProvider, *, root: Path | None = None) -> list[dic
         intake_failure = exc
 
     records = publish_due(provider, root)
+    remind_if_queue_empty(root)
 
     # Re-raised after releasing so the watch loop still reports the outage —
     # swallowing it would make a broken inbox look like a quiet one.
@@ -899,6 +912,53 @@ def _burn_hook(clip: Path, hook: str, badge: str = "") -> Path:
     except (video_overlay.OverlayUnavailable, OSError) as exc:
         logger.warning("Publishing without the overlays: %s", exc)
         return clip
+
+
+def remind_if_queue_empty(root: Path, now: datetime | None = None) -> bool:
+    """Tell the operator the queue is empty, at most once an hour.
+
+    Returns whether a reminder went out. Never raises: a reminder that failed
+    must not stop the watch loop, which also publishes.
+    """
+    now = now or datetime.now(UTC)
+    alert_path = _data_path(QUEUE_ALERT_FILE, root)
+    try:
+        queue = _read_json(_data_path(QUEUE_FILE, root), [])
+        if queue:
+            # Something is waiting again: forget the last reminder, so the next
+            # time the queue runs dry the operator hears at once.
+            if alert_path.exists():
+                alert_path.unlink()
+            return False
+
+        last = None
+        if alert_path.exists():
+            try:
+                stamp = json.loads(alert_path.read_text(encoding="utf-8")).get("last_alert_at")
+                last = datetime.fromisoformat(stamp) if stamp else None
+            except (json.JSONDecodeError, ValueError, AttributeError):
+                last = None
+        if last is not None and now - last < timedelta(minutes=EMPTY_QUEUE_REMINDER_MINUTES):
+            return False
+
+        # The first slot a clip sent now could still make, given the lead time.
+        reachable = next_slot([], now)
+        notifications.send_message(
+            "⚠️ <b>Yayın kuyruğu boş</b>\n"
+            "Bekleyen video yok. Şimdi gönderilen klip en erken "
+            f"<b>{_slot_label(reachable)}</b> yayınına girer "
+            f"(klip yayından en az {MIN_LEAD_HOURS} saat önce gelmeli).\n"
+            f"Kuyruğa video gelene kadar her {EMPTY_QUEUE_REMINDER_MINUTES} dakikada bir hatırlatacağım."
+        )
+        alert_path.parent.mkdir(parents=True, exist_ok=True)
+        alert_path.write_text(
+            json.dumps({"last_alert_at": now.isoformat(timespec="seconds")}) + "\n",
+            encoding="utf-8",
+        )
+        return True
+    except (RuntimeError, OSError, ValueError):
+        logger.exception("Could not send the empty-queue reminder")
+        return False
 
 
 def _send_queue(root: Path) -> None:

@@ -867,6 +867,85 @@ class StatePersistenceTests(unittest.TestCase):
         self.assertIn("rebase", script)
 
 
+class EmptyQueueReminderTests(unittest.TestCase):
+    """18 October: the day's 11:00 slot passed empty because the clips came
+    after the lead-time cut-off, and nobody heard about it."""
+
+    def setUp(self):
+        import json
+        from datetime import UTC, datetime
+        from tempfile import TemporaryDirectory
+        self.json = json
+        self.tmp = TemporaryDirectory()
+        self.root = Path(self.tmp.name)
+        (self.root / "data").mkdir()
+        self.now = datetime(2026, 10, 20, 8, 0, tzinfo=UTC)
+        self.sent = []
+        self.original = shorts_pipeline.notifications.send_message
+        shorts_pipeline.notifications.send_message = self.sent.append
+
+    def tearDown(self):
+        shorts_pipeline.notifications.send_message = self.original
+        self.tmp.cleanup()
+
+    def _queue(self, items):
+        (self.root / shorts_pipeline.QUEUE_FILE).write_text(self.json.dumps(items))
+
+    def test_an_empty_queue_sends_a_reminder(self):
+        self._queue([])
+        self.assertTrue(shorts_pipeline.remind_if_queue_empty(self.root, self.now))
+        self.assertEqual(len(self.sent), 1)
+        self.assertIn("kuyruğu boş", self.sent[0])
+        # The earliest slot a clip sent now can still make: 08:00 + 4 h -> 17:00.
+        self.assertIn("20.10 17:00 UTC", self.sent[0])
+
+    def test_a_missing_queue_file_counts_as_empty(self):
+        self.assertTrue(shorts_pipeline.remind_if_queue_empty(self.root, self.now))
+
+    def test_it_repeats_hourly_not_every_poll(self):
+        from datetime import timedelta
+        self._queue([])
+        shorts_pipeline.remind_if_queue_empty(self.root, self.now)
+        shorts_pipeline.remind_if_queue_empty(self.root, self.now + timedelta(minutes=2))
+        shorts_pipeline.remind_if_queue_empty(self.root, self.now + timedelta(minutes=59))
+        self.assertEqual(len(self.sent), 1)
+        shorts_pipeline.remind_if_queue_empty(self.root, self.now + timedelta(minutes=60))
+        self.assertEqual(len(self.sent), 2)
+
+    def test_the_rhythm_survives_a_new_watch_run(self):
+        """A run ends after five and a half hours and the next one starts from
+        the repository; the last reminder time must come from disk."""
+        from datetime import timedelta
+        self._queue([])
+        shorts_pipeline.remind_if_queue_empty(self.root, self.now)
+        self.assertTrue((self.root / shorts_pipeline.QUEUE_ALERT_FILE).exists())
+        shorts_pipeline.remind_if_queue_empty(self.root, self.now + timedelta(minutes=30))
+        self.assertEqual(len(self.sent), 1)
+
+    def test_a_waiting_video_stops_the_reminders_and_resets_them(self):
+        from datetime import timedelta
+        self._queue([])
+        shorts_pipeline.remind_if_queue_empty(self.root, self.now)
+        self._queue([{"publish_at": "2026-10-20T17:00:00+00:00"}])
+        self.assertFalse(shorts_pipeline.remind_if_queue_empty(
+            self.root, self.now + timedelta(hours=2)))
+        self.assertFalse((self.root / shorts_pipeline.QUEUE_ALERT_FILE).exists())
+        # Empty again ten minutes later: told at once, not an hour later.
+        self._queue([])
+        self.assertTrue(shorts_pipeline.remind_if_queue_empty(
+            self.root, self.now + timedelta(hours=2, minutes=10)))
+
+    def test_a_failed_send_does_not_raise(self):
+        def boom(_):
+            raise RuntimeError("telegram down")
+        shorts_pipeline.notifications.send_message = boom
+        self._queue([])
+        self.assertFalse(shorts_pipeline.remind_if_queue_empty(self.root, self.now))
+
+    def test_the_reminder_file_is_tracked_state(self):
+        self.assertTrue(shorts_pipeline.QUEUE_ALERT_FILE.startswith("data/"))
+
+
 class CreatureVarietyTests(unittest.TestCase):
     """Forty-two videos produced five beetles, three crabs, two nautiluses and
     two exact repeats. The exact-name list never stopped a second beetle, and
