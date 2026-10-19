@@ -19,7 +19,7 @@ filled in. Fixed in advance:
   hit         50,000+ views through day + k (primary), 10,000+ (secondary),
               and live Data API views beside them
   Thresholds as written in docs/HACIM_DENEYI.md on 17 Oct (6c84d60), before
-  the test began. They are not changed afterwards.
+  the test began. Test period 19 Oct-1 Nov (14 days); 18 Oct excluded. They are not changed afterwards.
   tests       Mann-Whitney (repo implementation), Fisher exact for counts,
               Holm over the four primary tests; p<0.05 after Holm and at least
               8 mature videos per group, otherwise "yeterli veri yok"
@@ -45,7 +45,10 @@ from channel_ops.channel_analysis import mann_whitney_p  # noqa: E402
 
 PACIFIC = ZoneInfo("America/Los_Angeles")
 COMPARISON = (date(2026, 10, 4), date(2026, 10, 17))
-TEST = (date(2026, 10, 18), date(2026, 10, 31))
+TEST = (date(2026, 10, 19), date(2026, 11, 1))
+# 18 Oct: the 11:00 slot was missed (clips arrived after the 4-hour lead time),
+# so it was a 2-video day. A transition day, in neither period.
+TRANSITION = date(2026, 10, 18)
 DEAD_K, DEAD_VIEWS, LOW_VIEWS = 2, 250, 2_000
 HIT_VIEWS, HIT_SECONDARY = 50_000, 10_000
 MIN_GROUP = 8
@@ -129,7 +132,7 @@ def main() -> None:
         sys.exit("HACIM_KANAL_GUNLUK yok: audit bu daldan çalıştırılmamış.")
     last_day = max(d for d, (v, _) in channel.items() if v > 0)
 
-    videos = []
+    videos, skipped = [], 0
     for rec in json.loads(Path(args.kayit).read_text("utf-8")):
         vid = rec.get("youtube_video_id")
         if not vid or rec.get("youtube_deleted"):
@@ -139,6 +142,7 @@ def main() -> None:
         period = ("kiyas" if in_period(utc_day, COMPARISON)
                   else "deney" if in_period(utc_day, TEST) else None)
         if not period:
+            skipped += utc_day == TRANSITION
             continue
         pt_day = pub.astimezone(PACIFIC).date()
         s = series.get(vid, {})
@@ -162,6 +166,7 @@ def main() -> None:
         print(f"{p}: {len(vs)} video, gün+{k} olgun {sum(v['views'] is not None for v in vs)}, "
               f"gün+{DEAD_K} olgun {sum(v['dead_views'] is not None for v in vs)}, "
               f"Analytics serisi olmayan {sum(not v['has_series'] for v in vs)}")
+    print(f"geçiş günü {TRANSITION} (2 video) iki dönemde de yok: {skipped} video dışarıda")
     if errors:
         print(f"sorgu hatası: {len(errors)} video  {errors[:3]}")
 
