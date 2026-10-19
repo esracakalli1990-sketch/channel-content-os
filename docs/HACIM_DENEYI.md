@@ -1,8 +1,22 @@
 # Hacim denemesi: günde 2 yerine 3 video
 
-**Başlangıç:** 18 Ekim 2026, 11:00 UTC (ilk üçlü gün) · **Süre:** 14 gün (18–31 Ekim,
-42 video) · **Karar tarihi:** 6 Kasım (kontroller 27 Ekim ve 3 Kasım;
+**Başlangıç:** 19 Ekim 2026, 11:00 UTC · **Bitiş:** 1 Kasım 2026, 23:00 UTC
+(14 gün, 42 video) · **Final ölçüm:** 7 Kasım (kontroller 27 Ekim ve 3 Kasım;
 videoların olgunlaşması ve Analytics'in 3 gün gecikmesi için) · **Karar veren:** kanal sahibi
+
+> **Dönem güncellemesi (19 Ekim, sonuçtan önce).** 18 Ekim'de 11:00 slotu
+> kaçtı: klipler 4 saatlik ön süreden sonra geldi, o gün yalnızca 2 video
+> yayınlandı. Bu yüzden:
+> - **Deney dönemi:** 19 Ekim 11:00 UTC – 1 Kasım 23:00 UTC (14 gün, 42 video).
+> - **18 Ekim geçiş günü**, iki dönemde de yok (17:00 stingray ve 23:00
+>   badger ölçüm dışı). 2 videolu bir günü deneye almak karşılaştırılan şeyi
+>   karıştırır; kıyasa almak da kıyası 4–17 Ekim'in dışına taşır.
+> - **Kıyas dönemi** 4–17 Ekim, değişmedi.
+> - **Final ölçüm 7 Kasım:** Analytics 3 gün geriden geldiği için 1 Kasım
+>   videolarının 3. gün verisi ancak o gün geliyor.
+> - **Kontroller** 27 Ekim ve 3 Kasım, değişmedi. **Eşikler ve durdurma
+>   kuralları** `6c84d60`'taki gibi, değişmedi.
+> - **Yayın düzeni:** günde 3 video, 1 Kasım 23:00 UTC yayınına kadar sürmeli.
 
 ## Neden
 
@@ -41,11 +55,12 @@ Planlı bir değişiklik olursa tarihi buraya yazılır ve deney kaydırılır.
 
 ## Ölçüm (analiz oturumu hesaplar)
 
-Kıyas dönemi: **4–17 Ekim** (günde 2 video). Deney dönemi: 18–31 Ekim.
+Kıyas dönemi: **4–17 Ekim** (günde 2 video). Deney dönemi: 19 Ekim 11:00 –
+1 Kasım 23:00 UTC (18 Ekim geçiş günü, ölçüm dışı).
 Videolar **aynı yaşta** karşılaştırılır (yayın günü + 2 ya da 3 gün); deney
 videoları kıyas videolarından 14 gün gençtir, yaşı eşitlemeden kıyas yapmak
 sonucu yaşa bağlar. Kontrol tarihleri: **27 Ekim** (7. gün; 24 Ekim değil,
-çünkü Analytics 3 gün geriden geliyor), **3 Kasım** (14. gün), **6 Kasım**
+çünkü Analytics 3 gün geriden geliyor), **3 Kasım**, **7 Kasım**
 (final). Ölçüm kodu ayrı dalda (`claude/hacim-olcum`), hat koduna dokunmuyor.
 
 1. **Toplam günlük etkileşimli izlenme** (Analytics, `engaged_daily`), deney
@@ -89,7 +104,7 @@ küçük: küçük etkiler ayırt edilemez, "yeterli veri yok" meşru bir sonuç
 - Üretim sürdürülemezse (operatör yetişemiyorsa): yarım bırakmak yerine eski
   tempoya dönmek tercih edilir.
 
-## Karar (6 Kasım)
+## Karar (7 Kasım)
 
 Durdurma kuralı tetiklenmediyse devam / eski tempoya dönüş kararı kanal
 sahibinindir. Deney sonucu "belirsiz" ise (çoğu ihtimalle böyle olacak) tempo,
