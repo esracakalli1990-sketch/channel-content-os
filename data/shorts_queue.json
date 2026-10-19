@@ -61,5 +61,26 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "18ae880d0298"
+  },
+  {
+    "queued_at": "2026-10-19T04:32:02+00:00",
+    "publish_at": "2026-10-20T11:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIEf2rVmf-cTH0QmjK_FZDnCv4r3bPQAAI6IgAClhapUhtvND0hjW29PQQ",
+    "file_size": 3013859,
+    "caption": "3",
+    "concept": {
+      "shape": "fluted oblate disc",
+      "material": "hand-carved pale hornblende stone and dark patinated gunmetal",
+      "internal_detail": "nested coaxial planetary gear rings, miniature brass pawls, and leaf-spring pivots",
+      "button": "a domed matte black steel stud seated in an off-centre counterbore",
+      "button_short": "the domed matte black steel stud",
+      "creature": "sea urchin",
+      "shell_mechanic": "The fluted oblate disc splits into five radial wedges that hinge outward five degrees from its central vertical axis",
+      "emerging_parts": "Thirty slender jointed brass spine needles and a central five-jawed miniature Aristotle's lantern armature",
+      "signature_move": "its radiating needle spines twitch three degrees outward in unison, and its bottom five-jawed brass lantern fixture ratchets closed with a soft metallic click",
+      "turkish": "Deniz kestanesi (dikenli yuvarlak deniz canlısı) — yivli yassı yuvarlak gövde, soluk hornblend taşı ve patineli tunç"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
   }
 ]
