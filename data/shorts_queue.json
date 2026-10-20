@@ -61,5 +61,26 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "18ae880d0298"
+  },
+  {
+    "queued_at": "2026-10-20T04:17:10+00:00",
+    "publish_at": "2026-10-21T11:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIEkWrW6vOgWX17ZziQcI0HFPtwVyN7AAJ7IAACEC-4Umj1TwZ5_v2PPQQ",
+    "file_size": 3258794,
+    "caption": "3",
+    "concept": {
+      "shape": "ribbed boat hull",
+      "material": "weathered sheet copper and oiled teak",
+      "internal_detail": "miniature brass pulley wheels and wound wire cables",
+      "button": "a small knurled copper screw-head recessed near the prow",
+      "button_short": "the small knurled copper screw-head",
+      "creature": "leatherback sea turtle",
+      "shell_mechanic": "The ribbed hull plates flex outward on miniature copper leaf springs",
+      "emerging_parts": "A blunt teak head with pin-hole optics, two elongated paddle flippers, and two short rear steering vanes",
+      "signature_move": "its broad front paddles sweep downward in a deliberate synchronized rowing arc and lock back in rest position",
+      "turkish": "Deri sırtlı deniz kaplumbağası (büyük okyanus kaplumbağası) — yivli tekne gövdesi, eskitilmiş bakır ve yağlı tik ağacı"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
   }
 ]
