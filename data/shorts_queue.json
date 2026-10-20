@@ -19,5 +19,26 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "18ae880d0298"
+  },
+  {
+    "queued_at": "2026-10-20T04:13:04+00:00",
+    "publish_at": "2026-10-20T17:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIEjWrW6eITjiMlffwK5AwCdT3NRmK1AAJ4IAACEC-4Us79IDJFZvByPQQ",
+    "file_size": 2878099,
+    "caption": "1",
+    "concept": {
+      "shape": "canted scalene wedge",
+      "material": "polished grey slate and brushed nickel",
+      "internal_detail": "tiny steel rack-and-pinion gears and silver pushrods",
+      "button": "a small square nickel stud countersunk flush with the slate",
+      "button_short": "the small square nickel stud",
+      "creature": "common starling",
+      "shell_mechanic": "The canted slate plates slide apart along diagonal tracks",
+      "emerging_parts": "Two slender folding wings, a tapered head with a needle beak, and two jointed wire feet",
+      "signature_move": "its tiny slate head tilts sharply to the side on its ball joint, and its needle beak plates part with a faint metallic tick",
+      "turkish": "Sığırcık kuşu (küçük ötücü kuş) — eğik kenarlı üçgen takoz, cilalı gri arduvaz taşı ve fırçalanmış nikel"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
   }
 ]
