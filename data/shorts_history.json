@@ -180,7 +180,8 @@
     "sea urchin",
     "common starling",
     "broad-tailed hummingbird",
-    "leatherback sea turtle"
+    "leatherback sea turtle",
+    "field cricket"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -327,6 +328,7 @@
     "fluted oblate disc",
     "canted scalene wedge",
     "flattened heart plaque",
-    "ribbed boat hull"
+    "ribbed boat hull",
+    "ribbed convex cylinder"
   ]
 }
