@@ -40,5 +40,26 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "18ae880d0298"
+  },
+  {
+    "queued_at": "2026-10-20T04:15:07+00:00",
+    "publish_at": "2026-10-20T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIEj2rW6ntMYgImGIv8fYDYM4iNY_3CAAJ6IAACEC-4UtZwi1-9-MenPQQ",
+    "file_size": 2713812,
+    "caption": "2",
+    "concept": {
+      "shape": "flattened heart plaque",
+      "material": "speckled green nephrite jade and rose gold",
+      "internal_detail": "interlocking concentric brass rings and fine escapement springs",
+      "button": "a miniature round rose-gold rivet set into the cleft",
+      "button_short": "the miniature round rose-gold rivet",
+      "creature": "broad-tailed hummingbird",
+      "shell_mechanic": "The jade heart divides along its central fissure and swings open like paired wing shields",
+      "emerging_parts": "A long needle-thin proboscis beak, fan-shaped slotted tail feathers, and two delicate latticed foil wings",
+      "signature_move": "its gold-latticed wings flutter once in a high-speed mechanical blur and lock rigid with an audible click",
+      "turkish": "Geniş kuyruklu sinek kuşu (ufak nektar emen kuş) — yassı kalp şeklinde plaka, benekli yeşil nefrit yeşimi ve pembe altın"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
   }
 ]
