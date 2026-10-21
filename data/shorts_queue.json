@@ -40,5 +40,26 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "18ae880d0298"
+  },
+  {
+    "queued_at": "2026-10-21T04:07:47+00:00",
+    "publish_at": "2026-10-21T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIEqWrYOokxcqlDe9WpNFeMuc6NEDRiAAKGIQACEC_AUjUkfdecnt0NPQQ",
+    "file_size": 2663452,
+    "caption": "1",
+    "concept": {
+      "shape": "ribbed saddle vault",
+      "material": "oxidized gunmetal and hand-buffed calfskin parchment",
+      "internal_detail": "delicate spring-steel linkages and ivory-toned pinions",
+      "button": "a countersunk bronze knurled stud set into the crest",
+      "button_short": "the countersunk bronze stud on the vault crest",
+      "creature": "common pipistrelle",
+      "shell_mechanic": "The vaulted flanks swing upward on lateral hinges like membranous carapaces",
+      "emerging_parts": "Two jointed wing spars with ribbed struts and a tiny clawed head",
+      "signature_move": "its twin wing spars flex once outward along their articulated joints, and its tiny chin plate ratchets forward with a miniature click",
+      "turkish": "Cüce yarasa (gece uçan, küçük memeli hayvan) — yivli beşik tonoz, oksitlenmiş namlu çeliği ve dana derisi parşömen"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
   }
 ]
