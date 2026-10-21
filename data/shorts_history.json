@@ -183,7 +183,10 @@
     "leatherback sea turtle",
     "field cricket",
     "common pipistrelle",
-    "common garden snail"
+    "common garden snail",
+    "common octopus",
+    "centipede",
+    "woodpecker"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -249,7 +252,6 @@
     "grooved barrel",
     "ribbed cone",
     "tessellated icosahedron",
-    "ribbed cylinder",
     "facetted triangular block",
     "ribbed hemispherical dome",
     "fluted octagonal drum",
@@ -308,7 +310,6 @@
     "domed pod",
     "grooved elliptical dome",
     "smooth teardrop pod",
-    "ribbed globular spool",
     "humped ovate mound",
     "broad spatulate slab",
     "stepped octagonal prism",
@@ -333,6 +334,9 @@
     "ribbed boat hull",
     "ribbed convex cylinder",
     "ribbed saddle vault",
-    "grooved ovoid bead"
+    "grooved ovoid bead",
+    "ribbed globular spool",
+    "ribbed cylinder",
+    "smooth ellipsoid"
   ]
 }
