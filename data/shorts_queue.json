@@ -1,7 +1,7 @@
 [
   {
     "queued_at": "2026-10-21T03:59:42+00:00",
-    "publish_at": "2026-10-21T17:00:00+00:00",
+    "publish_at": "2026-10-21T17:21:51+00:00",
     "file_id": "BQACAgQAAxkBAAIEnmrYOEt9VsoJr7LA1Ql1qSWagD8qAAKFIQACEC_AUjV1d5Y-GtfrPQQ",
     "file_size": 3048428,
     "caption": "1",
@@ -18,7 +18,9 @@
       "turkish": "Tohum bocegi (Kuru otlar arasinda yasayan, sicrayan, ince uzun bacakli bocek) — kaburgali dis bükey silindir, oksitlenmis bakir ve dovme demir"
     },
     "template_version": "22b0547924d3",
-    "idea_version": "18ae880d0298"
+    "idea_version": "18ae880d0298",
+    "attempts": 1,
+    "first_publish_at": "2026-10-21T17:00:00+00:00"
   },
   {
     "queued_at": "2026-10-21T04:07:47+00:00",
