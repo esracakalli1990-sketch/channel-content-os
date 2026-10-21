@@ -181,7 +181,9 @@
     "common starling",
     "broad-tailed hummingbird",
     "leatherback sea turtle",
-    "field cricket"
+    "field cricket",
+    "common pipistrelle",
+    "common garden snail"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -329,6 +331,8 @@
     "canted scalene wedge",
     "flattened heart plaque",
     "ribbed boat hull",
-    "ribbed convex cylinder"
+    "ribbed convex cylinder",
+    "ribbed saddle vault",
+    "grooved ovoid bead"
   ]
 }
