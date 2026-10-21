@@ -61,5 +61,26 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "18ae880d0298"
+  },
+  {
+    "queued_at": "2026-10-21T04:09:49+00:00",
+    "publish_at": "2026-10-22T11:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIEq2rYOqSY4L_myNB5F4O0kZBRA2M-AAKHIQACEC_AUum4KieRL-SYPQQ",
+    "file_size": 2610110,
+    "caption": "2",
+    "concept": {
+      "shape": "grooved ovoid bead",
+      "material": "polished boxwood and brushed rose gold",
+      "internal_detail": "miniature escapement wheels and coiled hairsprings",
+      "button": "a spring-loaded gold contact point on the top apex",
+      "button_short": "the spring-loaded gold contact at the apex",
+      "creature": "common garden snail",
+      "shell_mechanic": "The underside of the bead slides back along a curved internal track",
+      "emerging_parts": "A flexible segmented brass foot and two telescoping eyestalks",
+      "signature_move": "its dual eyestalks telescope outward along their grooved sleeves, and its brass foot plate ripples once against the palm on a small eccentric cam",
+      "turkish": "Bahçe salyangozu (kabuklu, yavaş sürünen yumuşakça) — yivli yumurta boncuk, şimşir ağacı ve fırçalanmış pembe altın"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
   }
 ]
