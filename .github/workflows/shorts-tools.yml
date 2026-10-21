@@ -142,6 +142,7 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config merge.shorts-state.driver "python3 src/channel_ops/state_merge.py %O %A %B %P"
           git add data/shorts_pending.json
           if git diff --cached --quiet; then
             echo "Kaydedilecek değişiklik yok."

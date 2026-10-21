@@ -56,6 +56,9 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Gelen kutusu turu ayni dosyaya yazabiliyor; JSON olarak birlestir
+          # (21 Ekim: metin catismasi fikirleri kaybettirdi).
+          git config merge.shorts-state.driver "python3 src/channel_ops/state_merge.py %O %A %B %P"
           git add data/shorts_pending.json data/shorts_history.json
           # Fikirler değişmediyse commit atmaya çalışmak adımı hataya düşürür.
           if git diff --cached --quiet; then
@@ -65,8 +68,14 @@ jobs:
             # Gelen kutusu turu iki dakikada bir push ediyor; araya girmişse
             # düz push reddedilir. Reddedilirse fikir Telegram'a gitmiş ama
             # kaydedilmemiş olur, gelen video da yanlış fikirle eşleşir.
-            git pull --rebase --autostash origin "${GITHUB_REF_NAME}"
-            git push origin "HEAD:${GITHUB_REF_NAME}"
+            # Push reddedilirse (araya yeni bir push girdiyse) birkac kez dene.
+            for attempt in 1 2 3 4; do
+              git pull --rebase --autostash origin "${GITHUB_REF_NAME}" \
+                && git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
+              git rebase --abort 2>/dev/null || true
+              sleep $((attempt * 5))
+            done
+            exit 1
           fi
 
       - name: Hata olursa Telegram'dan bildir

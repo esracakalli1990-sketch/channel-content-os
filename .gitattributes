@@ -10,3 +10,8 @@
 *.mp3 binary
 *.jpg binary
 *.png binary
+
+# Iki is ayni anda yaziyor (fikir isi ve Telegram dinleyicisi); metin olarak
+# degil liste/sozluk olarak birlestirilir. Surucu: src/channel_ops/state_merge.py
+data/shorts_pending.json merge=shorts-state
+data/shorts_history.json merge=shorts-state

@@ -29,6 +29,10 @@ self_fingerprint() {
 
 git config user.name  "github-actions[bot]"
 git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+# The idea job writes the pending-ideas file too. Merged as JSON rather than
+# text, so a push racing ours cannot leave both sides stuck on a conflict
+# (21 October). See src/channel_ops/state_merge.py.
+git config merge.shorts-state.driver "python3 src/channel_ops/state_merge.py %O %A %B %P"
 
 notify() {
     curl -sS -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
