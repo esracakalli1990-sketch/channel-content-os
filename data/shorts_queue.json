@@ -40,5 +40,26 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "18ae880d0298"
+  },
+  {
+    "queued_at": "2026-10-22T03:59:53+00:00",
+    "publish_at": "2026-10-22T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIEvGrZiczn-l5nLDrAyxE63DbCXQjhAAImHgAC4vbJUjXq0evm_2vMPQQ",
+    "file_size": 2597797,
+    "caption": "2",
+    "concept": {
+      "shape": "ribbed cylinder",
+      "material": "oxidized copper and forged iron",
+      "internal_detail": "nested brass gear trains and tiny copper bellows",
+      "button": "a small raised iron stud on the side",
+      "button_short": "the small raised iron stud",
+      "creature": "centipede",
+      "shell_mechanic": "The segmented cylindrical body splits cleanly down its entire length and the two heavy copper halves roll outward",
+      "emerging_parts": "Thirty articulated iron leg pairs and two fine brass antennal wires",
+      "signature_move": "its segmented metal body ripples forward with a rhythmic wave of its legs, and its copper head plates tilt upward on their pin",
+      "turkish": "Kırkayak (eklem bacaklı, çok ayaklı sürüngen benzeri böcek) — yivli silindir, oksitlenmiş bakır ve dövme demir"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
   }
 ]
