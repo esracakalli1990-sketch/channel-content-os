@@ -61,5 +61,26 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "18ae880d0298"
+  },
+  {
+    "queued_at": "2026-10-22T04:01:56+00:00",
+    "publish_at": "2026-10-23T11:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIEvmrZilmAbP34TJfzSSK1KCh0pAMTAAInHgAC4vbJUk1vM_NqH3-OPQQ",
+    "file_size": 3104328,
+    "caption": "3",
+    "concept": {
+      "shape": "smooth ellipsoid",
+      "material": "turned walnut wood and brushed brass",
+      "internal_detail": "fine brass coil springs and tiny wooden rocker arms",
+      "button": "a small brass push-pin at the narrower end",
+      "button_short": "the small brass push-pin",
+      "creature": "woodpecker",
+      "shell_mechanic": "The wooden ellipsoid halves hinge outward from the center like a split seed pod",
+      "emerging_parts": "A hinged brass beak, jointed wooden wing plates, and spring-loaded tail struts",
+      "signature_move": "its jointed brass beak pivots rapidly downward on its neck hinge to tap three sharp clicks against the palm, and its tail struts brace firmly",
+      "turkish": "Ağaçkakan (ağaç gövdelerine tırmanan, sert gagalı kuş) — pürüzsüz elips, tornalanmış ceviz ağacı ve fırçalanmış pirinç"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
   }
 ]
