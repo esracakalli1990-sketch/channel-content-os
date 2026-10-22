@@ -19,5 +19,26 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "18ae880d0298"
+  },
+  {
+    "queued_at": "2026-10-22T03:57:51+00:00",
+    "publish_at": "2026-10-22T17:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIEumrZiWCJ8vprEnR239qfm7vPQv2qAAIlHgAC4vbJUvfWShpOSC84PQQ",
+    "file_size": 3293235,
+    "caption": "1",
+    "concept": {
+      "shape": "ribbed globular spool",
+      "material": "weathered copper and oxidized verdigris bronze",
+      "internal_detail": "interlocking copper gears and miniature tension springs",
+      "button": "a small central copper pin surrounded by tiny etched rivets",
+      "button_short": "the small central copper pin",
+      "creature": "common octopus",
+      "shell_mechanic": "The grooved globular casing separates into eight curved vertical sections that swing outward on tiny hinge pins",
+      "emerging_parts": "Eight flexible segmented tentacles lined with tiny brass suction discs and a rounded mantle head",
+      "signature_move": "its eight jointed metal tentacles curl inward simultaneously and its central mantle tilts upward on its base joint with a crisp snap",
+      "turkish": "Ahtapot (sekiz kollu deniz canlisi) — dilimli kuremsi makara, hava kosullarina dayanikli bakir ve oksitlenmis yesil bronz"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
   }
 ]
