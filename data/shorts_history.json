@@ -186,7 +186,10 @@
     "common garden snail",
     "common octopus",
     "centipede",
-    "woodpecker"
+    "woodpecker",
+    "sun bear",
+    "green iguana",
+    "red fox"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -337,6 +340,9 @@
     "grooved ovoid bead",
     "ribbed globular spool",
     "ribbed cylinder",
-    "smooth ellipsoid"
+    "smooth ellipsoid",
+    "flattened oval block",
+    "ridged triangular prism",
+    "spherical pod"
   ]
 }
