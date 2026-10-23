@@ -1,1 +1,23 @@
-[]
+[
+  {
+    "queued_at": "2026-10-23T11:30:17+00:00",
+    "publish_at": "2026-10-23T17:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIEzWrbRNMuzio-4AxezljWsH6v0cqRAAKkGwACWSDZUjCmg0hig44NPQQ",
+    "file_size": 2932906,
+    "caption": "1",
+    "concept": {
+      "shape": "flattened oval block",
+      "material": "brushed titanium and black enamel",
+      "internal_detail": "coiled steel springs and micro-levers",
+      "button": "a recessed circular steel activator ringed with tiny rivets",
+      "button_short": "the recessed circular steel activator",
+      "creature": "sun bear",
+      "shell_mechanic": "The titanium casing separates at the seams and rolls back on hidden hinges",
+      "emerging_parts": "Four stout articulated limbs, a rounded snout block, and two folded ear plates",
+      "signature_move": "its rounded snout block pivots upward on its neck pin with a sharp click, and its right front limb lifts and sets down like a single clockwork step",
+      "turkish": "Gunes ayisi (Asya'da yasayan kucuk ve kara kurkclu memeli) — yassilastirilmis oval blok, fircalanmis titanyum ve siyah emaye"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
+  }
+]
