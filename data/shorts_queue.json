@@ -1,26 +1,5 @@
 [
   {
-    "queued_at": "2026-10-23T13:20:28+00:00",
-    "publish_at": "2026-10-23T23:00:00+00:00",
-    "file_id": "BQACAgQAAxkBAAIEz2rbWjfs0_tSUlkgtDmmMBNKlP9aAAK8GwACWSDZUl-J6ai0VO9zPQQ",
-    "file_size": 3076256,
-    "caption": "2",
-    "concept": {
-      "shape": "ridged triangular prism",
-      "material": "patinated bronze and amber glass",
-      "internal_detail": "spiral hairsprings and tiny brass cogs",
-      "button": "a small ridged bronze thumb-lever at the narrow corner",
-      "button_short": "the ridged bronze thumb-lever",
-      "creature": "green iguana",
-      "shell_mechanic": "The triangular bronze lid slides backward along internal guide rails",
-      "emerging_parts": "A segmented tail assembly, four clawed legs, and a hinged crest plate",
-      "signature_move": "its hinged crest plate tilts sharply upward on its pivot pin, and its head block rotates once from side to side",
-      "turkish": "Yesil iguana (Agaclarda yasayan pullu surungen) — cikintili ucgen prizma, patine bronz ve kehribar cam"
-    },
-    "template_version": "22b0547924d3",
-    "idea_version": "18ae880d0298"
-  },
-  {
     "queued_at": "2026-10-23T13:22:31+00:00",
     "publish_at": "2026-10-24T11:00:00+00:00",
     "file_id": "BQACAgQAAxkBAAIE0WrbXzH6z3UhNPub9_w8OD7b8ltxAALDGwACWSDZUusRb7QHTMzNPQQ",
