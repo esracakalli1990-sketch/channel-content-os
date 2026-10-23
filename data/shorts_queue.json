@@ -40,5 +40,26 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "18ae880d0298"
+  },
+  {
+    "queued_at": "2026-10-23T23:36:36+00:00",
+    "publish_at": "2026-10-24T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIE3Grb7xym-k2mwMVsH65OAi-bYdAjAAKPHgACWSDhUsWEFyfCxLkwPQQ",
+    "file_size": 3117038,
+    "caption": "pelagic siphonophore",
+    "concept": {
+      "shape": "chamfered rectangular cassette",
+      "material": "brushed duralumin and amber acrylic",
+      "internal_detail": "miniature copper coil windings and gold-plated levers",
+      "button": "a flush sliding brass tab on the side edge",
+      "button_short": "the flush sliding brass tab",
+      "creature": "pelagic siphonophore",
+      "shell_mechanic": "The rectangular casing separates into upper and lower housing plates that slide apart along parallel guide rails",
+      "emerging_parts": "A cluster of fine wire tendrils and a central glass float sphere",
+      "signature_move": "its central glass float sphere glows with a soft amber light and its wire tendrils sway outward together on their hinges",
+      "turkish": "Pelajik sifonofor (okyanusta yuzen, seffaf, koloniler halinde yasayan deniz canlisi) — pahli dikdortgen kaset, fircalanmis duralumin ve kehribar akrilik"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
   }
 ]
