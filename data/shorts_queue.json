@@ -19,5 +19,26 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "18ae880d0298"
+  },
+  {
+    "queued_at": "2026-10-23T23:34:34+00:00",
+    "publish_at": "2026-10-24T17:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIE2mrb7u0yq9LDNIr2chBUB8Xbzy3gAAKOHgACWSDhUh8i9cfi_4oePQQ",
+    "file_size": 2458655,
+    "caption": "1",
+    "concept": {
+      "shape": "grooved cylindrical bolt",
+      "material": "blued carbon steel and polished brass",
+      "internal_detail": "miniature piston rods and concentric copper coil springs",
+      "button": "a flush brass screw head at the top end",
+      "button_short": "the flush brass screw head",
+      "creature": "pufferfish",
+      "shell_mechanic": "The steel cylinder expands outward as its interlocking vertical ribs separate radially",
+      "emerging_parts": "Dozens of small blunt steel spines and a rounded mouth plate",
+      "signature_move": "its rounded body plates flare outward on their hinges and its front optical lens glows faint amber",
+      "turkish": "Balonbaligi (sisen, dikensi, deniz canlisi) — oluklu silindirik cıvata, mavilendirilmis karbon celik ve parlak pirinc"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
   }
 ]
