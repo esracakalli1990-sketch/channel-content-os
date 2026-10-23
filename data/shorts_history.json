@@ -189,7 +189,8 @@
     "woodpecker",
     "sun bear",
     "green iguana",
-    "red fox"
+    "red fox",
+    "pufferfish"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -343,6 +344,7 @@
     "smooth ellipsoid",
     "flattened oval block",
     "ridged triangular prism",
-    "spherical pod"
+    "spherical pod",
+    "grooved cylindrical bolt"
   ]
 }
