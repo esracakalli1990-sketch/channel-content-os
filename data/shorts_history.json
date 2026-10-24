@@ -190,7 +190,10 @@
     "sun bear",
     "green iguana",
     "red fox",
-    "pufferfish"
+    "pufferfish",
+    "mountain goat",
+    "harbor seal",
+    "gopher"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -277,7 +280,6 @@
     "bowed quadrilateral plate",
     "broad bilobed plaque",
     "cupped elliptical pod",
-    "beveled ovate monocoque",
     "chamfered square cuboid",
     "stepped pyramidal spire",
     "ribbed drop pod",
@@ -309,7 +311,6 @@
     "fluted pinecone scale",
     "smooth river stone",
     "ribbed fan vault",
-    "smooth asymmetrical crescent",
     "folded fan",
     "domed pod",
     "grooved elliptical dome",
@@ -345,6 +346,9 @@
     "flattened oval block",
     "ridged triangular prism",
     "spherical pod",
-    "grooved cylindrical bolt"
+    "grooved cylindrical bolt",
+    "curved triangular prism",
+    "smooth asymmetrical crescent",
+    "beveled ovate monocoque"
   ]
 }
