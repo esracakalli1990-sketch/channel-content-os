@@ -1,26 +1,5 @@
 [
   {
-    "queued_at": "2026-10-23T13:22:31+00:00",
-    "publish_at": "2026-10-24T11:00:00+00:00",
-    "file_id": "BQACAgQAAxkBAAIE0WrbXzH6z3UhNPub9_w8OD7b8ltxAALDGwACWSDZUusRb7QHTMzNPQQ",
-    "file_size": 3047018,
-    "caption": "3",
-    "concept": {
-      "shape": "spherical pod",
-      "material": "cast iron and polished copper wire",
-      "internal_detail": "ratchet wheels and differential gear sets",
-      "button": "a central iron stud flanked by two tiny brass screws",
-      "button_short": "the central iron stud",
-      "creature": "red fox",
-      "shell_mechanic": "The iron sphere splits cleanly into equal hemispheres that swing outward on hidden pivot arms",
-      "emerging_parts": "Four slender articulated legs, a long bushy tail assembly, and a pointed snout",
-      "signature_move": "its pointed snout pivots toward the camera on its neck pin with a crisp click, and its tail assembly swishes once along its hinge",
-      "turkish": "Kizil tilki (Kendir renkli kurnaz memeli) — kuresel koza, dokme demir ve parlak bakir tel"
-    },
-    "template_version": "22b0547924d3",
-    "idea_version": "18ae880d0298"
-  },
-  {
     "queued_at": "2026-10-23T23:34:34+00:00",
     "publish_at": "2026-10-24T17:00:00+00:00",
     "file_id": "BQACAgQAAxkBAAIE2mrb7u0yq9LDNIr2chBUB8Xbzy3gAAKOHgACWSDhUh8i9cfi_4oePQQ",
