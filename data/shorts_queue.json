@@ -1,1 +1,23 @@
-[]
+[
+  {
+    "queued_at": "2026-10-24T23:25:41+00:00",
+    "publish_at": "2026-10-25T11:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIE6mrdPhmU7ldIslPL8jQ9O4IzHvWAAALcHAACP7fwUkyhT3wIdQw_PQQ",
+    "file_size": 2821469,
+    "caption": "1",
+    "concept": {
+      "shape": "curved triangular prism",
+      "material": "brushed titanium and anodized copper wire",
+      "internal_detail": "miniature copper coils and fine steel leaf springs",
+      "button": "a small flush-mounted copper stud on the underside",
+      "button_short": "the small flush-mounted copper stud",
+      "creature": "mountain goat",
+      "shell_mechanic": "The triangular titanium shell splits apart along its center spine and rotates outward on spring-loaded hinges",
+      "emerging_parts": "Four jointed copper legs and a short horned head",
+      "signature_move": "its amber glass eyes light up yellow and its angled head pivots twice from side to side on its neck pin with a sharp metallic click",
+      "turkish": "Dag kecisi (Dagli daglarda yasayan, boynuzlu memeli) — egik ucgen prizma, fircalanmis titanyum ve anodize bakir tel"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
+  }
+]
