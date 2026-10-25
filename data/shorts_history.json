@@ -193,7 +193,10 @@
     "pufferfish",
     "mountain goat",
     "harbor seal",
-    "gopher"
+    "gopher",
+    "marine ray",
+    "red kangaroo",
+    "great egret"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -349,6 +352,9 @@
     "grooved cylindrical bolt",
     "curved triangular prism",
     "smooth asymmetrical crescent",
-    "beveled ovate monocoque"
+    "beveled ovate monocoque",
+    "tapered cylindrical drum",
+    "faceted decagonal puck",
+    "smooth convex obelisk"
   ]
 }
