@@ -1,26 +1,5 @@
 [
   {
-    "queued_at": "2026-10-26T03:57:20+00:00",
-    "publish_at": "2026-10-26T17:00:00+00:00",
-    "file_id": "BQACAgQAAxkBAAIFA2rez4pUQl4qwUAayf-RfMIJNMNeAALAHgACP7f4UguvhV8Jv-85PQQ",
-    "file_size": 2969544,
-    "caption": "2",
-    "concept": {
-      "shape": "faceted decagonal puck",
-      "material": "polished silver and translucent quartz crystal",
-      "internal_detail": "rotating escapement wheels and gleaming platinum levers",
-      "button": "a flush circular quartz cabochon on the top face",
-      "button_short": "the flush circular quartz cabochon on the top",
-      "creature": "red kangaroo",
-      "shell_mechanic": "The decagonal quartz panels slide apart along radial tracks and the silver base splits open",
-      "emerging_parts": "Two long spring-loaded hind legs and a counterbalancing tail strut",
-      "signature_move": "its jointed steel hind legs compress against the surface and snap outward to launch the toy upward in a single clockwork hop",
-      "turkish": "Kızıl kanguru (Avustralya'da yaşayan, güçlü bacaklı memeli) — yönlü ongen disk, cilalı gümüş ve yarı saydam kuvars kristali"
-    },
-    "template_version": "22b0547924d3",
-    "idea_version": "18ae880d0298"
-  },
-  {
     "queued_at": "2026-10-26T03:59:22+00:00",
     "publish_at": "2026-10-26T23:00:00+00:00",
     "file_id": "BQACAgQAAxkBAAIFBWrez86HKLiif3g6aK-VXj9xuPg3AALBHgACP7f4UoSDca7slFFtPQQ",
