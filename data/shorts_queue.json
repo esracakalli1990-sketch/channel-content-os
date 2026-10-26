@@ -1,1 +1,23 @@
-[]
+[
+  {
+    "queued_at": "2026-10-26T03:51:16+00:00",
+    "publish_at": "2026-10-26T11:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIFAWrezi8zRgRkC02FCh7ouLiNp-TUAAK_HgACP7f4Uq_t6wmDZm_6PQQ",
+    "file_size": 2958681,
+    "caption": "1",
+    "concept": {
+      "shape": "tapered cylindrical drum",
+      "material": "patinated bronze and brushed steel",
+      "internal_detail": "interlocking brass gears and fine coiled hairsprings",
+      "button": "a small raised steel stud at the edge of the rim",
+      "button_short": "the small raised steel stud at the edge",
+      "creature": "marine ray",
+      "shell_mechanic": "The cylindrical drum separates down its central seam and the two halves fold outward like heavy fins",
+      "emerging_parts": "A wide segmented pectoral membrane and a thin jointed tail",
+      "signature_move": "its broad bronze pectoral fins flex upward on their central hinges and press down again in a single slow swimming motion",
+      "turkish": "Vatoz (deniz canlısı, yassı ve yüzgeçli) — konik silindirik tambur, patinajlı bronz ve fırçalanmış çelik"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
+  }
+]
