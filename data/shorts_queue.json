@@ -40,5 +40,26 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "18ae880d0298"
+  },
+  {
+    "queued_at": "2026-10-26T03:59:22+00:00",
+    "publish_at": "2026-10-26T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIFBWrez86HKLiif3g6aK-VXj9xuPg3AALBHgACP7f4UoSDca7slFFtPQQ",
+    "file_size": 2582692,
+    "caption": "3",
+    "concept": {
+      "shape": "smooth convex obelisk",
+      "material": "dark anodized aluminum and polished brass",
+      "internal_detail": "pivoting counterweights and delicate linkage rods",
+      "button": "a tiny brass toggle set into the base",
+      "button_short": "the tiny brass toggle set into the base",
+      "creature": "great egret",
+      "shell_mechanic": "The aluminum obelisk splits vertically into four interlocking segments that slide downward and flare outward",
+      "emerging_parts": "A long articulated neck shaft and two hinged stilt legs",
+      "signature_move": "its hinged brass neck pivots forward on its pin and its slender beak plates snap open and shut once with a sharp metallic click",
+      "turkish": "Büyük akbalıkçıl (uzun boyunlu ve bacaklı su kuşu) — pürüzsüz dışbükey dikilitaş, koyu eloksallı alüminyum ve cilalı pirinç"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
   }
 ]
