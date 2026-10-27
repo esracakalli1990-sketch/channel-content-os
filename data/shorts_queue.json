@@ -1,26 +1,5 @@
 [
   {
-    "queued_at": "2026-10-27T04:35:28+00:00",
-    "publish_at": "2026-10-27T11:00:00+00:00",
-    "file_id": "BQACAgQAAxkBAAIFHGrgKbkqYHfMu57vwQwb-Z_JjI5JAAJvIQACCMABU5Li4sjaJSViPQQ",
-    "file_size": 3337916,
-    "caption": "1",
-    "concept": {
-      "shape": "ribbed tubular housing",
-      "material": "brushed gunmetal and aged copper rivets",
-      "internal_detail": "intricate brass differential gears and micro-springs",
-      "button": "a small brass push-pin set flush into the end cap",
-      "button_short": "the small brass push-pin",
-      "creature": "tarantula hawk wasp",
-      "shell_mechanic": "The ribbed tubular housing splits cleanly along its dorsal seam and hinges outward like twin metal wings",
-      "emerging_parts": "Six long jointed legs, a pair of gossamer wire-mesh wings, and a segmented thorax",
-      "signature_move": "its jointed metal stinger swivels upward once on its base pivot and its metallic antennae twitch forward together",
-      "turkish": "Tarantula sakini arisi (dev birari avlayan, zehirli kanatli bocek) — ridimli boru seklinde muhafaza, fircalanmis silah celigi ve eskitilmis bakir percinler"
-    },
-    "template_version": "22b0547924d3",
-    "idea_version": "18ae880d0298"
-  },
-  {
     "queued_at": "2026-10-27T04:37:30+00:00",
     "publish_at": "2026-10-27T17:00:00+00:00",
     "file_id": "BQACAgQAAxkBAAIFHmrgKkguZDXFkU4_pLNz8zszkh3lAAJwIQACCMABUyfeLmD5bzRRPQQ",
