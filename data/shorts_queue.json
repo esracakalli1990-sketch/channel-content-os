@@ -1,26 +1,5 @@
 [
   {
-    "queued_at": "2026-10-27T04:37:30+00:00",
-    "publish_at": "2026-10-27T17:00:00+00:00",
-    "file_id": "BQACAgQAAxkBAAIFHmrgKkguZDXFkU4_pLNz8zszkh3lAAJwIQACCMABUyfeLmD5bzRRPQQ",
-    "file_size": 2856672,
-    "caption": "2",
-    "concept": {
-      "shape": "fluted cylindrical canister",
-      "material": "milled aluminum and anodized blue titanium",
-      "internal_detail": "miniature planetary gear sets and tiny brass linkages",
-      "button": "a spring-loaded titanium stud on the base plate",
-      "button_short": "the spring-loaded titanium stud",
-      "creature": "caterpillar",
-      "shell_mechanic": "The fluted cylindrical canister unrolls its outer casing into a sequence of flexible overlapping metal rings",
-      "emerging_parts": "Twelve pairs of micro-geared ventral legs and a rotating pair of mandible jaws",
-      "signature_move": "its segmented metal rings ripple forward in a slow wave from tail to head and its front thoracic segment lifts once",
-      "turkish": "Tirtil (bitkilerle beslenen, yumusak ve bogumlu solucanimsi bocek lavrasi) — yivli silindirik teneke kutu, frezelenmis aliminyum ve anodize mavi titanyum"
-    },
-    "template_version": "22b0547924d3",
-    "idea_version": "18ae880d0298"
-  },
-  {
     "queued_at": "2026-10-27T04:43:35+00:00",
     "publish_at": "2026-10-27T23:00:00+00:00",
     "file_id": "BQACAgQAAxkBAAIFImrgK_HorlruvRc6_2_VXaHyzxNDAAJxIQACCMABU4mRcEV8hM3SPQQ",
