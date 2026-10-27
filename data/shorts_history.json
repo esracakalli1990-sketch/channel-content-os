@@ -198,7 +198,9 @@
     "great egret",
     "tarantula hawk wasp",
     "caterpillar",
-    "platypus"
+    "platypus",
+    "eurasian badger",
+    "steam shovel"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -360,6 +362,8 @@
     "smooth convex obelisk",
     "ribbed tubular housing",
     "fluted cylindrical canister",
-    "domed pentagonal case"
+    "domed pentagonal case",
+    "ribbed walnut ellipsoid",
+    "beveled rectangular block"
   ]
 }
