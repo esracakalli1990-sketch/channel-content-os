@@ -70,7 +70,6 @@
     "walrus",
     "fennec fox",
     "swordfish",
-    "platypus",
     "flamingo",
     "hammerhead shark",
     "shoebill",
@@ -198,7 +197,8 @@
     "red kangaroo",
     "great egret",
     "tarantula hawk wasp",
-    "caterpillar"
+    "caterpillar",
+    "platypus"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -359,6 +359,7 @@
     "faceted decagonal puck",
     "smooth convex obelisk",
     "ribbed tubular housing",
-    "fluted cylindrical canister"
+    "fluted cylindrical canister",
+    "domed pentagonal case"
   ]
 }
