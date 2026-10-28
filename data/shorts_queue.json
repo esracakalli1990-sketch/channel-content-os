@@ -1,26 +1,5 @@
 [
   {
-    "queued_at": "2026-10-28T04:00:39+00:00",
-    "publish_at": "2026-10-28T17:00:00+00:00",
-    "file_id": "BQACAgQAAxkBAAIFO2rhcwrDYsAC1m-u4PennOHfrH71AALKHwACI2YJU-sr1N6jJFYNPQQ",
-    "file_size": 3619601,
-    "caption": "2",
-    "concept": {
-      "shape": "beveled rectangular block",
-      "material": "hammered copper and weathered iron",
-      "internal_detail": "miniature piston rods and tiny counterweight flywheels",
-      "button": "an old copper toggle switch projecting from the side",
-      "button_short": "the old copper toggle switch",
-      "creature": "steam shovel",
-      "shell_mechanic": "The heavy copper casing splits horizontally and its top plate lifts away on vertical guides",
-      "emerging_parts": "An articulated steel boom arm and a small riveted metal scoop bucket",
-      "signature_move": "its hinged steel boom arm pivots upward on its pin and dips down again like a working machine piston",
-      "turkish": "Buharli kepce (insaat makinasi, kazici ve yukleyici) — pahli dikdortgen blok, dovme bakir ve eskimiş demir"
-    },
-    "template_version": "22b0547924d3",
-    "idea_version": "18ae880d0298"
-  },
-  {
     "queued_at": "2026-10-28T04:10:45+00:00",
     "publish_at": "2026-10-28T23:00:00+00:00",
     "file_id": "BQACAgQAAxkBAAIFP2rhdW0U8dP85cwNAAFCZ5TzpcDuXAACzR8AAiNmCVOFA2vPSFadJj0E",
