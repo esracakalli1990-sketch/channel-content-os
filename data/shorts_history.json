@@ -200,7 +200,8 @@
     "caterpillar",
     "platypus",
     "eurasian badger",
-    "steam shovel"
+    "steam shovel",
+    "masked lapwing"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -302,7 +303,6 @@
     "knotty tapered stump",
     "curved sigmoid ingot",
     "corrugated navicular pod",
-    "scalloped deltoid vault",
     "creased lozenge tablet",
     "grooved rhombic cassette",
     "fluted conical cap",
@@ -364,6 +364,7 @@
     "fluted cylindrical canister",
     "domed pentagonal case",
     "ribbed walnut ellipsoid",
-    "beveled rectangular block"
+    "beveled rectangular block",
+    "scalloped deltoid vault"
   ]
 }
