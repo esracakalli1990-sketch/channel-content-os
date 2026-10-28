@@ -40,5 +40,26 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "18ae880d0298"
+  },
+  {
+    "queued_at": "2026-10-28T04:10:45+00:00",
+    "publish_at": "2026-10-28T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIFP2rhdW0U8dP85cwNAAFCZ5TzpcDuXAACzR8AAiNmCVOFA2vPSFadJj0E",
+    "file_size": 4314554,
+    "caption": "masked lapwing",
+    "concept": {
+      "shape": "scalloped deltoid vault",
+      "material": "polished silver and translucent quartz",
+      "internal_detail": "interlocking gear trains and fine copper leaf springs",
+      "button": "a tiny flush quartz activator near the pointed corner",
+      "button_short": "the tiny flush quartz activator",
+      "creature": "masked lapwing",
+      "shell_mechanic": "The silver vault splits down its median ridge and the scalloped side panels fold backward in unison",
+      "emerging_parts": "Two jointed stilt legs, a slender neck, and a crest-topped head",
+      "signature_move": "its hinged headplate nods once on its neck pivot and its yellow facial wattles click outward on their pins",
+      "turkish": "Maskeli caylak (Avustralya'da yasayan, basinda ibigi olan, uzun bacakli kus) — dilimli ucgen kubbe, parlak gumus ve yarim saydam kuvars"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
   }
 ]
