@@ -40,5 +40,26 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "18ae880d0298"
+  },
+  {
+    "queued_at": "2026-10-29T00:35:31+00:00",
+    "publish_at": "2026-10-29T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIFW2rilGfYKlwOCI3L6Of20M8yvBQWAAK-IgACI2YRU4cLqr80-VRFPQQ",
+    "file_size": 4479786,
+    "caption": "aardvark",
+    "concept": {
+      "shape": "chamfered ovate vault",
+      "material": "brushed rosewood timber and warm nickel-plated bronze framing",
+      "internal_detail": "rack-and-pinion linkages, bevel gear differentials, and spiraled copper leaf springs",
+      "button": "a flush oval copper trigger recessed into the rear curve",
+      "button_short": "the oval copper trigger on the rear curve",
+      "creature": "aardvark",
+      "shell_mechanic": "The chamfered ovate vault expands outward on dual scissor hinges to form the arched back plate",
+      "emerging_parts": "A tubular snout mechanism with folding spade-tipped ears and four heavy digging forelimbs",
+      "signature_move": "its jointed tubular snout pivots toward the palm surface and its front claw levers ratchet forward in a short scraping cycle",
+      "turkish": "Yerdomuzu / aardvark (Afrika'da yaşayan karınca yiyici memeli) — pahlı oval tonoz, gül ağacı ve nikel kaplama bronz"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
   }
 ]
