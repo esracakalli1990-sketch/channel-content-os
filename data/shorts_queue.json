@@ -1,26 +1,5 @@
 [
   {
-    "queued_at": "2026-10-29T00:31:26+00:00",
-    "publish_at": "2026-10-29T11:00:00+00:00",
-    "file_id": "BQACAgQAAxkBAAIFV2rik5hdg40L58DISECnMit3iRJfAAK8IgACI2YRU-6h1b-uvlmzPQQ",
-    "file_size": 3597081,
-    "caption": "dunkleosteus",
-    "concept": {
-      "shape": "sloped pentagonal casement",
-      "material": "gunmetal steel plates with tarnished pewter trim and oiled iron rivets",
-      "internal_detail": "counter-rotating gear trains, interlocking lever struts, and oiled brass drive linkages",
-      "button": "a recessed knurled brass stud positioned along the upper spine ridge",
-      "button_short": "the knurled brass stud on the upper ridge",
-      "creature": "dunkleosteus",
-      "shell_mechanic": "The sloped pentagonal casement separates along its heavy dorsal joints and slides back in two lateral armor plates",
-      "emerging_parts": "An articulated jaw assembly with serrated shear plates and a jointed steel tail",
-      "signature_move": "its heavy steel head shield tilts upward on a rear hinge and its serrated jaw plates snap closed with a sharp metallic clack",
-      "turkish": "Dunkleosteus (zırhlı tarih öncesi balık) — eğimli beşgen mahfaza, namlu çeliği ve karartılmış kalay"
-    },
-    "template_version": "22b0547924d3",
-    "idea_version": "18ae880d0298"
-  },
-  {
     "queued_at": "2026-10-29T00:33:28+00:00",
     "publish_at": "2026-10-29T17:00:00+00:00",
     "file_id": "BQACAgQAAxkBAAIFWWrik_hFA5W1sSGvYeAKM9M37amRAAK9IgACI2YRU2jSHZeliumbPQQ",
