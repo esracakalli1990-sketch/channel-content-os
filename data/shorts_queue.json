@@ -1,26 +1,5 @@
 [
   {
-    "queued_at": "2026-10-29T00:33:28+00:00",
-    "publish_at": "2026-10-29T17:00:00+00:00",
-    "file_id": "BQACAgQAAxkBAAIFWWrik_hFA5W1sSGvYeAKM9M37amRAAK9IgACI2YRU2jSHZeliumbPQQ",
-    "file_size": 3760358,
-    "caption": "southern cassowary",
-    "concept": {
-      "shape": "tapered ovate column",
-      "material": "blued steel sheeting with iridescent cyan enamel inlays and matte horn fixtures",
-      "internal_detail": "miniature balance springs, hairspring escapements, and nested brass eccentric cams",
-      "button": "a small convex lapis lazuli pushbutton set flush into the front seam",
-      "button_short": "the convex lapis lazuli pushbutton on the front seam",
-      "creature": "southern cassowary",
-      "shell_mechanic": "The tapered ovate column unlatches at the front and splits into two curved side mantles that swing backward",
-      "emerging_parts": "A tall neck with a ridged bronze casque and two jointed walking struts with long dagger claws",
-      "signature_move": "its neck ratchet clicks upward two notches and its right foot mechanism lifts on its pivot before stamping down onto the palm",
-      "turkish": "Tepeli devekuşu / kazuar (iri yapılı, sorguçlu uçamayan kuş) — konik oval sütun, mavileştirilmiş çelik ve mavi emaye"
-    },
-    "template_version": "22b0547924d3",
-    "idea_version": "18ae880d0298"
-  },
-  {
     "queued_at": "2026-10-29T00:35:31+00:00",
     "publish_at": "2026-10-29T23:00:00+00:00",
     "file_id": "BQACAgQAAxkBAAIFW2rilGfYKlwOCI3L6Of20M8yvBQWAAK-IgACI2YRU4cLqr80-VRFPQQ",
