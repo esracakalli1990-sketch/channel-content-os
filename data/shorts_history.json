@@ -201,7 +201,10 @@
     "platypus",
     "eurasian badger",
     "steam shovel",
-    "masked lapwing"
+    "masked lapwing",
+    "dunkleosteus",
+    "southern cassowary",
+    "aardvark"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -365,6 +368,9 @@
     "domed pentagonal case",
     "ribbed walnut ellipsoid",
     "beveled rectangular block",
-    "scalloped deltoid vault"
+    "scalloped deltoid vault",
+    "sloped pentagonal casement",
+    "tapered ovate column",
+    "chamfered ovate vault"
   ]
 }
