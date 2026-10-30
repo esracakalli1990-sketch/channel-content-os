@@ -206,7 +206,9 @@
     "four-cylinder radial piston water pump",
     "dunkleosteus",
     "southern cassowary",
-    "aardvark"
+    "aardvark",
+    "leaf-veined katydid",
+    "spotted salamander"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -375,6 +377,8 @@
     "hollow flanged rotor",
     "sloped pentagonal casement",
     "tapered ovate column",
-    "chamfered ovate vault"
+    "chamfered ovate vault",
+    "creased folding fan",
+    "curved river stone"
   ]
 }
