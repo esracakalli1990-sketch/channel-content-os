@@ -40,5 +40,26 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "18ae880d0298"
+  },
+  {
+    "queued_at": "2026-10-30T07:02:34+00:00",
+    "publish_at": "2026-10-30T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIFcmrkQOG9fPJ8yClT9wUksHEz7DXrAAJGHgACThAgU8ElDAj-T0NTPQQ",
+    "file_size": 4164362,
+    "caption": "honey bee",
+    "concept": {
+      "shape": "faceted hexagonal cylinder",
+      "material": "hand-blown quartz crystal and gold-plated brass",
+      "internal_detail": "fine gold hairsprings and microscopic steel pivots",
+      "button": "a tiny faceted ruby push-pin",
+      "button_short": "the faceted ruby push-pin",
+      "creature": "honey bee",
+      "shell_mechanic": "The hexagonal crystal splits along three vertical seams and the casing panels slide outward",
+      "emerging_parts": "Four transparent mica wings, six segmented gold legs, and a striped abdomen",
+      "signature_move": "its four mica wings vibrate rapidly on their hinge pins with a high-pitched metallic hum",
+      "turkish": "Bal arisi (ciceklerden nektar toplayan bocek) — yuzeyli altigen silindir, el yapimi kuvars kristali ve altin kaplama pirinc"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
   }
 ]
