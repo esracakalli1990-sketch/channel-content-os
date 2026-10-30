@@ -1,26 +1,5 @@
 [
   {
-    "queued_at": "2026-10-30T04:43:31+00:00",
-    "publish_at": "2026-10-30T17:00:00+00:00",
-    "file_id": "BQACAgQAAxkBAAIFcGrkIAo5Vi9eGLukEi3501kN7ROTAAI4HgACThAgU2RwQaw43IwRPQQ",
-    "file_size": 3617151,
-    "caption": "2",
-    "concept": {
-      "shape": "curved river stone",
-      "material": "polished grey soapstone and nickel silver",
-      "internal_detail": "intricate brass sliding linkages and miniature counterweights",
-      "button": "a small nickel pin set flush into the grey surface",
-      "button_short": "the small nickel pin on the flank",
-      "creature": "spotted salamander",
-      "shell_mechanic": "The soapstone upper casing slides backward on polished internal tracks and splits down its central seam",
-      "emerging_parts": "Four short jointed legs and a tapered tail section",
-      "signature_move": "its jointed steel head pivots toward the camera on its neck pin with a small click, and one front leg lifts on its hinge and sets down again like a single clockwork step",
-      "turkish": "Benekli semender (nemli ormanlarda yasayan, kuyruklu amfibi) — kavisli nehir tasi, parlak gri sabun tasi ve nikel gumus"
-    },
-    "template_version": "22b0547924d3",
-    "idea_version": "18ae880d0298"
-  },
-  {
     "queued_at": "2026-10-30T07:02:34+00:00",
     "publish_at": "2026-10-30T23:00:00+00:00",
     "file_id": "BQACAgQAAxkBAAIFcmrkQOG9fPJ8yClT9wUksHEz7DXrAAJGHgACThAgU8ElDAj-T0NTPQQ",
