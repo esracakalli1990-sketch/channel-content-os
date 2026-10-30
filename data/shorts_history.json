@@ -208,7 +208,8 @@
     "southern cassowary",
     "aardvark",
     "leaf-veined katydid",
-    "spotted salamander"
+    "spotted salamander",
+    "spotted hyena"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -379,6 +380,7 @@
     "tapered ovate column",
     "chamfered ovate vault",
     "creased folding fan",
-    "curved river stone"
+    "curved river stone",
+    "chamfered rectangular block"
   ]
 }
