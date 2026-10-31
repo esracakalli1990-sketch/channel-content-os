@@ -19,5 +19,26 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "18ae880d0298"
+  },
+  {
+    "queued_at": "2026-10-31T08:11:32+00:00",
+    "publish_at": "2026-10-31T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIFjGrlom16W-Pe2SEDmsEc2lWhsaPUAAJNIQACpwwpUz8ZTcQpnNSRPQQ",
+    "file_size": 3677457,
+    "caption": "peacock butterfly",
+    "concept": {
+      "shape": "creased folding fan",
+      "material": "mother-of-pearl and oxidized silver",
+      "internal_detail": "delicate filigree linkages and tiny micro-springs",
+      "button": "a small mother-of-pearl push-stud on the edge",
+      "button_short": "the mother-of-pearl push-stud",
+      "creature": "peacock butterfly",
+      "shell_mechanic": "The folding silver-rimmed fan spreads outward along its pivot axes like wings",
+      "emerging_parts": "Two slender segmented legs and a tiny coiled antenna pair",
+      "signature_move": "its micro-linkages ratchet once and its iridescent silver wing plates pivot outward on their hinges in a short, crisp snap",
+      "turkish": "Tavus kelebegi (pul kanatli renkli bocek) — kivrimli katlanir yelpaze, sedef ve oksitlenmis gumus"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
   }
 ]
