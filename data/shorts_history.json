@@ -210,7 +210,10 @@
     "leaf-veined katydid",
     "spotted salamander",
     "spotted hyena",
-    "peacock butterfly"
+    "peacock butterfly",
+    "mule deer",
+    "blue whale",
+    "turkey vulture"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -367,7 +370,6 @@
     "smooth asymmetrical crescent",
     "beveled ovate monocoque",
     "tapered cylindrical drum",
-    "faceted decagonal puck",
     "smooth convex obelisk",
     "ribbed tubular housing",
     "fluted cylindrical canister",
@@ -382,6 +384,9 @@
     "chamfered ovate vault",
     "curved river stone",
     "chamfered rectangular block",
-    "creased folding fan"
+    "creased folding fan",
+    "canted triangular block",
+    "ribbed hemispherical pod",
+    "faceted decagonal puck"
   ]
 }
