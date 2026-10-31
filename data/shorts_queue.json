@@ -1,26 +1,5 @@
 [
   {
-    "queued_at": "2026-10-31T08:01:26+00:00",
-    "publish_at": "2026-10-31T17:00:00+00:00",
-    "file_id": "BQACAgQAAxkBAAIFiGrln98AATWtU561srF7ruzj2aAsnQACLyEAAqcMKVN1q_o22Ra3zD0E",
-    "file_size": 3867392,
-    "caption": "1",
-    "concept": {
-      "shape": "chamfered rectangular block",
-      "material": "anodized aluminum and nickel-plated brass",
-      "internal_detail": "sliding rack-and-pinion plates and micro-spring actuators",
-      "button": "a circular brass plunger on the top plate",
-      "button_short": "the circular brass plunger",
-      "creature": "spotted hyena",
-      "shell_mechanic": "The chamfered rectangular block slides apart along its internal guide rails and the top and bottom plates fold away",
-      "emerging_parts": "Four stout multi-jointed metal legs and a heavy jawed metallic head",
-      "signature_move": "its hinged steel jaw plates swing open on their pivots and snap shut with a sharp double click",
-      "turkish": "Benekli sirto (guclu disleri olan etcil memeli) — pahli dikdortgen blok, anodize alüminyum ve nikel kapli pirinc"
-    },
-    "template_version": "22b0547924d3",
-    "idea_version": "18ae880d0298"
-  },
-  {
     "queued_at": "2026-10-31T08:11:32+00:00",
     "publish_at": "2026-10-31T23:00:00+00:00",
     "file_id": "BQACAgQAAxkBAAIFjGrlom16W-Pe2SEDmsEc2lWhsaPUAAJNIQACpwwpUz8ZTcQpnNSRPQQ",
