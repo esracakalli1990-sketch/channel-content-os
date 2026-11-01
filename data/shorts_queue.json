@@ -19,5 +19,26 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "18ae880d0298"
+  },
+  {
+    "queued_at": "2026-11-01T00:52:05+00:00",
+    "publish_at": "2026-11-01T17:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIFnWrmjMVRcKBDwAqCzwvOjDi8dmIRAAKVIwACpwwxUwp2Bdmj8MD1PQQ",
+    "file_size": 3962273,
+    "caption": "2",
+    "concept": {
+      "shape": "ribbed hemispherical pod",
+      "material": "polished pewter and patinated copper wire",
+      "internal_detail": "stacked differential gear discs and micro-coiled copper springs",
+      "button": "a protruding copper toggle on the lower rim",
+      "button_short": "the protruding copper toggle on the lower rim",
+      "creature": "blue whale",
+      "shell_mechanic": "The hemispherical pewter shell separates along its vertical ribs and folds downward in two sweeping arcs",
+      "emerging_parts": "A broad flat fluted tail fin and two lateral stabilizing flippers",
+      "signature_move": "its broad pewter tail fin swings upward on its central hinge and snaps back down with a crisp metallic click",
+      "turkish": "Mavi balina (okyanuslarda yasayan devasa memeli deniz canlisi) — dilimli yarim kuresel kovan, parlatilmis kalay ve patinali bakir"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
   }
 ]
