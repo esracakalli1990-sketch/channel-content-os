@@ -213,7 +213,8 @@
     "peacock butterfly",
     "mule deer",
     "blue whale",
-    "turkey vulture"
+    "turkey vulture",
+    "snapping turtle"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -379,7 +380,6 @@
     "scalloped deltoid vault",
     "faceted hexagonal cylinder",
     "hollow flanged rotor",
-    "sloped pentagonal casement",
     "tapered ovate column",
     "chamfered ovate vault",
     "curved river stone",
@@ -387,6 +387,7 @@
     "creased folding fan",
     "canted triangular block",
     "ribbed hemispherical pod",
-    "faceted decagonal puck"
+    "faceted decagonal puck",
+    "sloped pentagonal casement"
   ]
 }
