@@ -1,1 +1,23 @@
-[]
+[
+  {
+    "queued_at": "2026-11-01T00:50:03+00:00",
+    "publish_at": "2026-11-01T11:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIFm2rmjG2wtuLV2Q1GNE9XEEwNskjiAAKUIwACpwwxU4HAtuxbPrRpPQQ",
+    "file_size": 3942926,
+    "caption": "1",
+    "concept": {
+      "shape": "canted triangular block",
+      "material": "brushed gunmetal steel and polished brass joints",
+      "internal_detail": "tightly wound mainspring barrels, tiny escapement wheels, and miniature polished steel gears",
+      "button": "a small flush brass stud near the corner",
+      "button_short": "the flush brass stud near the corner",
+      "creature": "mule deer",
+      "shell_mechanic": "The triangular steel block splits along its angled seams and the top plates slide outward to each side",
+      "emerging_parts": "Four jointed slender legs, a narrow pivoted snout, and two branching tined antlers",
+      "signature_move": "its slender brass snout pivots from side to side on its neck hinge with a small click, and one front leg lifts and sets down again like a single clockwork step",
+      "turkish": "Karakulak (orta boy, kulaklari uclu vahsi kedi) — egik ucgen blok, fircalanmis silah celigi ve parlatilmis pirinc"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
+  }
+]
