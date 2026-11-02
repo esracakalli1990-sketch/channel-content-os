@@ -40,5 +40,26 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "18ae880d0298"
+  },
+  {
+    "queued_at": "2026-11-02T06:47:46+00:00",
+    "publish_at": "2026-11-02T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIFt2roMbPMTB2aSiOTjEK9B8CZUnkYAAKTIAACD4NBU5RuUF1QKpXCPQQ",
+    "file_size": 4122376,
+    "caption": "2",
+    "concept": {
+      "shape": "smooth asymmetrical crescent",
+      "material": "polished titanium and blue anodized aluminum",
+      "internal_detail": "miniature hydraulic pistons and flexible linkages",
+      "button": "a tiny blue-capped plunger at the tip",
+      "button_short": "the tiny blue-capped plunger",
+      "creature": "flying squid",
+      "shell_mechanic": "The titanium curved hull opens like a double-valved hatch",
+      "emerging_parts": "Ten flexible cable-tentacles and a conical thruster nozzle",
+      "signature_move": "its conical thruster nozzle flares open on its hinge and flashes once with a bright blue LED spark",
+      "turkish": "Kalamar (denizde yasayan yumusakca) — pruzsuz asimetrik hilal, parlak titanyum ve mavi eloksalli aluminyum"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
   }
 ]
