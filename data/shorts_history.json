@@ -214,7 +214,9 @@
     "mule deer",
     "blue whale",
     "turkey vulture",
-    "snapping turtle"
+    "snapping turtle",
+    "orb spider",
+    "flying squid"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -360,7 +362,6 @@
     "ribbed convex cylinder",
     "ribbed saddle vault",
     "grooved ovoid bead",
-    "ribbed globular spool",
     "ribbed cylinder",
     "smooth ellipsoid",
     "flattened oval block",
@@ -368,7 +369,6 @@
     "spherical pod",
     "grooved cylindrical bolt",
     "curved triangular prism",
-    "smooth asymmetrical crescent",
     "beveled ovate monocoque",
     "tapered cylindrical drum",
     "smooth convex obelisk",
@@ -388,6 +388,8 @@
     "canted triangular block",
     "ribbed hemispherical pod",
     "faceted decagonal puck",
-    "sloped pentagonal casement"
+    "sloped pentagonal casement",
+    "ribbed globular spool",
+    "smooth asymmetrical crescent"
   ]
 }
