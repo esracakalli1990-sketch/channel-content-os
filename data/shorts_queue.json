@@ -1,26 +1,5 @@
 [
   {
-    "queued_at": "2026-11-02T03:58:12+00:00",
-    "publish_at": "2026-11-02T11:00:00+00:00",
-    "file_id": "BQACAgQAAxkBAAIFsGroCgABwvv5X5yQRlnv1bDDB98SWwACgCAAAg-DQVOGsHGrrXXgwD0E",
-    "file_size": 4013773,
-    "caption": "1",
-    "concept": {
-      "shape": "sloped pentagonal casement",
-      "material": "oxidized copper and forged iron plate",
-      "internal_detail": "interlocking lever arms and tension springs",
-      "button": "a round iron stud on the top face",
-      "button_short": "the round iron stud",
-      "creature": "snapping turtle",
-      "shell_mechanic": "The sloped pentagonal casement unlatches at the seams and drops its side panels outward",
-      "emerging_parts": "A segmented reptilian head on a telescopic neck and four short clawed limbs",
-      "signature_move": "its telescopic neck thrusts forward on its internal rail and its hinged iron jaw plates snap shut with a crisp metallic clack",
-      "turkish": "Kapan kaplumbagasi (sert kabuklu surungen) — egimli besgen muhafaza, oksitlenmis bakir ve dovme demir levha"
-    },
-    "template_version": "22b0547924d3",
-    "idea_version": "18ae880d0298"
-  },
-  {
     "queued_at": "2026-11-02T06:45:43+00:00",
     "publish_at": "2026-11-02T17:00:00+00:00",
     "file_id": "BQACAgQAAxkBAAIFtWroMYydEjjjMaon9ZQPYwYY9N0EAAKSIAACD4NBUzHiZfj3RDODPQQ",
