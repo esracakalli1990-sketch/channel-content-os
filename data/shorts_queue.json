@@ -1,26 +1,5 @@
 [
   {
-    "queued_at": "2026-11-02T06:45:43+00:00",
-    "publish_at": "2026-11-02T17:00:00+00:00",
-    "file_id": "BQACAgQAAxkBAAIFtWroMYydEjjjMaon9ZQPYwYY9N0EAAKSIAACD4NBUzHiZfj3RDODPQQ",
-    "file_size": 4299192,
-    "caption": "1",
-    "concept": {
-      "shape": "ribbed globular spool",
-      "material": "brushed gunmetal and polished silver wire",
-      "internal_detail": "spring-loaded ratchets and micro-gears",
-      "button": "a flush silver button on the top flange",
-      "button_short": "the flush silver button",
-      "creature": "orb spider",
-      "shell_mechanic": "The outer gunmetal segments swing outward on their hidden hinges",
-      "emerging_parts": "Eight jointed spring-steel legs and a segmented optical turret",
-      "signature_move": "its optical turret pivots sharply from side to side on its central pin with a crisp mechanical click",
-      "turkish": "Orb orumcegi (sekiz bacakli eklembacakli avci) — dilimli kurevi makara, fircalanmis silah celigi ve parlatilmis gumus"
-    },
-    "template_version": "22b0547924d3",
-    "idea_version": "18ae880d0298"
-  },
-  {
     "queued_at": "2026-11-02T06:47:46+00:00",
     "publish_at": "2026-11-02T23:00:00+00:00",
     "file_id": "BQACAgQAAxkBAAIFt2roMbPMTB2aSiOTjEK9B8CZUnkYAAKTIAACD4NBU5RuUF1QKpXCPQQ",
