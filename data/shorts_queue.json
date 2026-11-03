@@ -1,26 +1,5 @@
 [
   {
-    "queued_at": "2026-11-03T07:05:24+00:00",
-    "publish_at": "2026-11-03T17:00:00+00:00",
-    "file_id": "BQACAgQAAxkBAAIFz2rph17IGRV24kmtQYFodduRlD7gAAKKHQAC169RU37GUUV4WkJiPQQ",
-    "file_size": 3528124,
-    "caption": "2",
-    "concept": {
-      "shape": "ribbed triangular ingot",
-      "material": "brushed gunmetal and copper wire",
-      "internal_detail": "stacked micro-gears and tension springs",
-      "button": "a flush copper button on the bottom corner",
-      "button_short": "the flush copper button",
-      "creature": "burrowing owl",
-      "shell_mechanic": "The triangular ingot separates along its central ridge and the side plates slide outward on hidden tracks",
-      "emerging_parts": "A rounded torso block, two hinged wing panels, and a swiveling round optic head",
-      "signature_move": "its round glass lens lights up amber, and its head turns in a sharp ninety-degree arc with a tiny ratchet click",
-      "turkish": "Baykus (kucuk, tuylu gece yirtici kusu) — ridgeli ucgen kulce, fircalanmis silah celigi ve bakir tel"
-    },
-    "template_version": "22b0547924d3",
-    "idea_version": "18ae880d0298"
-  },
-  {
     "queued_at": "2026-11-03T07:07:27+00:00",
     "publish_at": "2026-11-03T23:00:00+00:00",
     "file_id": "BQACAgQAAxkBAAIF0Wrph8NewoPR20pPKRygNiLxLccWAAKMHQAC169RU7-kwFCQBaDtPQQ",
