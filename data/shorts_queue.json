@@ -1,26 +1,5 @@
 [
   {
-    "queued_at": "2026-11-03T03:52:45+00:00",
-    "publish_at": "2026-11-03T11:00:00+00:00",
-    "file_id": "BQACAgQAAxkBAAIFzWrpWmZSoFg2tY5bEkDSlP99LwP5AALqIgAC169JU-KI8Icu9CcoPQQ",
-    "file_size": 3819410,
-    "caption": "1",
-    "concept": {
-      "shape": "cupped circular dish",
-      "material": "oxidized zinc and tempered steel",
-      "internal_detail": "tightly wound brass mainsprings and escapement wheels",
-      "button": "a small raised steel stud near the rim",
-      "button_short": "the small raised steel stud",
-      "creature": "ferret",
-      "shell_mechanic": "The circular steel dish splits along its radial score lines and the two halves fold backward like hinged wings",
-      "emerging_parts": "An elongated articulated torso, four short jointed legs, and a slender pivoting head",
-      "signature_move": "its steel head pivots quickly to the left and right on its neck pin, and its front paw taps the palm once like a clockwork step",
-      "turkish": "Karakurt ferret (uzun vucutlu, kivrak memeli hayvan) — cukurlastirilmis dairesel tabak, oksitlenmis cinko ve tavlanmis celik"
-    },
-    "template_version": "22b0547924d3",
-    "idea_version": "18ae880d0298"
-  },
-  {
     "queued_at": "2026-11-03T07:05:24+00:00",
     "publish_at": "2026-11-03T17:00:00+00:00",
     "file_id": "BQACAgQAAxkBAAIFz2rph17IGRV24kmtQYFodduRlD7gAAKKHQAC169RU37GUUV4WkJiPQQ",
