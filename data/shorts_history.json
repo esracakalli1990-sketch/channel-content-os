@@ -216,7 +216,10 @@
     "turkey vulture",
     "snapping turtle",
     "orb spider",
-    "flying squid"
+    "flying squid",
+    "ferret",
+    "burrowing owl",
+    "slow loris"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -390,6 +393,9 @@
     "faceted decagonal puck",
     "sloped pentagonal casement",
     "ribbed globular spool",
-    "smooth asymmetrical crescent"
+    "smooth asymmetrical crescent",
+    "cupped circular dish",
+    "ribbed triangular ingot",
+    "concave square tile"
   ]
 }
