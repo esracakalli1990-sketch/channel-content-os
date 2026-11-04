@@ -19,5 +19,26 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "18ae880d0298"
+  },
+  {
+    "queued_at": "2026-11-04T06:06:21+00:00",
+    "publish_at": "2026-11-04T17:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIF5mrqwcDPtnaM31HKEqK25yE9fcs5AAIjIQAC169ZUzJm8dc33ErRPQQ",
+    "file_size": 4323684,
+    "caption": "2",
+    "concept": {
+      "shape": "canted quadrilateral block",
+      "material": "brushed titanium and forged carbon fibre",
+      "internal_detail": "hydraulic joints and micro-tension springs",
+      "button": "a small sapphire-tipped push button on the front face",
+      "button_short": "the sapphire-tipped push button",
+      "creature": "peppermint shrimp",
+      "shell_mechanic": "The carbon fibre block splits along its diagonal titanium seams and the two halves slide apart horizontally",
+      "emerging_parts": "Ten delicate segmented legs and two long antennae",
+      "signature_move": "its translucent body panels light up with a soft blue pulse, and its antennae pivot forward and back on their base hinges in two quick ticks",
+      "turkish": "Karides (deniz kabuklusu) — egik dortgen blok, fircalanmis titanyum ve dovulmus karbon fiber"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
   }
 ]
