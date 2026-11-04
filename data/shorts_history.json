@@ -219,7 +219,10 @@
     "flying squid",
     "ferret",
     "burrowing owl",
-    "slow loris"
+    "slow loris",
+    "sunfish",
+    "peppermint shrimp",
+    "common jellyfish"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -328,7 +331,6 @@
     "ribbed pear",
     "stepped triangular pyramid",
     "arched trapezoidal hull",
-    "tapered trigonal block",
     "serrated oval casing",
     "stepped cylindrical housing",
     "squat hemispherical boss",
@@ -358,7 +360,6 @@
     "creased scaphoid ingot",
     "flattened paraboloid hull",
     "domed pentagonal vault",
-    "fluted oblate disc",
     "canted scalene wedge",
     "flattened heart plaque",
     "ribbed boat hull",
@@ -396,6 +397,9 @@
     "smooth asymmetrical crescent",
     "cupped circular dish",
     "ribbed triangular ingot",
-    "concave square tile"
+    "concave square tile",
+    "tapered trigonal block",
+    "canted quadrilateral block",
+    "fluted oblate disc"
   ]
 }
