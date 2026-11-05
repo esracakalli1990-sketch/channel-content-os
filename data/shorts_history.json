@@ -222,7 +222,10 @@
     "slow loris",
     "sunfish",
     "peppermint shrimp",
-    "common jellyfish"
+    "common jellyfish",
+    "marine amphipod",
+    "naked mole-rat",
+    "blue-tongued skink"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -267,8 +270,6 @@
     "smooth concave pod",
     "tapered polyhedral wedge",
     "grooved cubic block",
-    "curved asymmetrical pod",
-    "smooth carved soapstone pebble",
     "canted triangular ingot",
     "stepped rectangular plinth",
     "beveled pentagonal tablet",
@@ -308,7 +309,6 @@
     "thick biconvex lens",
     "bowed quadrilateral plate",
     "broad bilobed plaque",
-    "cupped elliptical pod",
     "chamfered square cuboid",
     "stepped pyramidal spire",
     "ribbed drop pod",
@@ -400,6 +400,9 @@
     "concave square tile",
     "tapered trigonal block",
     "canted quadrilateral block",
-    "fluted oblate disc"
+    "fluted oblate disc",
+    "cupped elliptical pod",
+    "curved asymmetrical pod",
+    "smooth carved soapstone pebble"
   ]
 }
