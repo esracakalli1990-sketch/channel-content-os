@@ -1,26 +1,5 @@
 [
   {
-    "queued_at": "2026-11-05T12:57:27+00:00",
-    "publish_at": "2026-11-05T17:00:00+00:00",
-    "file_id": "BQACAgQAAxkBAAIGCmrsfPtogy8kw0i-RGyCVpK7gLdmAALMHgACTh1gUzaPNMzwEivZPQQ",
-    "file_size": 3864228,
-    "caption": "2",
-    "concept": {
-      "shape": "curved asymmetrical pod",
-      "material": "hammered copper and oxidized iron plate",
-      "internal_detail": "clockwork escapement wheels and coiled steel wires",
-      "button": "a raised brass stud protruding from the tail end",
-      "button_short": "the raised brass stud",
-      "creature": "naked mole-rat",
-      "shell_mechanic": "The curved asymmetrical pod opens along a side seam, rolling back its heavy metal plates like a burrowing chassis",
-      "emerging_parts": "Four short digging limbs and a blunt cylindrical snout",
-      "signature_move": "its front excavator spade pivots forward on its knuckle joint and its incisor plates snap together once with a sharp metallic clack",
-      "turkish": "Koca disli korfare (tunel kazan memeli hayvan) — egri asimetrik kovan, dovulmus bakir ve oksitlenmis demir levha"
-    },
-    "template_version": "22b0547924d3",
-    "idea_version": "18ae880d0298"
-  },
-  {
     "queued_at": "2026-11-05T12:59:29+00:00",
     "publish_at": "2026-11-05T23:00:00+00:00",
     "file_id": "BQACAgQAAxkBAAIGDGrsfW13qDU1xB5sotBoblY7v-ifAALNHgACTh1gU_XNO4y-jKGkPQQ",
