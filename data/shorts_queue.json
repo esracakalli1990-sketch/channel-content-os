@@ -1,26 +1,5 @@
 [
   {
-    "queued_at": "2026-11-06T08:58:06+00:00",
-    "publish_at": "2026-11-06T17:00:00+00:00",
-    "file_id": "BQACAgQAAxkBAAIGJmrtlN_Nafnc1MV0mnbKoy2Mxn6cAALQHAAC7OlpU4lt8Jg1KM2tPQQ",
-    "file_size": 4029210,
-    "caption": "2",
-    "concept": {
-      "shape": "chamfered octagonal block",
-      "material": "polished nickel steel and blued spring iron",
-      "internal_detail": "stacked cam discs and delicate tension linkages",
-      "button": "a flush sliding steel lever set into the beveled edge",
-      "button_short": "the flush sliding steel lever",
-      "creature": "shoebill stork",
-      "shell_mechanic": "The octagonal steel housing splits down the center line and the two heavy halves rotate outward on hidden internal pins",
-      "emerging_parts": "Two slender articulated legs and a massive hooked beak assembly",
-      "signature_move": "its twin optical glass lenses flash bright white, and its heavy metal beak halves swing open on their pivot and clap shut with a crisp metallic snap",
-      "turkish": "Pabucli gagalilar (Afrika sulak alanlarinda yasayan, genis gagali kus) — pahli sekizgen blok, parlak nikel celik ve mavilendirilmis yay demiri"
-    },
-    "template_version": "22b0547924d3",
-    "idea_version": "18ae880d0298"
-  },
-  {
     "queued_at": "2026-11-06T09:00:08+00:00",
     "publish_at": "2026-11-06T23:00:00+00:00",
     "file_id": "BQACAgQAAxkBAAIGKGrtlrLV0ZrrSc7dd_7FQvcTD2nUAALRHAAC7OlpU9A8l2j6C8faPQQ",
