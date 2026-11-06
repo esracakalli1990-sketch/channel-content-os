@@ -225,7 +225,10 @@
     "common jellyfish",
     "marine amphipod",
     "naked mole-rat",
-    "blue-tongued skink"
+    "blue-tongued skink",
+    "tasmanian devil",
+    "shoebill stork",
+    "capybara"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -325,7 +328,6 @@
     "curved sigmoid ingot",
     "corrugated navicular pod",
     "creased lozenge tablet",
-    "grooved rhombic cassette",
     "fluted conical cap",
     "grooved cylinder",
     "ribbed pear",
@@ -403,6 +405,9 @@
     "fluted oblate disc",
     "cupped elliptical pod",
     "curved asymmetrical pod",
-    "smooth carved soapstone pebble"
+    "smooth carved soapstone pebble",
+    "grooved rhombic cassette",
+    "chamfered octagonal block",
+    "ribbed rectangular case"
   ]
 }
