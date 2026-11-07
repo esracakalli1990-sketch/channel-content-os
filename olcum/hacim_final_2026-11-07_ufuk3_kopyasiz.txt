@@ -1,0 +1,124 @@
+# Hacim denemesi ölçümü  (Analytics son gün 2026-11-04, ufuk gün+3, düşük gün+2 < 2.000, ölü gün+2 < 250)
+kiyas: 27 video, gün+3 olgun 27, gün+2 olgun 27, Analytics serisi olmayan 0
+deney: 41 video, gün+3 olgun 41, gün+2 olgun 41, Analytics serisi olmayan 0
+geçiş günü 2026-10-18 (2 video) iki dönemde de yok: 2 video dışarıda
+
+## 1. Kanal günlük etkileşimli izlenme
+kiyas: 14 gün | ort. etkileşimli/gün 160.815 | medyan 162.848 | dönem videolarının etkileşimli/gün 74.039 | arka plan izlenme/gün (4 Eki-1 Kas videoları hariç) 212.264
+deney: 14 gün | ort. etkileşimli/gün 69.893 | medyan 52.541 | dönem videolarının etkileşimli/gün 45.951 | arka plan izlenme/gün (4 Eki-1 Kas videoları hariç) 57.014
+Not: günlük toplam kanal ivmesini de taşır; arka plan izlenmesi aynı oranda değiştiyse fark ivmedir, hacim değil. Günler birbirine bağımlı olduğu için burada p yazılmaz.
+
+## 2. Günün videolarının gün+3 etkileşimli izlenmesi (yayın günü başına toplam)
+kiyas: 14 olgun gün | medyan 14.556 | ortalama 33.672
+deney: 14 olgun gün | medyan 25.566 | ortalama 25.920
+oran (ortalama) deney/kıyas = 0.77  MW p=0.505
+
+## 3. 17:00 + 23:00 videoları, gün+3 (sulandırma kontrolü)
+kiyas: n=27 medyan izlenme 14.570 | medyan etkileşimli 6.193
+deney: n=28 medyan izlenme 10.406 | medyan etkileşimli 4.443
+medyan oranı deney/kıyas = 0.72  MW p=0.495
+DURDURMA (%30+ düşüş): hayır
+
+## 4. Düşük video (gün+2 < 2.000) ve ölü video (< 250)
+kiyas: düşük 3/27 (11.1%) | ölü 0
+   2026-10-08 23 bee 1869
+   2026-10-11 17 octopus 1791
+   2026-10-16 23 marine worm 1518
+deney: düşük 3/41 (7.3%) | ölü 0
+   2026-10-30 11 leaf-veined katydid 1590
+   2026-10-30 17 spotted salamander 1989
+   2026-10-31 17 spotted hyena 413
+DURDURMA (deney videolarının %30'undan fazlası düşük; 42 videoda 13+): hayır  [3/41 olgun deney videosu]
+DURDURMA (deneyde 4+ ölü, mutlak çöküş): hayır
+düşük oranı Fisher p=0.675
+
+## 5. 11:00 videoları (yalnızca betimleyici, test yok)
+n=13 | medyan izlenme 14.162 | medyan etkileşimli 6.037 | en düşük 675 en yüksek 30.346 | hit 50.000+ 2 | 10.000+ 8
+
+## 6. Hit (birincil 50.000+, ikincil 10.000+ izlenme)
+kiyas: gün+3 50.000+ 5/27 | 10.000+ 16/27 | canlı izlenmeyle (yaşa göre eşleşmemiş) 50.000+ 7/27
+deney: gün+3 50.000+ 4/41 | 10.000+ 22/41 | canlı izlenmeyle (yaşa göre eşleşmemiş) 50.000+ 7/41
+hit oranı Fisher p=0.466  (deney günde 3 video: oran aynı kalsa bile hit SAYISI artar)
+
+## 7. ±7 gün yüzdelik (gün+3 izlenmesiyle, betimleyici)
+kıyas 17/23: n=27 medyan yüzdelik 43
+deney 17/23: n=28 medyan yüzdelik 49
+deney 11:00: n=13 medyan yüzdelik 58
+Pencere iki rejimin sınırında karışır; sonuç sayılmaz.
+
+## Testler (Holm, 4 birincil test)
+günlük yeni video verimi   p=0.505 holm=1.000  fark gösterilemedi
+17/23 sulandırma           p=0.495 holm=1.000  fark gösterilemedi
+düşük video oranı          p=0.675 holm=1.000  fark gösterilemedi
+hit oranı                  p=0.466 holm=1.000  fark gösterilemedi
+
+## Video tablosu
+donem	gun	saat	yaratik	id	gun+2_izl	gun+k_izl	gun+k_etk	canli
+kiyas	2026-10-04	17	yellow boxfish	4FmuWWqEB8o	84.703	107.912	45.171	231.549
+kiyas	2026-10-04	23	saltwater crustacean	21__o7TFa6w	14.065	21.736	10.741	24.201
+kiyas	2026-10-05	17	millipede	bkoYu3NoDhU	3.114	3.474	1.575	4.735
+kiyas	2026-10-05	23	desert rain frog	ns7JgaNraek	57.438	67.274	29.180	502.162
+kiyas	2026-10-06	17	kiwi	Zahd5bOU4E0	15.357	22.504	9.038	25.115
+kiyas	2026-10-06	23	squirrel	KzSCa3xYoJ0	3.490	3.771	1.641	4.286
+kiyas	2026-10-07	17	common toad	vs_cI0Us7nE	10.436	11.141	4.998	13.033
+kiyas	2026-10-08	17	bat	pqfRdABcb1M	37.436	38.726	16.529	51.667
+kiyas	2026-10-08	23	bee	pwaQydK-f-w	1.869	2.030	927	2.327
+kiyas	2026-10-09	17	peafowl	nql6hpwBa-I	29.160	37.789	15.421	573.710
+kiyas	2026-10-09	23	thresher shark	XJ1Kc0L4_hk	308.247	411.842	180.648	648.089
+kiyas	2026-10-10	17	jumping spider	9uhZRZuDN_k	17.928	22.149	9.778	29.714
+kiyas	2026-10-10	23	squid	i2oEvQE2_js	2.762	4.072	1.878	5.067
+kiyas	2026-10-11	17	octopus	vzS1OLUNOgI	1.791	1.935	853	2.126
+kiyas	2026-10-11	23	kakapo	IBNeLJaDvYo	61.464	86.965	36.645	609.792
+kiyas	2026-10-12	17	north american beaver	NMnGkog9Yk0	6.184	6.772	3.068	7.350
+kiyas	2026-10-12	23	trench mortar	BBJhtm4KjAo	11.875	14.570	6.193	16.199
+kiyas	2026-10-13	17	armadillo lizard	hQwr1Jp5ypU	2.604	3.155	1.276	4.208
+kiyas	2026-10-13	23	cryptic walking stick	-5HkX6dgfbM	80.051	94.571	40.576	226.910
+kiyas	2026-10-14	17	singing whale	ZLoU_f6022M	41.248	42.204	18.479	44.214
+kiyas	2026-10-14	23	wandering albatross	DEJiNt8y-Yg	18.799	33.315	14.452	46.341
+kiyas	2026-10-15	17	tuatara	gTzoCBF1F6I	10.058	10.772	4.429	12.192
+kiyas	2026-10-15	23	underwater ROV submersib	VNkLMoEAFEY	8.387	9.965	4.078	13.349
+kiyas	2026-10-16	17	domestic chicken	mEfzUmEM_30	5.912	8.445	3.607	12.200
+kiyas	2026-10-16	23	marine worm	jPfRoHjpCqY	1.518	1.633	688	1.803
+kiyas	2026-10-17	17	sea butterfly	mYEgM6D9HkE	4.088	5.822	2.595	6.708
+kiyas	2026-10-17	23	beam engine pump	FXKBrqgyWJs	11.104	17.116	6.946	32.433
+deney	2026-10-19	11	black-crowned night hero	WYD_RrGcfl4	35.721	37.915	16.651	44.796
+deney	2026-10-19	17	triops	uaDwmEab82k	55.104	56.746	24.274	58.820
+deney	2026-10-19	23	horned puffin	N5wn7TnLdLw	2.348	2.776	1.086	3.159
+deney	2026-10-20	11	sea urchin	oh1pAy25Zy4	12.151	14.162	6.037	16.825
+deney	2026-10-20	17	common starling	cNmJCU-qD1E	7.598	10.880	4.830	15.621
+deney	2026-10-20	23	broad-tailed hummingbird	687jC8dx6lE	70.734	83.782	32.325	299.361
+deney	2026-10-21	11	leatherback sea turtle	MFjBcL-JP10	40.624	47.216	20.036	65.021
+deney	2026-10-21	17	field cricket	_1Ztmblx8p4	3.028	3.154	1.348	3.290
+deney	2026-10-21	23	common pipistrelle	Ohd1OSoL3EQ	26.204	29.429	12.939	37.740
+deney	2026-10-22	11	common garden snail	URIJGJOtPD4	60.588	71.066	30.346	93.008
+deney	2026-10-22	17	common octopus	JPdjpMvuGmA	8.332	9.382	4.056	10.851
+deney	2026-10-22	23	centipede	S3BNA9hKvaI	4.753	5.272	2.183	5.503
+deney	2026-10-23	11	woodpecker	F9U1COmTE-A	11.920	12.699	5.354	13.833
+deney	2026-10-23	17	sun bear	fBm6jPQiuzM	7.866	9.356	3.929	20.400
+deney	2026-10-23	23	green iguana	KhRVaFKDPMM	30.558	36.298	15.731	64.811
+deney	2026-10-24	11	red fox	SpO-aNttgzI	7.489	9.256	3.893	10.388
+deney	2026-10-24	17	pufferfish	YqwCs7uw7RQ	22.579	22.721	9.947	22.895
+deney	2026-10-24	23	pelagic siphonophore	IftCDoTBekg	17.041	17.687	8.956	18.270
+deney	2026-10-25	11	mountain goat	bXNu76jSLPg	8.040	9.411	4.281	10.008
+deney	2026-10-25	17	harbor seal	RN1fKCUkQSY	27.304	29.246	13.630	38.592
+deney	2026-10-25	23	gopher	vhXNBecEK8g	6.151	6.535	2.813	7.195
+deney	2026-10-26	11	marine ray	YN_eOPK8ZvU	16.834	17.032	7.491	17.207
+deney	2026-10-26	17	red kangaroo	aHvMKAa2FUw	6.061	6.484	2.925	6.966
+deney	2026-10-26	23	great egret	XvFOYzcU2sE	4.581	5.364	2.234	6.078
+deney	2026-10-27	11	tarantula hawk wasp	pLC57Ji4yAA	5.077	5.290	2.397	5.384
+deney	2026-10-27	17	caterpillar	479FJhNCvSU	9.615	9.932	3.927	10.098
+deney	2026-10-27	23	platypus	UtYm9euamcE	3.181	3.286	1.398	3.366
+deney	2026-10-28	11	eurasian badger	irt9k9wxI40	65.267	66.161	29.624	75.114
+deney	2026-10-28	17	steam shovel	JBr4wHrr_QE	15.399	15.709	7.505	16.044
+deney	2026-10-28	23	masked lapwing	INtfzwQSMmg	6.138	6.865	2.947	7.406
+deney	2026-10-29	11	dunkleosteus	sDvkUujRO8Q	4.998	5.479	2.524	5.822
+deney	2026-10-29	17	southern cassowary	B_XLW4F6Saw	36.640	37.758	17.141	62.280
+deney	2026-10-29	23	aardvark	MP58GUmQhYs	13.016	13.275	6.452	13.597
+deney	2026-10-30	11	leaf-veined katydid	6DgDDpcab6c	1.590	1.665	675	1.681
+deney	2026-10-30	17	spotted salamander	Sa0CePTpiXw	1.989	2.059	933	2.104
+deney	2026-10-30	23	honey bee	8B4e9-AXqr8	25.108	25.393	11.692	25.854
+deney	2026-10-31	17	spotted hyena	EXrVtPEmOhg	413	422	153	454
+deney	2026-10-31	23	peacock butterfly	mrIbbrIebbo	2.734	2.805	1.392	2.938
+deney	2026-11-01	11	mule deer	xVjAmi4A-Eg	16.664	17.540	7.545	18.165
+deney	2026-11-01	17	blue whale	UTI0oDdSXvQ	27.585	28.069	12.889	28.718
+deney	2026-11-01	23	turkey vulture	tSvAsn8HJ0I	28.858	36.635	16.397	41.071
