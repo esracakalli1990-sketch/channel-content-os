@@ -1,1 +1,23 @@
-[]
+[
+  {
+    "queued_at": "2026-11-07T00:13:41+00:00",
+    "publish_at": "2026-11-07T11:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIGQ2rubMh0FdbLP4wUnltHZANTec_uAALVIQAC7OlxU_cPPSQht2jzPQQ",
+    "file_size": 4205003,
+    "caption": "1",
+    "concept": {
+      "shape": "grooved rhomboid ingot",
+      "material": "patinated gunmetal and polished copper wire",
+      "internal_detail": "intricate brass gear trains and hairline tension springs",
+      "button": "a small spring-loaded brass stud set into the corner",
+      "button_short": "the spring-loaded brass stud",
+      "creature": "basset hound",
+      "shell_mechanic": "The heavy gunmetal ingot splits down its median groove and the two ridged halves slide outward along internal brass tracks",
+      "emerging_parts": "Four jointed copper legs, a long segmented snout, and two floppy metal ear flaps",
+      "signature_move": "its articulated metal ears pivot forward on their pins and its hinged copper jaw drops open and clicks shut",
+      "turkish": "Basset hound (uzun kulakli ve sarkik yuzlu av kopegi) — oluklu eskenar dortgen kulce, patinajli tuncdan yapilmis govde ve parlatilmis bakir tel"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
+  }
+]
