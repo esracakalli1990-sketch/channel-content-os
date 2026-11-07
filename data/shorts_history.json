@@ -228,7 +228,10 @@
     "blue-tongued skink",
     "tasmanian devil",
     "shoebill stork",
-    "capybara"
+    "capybara",
+    "basset hound",
+    "blue shark",
+    "gila monster"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -369,7 +372,6 @@
     "ribbed saddle vault",
     "grooved ovoid bead",
     "ribbed cylinder",
-    "smooth ellipsoid",
     "flattened oval block",
     "ridged triangular prism",
     "spherical pod",
@@ -408,6 +410,9 @@
     "smooth carved soapstone pebble",
     "grooved rhombic cassette",
     "chamfered octagonal block",
-    "ribbed rectangular case"
+    "ribbed rectangular case",
+    "grooved rhomboid ingot",
+    "chamfered triangular prism",
+    "smooth ellipsoid"
   ]
 }
