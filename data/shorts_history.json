@@ -231,7 +231,9 @@
     "capybara",
     "basset hound",
     "blue shark",
-    "gila monster"
+    "gila monster",
+    "four-stroke internal combustion engine block",
+    "cephalopod"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -309,7 +311,6 @@
     "ridged hemispherical dome",
     "smooth asymmetrical pod",
     "flattened triangular wedge",
-    "grooved copper cylinder",
     "faceted annular ring",
     "sixty-degree circular sector",
     "thick biconvex lens",
@@ -398,7 +399,6 @@
     "faceted decagonal puck",
     "sloped pentagonal casement",
     "ribbed globular spool",
-    "smooth asymmetrical crescent",
     "cupped circular dish",
     "ribbed triangular ingot",
     "concave square tile",
@@ -413,6 +413,8 @@
     "ribbed rectangular case",
     "grooved rhomboid ingot",
     "chamfered triangular prism",
-    "smooth ellipsoid"
+    "smooth ellipsoid",
+    "grooved copper cylinder",
+    "smooth asymmetrical crescent"
   ]
 }
