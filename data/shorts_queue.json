@@ -19,5 +19,26 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "18ae880d0298"
+  },
+  {
+    "queued_at": "2026-11-07T00:39:54+00:00",
+    "publish_at": "2026-11-07T17:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIGRWrucw01n3dpxSklf0o3VWsfPstpAALaIQAC7OlxU1kCGtdPQ1PlPQQ",
+    "file_size": 3750312,
+    "caption": "2",
+    "concept": {
+      "shape": "chamfered triangular prism",
+      "material": "brushed titanium and anodized aluminum plates",
+      "internal_detail": "miniature hydraulic pistons and delicate steel linkages",
+      "button": "a flush circular push-pad on the upper bevel",
+      "button_short": "the flush circular push-pad",
+      "creature": "blue shark",
+      "shell_mechanic": "The brushed titanium prism splits along its beveled edges and the upper triangular cap lifts upward on dual hinges",
+      "emerging_parts": "A long tapered tail section, two rigid pectoral fins, and a pointed snout cone",
+      "signature_move": "its hinged tail assembly swats once from side to side on its pivot and its dorsal fin tilts upright with a crisp click",
+      "turkish": "Mavi kosepekbaligi (okyanusta yasayan hizli yuzucu) — pahli ucgen prizma, fircalanmis titanyum ve eloksal kapli aluminyum levhalar"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
   }
 ]
