@@ -40,5 +40,26 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "18ae880d0298"
+  },
+  {
+    "queued_at": "2026-11-07T00:52:01+00:00",
+    "publish_at": "2026-11-07T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIGR2rudevWqd-ucxUlrmObRlWooQmJAALcIQAC7OlxU5meAmbAQoH5PQQ",
+    "file_size": 3317913,
+    "caption": "3",
+    "concept": {
+      "shape": "smooth ellipsoid",
+      "material": "polished walnut wood and forged iron wire",
+      "internal_detail": "tiny differential gears and tensioned steel cables",
+      "button": "a subtle wooden toggle set flush into the curve",
+      "button_short": "the subtle wooden toggle",
+      "creature": "gila monster",
+      "shell_mechanic": "The smooth walnut ellipsoid splits cleanly down the dorsal seam and the two rounded shells roll outward",
+      "emerging_parts": "Four short segmented legs, a thick articulated tail, and a flat iron snout",
+      "signature_move": "its jointed iron tail swishes once along its pivot and its flat headplate turns slightly to the side with a click",
+      "turkish": "Gila canavari (benekli ve agir hareket eden surungen) — puruzsuz elipsoit, parlatilmis ceviz agaci ve dovme demir tel"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
   }
 ]
