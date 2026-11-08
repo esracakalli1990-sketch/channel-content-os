@@ -25,6 +25,13 @@ on:
         description: "Kaç fikir gönderilsin?"
         required: false
         default: "2"
+      skip_if_recent:
+        # Gelen kutusu turu bu işi her gece kendisi tetikliyor (GitHub
+        # cron'u 6 saate kadar geç çalıştırdı); son birkaç saatte zaten fikir
+        # gittiyse bir şey yapmasın diye bunu veriyor. Elle çalıştırmada 0.
+        description: "Son kaç saatte fikir gittiyse atlansın? (0 = her zaman gönder)"
+        required: false
+        default: "0"
 
 # Üretilen fikirler repoya yazıldığı için aynı anda iki çalışma olmamalı.
 concurrency:
@@ -51,7 +58,7 @@ jobs:
           PROMPT_TEMPLATE: ${{ secrets.PROMPT_TEMPLATE }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: python -m channel_ops shorts-prompts --count "${{ inputs.count || 2 }}" --skip-if-recent "${{ github.event_name == 'schedule' && 6 || 0 }}"
+        run: python -m channel_ops shorts-prompts --count "${{ inputs.count || 2 }}" --skip-if-recent "${{ github.event_name == 'schedule' && 6 || inputs.skip_if_recent || 0 }}"
 
       - name: Bekleyen fikirleri kaydet
         run: |

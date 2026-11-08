@@ -75,6 +75,30 @@ refresh() {
     fi
 }
 
+# The nightly ideas job is on a cron GitHub ran up to six hours late in early
+# November, which left the morning slot without a clip. This loop is awake
+# around the clock anyway, so it asks for the ideas itself once the evening
+# window opens (20:30 UTC, 23:30 Turkish time). Asking is harmless: the job is
+# told to stand down if ideas went out in the last few hours, so the cron run,
+# this request and the next loop's request can all arrive and only the first
+# sends anything.
+IDEAS_FROM_UTC="${IDEAS_FROM_UTC:-2030}"
+ideas_requested=""
+
+request_ideas() {
+    local now today
+    now=$(date -u +%H%M)
+    today=$(date -u +%F)
+    (( 10#$now >= 10#$IDEAS_FROM_UTC )) || return 0
+    [ "$ideas_requested" = "$today" ] && return 0
+    if gh workflow run shorts-prompts.yml --ref "$BRANCH" -f skip_if_recent=4 > /dev/null 2>&1; then
+        echo "Gece fikir işi istendi."
+        ideas_requested="$today"
+    else
+        echo "Gece fikir işi istenemedi; sonraki turda tekrar denenecek."
+    fi
+}
+
 deadline=$(( SECONDS + RUN_SECONDS ))
 failing=0
 started_as="$(self_fingerprint)"
@@ -112,6 +136,7 @@ while (( SECONDS < deadline )); do
     fi
 
     save_state || echo "Durum kaydedilemedi; sonraki turda tekrar denenecek."
+    request_ideas
     sleep "$POLL_SECONDS"
 done
 

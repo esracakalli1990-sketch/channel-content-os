@@ -166,8 +166,19 @@ Do not suggest anything whose name contains any of these words, and nothing
 that is obviously the same subject under another name — a "miniature steam
 locomotive" is the same video as a "steam locomotive engine": {avoid_families}
 Reach across the tree of life instead. Beetles, crabs and moths have been
-heavily overused; birds, mammals, reptiles, amphibians, molluscs, arachnids
-and non-animal machines are all under-used.
+heavily overused; birds, mammals, reptiles, amphibians, molluscs and arachnids
+are all under-used.
+
+SUBJECT MIX. The subject does not have to be an animal. Recognisable working
+machines and vehicles hold up just as well -- a steam shovel and a beam engine
+pump did as well as the animals around them. Make roughly half of every batch
+machines or vehicles: excavators, cranes, locomotives, tractors, helicopters,
+submarines, diving bells, windmills, printing presses, pocket watches, cameras,
+telescopes, typewriters, sewing machines, rockets and the like. Pick machines
+whose finished form is instantly recognisable and that have one obvious
+working motion for `signature_move` (a crane boom swings, a drill bit spins,
+a piston rod pumps, a camera shutter snaps). Never an abstract object, a
+building that cannot move, a weapon or anything branded.
 
 These object shapes have been used recently. Pick something structurally
 different — five of the last thirteen videos were all a "capsule", which makes
@@ -182,13 +193,16 @@ the series look like one object filmed over and over: {avoid_shapes}
 _TURKISH_INSTRUCTIONS = """\
 
 Additionally, give each concept a "turkish" field: one line of Turkish for the
-person who has to film it, who does not read English. Name the creature in
-Turkish, add a few plain words saying what kind of animal or machine it is so
-they can picture it, then the shape and material in Turkish. No prompt text, no
-camera directions. Example for a short-beaked echidna:
+person who has to film it, who does not read English. It describes THIS
+concept's own `creature` and nothing else. Start with the English `creature`
+name exactly as written, then its Turkish name, a few plain words saying what
+kind of animal or machine it is so they can picture it, then the shape and
+material in Turkish. No prompt text, no camera directions. Example for a
+short-beaked echidna:
 
-  "Kisa gagali ekidna (Avustralya'da yasayan, dikenli, yumurtlayan memeli) —
-  egik parabolik kabuk, eskitilmis bronz ve koyu ceviz agaci"
+  "short-beaked echidna: Kisa gagali ekidna (Avustralya'da yasayan, dikenli,
+  yumurtlayan memeli) — egik parabolik kabuk, eskitilmis bronz ve koyu ceviz
+  agaci"
 
 Write it in real Turkish with its proper letters. It is not one of the template
 slots and is never used in a prompt.
@@ -485,9 +499,28 @@ def parse_concepts(raw: str) -> list[Concept]:
         # Not run through _clean_slot: that strips articles and capitals to fit
         # an English sentence, which would mangle a Turkish line that is not
         # going into a sentence at all.
-        cleaned["turkish"] = str(item.get("turkish", "")).strip()
+        cleaned["turkish"] = _checked_turkish(str(item.get("turkish", "")), cleaned["creature"])
         concepts.append(Concept(**cleaned))
     return concepts
+
+
+def _checked_turkish(line: str, creature: str) -> str:
+    """The Turkish line, or nothing if it describes a different subject.
+
+    1 November: the mule deer arrived described as "Karakulak (vahsi kedi)",
+    a caracal -- the model had crossed two concepts. The video was right and
+    only the courtesy line was wrong, but it is the line the operator reads.
+    The line is asked to open with the English name, so a line that does not
+    mention it is dropped: the English title in the message is still there,
+    and no description beats the wrong one.
+    """
+    line = " ".join(line.split())
+    if not line:
+        return ""
+    if creature.lower() not in line.lower():
+        logger.warning("Dropped a Turkish line that does not name %r: %r", creature, line)
+        return ""
+    return line
 
 
 # Words that describe a creature without identifying it. Banning on these
@@ -529,7 +562,26 @@ def family_words(creatures: list[str]) -> list[str]:
     return seen
 
 
-def _is_repeat(creature: str, avoid: set[str], words: set[str]) -> bool:
+def _same_subject(creature: str, used: list[str]) -> str | None:
+    """The used name that *creature* only renames, if there is one.
+
+    The family-word ban covers the last FAMILY_MEMORY videos, so an older
+    subject came back under a longer or shorter name: "octopus" went out on
+    11 October and "common octopus" on the 22nd, "badger" on 18 October and
+    "eurasian badger" on the 28th. One name's identifying words containing
+    the other's means the same animal or machine, over the whole memory.
+    """
+    words = significant_words(creature)
+    for name in used:
+        past = significant_words(name)
+        if past and (past <= words or words <= past):
+            return name
+    return None
+
+
+def _is_repeat(
+    creature: str, avoid: set[str], words: set[str], used: list[str] | None = None
+) -> bool:
     """Whether *creature* names something already used.
 
     A shared identifying word is enough: the two locomotives differed only in
@@ -537,7 +589,9 @@ def _is_repeat(creature: str, avoid: set[str], words: set[str]) -> bool:
     """
     if creature.strip().lower() in avoid:
         return True
-    return bool(significant_words(creature) & words)
+    if significant_words(creature) & words:
+        return True
+    return bool(used) and _same_subject(creature, used) is not None
 
 
 def generate_concepts(
@@ -583,7 +637,7 @@ def generate_concepts(
         if wanted <= 0:
             break
         for concept in ask(wanted + 2, rejected):
-            if _is_repeat(concept.creature, banned_names, banned_families):
+            if _is_repeat(concept.creature, banned_names, banned_families, avoid_list):
                 rejected.append(concept.creature)
                 logger.warning("Rejected repeat concept %r", concept.creature)
                 continue

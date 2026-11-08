@@ -982,6 +982,34 @@ class CreatureVarietyTests(unittest.TestCase):
         words = set(self.sp.family_words(["stag beetle", "hermit crab"]))
         self.assertFalse(self.sp._is_repeat("barn owl", set(), words))
 
+    def test_a_longer_name_for_an_old_subject_is_caught(self):
+        """Both pairs went out: "octopus" then "common octopus", "badger" then
+        "eurasian badger" -- older than the family window, so only a check
+        over the whole memory sees them."""
+        self.assertTrue(self.sp._is_repeat("eurasian badger", set(), set(), ["badger"]))
+        self.assertTrue(self.sp._is_repeat("common octopus", set(), set(), ["octopus"]))
+
+    def test_a_shorter_name_for_an_old_subject_is_caught(self):
+        self.assertTrue(self.sp._is_repeat("badger", set(), set(), ["eurasian badger"]))
+
+    def test_a_shared_word_alone_does_not_reach_back_over_the_whole_memory(self):
+        """Old subjects only block their own renames; "sea turtle" from months
+        ago must not rule out every turtle-shaped idea forever... but "turtle
+        dove" shares a word without being the same subject, and passes."""
+        self.assertFalse(self.sp._is_repeat("turtle dove", set(), set(), ["leatherback sea turtle"]))
+
+    def test_an_old_rename_is_rejected_and_replaced(self):
+        avoid = ["badger"] + [f"filler {i}" for i in range(self.sp.FAMILY_MEMORY)]
+        provider = self._provider([["eurasian badger"], ["barn owl"]])
+        concepts = self.sp.generate_concepts(provider, count=1, avoid=avoid)
+        self.assertEqual([c.creature for c in concepts], ["barn owl"])
+
+    def test_machines_are_asked_for_not_only_animals(self):
+        """8 November: the trial's steam shovel did as well as the animals
+        around it; the subject no longer has to be one."""
+        self.assertIn("SUBJECT MIX", self.sp._CONCEPT_INSTRUCTIONS)
+        self.assertIn("machines or vehicles", self.sp._CONCEPT_INSTRUCTIONS)
+
     def test_memory_outlasts_the_published_history(self):
         """40 was smaller than the 42 videos already out, which is exactly how
         the pangolin came back."""
@@ -1114,7 +1142,7 @@ class TurkishLineTests(unittest.TestCase):
     }
 
     def test_the_line_is_carried_through_parsing(self):
-        line = "Kısa gagalı ekidna (dikenli, yumurtlayan memeli) — eğik kabuk"
+        line = "short-beaked echidna: Kısa gagalı ekidna (dikenli, yumurtlayan memeli) — eğik kabuk"
         payload = json.dumps([self._JSON_FIELDS | {"turkish": line}])
         self.assertEqual(shorts_prompts.parse_concepts(payload)[0].turkish, line)
 
@@ -1128,7 +1156,20 @@ class TurkishLineTests(unittest.TestCase):
     def test_the_line_is_not_put_through_the_english_cleaner(self):
         """_clean_slot strips articles and capitals so a fragment fits an
         English sentence. This line is not going into a sentence."""
-        line = "Bir kısa gagalı ekidna. Eğik parabolik kabuk."
+        line = "short-beaked echidna: Bir kısa gagalı ekidna. Eğik parabolik kabuk."
+        payload = json.dumps([self._JSON_FIELDS | {"turkish": line}])
+        self.assertEqual(shorts_prompts.parse_concepts(payload)[0].turkish, line)
+
+    def test_a_line_about_another_subject_is_dropped(self):
+        """1 November: the mule deer came with a caracal's description. No
+        line is better than the wrong one; the English title still shows."""
+        payload = json.dumps([self._JSON_FIELDS | {"turkish": "Karakulak (vahşi kedi) — kabuk"}])
+        concept = shorts_prompts.parse_concepts(payload)[0]
+        self.assertEqual(concept.turkish, "")
+        self.assertEqual(concept.creature, "short-beaked echidna")
+
+    def test_the_english_name_is_matched_regardless_of_case(self):
+        line = "Short-Beaked Echidna: Kısa gagalı ekidna"
         payload = json.dumps([self._JSON_FIELDS | {"turkish": line}])
         self.assertEqual(shorts_prompts.parse_concepts(payload)[0].turkish, line)
 
@@ -1156,8 +1197,9 @@ class TurkishLineTests(unittest.TestCase):
             shorts_prompts._CONCEPT_INSTRUCTIONS,
         )
         # 730ac4e9c9e2 until the 27 September mechanical signature-move rule,
-        # which is meant to move it: the audit splits before/after on it.
-        self.assertEqual(shorts_prompts.idea_version(), "18ae880d0298")
+        # 18ae880d0298 until the 8 November subject mix (machines as well as
+        # animals). Each is meant to move it: the audit splits before/after on it.
+        self.assertEqual(shorts_prompts.idea_version(), "10497d196960")
 
 
 class BadgeTests(unittest.TestCase):
