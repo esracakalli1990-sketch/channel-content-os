@@ -1,10 +1,11 @@
 name: Shorts — günün promptları
 
-# Günde bir kez, gece yarısına doğru günün üç fikrini birden gönderir. Üçtü,
+# Günde bir kez, gece yarısına doğru günün iki fikrini birden gönderir. Üçtü,
 # 25 Ağustos'ta ikiye indi (hacim kuramı sonradan çürütüldü), 18 Ekim 2026'dan
-# itibaren kontrollü bir deneme olarak yeniden üç (gerekçe ve ölçütler
-# shorts_pipeline.py PUBLISH_SLOTS_UTC ve docs/HACIM_DENEYI.md).
-# Videolar tek oturumda üretilip Telegram'a "1", "2", "3" başlığıyla geri gönderiliyor;
+# itibaren kontrollü bir deneme olarak yeniden üç, deney fark göstermeyince
+# 8 Kasım 2026'dan itibaren yine iki (gerekçe ve sonuç shorts_pipeline.py
+# PUBLISH_SLOTS_UTC ve docs/HACIM_DENEYI.md).
+# Videolar tek oturumda üretilip Telegram'a "1", "2" başlığıyla geri gönderiliyor;
 # yayın saatlerini gelen kutusu kuyruğu belirliyor (shorts_pipeline.py).
 #
 # Saat operatörün uyanık olduğu ana göre seçildi: sabah gelen bildirim uykuda
@@ -23,7 +24,7 @@ on:
       count:
         description: "Kaç fikir gönderilsin?"
         required: false
-        default: "3"
+        default: "2"
 
 # Üretilen fikirler repoya yazıldığı için aynı anda iki çalışma olmamalı.
 concurrency:
@@ -50,7 +51,7 @@ jobs:
           PROMPT_TEMPLATE: ${{ secrets.PROMPT_TEMPLATE }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: python -m channel_ops shorts-prompts --count "${{ inputs.count || 3 }}" --skip-if-recent "${{ github.event_name == 'schedule' && 6 || 0 }}"
+        run: python -m channel_ops shorts-prompts --count "${{ inputs.count || 2 }}" --skip-if-recent "${{ github.event_name == 'schedule' && 6 || 0 }}"
 
       - name: Bekleyen fikirleri kaydet
         run: |

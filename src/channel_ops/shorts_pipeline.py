@@ -104,7 +104,17 @@ QUEUE_ALERT_FILE = "data/queue_alert.json"
 # the VOLUME on the whole day and the 17:00 and 23:00 videos before and after
 # (does a third video thin out the other two?), and reads the 11:00 slot on
 # its own. Rules, metrics and the stop condition are in docs/HACIM_DENEYI.md.
-PUBLISH_SLOTS_UTC = (11, 17, 23)
+#
+# BACK TO TWO from 8 November 2026. The trial (19 October-1 November, 42
+# videos against 27) found no difference on any of the four pre-registered
+# tests: the day's output at day+2 was 0.90 of the comparison period
+# (p=0.37), 50,000+ hits were 4/42 against 5/27, and on the live count both
+# periods had seven. The 17:00 and 23:00 median fell 23% at day+2 and 35% at
+# day+3 (p=0.38) -- not significant, but past the 30% stop line the rules set
+# before the start. A third video bought no measurable reach and cost a clip a
+# day by hand plus a thinner idea pool, so the owner returned to 17:00 and
+# 23:00. Full output: olcum/hacim_final_2026-11-07_*.txt on claude/hacim-olcum.
+PUBLISH_SLOTS_UTC = (17, 23)
 
 # How far ahead the first release must be. The prompts arrive at midnight
 # Turkish time (21:00 UTC) and the clips are made straight away, which puts

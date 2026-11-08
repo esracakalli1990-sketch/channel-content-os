@@ -110,3 +110,29 @@ Durdurma kuralı tetiklenmediyse devam / eski tempoya dönüş kararı kanal
 sahibinindir. Deney sonucu "belirsiz" ise (çoğu ihtimalle böyle olacak) tempo,
 üretim kapasitesine göre seçilir; bunun maliyeti operatör zamanıdır, kanalın
 verisinden kanıtlanmış bir kazanç değildir.
+
+## Sonuç ve karar (8 Kasım 2026)
+
+Final ölçüm 7 Kasım'da yapıldı (Analytics son gün 4 Kasım; çıktılar
+`claude/hacim-olcum` dalında, `olcum/hacim_final_2026-11-07_ufuk2.txt` ve
+`_ufuk3.txt`). Kıyas 27 video, deney 42 video.
+
+| Ölçü | Kıyas | Deney | Test |
+|---|---|---|---|
+| Günün videoları, gün+2 toplam (ortalama) | 26.288 | 23.675 (0,90×) | p=0,37 |
+| 17:00+23:00 medyanı, gün+2 | 11.104 | 8.332 (−%23) | p=0,63 |
+| 17:00+23:00 medyanı, gün+3 | 14.570 | 9.932 (−%35) | p=0,38 |
+| Düşük video (gün+2 < 2.000) | 3/27 | 4/42 | p=1,00 |
+| 50.000+ hit, gün+2 | 5/27 | 4/42 | p=0,30 |
+
+- Dört birincil testin hiçbiri fark göstermedi (Holm sonrası hepsi 1,00).
+- Gün+3 ufkunda 17:00+23:00 durdurma çizgisi (%30) aşıldı. Anlamlı değil,
+  ama önceden yazılmış kural eski tempoya dönmeyi söylüyordu.
+- 11:00 videoları kendi başına fena değildi (n=13, medyan 12.151, iki hit);
+  saat değil hacim reddedildi.
+- Kanalın günlük etkileşimli izlenmesi kıyasta 161 bin, deneyde 70 bin.
+  Düşüşün çoğu eski videoların sönmesi (arka plan 212 bin → 57 bin);
+  hacim deneyinin konusu değil, ama 10M tahminini geçersiz kıldı.
+
+**Karar (kanal sahibi, 8 Kasım):** günde 2 video, 17:00 ve 23:00 UTC.
+Gece fikir işi varsayılan olarak 2 fikir gönderir.
