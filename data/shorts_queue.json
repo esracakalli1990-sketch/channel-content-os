@@ -1,26 +1,5 @@
 [
   {
-    "queued_at": "2026-11-08T01:11:03+00:00",
-    "publish_at": "2026-11-08T11:00:00+00:00",
-    "file_id": "BQACAgQAAxkBAAIGXWrvzA1wIAnczZVV0Qg0VCHFfotjAAI3IAACE514U567_K_V8dRKPQQ",
-    "file_size": 3866120,
-    "caption": "1",
-    "concept": {
-      "shape": "grooved copper cylinder",
-      "material": "polished copper and oxidized iron",
-      "internal_detail": "miniature pistons, miniature brass flywheels, and tiny intake valves",
-      "button": "a small protruding copper pin capped with a red enamel dot",
-      "button_short": "the protruding copper pin with its red enamel cap",
-      "creature": "four-stroke internal combustion engine block",
-      "shell_mechanic": "The copper cylinder wall slides apart into four interlocking vertical segments that retract outward simultaneously",
-      "emerging_parts": "Four precision-toothed pistons, a central crankshaft linkage, and dual intake manifolds",
-      "signature_move": "its central brass flywheel rotates three full turns on its axle and stops abruptly with a crisp mechanical ratcheting sound",
-      "turkish": "Dört zamanlı içten yanmalı motor bloğu (benzinle çalışan motor makinesi) — yivli bakır silindir, cilalanmış bakır ve oksitlenmiş demir"
-    },
-    "template_version": "22b0547924d3",
-    "idea_version": "18ae880d0298"
-  },
-  {
     "queued_at": "2026-11-08T01:13:06+00:00",
     "publish_at": "2026-11-08T17:00:00+00:00",
     "file_id": "BQACAgQAAxkBAAIGX2rvzDPvUcmielxij6j29Vj84yWtAAI5IAACE514UxnoGL2O4T7ePQQ",
