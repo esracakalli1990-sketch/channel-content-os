@@ -884,6 +884,8 @@ class EmptyQueueReminderTests(unittest.TestCase):
         self.sent = []
         self.original = shorts_pipeline.notifications.send_message
         shorts_pipeline.notifications.send_message = self.sent.append
+        # Tonight's idea, not yet filmed: the case the reminder exists for.
+        self._pending([{"batch": "2026-10-19T23:30:00+00:00", "index": 1}])
 
     def tearDown(self):
         shorts_pipeline.notifications.send_message = self.original
@@ -891,6 +893,36 @@ class EmptyQueueReminderTests(unittest.TestCase):
 
     def _queue(self, items):
         (self.root / shorts_pipeline.QUEUE_FILE).write_text(self.json.dumps(items))
+
+    def _pending(self, items):
+        (self.root / shorts_pipeline.PENDING_FILE).write_text(self.json.dumps(items))
+
+    def test_no_reminder_while_there_is_nothing_to_film(self):
+        """8 November: at two a day the queue is empty every evening until the
+        night's ideas come. Nagging hourly then is about nothing actionable."""
+        self._queue([])
+        self._pending([])
+        self.assertFalse(shorts_pipeline.remind_if_queue_empty(self.root, self.now))
+        self.assertEqual(self.sent, [])
+
+    def test_an_old_leftover_does_not_keep_it_going(self):
+        """The newest batch is all filmed; a passed-over idea from days before
+        is not a reason to remind."""
+        self._queue([])
+        self._pending([
+            {"batch": "2026-10-10T23:30:00+00:00", "index": 2},
+            {"batch": "2026-10-19T23:30:00+00:00", "index": 1, "used_at": "x"},
+            {"batch": "2026-10-19T23:30:00+00:00", "index": 2, "used_at": "y"},
+        ])
+        self.assertFalse(shorts_pipeline.remind_if_queue_empty(self.root, self.now))
+
+    def test_an_unfilmed_idea_in_the_newest_batch_starts_it(self):
+        self._queue([])
+        self._pending([
+            {"batch": "2026-10-19T23:30:00+00:00", "index": 1, "used_at": "x"},
+            {"batch": "2026-10-19T23:30:00+00:00", "index": 2},
+        ])
+        self.assertTrue(shorts_pipeline.remind_if_queue_empty(self.root, self.now))
 
     def test_an_empty_queue_sends_a_reminder(self):
         self._queue([])

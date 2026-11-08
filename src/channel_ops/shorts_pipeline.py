@@ -924,8 +924,33 @@ def _burn_hook(clip: Path, hook: str, badge: str = "") -> Path:
         return clip
 
 
+def _latest_batch_has_unmade_idea(root: Path) -> bool:
+    """Whether the newest batch of ideas still has one nobody has filmed.
+
+    Only the newest batch counts. Older leftovers -- an idea passed over on
+    purpose, like the water pump of 29 October -- would otherwise keep the
+    reminder going for days about something the operator chose not to make.
+    """
+    pending = _read_json(_data_path(PENDING_FILE, root), [])
+    batches = [str(entry.get("batch", "")) for entry in pending]
+    if not batches:
+        return False
+    newest = max(batches)
+    return any(
+        str(entry.get("batch", "")) == newest and not entry.get("used_at")
+        for entry in pending
+    )
+
+
 def remind_if_queue_empty(root: Path, now: datetime | None = None) -> bool:
     """Tell the operator the queue is empty, at most once an hour.
+
+    Only while there is something to film. At two a day the queue empties
+    every evening after the 17:00 video goes out and stays empty until the
+    night's ideas arrive; an hourly "queue empty" through those hours, about
+    nothing the operator could act on, is noise that teaches them to ignore
+    the one that matters (8 November). Once the ideas land, the reminders run
+    hourly again, night included.
 
     Returns whether a reminder went out. Never raises: a reminder that failed
     must not stop the watch loop, which also publishes.
@@ -939,6 +964,9 @@ def remind_if_queue_empty(root: Path, now: datetime | None = None) -> bool:
             # time the queue runs dry the operator hears at once.
             if alert_path.exists():
                 alert_path.unlink()
+            return False
+
+        if not _latest_batch_has_unmade_idea(root):
             return False
 
         last = None
