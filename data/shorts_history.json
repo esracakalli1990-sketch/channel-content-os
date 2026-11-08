@@ -233,7 +233,9 @@
     "blue shark",
     "gila monster",
     "four-stroke internal combustion engine block",
-    "cephalopod"
+    "cephalopod",
+    "steam tractor",
+    "printing press"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -415,6 +417,8 @@
     "chamfered triangular prism",
     "smooth ellipsoid",
     "grooved copper cylinder",
-    "smooth asymmetrical crescent"
+    "smooth asymmetrical crescent",
+    "tapered ogival cone",
+    "faceted decagonal cylinder"
   ]
 }
