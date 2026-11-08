@@ -19,5 +19,26 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "10497d196960"
+  },
+  {
+    "queued_at": "2026-11-08T20:45:48+00:00",
+    "publish_at": "2026-11-09T23:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIGb2rw3wc61UHDSFcSGqbhFoL8nDJUAAIhGwAC0O2IU69m7kHVFPK5PQQ",
+    "file_size": 2628337,
+    "caption": "2",
+    "concept": {
+      "shape": "faceted decagonal cylinder",
+      "material": "oxidized copper and forged iron",
+      "internal_detail": "interlocking cam plates and coiled hairspring regulators",
+      "button": "a central flush steel stud on the top face",
+      "button_short": "the central flush steel stud on the top face",
+      "creature": "printing press",
+      "shell_mechanic": "The decagonal metal casing splits laterally and folds outward like cabinet doors on micro-hinges",
+      "emerging_parts": "A cast iron platen bed, a sliding type carriage, and a weighted operating lever",
+      "signature_move": "its operating lever swings down through an arc and springs back up with a crisp metal snap",
+      "turkish": "mechanical printing press: Mekanik matbaa (Harfleri kagida basan eski tip duzenek) — desegenal silindir govde, oksitlenmis bakir ve dovme demir"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "10497d196960"
   }
 ]
