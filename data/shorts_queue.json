@@ -19,5 +19,26 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "18ae880d0298"
+  },
+  {
+    "queued_at": "2026-11-08T01:13:06+00:00",
+    "publish_at": "2026-11-08T17:00:00+00:00",
+    "file_id": "BQACAgQAAxkBAAIGX2rvzDPvUcmielxij6j29Vj84yWtAAI5IAACE514UxnoGL2O4T7ePQQ",
+    "file_size": 4419783,
+    "caption": "2",
+    "concept": {
+      "shape": "smooth asymmetrical crescent",
+      "material": "hammered sterling silver and nickel wire",
+      "internal_detail": "interlocking concentric ring gears and micro-springs",
+      "button": "a tiny raised silver bead at the inner curve",
+      "button_short": "the tiny raised silver bead at the inner curve",
+      "creature": "cephalopod",
+      "shell_mechanic": "The silver crescent shell divides horizontally along its curved meridian and the two matching halves hinge apart",
+      "emerging_parts": "Ten flexible segmented metal tentacles and a central domed optical lens head",
+      "signature_move": "its ten metal tentacles simultaneously curl inward toward its center lens and spring back out in a single synchronized snap",
+      "turkish": "Kafadanbacaklı deniz canlısı (sekiz kollu yumuşakçalar sınıfından deniz hayvanı) — pürüzsüz asimetrik hilal, dövülmüş gümüş ve nikel tel"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "18ae880d0298"
   }
 ]
