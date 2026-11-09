@@ -235,7 +235,9 @@
     "four-stroke internal combustion engine block",
     "cephalopod",
     "steam tractor",
-    "printing press"
+    "printing press",
+    "biplane",
+    "typewriter"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -394,8 +396,6 @@
     "tapered ovate column",
     "chamfered ovate vault",
     "curved river stone",
-    "chamfered rectangular block",
-    "creased folding fan",
     "canted triangular block",
     "ribbed hemispherical pod",
     "faceted decagonal puck",
@@ -419,6 +419,8 @@
     "grooved copper cylinder",
     "smooth asymmetrical crescent",
     "tapered ogival cone",
-    "faceted decagonal cylinder"
+    "faceted decagonal cylinder",
+    "creased folding fan",
+    "chamfered rectangular block"
   ]
 }
