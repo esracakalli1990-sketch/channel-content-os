@@ -1,26 +1,5 @@
 [
   {
-    "queued_at": "2026-11-08T20:41:45+00:00",
-    "publish_at": "2026-11-09T17:00:00+00:00",
-    "file_id": "BQACAgQAAxkBAAIGbWrw3mBa-lYAAVKR1jU433BAlpbaMwACHxsAAtDtiFPomOYKKoX2rT0E",
-    "file_size": 3744410,
-    "caption": "1",
-    "concept": {
-      "shape": "tapered ogival cone",
-      "material": "brushed duralumin and milled brass",
-      "internal_detail": "microscopic planetary gearsets and coaxial linkage bars",
-      "button": "a small spring-loaded brass pin at the narrow tip",
-      "button_short": "the spring-loaded brass pin at the narrow tip",
-      "creature": "steam tractor",
-      "shell_mechanic": "The ogival cone separates along four vertical expansion lines and telescopes outward in stepped tiers",
-      "emerging_parts": "A knurled brass boiler cylinder, two rear spoked wheels on axles, and a front steering pivot",
-      "signature_move": "its rear wheels rotate forward one full turn on their axles and its front steering axle swivels left and right once with a sharp click",
-      "turkish": "steam tractor: Buharli traktor (Tarimsal amacli, tekerlekli agir makine) — konik ogiv govde, fircalanmis duralumin ve pirinc"
-    },
-    "template_version": "22b0547924d3",
-    "idea_version": "10497d196960"
-  },
-  {
     "queued_at": "2026-11-08T20:45:48+00:00",
     "publish_at": "2026-11-09T23:00:00+00:00",
     "file_id": "BQACAgQAAxkBAAIGb2rw3wc61UHDSFcSGqbhFoL8nDJUAAIhGwAC0O2IU69m7kHVFPK5PQQ",
