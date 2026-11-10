@@ -1,26 +1,5 @@
 [
   {
-    "queued_at": "2026-11-10T04:31:18+00:00",
-    "publish_at": "2026-11-10T23:00:00+00:00",
-    "file_id": "BQACAgQAAxkBAAIGh2rynTgQJOjhSerSEw9Ru7egPDAzAALBHwAC0O2QU6FJpmig_JXmPQQ",
-    "file_size": 4630954,
-    "caption": "2",
-    "concept": {
-      "shape": "faceted decagonal column",
-      "material": "brushed gunmetal steel and polished brass",
-      "internal_detail": "miniature gear train with interlaced escapement wheels",
-      "button": "a small brass cylinder protruding from the base",
-      "button_short": "the small brass cylinder at the base",
-      "creature": "hand-cranked music box",
-      "shell_mechanic": "The faceted decagonal column slides apart along its vertical brass tracks and the ten outer segments rotate outward like miniature staves",
-      "emerging_parts": "A tiny brass cylinder pin drum and a polished comb with steel teeth",
-      "signature_move": "its brass cylinder rotates smoothly on its central axis and its steel comb plucks a tiny tune while its winding key twirls once around its arbor",
-      "turkish": "hand-cranked music box: Kurmali muzik kutusu (Kucuk, melodi calan mekanik kutu) — yuzeyli on gen sutun, fircalanmis silah celigi ve parlatilmis pirinc"
-    },
-    "template_version": "22b0547924d3",
-    "idea_version": "10497d196960"
-  },
-  {
     "queued_at": "2026-11-10T21:18:15+00:00",
     "publish_at": "2026-11-11T17:00:00+00:00",
     "file_id": "BAACAgQAAxkBAAIGlmrziavfbX-15cQor_ixfHeAqg0FAAIOHgACic2gU6bePgvWXr8UPQQ",
