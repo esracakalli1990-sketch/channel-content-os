@@ -1036,6 +1036,19 @@ class CreatureVarietyTests(unittest.TestCase):
         concepts = self.sp.generate_concepts(provider, count=1, avoid=avoid)
         self.assertEqual([c.creature for c in concepts], ["barn owl"])
 
+    def test_a_raw_newline_inside_a_field_is_tolerated(self):
+        """10 November: the fallback model split a field across two lines and
+        the whole night's ideas failed on the JSON error."""
+        from dataclasses import asdict
+
+        item = asdict(_concept("barn owl"))
+        item["material"] = "aged bronze\nwith dark patina"
+        raw = json.dumps([item]).replace("\\n", "\n")
+        self.assertIn("\n", raw)
+        concept = self.sp.parse_concepts(raw)[0]
+        self.assertEqual(concept.creature, "barn owl")
+        self.assertNotIn("\n", concept.material)
+
     def test_the_subject_and_look_rules_are_asked_for(self):
         """10 November: the Studio export replaced the half-machines mix."""
         text = self.sp._CONCEPT_INSTRUCTIONS

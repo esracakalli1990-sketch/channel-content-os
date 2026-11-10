@@ -161,7 +161,9 @@ def _strip_code_fence(text: str) -> str:
 def parse_metadata(raw: str) -> ShortMetadata:
     """Parse the model's JSON object into metadata."""
     try:
-        data = json.loads(_strip_code_fence(raw))
+        # strict=False: the fallback model sometimes breaks a long field with a
+        # raw newline, which failed the whole night on 10 November.
+        data = json.loads(_strip_code_fence(raw), strict=False)
     except json.JSONDecodeError as exc:
         raise RuntimeError(f"Metadata response was not valid JSON: {exc}") from exc
     if not isinstance(data, dict):

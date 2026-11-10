@@ -480,7 +480,9 @@ def _strip_code_fence(text: str) -> str:
 def parse_concepts(raw: str) -> list[Concept]:
     """Parse the model's JSON array into concepts, ignoring extra fields."""
     try:
-        data = json.loads(_strip_code_fence(raw))
+        # strict=False: the fallback model sometimes breaks a long field with a
+        # raw newline, which failed the whole night on 10 November.
+        data = json.loads(_strip_code_fence(raw), strict=False)
     except json.JSONDecodeError as exc:
         raise RuntimeError(f"Concept response was not valid JSON: {exc}") from exc
 
