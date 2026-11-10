@@ -622,7 +622,7 @@ _MODERN_MACHINE_NOUNS = frozenset({
     "satellite", "robot", "turbine", "anemometer", "snowmobile", "harvester",
 })
 _COLD_FINISH = re.compile(
-    r"\b(?:anodi[sz]ed|alumin(?:i)?um|titanium|nickel|chrom(?:e|ed|ium)|zinc|"
+    r"\b(?:anodi[sz]ed|alumin(?:i)?um|duralumin|titanium|nickel|chrom(?:e|ed|ium)|zinc|"
     r"mother[- ]of[- ]pearl|nacre)\b",
     re.IGNORECASE,
 )
