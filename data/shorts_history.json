@@ -237,7 +237,9 @@
     "steam tractor",
     "printing press",
     "biplane",
-    "typewriter"
+    "typewriter",
+    "rotary windmill",
+    "hand-cranked music box"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -378,7 +380,6 @@
     "grooved ovoid bead",
     "ribbed cylinder",
     "flattened oval block",
-    "ridged triangular prism",
     "spherical pod",
     "grooved cylindrical bolt",
     "curved triangular prism",
@@ -421,6 +422,8 @@
     "tapered ogival cone",
     "faceted decagonal cylinder",
     "creased folding fan",
-    "chamfered rectangular block"
+    "chamfered rectangular block",
+    "ridged triangular prism",
+    "faceted decagonal column"
   ]
 }
