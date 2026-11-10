@@ -239,7 +239,9 @@
     "biplane",
     "typewriter",
     "rotary windmill",
-    "hand-cranked music box"
+    "hand-cranked music box",
+    "roadrunner",
+    "spotted ratfish"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -306,7 +308,6 @@
     "facetted triangular block",
     "ribbed hemispherical dome",
     "fluted octagonal drum",
-    "beveled circular medallion",
     "fluted cylindrical thimble",
     "vaulted elliptical slab",
     "truncated pyramidal block",
@@ -352,7 +353,6 @@
     "ribbed fan vault",
     "folded fan",
     "domed pod",
-    "grooved elliptical dome",
     "smooth teardrop pod",
     "humped ovate mound",
     "broad spatulate slab",
@@ -424,6 +424,8 @@
     "creased folding fan",
     "chamfered rectangular block",
     "ridged triangular prism",
-    "faceted decagonal column"
+    "faceted decagonal column",
+    "grooved elliptical dome",
+    "beveled circular medallion"
   ]
 }
