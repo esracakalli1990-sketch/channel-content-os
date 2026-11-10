@@ -1036,11 +1036,37 @@ class CreatureVarietyTests(unittest.TestCase):
         concepts = self.sp.generate_concepts(provider, count=1, avoid=avoid)
         self.assertEqual([c.creature for c in concepts], ["barn owl"])
 
-    def test_machines_are_asked_for_not_only_animals(self):
-        """8 November: the trial's steam shovel did as well as the animals
-        around it; the subject no longer has to be one."""
-        self.assertIn("SUBJECT MIX", self.sp._CONCEPT_INSTRUCTIONS)
-        self.assertIn("machines or vehicles", self.sp._CONCEPT_INSTRUCTIONS)
+    def test_the_subject_and_look_rules_are_asked_for(self):
+        """10 November: the Studio export replaced the half-machines mix."""
+        text = self.sp._CONCEPT_INSTRUCTIONS
+        self.assertIn("SUBJECT AND LOOK", text)
+        self.assertNotIn("SUBJECT MIX", text)
+        self.assertNotIn("titanium button", text)
+
+    def test_an_arthropod_is_rejected_and_replaced(self):
+        provider = self._provider([["scarab beetle", "army ants"], ["barn owl"]])
+        concepts = self.sp.generate_concepts(provider, count=1, avoid=[])
+        self.assertEqual([c.creature for c in concepts], ["barn owl"])
+
+    def test_a_modern_machine_is_rejected_and_replaced(self):
+        provider = self._provider([["hydraulic excavator"], ["sextant"]])
+        concepts = self.sp.generate_concepts(provider, count=1, avoid=[])
+        self.assertEqual([c.creature for c in concepts], ["sextant"])
+
+    def test_a_name_that_only_contains_a_banned_word_passes(self):
+        for name in ("spider monkey", "bee hummingbird", "crab-eating macaque", "bee-eater"):
+            self.assertIsNone(self.sp._off_brief(_concept(name)), name)
+
+    def test_a_cold_finish_on_the_shell_is_rejected(self):
+        cold = Concept(**{**_concept("barn owl").__dict__, "material": "anodized aluminium"})
+        self.assertEqual(self.sp._off_brief(cold), "cold finish")
+        chrome = Concept(**{**_concept("barn owl").__dict__, "button": "a chrome button"})
+        self.assertEqual(self.sp._off_brief(chrome), "cold finish")
+
+    def test_a_cold_metal_inside_is_allowed(self):
+        """Only the closed shell is seen in the first second."""
+        inside = Concept(**{**_concept("barn owl").__dict__, "internal_detail": "titanium gears"})
+        self.assertIsNone(self.sp._off_brief(inside))
 
     def test_memory_outlasts_the_published_history(self):
         """40 was smaller than the 42 videos already out, which is exactly how
@@ -1066,8 +1092,8 @@ class CreatureVarietyTests(unittest.TestCase):
         return StubProvider()
 
     def test_a_repeated_family_is_rejected_and_replaced(self):
-        provider = self._provider([["jewel beetle"], ["barn owl"]])
-        concepts = self.sp.generate_concepts(provider, count=1, avoid=["stag beetle"])
+        provider = self._provider([["poison dart frog"], ["barn owl"]])
+        concepts = self.sp.generate_concepts(provider, count=1, avoid=["tree frog"])
         self.assertEqual([c.creature for c in concepts], ["barn owl"])
         self.assertEqual(provider.calls, 2, "the shortfall must be re-asked")
 
@@ -1077,7 +1103,7 @@ class CreatureVarietyTests(unittest.TestCase):
         self.assertEqual([c.creature for c in concepts], ["tree frog"])
 
     def test_two_of_the_same_family_in_one_batch_are_caught(self):
-        provider = self._provider([["fiddler crab", "hermit crab"], ["barn owl"]])
+        provider = self._provider([["horned lizard", "frilled lizard"], ["barn owl"]])
         concepts = self.sp.generate_concepts(provider, count=2, avoid=[])
         words = [frozenset(self.sp.significant_words(c.creature)) for c in concepts]
         self.assertFalse(words[0] & words[1], "two of one family slipped through")
@@ -1230,8 +1256,10 @@ class TurkishLineTests(unittest.TestCase):
         )
         # 730ac4e9c9e2 until the 27 September mechanical signature-move rule,
         # 18ae880d0298 until the 8 November subject mix (machines as well as
-        # animals). Each is meant to move it: the audit splits before/after on it.
-        self.assertEqual(shorts_prompts.idea_version(), "10497d196960")
+        # animals), 10497d196960 until the 10 November subject-and-look rules
+        # from the Studio export. Each is meant to move it: the audit splits
+        # before/after on it.
+        self.assertEqual(shorts_prompts.idea_version(), "8509dc8ab17e")
 
 
 class BadgeTests(unittest.TestCase):

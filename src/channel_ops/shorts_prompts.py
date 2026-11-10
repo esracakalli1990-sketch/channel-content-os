@@ -102,8 +102,8 @@ Hard rules, in priority order:
 
 1. PLAUSIBLE FOLDING. The closed shape must believably BE the creature's main
    body or shell, so nothing has to appear from nowhere and nothing grows. A
-   dome is a turtle's shell; a sphere is an owl's body; a hexagonal puck is a
-   beetle's wing cases. Never pair a shape with a creature that could not fold
+   dome is a turtle's shell; a sphere is an owl's body; a flat oval is a
+   ray's body. Never pair a shape with a creature that could not fold
    back into it.
 2. MATERIAL MATCHES SUBJECT. Cast iron and copper pipes suit a steam engine;
    antique brass and clockwork suit an owl; transparent resin over glowing
@@ -114,14 +114,14 @@ Hard rules, in priority order:
    video models lose coherence and the transformation stops looking physical.
 4. `shell_mechanic` is a clause continuing "The unfolding process is logical
    and physically consistent." and must end ready for ", revealing the movement
-   of internal mechanical components and gears." Example: "The hexagonal shell
-   splits along its titanium seams and the two halves rotate outward like
-   elytra".
+   of internal mechanical components and gears." Example: "The domed shell
+   splits along its brass seams and the two halves rotate outward like
+   wings".
 5. `emerging_parts` is a noun phrase that reads naturally before "physically
-   push out into place". Example: "Six folded segmented legs and a small
-   antennaed head".
+   push out into place". Example: "Four folded jointed legs and a small
+   hinged head".
 6. `button_short` is a short noun phrase for the same button, e.g. "the
-   recessed titanium button at the centre of the obsidian puck".
+   recessed brass button at the centre of the bronze dome".
 7. Write every field in English, in plain descriptive prose, with no camera or
    lighting directions — the template already supplies those.
 8. GRAMMAR. Every field is a fragment dropped into a sentence, never a sentence
@@ -129,12 +129,12 @@ Hard rules, in priority order:
    * `shape` — one to four words, no article, and never the word "shaped"
      since the template appends "-shaped": "dome", "rounded hexagonal puck".
    * `creature` — no article, and never the word "mechanical"; the template
-     already says it. Write "scarab beetle", not "a mechanical scarab beetle".
+     already says it. Write "barn owl", not "a mechanical barn owl".
    * `button` — KEEP the article, because the template does not supply one:
-     "a single recessed titanium button ringed by amber light".
-   * `button_short` — KEEP "the": "the recessed titanium button at the centre".
+     "a single recessed brass button ringed by amber light".
+   * `button_short` — KEEP "the": "the recessed brass button at the centre".
    * `material` and `internal_detail` — noun phrases, no article needed:
-     "polished obsidian-black ceramic", not "It is made of ceramic."
+     "aged bronze with dark patina", not "It is made of ceramic."
    * `signature_move` — a clause with its own verb, dropped after "performs
      one short clockwork motion that imitates its species:" and followed by a
      full stop. Start with "its": "its ruby glass eyes light up red and its
@@ -142,7 +142,7 @@ Hard rules, in priority order:
    * `shell_mechanic` — a complete independent clause with its own subject and
      verb, because the template continues it with ", revealing the movement of
      internal mechanical components and gears". Start with the thing that
-     moves: "The hexagonal shell splits along its titanium seams". NEVER open
+     moves: "The domed shell splits along its brass seams". NEVER open
      with "as", "when", "while" or "once" — that leaves the sentence unfinished.
 9. MECHANICAL SIGNATURE MOVE. `signature_move` is the one short gesture the
    finished toy makes at the end, imitating its species. The toy is a machine
@@ -165,20 +165,25 @@ Do not reuse any of these creatures: {avoid}
 Do not suggest anything whose name contains any of these words, and nothing
 that is obviously the same subject under another name — a "miniature steam
 locomotive" is the same video as a "steam locomotive engine": {avoid_families}
-Reach across the tree of life instead. Beetles, crabs and moths have been
-heavily overused; birds, mammals, reptiles, amphibians, molluscs and arachnids
-are all under-used.
+Reach across the tree of life instead. Reptiles, amphibians, birds, sea
+creatures and mammals are what this channel's viewers stay for.
 
-SUBJECT MIX. The subject does not have to be an animal. Recognisable working
-machines and vehicles hold up just as well -- a steam shovel and a beam engine
-pump did as well as the animals around them. Make roughly half of every batch
-machines or vehicles: excavators, cranes, locomotives, tractors, helicopters,
-submarines, diving bells, windmills, printing presses, pocket watches, cameras,
-telescopes, typewriters, sewing machines, rockets and the like. Pick machines
-whose finished form is instantly recognisable and that have one obvious
-working motion for `signature_move` (a crane boom swings, a drill bit spins,
-a piston rod pumps, a camera shutter snaps). Never an abstract object, a
-building that cannot move, a weapon or anything branded.
+SUBJECT AND LOOK. These rules come from the channel's own numbers (233 videos,
+10 November 2026): the share of viewers who keep watching after the first
+second decides how far a video travels, and these are what drive it.
+* Prefer reptiles and amphibians, birds, sea creatures (fish, molluscs,
+  cephalopods, rays, sea turtles) and mammals.
+* NEVER an insect, spider, scorpion, crab, shrimp, lobster or any other
+  arthropod: twenty-six of them had a median of five thousand views.
+* NEVER a modern industrial machine or vehicle: no excavators, bulldozers,
+  drones, helicopters, rockets, tractors, cars, jets or wind gauges.
+* An antique instrument is welcome now and then (sextant, bellows camera,
+  brass telescope, pocket watch, astrolabe, music box): at most one per batch.
+* The shell must look warm, dark and old: aged brass, bronze, copper, cast
+  iron, dark wood, blackened steel, silver, enamel, leather. NEVER anodized
+  metal, aluminium, brass, nickel, chrome, zinc or mother-of-pearl: the
+  thirty-seven videos in those cold finishes had a median of six thousand
+  views against sixteen thousand for the rest.
 
 These object shapes have been used recently. Pick something structurally
 different — five of the last thirteen videos were all a "capsule", which makes
@@ -594,6 +599,64 @@ def _is_repeat(
     return bool(used) and _same_subject(creature, used) is not None
 
 
+# The instruction alone is not trusted, as with repeats. These lists are the
+# 10 November rules from the channel's Studio export: arthropods and modern
+# industrial machines had the lowest view counts, and cold, modern-looking
+# finishes did badly whatever the subject. Only the head noun of the name is
+# checked (English puts it last), so a "spider monkey" or a "bee hummingbird"
+# still passes while a "scarab beetle" does not.
+_ARTHROPOD_NOUNS = frozenset({
+    "insect", "bug", "beetle", "weevil", "ladybird", "ladybug", "firefly",
+    "ant", "termite", "bee", "bumblebee", "wasp", "hornet", "fly", "dragonfly",
+    "damselfly", "mosquito", "moth", "butterfly", "caterpillar", "mantis",
+    "cricket", "grasshopper", "locust", "katydid", "cicada", "earwig", "flea",
+    "louse", "aphid", "spider", "tarantula", "scorpion", "tick", "mite",
+    "harvestman", "centipede", "millipede", "crab", "lobster", "crayfish",
+    "shrimp", "prawn", "krill", "barnacle", "isopod", "woodlouse", "trilobite",
+    "silverfish", "stonefly", "mayfly", "lacewing", "cockroach", "roach",
+})
+_MODERN_MACHINE_NOUNS = frozenset({
+    "excavator", "bulldozer", "digger", "forklift", "drone", "quadcopter",
+    "helicopter", "rocket", "tractor", "truck", "lorry", "car", "motorcycle",
+    "motorbike", "scooter", "jet", "airplane", "aeroplane", "airliner",
+    "satellite", "robot", "turbine", "anemometer", "snowmobile", "harvester",
+})
+_COLD_FINISH = re.compile(
+    r"\b(?:anodi[sz]ed|alumin(?:i)?um|titanium|nickel|chrom(?:e|ed|ium)|zinc|"
+    r"mother[- ]of[- ]pearl|nacre)\b",
+    re.IGNORECASE,
+)
+
+
+def _head_noun(creature: str) -> str:
+    words = re.findall(r"[a-z]+(?:-[a-z]+)*", creature.lower())
+    if not words:
+        return ""
+    head = words[-1]
+    # Plurals: "army ants", "fireflies".
+    for plural, singular in (("flies", "fly"), ("ies", "y"), ("s", "")):
+        if head.endswith(plural) and head[: -len(plural)] + singular in (
+            _ARTHROPOD_NOUNS | _MODERN_MACHINE_NOUNS
+        ):
+            return head[: -len(plural)] + singular
+    return head
+
+
+def _off_brief(concept: Concept) -> str | None:
+    """Why *concept* breaks the subject-and-look rules, or None if it does not."""
+    head = _head_noun(concept.creature)
+    if head in _ARTHROPOD_NOUNS:
+        return "arthropod"
+    if head in _MODERN_MACHINE_NOUNS:
+        return "modern machine"
+    # Only what the viewer sees in the first second: the closed shell and its
+    # button. The gears revealed later may be any metal.
+    seen = " ".join((concept.shape, concept.material, concept.button, concept.button_short))
+    if _COLD_FINISH.search(seen):
+        return "cold finish"
+    return None
+
+
 def generate_concepts(
     provider: AIProvider,
     *,
@@ -640,6 +703,11 @@ def generate_concepts(
             if _is_repeat(concept.creature, banned_names, banned_families, avoid_list):
                 rejected.append(concept.creature)
                 logger.warning("Rejected repeat concept %r", concept.creature)
+                continue
+            reason = _off_brief(concept)
+            if reason:
+                rejected.append(concept.creature)
+                logger.warning("Rejected %s concept %r", reason, concept.creature)
                 continue
             kept.append(concept)
             banned_names.add(concept.creature.strip().lower())
