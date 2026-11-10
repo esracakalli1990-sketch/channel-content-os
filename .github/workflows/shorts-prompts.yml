@@ -14,6 +14,10 @@ name: Shorts — günün promptları
 # "Run workflow" düğmesiyle istediğin an elle de çalıştırabilirsin.
 on:
   schedule:
+    # Gece fikirlerini artık asıl gelen kutusu turu 20:30 UTC'den sonra
+    # tetikliyor. Bunlar yedek: GitHub onları 6 saat geç çalıştırabildiği
+    # için 12 saatlik pencereyle bakıyorlar; 9-10 Kasım gecesi 6 saatlik
+    # pencere 02:53'te ikinci bir fikir seti gönderdi.
     - cron: "30 20 * * *" # 23:30 TRT
     # Telafi denemeleri: ilk çalışma sırasında Gemini çökükse gün fikirsiz
     # kalıyordu, iki kez oldu. Fikirler ulaştıysa bunlar hiçbir şey yapmaz.
@@ -58,7 +62,7 @@ jobs:
           PROMPT_TEMPLATE: ${{ secrets.PROMPT_TEMPLATE }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: python -m channel_ops shorts-prompts --count "${{ inputs.count || 2 }}" --skip-if-recent "${{ github.event_name == 'schedule' && 6 || inputs.skip_if_recent || 0 }}"
+        run: python -m channel_ops shorts-prompts --count "${{ inputs.count || 2 }}" --skip-if-recent "${{ github.event_name == 'schedule' && 12 || inputs.skip_if_recent || 0 }}"
 
       - name: Bekleyen fikirleri kaydet
         run: |
