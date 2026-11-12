@@ -242,7 +242,8 @@
     "hand-cranked music box",
     "roadrunner",
     "spotted ratfish",
-    "wall gecko"
+    "wall gecko",
+    "red-tailed hawk"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -329,7 +330,6 @@
     "ribbed drop pod",
     "keeled lancet bar",
     "ribbed cylindrical pod",
-    "faceted biconical spindle",
     "canted parabolic shell",
     "squat cuboctahedron",
     "grooved concave wedge",
@@ -428,6 +428,7 @@
     "faceted decagonal column",
     "grooved elliptical dome",
     "beveled circular medallion",
-    "ribbed fluted spindle"
+    "ribbed fluted spindle",
+    "faceted biconical spindle"
   ]
 }
