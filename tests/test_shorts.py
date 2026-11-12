@@ -1036,6 +1036,27 @@ class CreatureVarietyTests(unittest.TestCase):
         concepts = self.sp.generate_concepts(provider, count=1, avoid=avoid)
         self.assertEqual([c.creature for c in concepts], ["barn owl"])
 
+    def test_an_incomplete_concept_is_skipped_not_fatal(self):
+        """12 November: one missing field failed the whole run."""
+        from dataclasses import asdict
+
+        broken = asdict(_concept("barn owl")); broken["shape"] = ""
+        good = asdict(_concept("tree frog"))
+        concepts = self.sp.parse_concepts(json.dumps([broken, good]))
+        self.assertEqual([c.creature for c in concepts], ["tree frog"])
+
+    def test_an_unreadable_round_is_retried(self):
+        from dataclasses import asdict
+
+        answers = ["not json at all", json.dumps([asdict(_concept("barn owl"))])]
+
+        class StubProvider:
+            def generate(self, prompt, system_prompt=""):
+                return answers.pop(0)
+
+        concepts = self.sp.generate_concepts(StubProvider(), count=1, avoid=[])
+        self.assertEqual([c.creature for c in concepts], ["barn owl"])
+
     def test_a_run_of_repeats_is_outlasted(self):
         """11 November: three rounds of repeats left the night one idea short."""
         provider = self._provider([["pangolin"], ["pangolin"], ["pangolin"], ["barn owl", "tree frog"]])

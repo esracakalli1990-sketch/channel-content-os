@@ -477,22 +477,32 @@ def _strip_code_fence(text: str) -> str:
     return fenced.group(1) if fenced else text.strip()
 
 
+class ConceptParseError(RuntimeError):
+    """The model's answer could not be read as concepts at all."""
+
+
 def parse_concepts(raw: str) -> list[Concept]:
-    """Parse the model's JSON array into concepts, ignoring extra fields."""
+    """Parse the model's JSON array into concepts, ignoring extra fields.
+
+    An incomplete concept is skipped rather than failing the batch: on
+    12 November the fallback model left one field out and the whole night's
+    run failed, though the other concepts were usable.
+    """
     try:
         # strict=False: the fallback model sometimes breaks a long field with a
         # raw newline, which failed the whole night on 10 November.
         data = json.loads(_strip_code_fence(raw), strict=False)
     except json.JSONDecodeError as exc:
-        raise RuntimeError(f"Concept response was not valid JSON: {exc}") from exc
+        raise ConceptParseError(f"Concept response was not valid JSON: {exc}") from exc
 
     if not isinstance(data, list):
-        raise RuntimeError(f"Expected a JSON array of concepts, got {type(data).__name__}.")
+        raise ConceptParseError(f"Expected a JSON array of concepts, got {type(data).__name__}.")
 
     concepts: list[Concept] = []
     for index, item in enumerate(data, start=1):
         if not isinstance(item, dict):
-            raise RuntimeError(f"Concept {index} is not an object.")
+            logger.warning("Skipped concept %d: not an object", index)
+            continue
         cleaned = {slot: _clean_slot(item.get(slot, ""), slot) for slot in _SLOTS}
         # A missing or living gesture never costs the video: render() puts the
         # mechanical fallback in its place.
@@ -502,7 +512,8 @@ def parse_concepts(raw: str) -> list[Concept]:
             cleaned["signature_move"] = ""
         missing = [slot for slot, value in cleaned.items() if not value and slot != "signature_move"]
         if missing:
-            raise RuntimeError(f"Concept {index} is missing: {', '.join(missing)}")
+            logger.warning("Skipped concept %d (%r): missing %s", index, cleaned["creature"], ", ".join(missing))
+            continue
         # Not run through _clean_slot: that strips articles and capitals to fit
         # an English sentence, which would mangle a Turkish line that is not
         # going into a sentence at all.
@@ -705,7 +716,13 @@ def generate_concepts(
         wanted = count - len(kept)
         if wanted <= 0:
             break
-        for concept in ask(wanted + 2, rejected):
+        try:
+            offered = ask(wanted + 2, rejected)
+        except ConceptParseError as exc:
+            # An unreadable answer costs one round, not the night.
+            logger.warning("Round %d unreadable: %s", attempt + 1, exc)
+            continue
+        for concept in offered:
             if _is_repeat(concept.creature, banned_names, banned_families, avoid_list):
                 rejected.append(concept.creature)
                 logger.warning("Rejected repeat concept %r", concept.creature)
