@@ -19,5 +19,26 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "8509dc8ab17e"
+  },
+  {
+    "queued_at": "2026-11-12T21:22:52+00:00",
+    "publish_at": "2026-11-13T17:00:00+00:00",
+    "file_id": "BAACAgQAAxkBAAIGuWr2LfimZPJCYX1iz4KgBvnqcFK0AAKsIwACPrewU6jnQ6qVto9tPQQ",
+    "file_size": 3204308,
+    "caption": "1",
+    "concept": {
+      "shape": "smooth carved nephrite pebble",
+      "material": "dark cast iron with inlaid copper wire",
+      "internal_detail": "nested brass gears and spring coils",
+      "button": "a small protruding copper stud",
+      "button_short": "the small protruding copper stud",
+      "creature": "common wallcreeper",
+      "shell_mechanic": "The smooth nephrite pebble splits cleanly along its central copper seam and the two halves slide apart horizontally",
+      "emerging_parts": "Two slender jointed legs and a long curved needle beak",
+      "signature_move": "its needle beak pivots down once on its hinge and taps against the metal palm with a sharp metallic click",
+      "turkish": "common wallcreeper: Duvar tırmanıcısı (Avrupa dağlarında yaşayan küçük kuş) — pürüzsüz oyulmuş nefrit çakıl taşı, bakır telli koyu dökme demir"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "8509dc8ab17e"
   }
 ]
