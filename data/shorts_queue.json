@@ -1,1 +1,23 @@
-[]
+[
+  {
+    "queued_at": "2026-11-12T04:19:42+00:00",
+    "publish_at": "2026-11-12T17:00:00+00:00",
+    "file_id": "BAACAgQAAxkBAAIGrGr1PjBqiru8TaGyVrx35gd-mtKeAALnIAACPreoU1khef1noKFYPQQ",
+    "file_size": 3097472,
+    "caption": "1",
+    "concept": {
+      "shape": "ribbed fluted spindle",
+      "material": "cast bronze with heavy dark patina",
+      "internal_detail": "polished brass gears and tiny tension linkages",
+      "button": "a flush circular push-pin at the tapered tip",
+      "button_short": "the flush circular push-pin",
+      "creature": "wall gecko",
+      "shell_mechanic": "The fluted bronze casing slides apart into three interlocking longitudinal segments",
+      "emerging_parts": "Four wide toe-padded legs and a flat jointed skull",
+      "signature_move": "its jointed bronze jaw plates open slightly on their pivot and click shut again, and its tail segment twitches once on a tiny internal spring",
+      "turkish": "wall gecko: Duvar gekosu (Evlerin duvarlarinda dolasan, tirmanici surungen) — ribbed fluted spindle, cast bronze with heavy dark patina"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "8509dc8ab17e"
+  }
+]
