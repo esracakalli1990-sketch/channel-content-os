@@ -697,7 +697,11 @@ def generate_concepts(
     # Each round asks for more than is missing, and there are three rounds:
     # with only two rounds and an exact ask, rejections left holes and three
     # nights running delivered one or two ideas instead of three.
-    for attempt in range(3):
+    #
+    # Five rounds since 11 November: with the subject narrowed to animals the
+    # fallback model kept offering ones already used (eleven repeats in three
+    # rounds) and the night delivered one idea instead of two.
+    for attempt in range(5):
         wanted = count - len(kept)
         if wanted <= 0:
             break

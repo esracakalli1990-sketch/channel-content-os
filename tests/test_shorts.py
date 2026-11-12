@@ -1036,6 +1036,12 @@ class CreatureVarietyTests(unittest.TestCase):
         concepts = self.sp.generate_concepts(provider, count=1, avoid=avoid)
         self.assertEqual([c.creature for c in concepts], ["barn owl"])
 
+    def test_a_run_of_repeats_is_outlasted(self):
+        """11 November: three rounds of repeats left the night one idea short."""
+        provider = self._provider([["pangolin"], ["pangolin"], ["pangolin"], ["barn owl", "tree frog"]])
+        concepts = self.sp.generate_concepts(provider, count=2, avoid=["pangolin"])
+        self.assertEqual([c.creature for c in concepts], ["barn owl", "tree frog"])
+
     def test_a_raw_newline_inside_a_field_is_tolerated(self):
         """10 November: the fallback model split a field across two lines and
         the whole night's ideas failed on the JSON error."""
