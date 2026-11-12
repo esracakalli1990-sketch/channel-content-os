@@ -243,7 +243,9 @@
     "roadrunner",
     "spotted ratfish",
     "wall gecko",
-    "red-tailed hawk"
+    "red-tailed hawk",
+    "common wallcreeper",
+    "red-legged seriema"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -281,7 +283,6 @@
     "chamfered triangular block",
     "curved rectangular brick",
     "fluted keel block",
-    "beveled hexagonal cartridge",
     "faceted pentagonal prism",
     "heavy ribbed barrel",
     "smooth faceted rhomboid",
@@ -313,7 +314,6 @@
     "fluted cylindrical thimble",
     "vaulted elliptical slab",
     "truncated pyramidal block",
-    "smooth carved nephrite pebble",
     "faceted beryl green rhomboid",
     "domed octagonal case",
     "blunt tapered ingot",
@@ -429,6 +429,8 @@
     "grooved elliptical dome",
     "beveled circular medallion",
     "ribbed fluted spindle",
-    "faceted biconical spindle"
+    "faceted biconical spindle",
+    "smooth carved nephrite pebble",
+    "beveled hexagonal cartridge"
   ]
 }
