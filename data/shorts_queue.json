@@ -19,5 +19,26 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "8509dc8ab17e"
+  },
+  {
+    "queued_at": "2026-11-12T07:02:40+00:00",
+    "publish_at": "2026-11-12T23:00:00+00:00",
+    "file_id": "BAACAgQAAxkBAAIGsWr1ZFffqt2YH3V20Q1TpkxW46_bAAL6IAACPreoU3kvhx9hx5t_PQQ",
+    "file_size": 2883510,
+    "caption": "1",
+    "concept": {
+      "shape": "faceted biconical spindle",
+      "material": "burnished copper and dark weathered wood",
+      "internal_detail": "miniature brass bevel gears and sliding pistons",
+      "button": "a small brass push-stud at the narrow tip",
+      "button_short": "the small brass push-stud",
+      "creature": "red-tailed hawk",
+      "shell_mechanic": "The biconical wooden spindle separates down its middle seam and the upper and lower halves hinge outward",
+      "emerging_parts": "Two folded metal wings and a hooked beak head",
+      "signature_move": "its ruby glass eyes light up red, and its hinged beak plates swing open and snap shut once with a sharp mechanical click",
+      "turkish": "red-tailed hawk: Kizil kuyruklu somek (Yuksekten ucan yirtici kus) — yuzlu cift konik ig, parlatilmis bakir ve koyu eskitilmis ahsap"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "8509dc8ab17e"
   }
 ]
