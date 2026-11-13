@@ -245,7 +245,9 @@
     "wall gecko",
     "red-tailed hawk",
     "common wallcreeper",
-    "red-legged seriema"
+    "red-legged seriema",
+    "eurasian jay",
+    "hoatzin"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -419,7 +421,6 @@
     "chamfered triangular prism",
     "smooth ellipsoid",
     "grooved copper cylinder",
-    "smooth asymmetrical crescent",
     "tapered ogival cone",
     "faceted decagonal cylinder",
     "creased folding fan",
@@ -431,6 +432,8 @@
     "ribbed fluted spindle",
     "faceted biconical spindle",
     "smooth carved nephrite pebble",
-    "beveled hexagonal cartridge"
+    "beveled hexagonal cartridge",
+    "smooth asymmetrical crescent",
+    "crested rhomboid nodule"
   ]
 }
