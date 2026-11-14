@@ -287,7 +287,16 @@ def send_daily_prompts(
         logger.info("A batch already went out in the last %g hours — nothing to do", skip_if_recent_hours)
         return []
 
-    pairs = generate_prompt_pairs(provider, count=count, root=root)
+    # Reopened ideas -- filmed once but unusable, like the three landscape
+    # uploads of 11-13 November -- take tonight's places before new ones are
+    # invented, so the operator is not handed more ideas than slots.
+    reopened = [
+        entry for entry in _read_json(_data_path(PENDING_FILE, root), [])
+        if entry.get("reopened") and not entry.get("reopened_sent")
+        and not entry.get("used_at") and _is_fresh(entry)
+    ][:count]
+    fresh_count = count - len(reopened)
+    pairs = generate_prompt_pairs(provider, count=fresh_count, root=root) if fresh_count > 0 else []
 
     path = _data_path(PENDING_FILE, root)
     # Concepts accumulate rather than replace. The job runs three times a day
@@ -303,6 +312,7 @@ def send_daily_prompts(
     #
     batch = _fresh_batch_stamp(pending)
 
+    total = len(reopened) + len(pairs)
     if count == 1:
         notifications.send_message(
             "🎬 <b>Sıradaki video</b>\n"
@@ -310,7 +320,8 @@ def send_daily_prompts(
         )
     else:
         notifications.send_message(
-            f"☀️ <b>Yeni fikirler hazır</b> — {len(pairs)} tane.\n"
+            f"☀️ <b>Yeni fikirler hazır</b> — {total} tane"
+            f"{f' ({len(reopened)} tanesi yeniden çekilecek)' if reopened else ''}.\n"
             f"Beğendiğini Flow'da üret, videoyu bu sohbete geri gönder.\n"
             f"<i>Hangisi olduğunu yazmak için başlığa numarayı ekle.</i>"
         )
@@ -322,7 +333,26 @@ def send_daily_prompts(
     # pipeline holding no matching prompt. A recorded idea nobody sees just
     # expires; a sent idea nobody recorded breaks the video.
     failures: list[str] = []
-    for index, pair in enumerate(pairs, start=1):
+    reopened_keys = {(e.get("batch"), e.get("index")) for e in reopened}
+    for index, entry in enumerate(
+        [e for e in pending if (e.get("batch"), e.get("index")) in reopened_keys], start=1
+    ):
+        pair = shorts_prompts.render(Concept(**entry["concept"]))
+        entry.update(
+            batch=batch, index=index, reopened_sent=batch,
+            text_to_image=pair.text_to_image, image_to_video=pair.image_to_video,
+        )
+        try:
+            notifications.send_message(
+                f"🔁 <b>#{index} yeniden çekilecek</b> — {_escape(pair.concept.creature)}\n"
+                "Önceki yükleme yataydı. Flow'da en-boy oranını <b>9:16</b> seç."
+            )
+            for part in _split_prompt_message(index, pair):
+                notifications.send_message(part)
+        except RuntimeError as exc:
+            logger.error("Could not send reopened prompt #%d: %s", index, exc)
+            failures.append(f"#{index} {pair.concept.creature}: {exc}")
+    for index, pair in enumerate(pairs, start=len(reopened) + 1):
         pending.append({
             "index": index,
             "batch": batch,
@@ -359,10 +389,10 @@ def send_daily_prompts(
     # on their phone. Supply is deep enough that one short night costs nothing;
     # a run of them ending in zero ideas would, and silence is how that arrives
     # without warning.
-    if len(pairs) < count:
+    if len(pairs) < fresh_count:
         try:
             notifications.send_message(
-                f"ℹ️ <b>{count} fikir istendi, {len(pairs)} üretildi.</b>\n"
+                f"ℹ️ <b>{fresh_count} fikir istendi, {len(pairs)} üretildi.</b>\n"
                 "Gemini'nin önerdiği diğerleri daha önce kullanılmış "
                 "yaratıklardı ve elendi. Yayın için sorun değil — "
                 "kuyruk doluysa etkisi yok. Üst üste tekrarlarsa "

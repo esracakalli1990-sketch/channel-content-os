@@ -19,6 +19,11 @@ from channel_ops.shorts_metadata import (
 from channel_ops.shorts_prompts import Concept, PromptPair
 
 
+def datetime_now_iso():
+    from datetime import UTC, datetime
+    return datetime.now(UTC).isoformat()
+
+
 def _concept(creature="pangolin", shape="a brushed steel capsule"):
     return Concept(
         shape=shape,
@@ -1897,6 +1902,48 @@ class PromptDeliveryTests(unittest.TestCase):
             lambda: setattr(shorts_pipeline, "generate_prompt_pairs", original_gen)
         )
         return shorts_pipeline.send_daily_prompts(None, count=2, root=root)
+
+    def test_a_reopened_idea_takes_a_place_before_new_ones(self):
+        """14 November: three landscape uploads were reopened for re-filming;
+        they replace new ideas instead of piling up on top of them."""
+        from dataclasses import asdict
+        from channel_ops import notifications, shorts_pipeline, shorts_prompts
+        from channel_ops.shorts_prompts import PromptPair
+
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "data").mkdir()
+            old = {"index": 1, "batch": "2026-11-10T21:00:00+00:00",
+                   "created_at": datetime_now_iso(), "concept": asdict(_concept("roadrunner")),
+                   "reopened": "landscape"}
+            (root / "data" / "shorts_pending.json").write_text(json.dumps([old]), "utf-8")
+            asked = []
+            sent = []
+            for target, name, value in (
+                (notifications, "send_message", lambda text, **kw: sent.append(text) or {}),
+                (shorts_pipeline, "generate_prompt_pairs",
+                 lambda *a, count, **k: asked.append(count) or [
+                     PromptPair(_concept(f"new {i}"), "t2i", "i2v") for i in range(count)]),
+                (shorts_prompts, "render", lambda c: PromptPair(c, "t2i", "i2v")),
+            ):
+                original = getattr(target, name)
+                setattr(target, name, value)
+                self.addCleanup(setattr, target, name, original)
+
+            shorts_pipeline.send_daily_prompts(None, count=2, root=root)
+            pending = json.loads((root / "data" / "shorts_pending.json").read_text("utf-8"))
+
+            self.assertEqual(asked, [1], "only one new idea is invented")
+            tonight = [e for e in pending if e["batch"] == pending[-1]["batch"]]
+            self.assertEqual([(e["index"], e["concept"]["creature"]) for e in tonight],
+                             [(1, "roadrunner"), (2, "new 0")])
+            self.assertTrue(tonight[0]["reopened_sent"])
+            self.assertTrue(any("9:16" in t for t in sent))
+
+            # The next night it no longer counts.
+            asked.clear()
+            shorts_pipeline.send_daily_prompts(None, count=2, root=root)
+            self.assertEqual(asked, [2])
 
     def test_ideas_are_recorded_even_when_telegram_refuses(self):
         with TemporaryDirectory() as tmp:
