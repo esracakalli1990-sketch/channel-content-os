@@ -19,5 +19,26 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "8509dc8ab17e"
+  },
+  {
+    "queued_at": "2026-11-14T00:10:12+00:00",
+    "publish_at": "2026-11-14T23:00:00+00:00",
+    "file_id": "BAACAgQAAxkBAAIG0mr3ppfZknWLEhr1hLyU2Le73mlAAAL6KgACbny5U_inHdQoszvxPQQ",
+    "file_size": 2484115,
+    "caption": "2",
+    "concept": {
+      "shape": "crested rhomboid nodule",
+      "material": "dark iron and polished copper",
+      "internal_detail": "fine brass levers and counterweighted balance wheels",
+      "button": "a small flush copper stud on the underside",
+      "button_short": "the flush copper stud on the underside",
+      "creature": "hoatzin",
+      "shell_mechanic": "The ridged rhomboid case splits down its upper median and the side plates slide outward",
+      "emerging_parts": "A hinged crest fan and two jointed leg struts",
+      "signature_move": "its copper crest pivots backward and forward once on its hinge pin with a sharp metallic click",
+      "turkish": "hoatzin: Hoatzin (Guney Amerika'da yasayan, tepeli, otobur kus) — ibikli eskenar dortgen yumru, koyu demir ve cilali bakir"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "8509dc8ab17e"
   }
 ]
