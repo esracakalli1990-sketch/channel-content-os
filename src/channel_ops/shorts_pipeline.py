@@ -580,6 +580,9 @@ def _accept_incoming(provider: AIProvider, root: Path) -> list[dict]:
             queued.append(enqueue(video, pending, root))
         except telegram_inbox.VideoTooLargeError as exc:
             notifications.send_message(f"⚠️ <b>Video alınamadı</b>\n{_escape(str(exc))}")
+        except ClipRejected as exc:
+            logger.warning("Clip rejected: %s", exc)
+            notifications.send_message(f"⛔ <b>Klip sıraya alınmadı</b>\n{_escape(str(exc))}")
         except RuntimeError as exc:
             logger.exception("Queueing failed")
             notifications.send_message(f"❌ <b>Sıraya alınamadı</b>\n{_escape(str(exc))}")
@@ -661,8 +664,103 @@ def _position_line(queue: list[dict], item: dict) -> str:
     return f"\nKuyrukta <b>{len(ahead) + 1}.</b> sıra — önünde: {names}"
 
 
+class ClipRejected(RuntimeError):
+    """A clip that must not be queued; the message is shown to the operator."""
+
+
+def _video_size(path: Path) -> tuple[int, int] | None:
+    """(width, height) of the first video stream, or None if it cannot be read.
+
+    Uses the ffmpeg binary that imageio-ffmpeg ships, which the inbox workflow
+    already installs for the hook overlay. Rotation metadata is honoured: a
+    phone clip stored 1280x720 with a 90-degree rotation plays upright.
+    """
+    try:
+        import imageio_ffmpeg
+        import subprocess
+
+        result = subprocess.run(
+            [imageio_ffmpeg.get_ffmpeg_exe(), "-hide_banner", "-i", str(path)],
+            capture_output=True, text=True, timeout=60,
+        )
+    except Exception as exc:  # noqa: BLE001 - a missing probe must not block publishing
+        logger.warning("Could not measure %s: %s", path.name, exc)
+        return None
+    return _parse_video_size(result.stderr)
+
+
+def _parse_video_size(probe: str) -> tuple[int, int] | None:
+    size = None
+    for line in probe.splitlines():
+        if "Video:" in line and size is None:
+            found = re.search(r"\b(\d{2,5})x(\d{2,5})\b", line)
+            if found:
+                size = (int(found.group(1)), int(found.group(2)))
+    if size is None:
+        return None
+    rotation = re.search(r"(?:rotate\s*:\s*|rotation of )(-?\d+)", probe)
+    if rotation and abs(int(rotation.group(1))) % 180 == 90:
+        size = (size[1], size[0])
+    return size
+
+
+def _is_landscape(width: int, height: int) -> bool:
+    return width > 0 and height > 0 and width > height
+
+
+_LANDSCAPE_MESSAGE = (
+    "Video yatay ({w}x{h}). Shorts akışına yalnızca dikey video girer; "
+    "11–13 Kasım'daki üç yatay video 15–76 izlenmede kaldı. "
+    "Flow'da en-boy oranını 9:16 seçip yeniden üretin ve tekrar gönderin."
+)
+
+
+def _known_file_ids(root: Path) -> set[str]:
+    """Every file id already queued or published, by both id kinds."""
+    seen: set[str] = set()
+    for name in (QUEUE_FILE, PUBLISHED_FILE):
+        for item in _read_json(_data_path(name, root), []):
+            for key in ("file_id", "file_unique_id"):
+                if item.get(key):
+                    seen.add(str(item[key]))
+    return seen
+
+
+def _check_clip(video: telegram_inbox.IncomingVideo, root: Path) -> None:
+    """Refuse a clip that was already used or that is not vertical.
+
+    10 November: two overlapping inbox rounds read the same message and the
+    windmill clip went out a second time as the music box. A re-used clip is
+    the repetitive content YouTube demotes, so the same file is never queued
+    twice, whatever caption it carries.
+    """
+    known = _known_file_ids(root)
+    if video.file_id in known or (video.file_unique_id and video.file_unique_id in known):
+        raise ClipRejected("Bu klip zaten kuyrukta ya da yayınlandı; ikinci kez sıraya alınmadı.")
+
+    width, height = video.width, video.height
+    if not (width and height):
+        # Sent as a document: measure the file itself.
+        with tempfile.TemporaryDirectory() as workspace:
+            clip = Path(workspace) / "probe.mp4"
+            try:
+                telegram_inbox.download_file(video.file_id, video.file_size, clip)
+            except telegram_inbox.VideoTooLargeError:
+                raise
+            except RuntimeError as exc:
+                logger.warning("Could not fetch the clip to measure it: %s", exc)
+                return
+            size = _video_size(clip)
+        if size is None:
+            return
+        width, height = size
+    if _is_landscape(width, height):
+        raise ClipRejected(_LANDSCAPE_MESSAGE.format(w=width, h=height))
+
+
 def enqueue(video: telegram_inbox.IncomingVideo, pending: list[dict], root: Path) -> dict:
     """Match an arriving clip to a concept and hold it for its release slot."""
+    _check_clip(video, root)
     entry = match_pending(video.caption, pending)
     if entry is None:
         raise RuntimeError(
@@ -678,6 +776,7 @@ def enqueue(video: telegram_inbox.IncomingVideo, pending: list[dict], root: Path
         "queued_at": datetime.now(UTC).isoformat(timespec="seconds"),
         "publish_at": publish_at.isoformat(timespec="seconds"),
         "file_id": video.file_id,
+        "file_unique_id": video.file_unique_id,
         "file_size": video.file_size,
         "caption": video.caption,
         "concept": entry["concept"],
@@ -722,8 +821,22 @@ def publish_due(provider: AIProvider, root: Path | None = None) -> list[dict]:
         if not due:
             remaining.append(item)
             continue
+        if _already_published(item, root):
+            # 21 October: a publish that succeeded was retried and the field
+            # cricket went out twice. Dropped, not retried.
+            logger.warning("Skipped %s: this clip is already published", item.get("file_id"))
+            notifications.send_message(
+                f"⛔ <b>{_escape(item.get('concept', {}).get('creature', 'video'))}</b> "
+                "yayınlanmadı: aynı klip daha önce yayınlanmış."
+            )
+            continue
         try:
             records.append(_publish_queued(item, provider, root))
+        except ClipRejected as exc:
+            notifications.send_message(
+                f"⛔ <b>{_escape(item.get('concept', {}).get('creature', 'video'))}</b> "
+                f"yayınlanmadı ve kuyruktan çıkarıldı\n{_escape(str(exc))}"
+            )
         except telegram_inbox.VideoTooLargeError as exc:
             # Not retried: the clip is over Telegram's download ceiling and
             # will be just as large on the next attempt.
@@ -739,6 +852,16 @@ def publish_due(provider: AIProvider, root: Path | None = None) -> list[dict]:
     # and a retry keeps its new slot.
     _write_json(path, remaining)
     return records
+
+
+def _already_published(item: dict, root: Path) -> bool:
+    ids = {str(item[k]) for k in ("file_id", "file_unique_id") if item.get(k)}
+    if not ids:
+        return False
+    for record in _read_json(_data_path(PUBLISHED_FILE, root), []):
+        if ids & {str(record[k]) for k in ("file_id", "file_unique_id") if record.get(k)}:
+            return True
+    return False
 
 
 def _schedule_retry(item: dict, now: datetime) -> dict | None:
@@ -788,6 +911,9 @@ def _publish_queued(item: dict, provider: AIProvider, root: Path) -> dict:
     with tempfile.TemporaryDirectory() as workspace:
         destination = Path(workspace) / "short.mp4"
         telegram_inbox.download_file(item["file_id"], int(item.get("file_size", 0)), destination)
+        size = _video_size(destination)
+        if size and _is_landscape(*size):
+            raise ClipRejected(_LANDSCAPE_MESSAGE.format(w=size[0], h=size[1]))
         destination = _burn_hook(destination, metadata.hook)
         # Published straight to public: the clip is reviewed in Flow before it
         # is ever sent to the bot, so a private-first step adds no second look —
@@ -850,6 +976,7 @@ def _publish_queued(item: dict, provider: AIProvider, root: Path) -> dict:
         # recording them here adds no exposure and removes the need to dig
         # through git history for every clip.
         "file_id": item.get("file_id", ""),
+        "file_unique_id": item.get("file_unique_id", ""),
         # When the clip arrived versus when it went out, so a slot's effect on
         # reach can be read back from the record.
         "queued_at": item.get("queued_at", ""),

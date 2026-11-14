@@ -490,6 +490,20 @@ class CaptionOrderTests(unittest.TestCase):
         self.assertEqual(sorted(captions, key=shorts_pipeline._caption_order), ["2", ""])
 
 
+class VideoSizeParseTests(unittest.TestCase):
+    def test_reads_the_stream_size(self):
+        probe = "  Stream #0:0: Video: h264 (High), yuv420p, 1280x720 [SAR 1:1 DAR 16:9], 24 fps"
+        self.assertEqual(shorts_pipeline._parse_video_size(probe), (1280, 720))
+
+    def test_a_rotated_phone_clip_counts_as_upright(self):
+        probe = ("  Stream #0:0: Video: h264, yuv420p, 1280x720, 30 fps\n"
+                 "      displaymatrix: rotation of -90.00 degrees")
+        self.assertEqual(shorts_pipeline._parse_video_size(probe), (720, 1280))
+
+    def test_unreadable_probe_gives_none(self):
+        self.assertIsNone(shorts_pipeline._parse_video_size("no streams"))
+
+
 class QueueFlowTests(unittest.TestCase):
     """End to end: a clip arrives, waits for its slot, then publishes. The
     video itself is never stored — only the Telegram file id — so the clip is
@@ -530,11 +544,67 @@ class QueueFlowTests(unittest.TestCase):
             setattr(target, name, replacement)
             self.addCleanup(setattr, target, name, original)
 
-    def _video(self, caption):
+    _clips = 0
+
+    def _video(self, caption, file_id=None, width=0, height=0):
         from channel_ops.telegram_inbox import IncomingVideo
+        # A fresh file per clip unless one is given: the same file twice is
+        # now refused, which is what the duplicate tests below check.
+        QueueFlowTests._clips += 1
         return IncomingVideo(
-            update_id=1, file_id="F1", file_size=1_800_000, caption=caption, sent_by="me"
+            update_id=1, file_id=file_id or f"F{QueueFlowTests._clips}",
+            file_size=1_800_000, caption=caption, sent_by="me",
+            width=width, height=height,
         )
+
+    def test_the_same_clip_is_not_queued_twice(self):
+        """10 November: the windmill clip went out again as the music box."""
+        pending = [_pending(1, "moth"), _pending(2, "scorpion")]
+        shorts_pipeline.enqueue(self._video("1", file_id="SAME"), pending, self.root)
+        with self.assertRaises(shorts_pipeline.ClipRejected):
+            shorts_pipeline.enqueue(self._video("2", file_id="SAME"), pending, self.root)
+        self.assertEqual(len(self._queue()), 1)
+        self.assertNotIn("used_at", pending[1], "the second idea stays unmade")
+
+    def test_a_published_clip_is_not_queued_again(self):
+        (self.root / shorts_pipeline.PUBLISHED_FILE).write_text(
+            json.dumps([{"file_id": "OLD", "creature": "moth"}]), encoding="utf-8"
+        )
+        with self.assertRaises(shorts_pipeline.ClipRejected):
+            shorts_pipeline.enqueue(self._video("1", file_id="OLD"), [_pending(1, "moth")], self.root)
+
+    def test_a_landscape_gallery_clip_is_refused(self):
+        """11-13 November: three 1280x720 clips got 15-76 views."""
+        pending = [_pending(1, "moth")]
+        with self.assertRaises(shorts_pipeline.ClipRejected) as caught:
+            shorts_pipeline.enqueue(self._video("1", width=1280, height=720), pending, self.root)
+        self.assertIn("1280x720", str(caught.exception))
+        self.assertEqual(self._queue(), [])
+
+    def test_a_vertical_gallery_clip_is_queued(self):
+        shorts_pipeline.enqueue(self._video("1", width=720, height=1280), [_pending(1, "moth")], self.root)
+        self.assertEqual(len(self._queue()), 1)
+
+    def test_a_landscape_file_clip_is_measured_and_refused(self):
+        original = shorts_pipeline._video_size
+        shorts_pipeline._video_size = lambda path: (1280, 720)
+        self.addCleanup(setattr, shorts_pipeline, "_video_size", original)
+        with self.assertRaises(shorts_pipeline.ClipRejected):
+            shorts_pipeline.enqueue(self._video("1"), [_pending(1, "moth")], self.root)
+
+    def test_an_already_published_clip_is_dropped_at_release(self):
+        """21 October: a succeeded publish was retried and went out twice."""
+        shorts_pipeline.enqueue(self._video("1", file_id="TWICE"), [_pending(1, "moth")], self.root)
+        queue = self._queue()
+        queue[0]["publish_at"] = "2026-01-01T00:00:00+00:00"
+        (self.root / shorts_pipeline.QUEUE_FILE).write_text(json.dumps(queue), encoding="utf-8")
+        (self.root / shorts_pipeline.PUBLISHED_FILE).write_text(
+            json.dumps([{"file_id": "TWICE"}]), encoding="utf-8"
+        )
+        records = shorts_pipeline.publish_due(object(), root=self.root)
+        self.assertEqual(records, [])
+        self.assertEqual(self.uploaded, [])
+        self.assertEqual(self._queue(), [])
 
     def _queue(self):
         path = self.root / shorts_pipeline.QUEUE_FILE
@@ -548,7 +618,7 @@ class QueueFlowTests(unittest.TestCase):
         self.assertTrue(pending[0]["used_at"], "concept must be retired on queueing")
 
     def test_the_queued_item_stores_the_file_id_not_the_video(self):
-        shorts_pipeline.enqueue(self._video("1"), [_pending(1, "moth")], self.root)
+        shorts_pipeline.enqueue(self._video("1", file_id="F1"), [_pending(1, "moth")], self.root)
         item = self._queue()[0]
         self.assertEqual(item["file_id"], "F1")
         self.assertNotIn("video", item)

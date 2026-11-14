@@ -118,6 +118,12 @@ class IncomingVideo:
     file_size: int
     caption: str
     sent_by: str
+    # Telegram gives these for a gallery video; a clip sent "as file" arrives
+    # as a document without them (0), and is measured after download instead.
+    width: int = 0
+    height: int = 0
+    # Stable across re-sends and forwards, unlike file_id.
+    file_unique_id: str = ""
 
     @property
     def size_mb(self) -> float:
@@ -233,6 +239,9 @@ def extract_videos(updates: list[dict]) -> list[IncomingVideo]:
                 file_size=int(media.get("file_size", 0)),
                 caption=str(message.get("caption", "")).strip(),
                 sent_by=str(sender.get("username") or sender.get("first_name") or "unknown"),
+                width=int(media.get("width", 0) or 0),
+                height=int(media.get("height", 0) or 0),
+                file_unique_id=str(media.get("file_unique_id", "")),
             )
         )
     logger.info("Found %d video(s) in %d update(s)", len(videos), len(updates))
