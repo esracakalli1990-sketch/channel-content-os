@@ -1,27 +1,5 @@
 [
   {
-    "queued_at": "2026-11-15T08:46:26+00:00",
-    "publish_at": "2026-11-15T17:00:00+00:00",
-    "file_id": "BQACAgQAAxkBAAIG7Gr5cR6BcNuRL_XowQE5tLTkJ61nAAJLIAACDbjRU57SXU1_XcXSPQQ",
-    "file_unique_id": "AgADSyAAAg240VM",
-    "file_size": 3857891,
-    "caption": "1",
-    "concept": {
-      "shape": "grooved elliptical dome",
-      "material": "oxidized copper and forged iron",
-      "internal_detail": "radiating copper wires and tiny rocking levers",
-      "button": "a copper rivet on the curved flank",
-      "button_short": "the copper rivet on the flank",
-      "creature": "roadrunner",
-      "shell_mechanic": "The copper dome separates into nested sections that slide backward along internal tracks",
-      "emerging_parts": "Two long jointed legs, a slim feathered tail strut, and a narrow pointed beak casing",
-      "signature_move": "its articulated metal tail feathers swing sharply up and down on their hinge, and its yellow glass eye lens pulses with a faint internal amber glow",
-      "turkish": "roadrunner: Yol kocari (Kuzey Amerika'da yasayan hizli kosucu kus) — oluklu eliptik kubbe, oksitlenmis bakir ve dovme demir"
-    },
-    "template_version": "22b0547924d3",
-    "idea_version": "8509dc8ab17e"
-  },
-  {
     "queued_at": "2026-11-15T08:50:29+00:00",
     "publish_at": "2026-11-15T23:00:00+00:00",
     "file_id": "BAACAgQAAxkBAAIG7mr5cehvapsXlUdybSQ9AAFrZGwIRgACTSAAAg240VM9CwABJ7mivbg9BA",
