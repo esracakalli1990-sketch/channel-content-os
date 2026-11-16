@@ -27,6 +27,9 @@ name: Shorts — araçlar
 #   ypp-preflight : başvurudan önce makineyle görülebilen engelleri tarar
 #                   (reddedilmiş/işlenmemiş video, kısıtlı özellikler,
 #                   beyan edilmemiş yapay zeka içeriği). Hiçbir şey yazmaz.
+#   market        : eğitim videosu fikri için rakip "nasıl yapılır"
+#                   videolarının izlenme, süre ve kanal büyüklüğünü okur.
+#                   Salt okunur, ~700 kota birimi.
 #   audit    : her videonun ve her günün ham verisini JSON olarak loga
 #              basar; "bu değişiklik işe yaradı mı" sorusu ancak tam
 #              veriyle cevaplanıyor, telefona giden rapor son on videoyu
@@ -40,7 +43,7 @@ on:
         type: choice
         options: [resend, audience, channel, audit, thumbnail, thumbnail-preview,
                   backfill-dry, backfill-one, backfill-batch, backfill-all,
-                  ypp-preflight, export-dataset, ig-check]
+                  ypp-preflight, export-dataset, ig-check, market]
 
 concurrency:
   group: shorts-tools
@@ -83,7 +86,9 @@ jobs:
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
           GH_SECRET_TOKEN: ${{ secrets.GH_SECRET_TOKEN }}
         run: |
-          if [ "${{ inputs.job }}" = "audit" ]; then
+          if [ "${{ inputs.job }}" = "market" ]; then
+            python scripts/market_scan.py
+          elif [ "${{ inputs.job }}" = "audit" ]; then
             python scripts/channel_audit.py
           elif [ "${{ inputs.job }}" = "ypp-preflight" ]; then
             python scripts/ypp_preflight.py
