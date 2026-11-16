@@ -495,6 +495,13 @@ class CaptionOrderTests(unittest.TestCase):
         self.assertEqual(sorted(captions, key=shorts_pipeline._caption_order), ["2", ""])
 
 
+class TitleOneLineTests(unittest.TestCase):
+    def test_a_newline_in_the_title_is_collapsed(self):
+        from channel_ops.shorts_metadata import parse_metadata
+        raw = '{"title": "Why does this spindle have\n a hidden seam?", "description": "d", "caption": "c", "hashtags": []}'
+        self.assertEqual(parse_metadata(raw).title, "Why does this spindle have a hidden seam?")
+
+
 class VideoSizeParseTests(unittest.TestCase):
     def test_reads_the_stream_size(self):
         probe = "  Stream #0:0: Video: h264 (High), yuv420p, 1280x720 [SAR 1:1 DAR 16:9], 24 fps"

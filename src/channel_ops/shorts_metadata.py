@@ -178,11 +178,13 @@ def parse_metadata(raw: str) -> ShortMetadata:
         hashtags = []
 
     return ShortMetadata(
-        title=str(data["title"]).strip(),
+        # One line: since the parser tolerates raw newlines (10 November), one
+        # reached a published title on 12 November.
+        title=" ".join(str(data["title"]).split()),
         description=str(data["description"]).strip(),
         caption=str(data["caption"]).strip(),
         hashtags=[str(tag) for tag in hashtags],
-        hook=str(data.get("hook", "")).strip(),
+        hook=" ".join(str(data.get("hook", "")).split()),
     )
 
 
