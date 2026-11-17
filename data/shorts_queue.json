@@ -1,27 +1,5 @@
 [
   {
-    "queued_at": "2026-11-17T09:11:42+00:00",
-    "publish_at": "2026-11-17T17:00:00+00:00",
-    "file_id": "BAACAgQAAxkBAAIHG2r8GgVbPz05kKNADhnyHEvoKQhHAAITJgAC3oPhUwZuYqj1qX-_PQQ",
-    "file_unique_id": "AgADEyYAAt6D4VM",
-    "file_size": 3479801,
-    "caption": "1",
-    "concept": {
-      "shape": "flattened ovoid disc",
-      "material": "cast iron with aged bronze rivets",
-      "internal_detail": "bronze pinions and a coiled mainspring",
-      "button": "a raised round bronze stud on the upper shell",
-      "button_short": "the raised round bronze stud on the upper shell",
-      "creature": "flounder",
-      "shell_mechanic": "The heavy iron disc splits horizontally along its perimeter and the upper shell tilts upward on a rear hinge",
-      "emerging_parts": "Two asymmetric optical lens eyes on pivots and a serrated jaw plate",
-      "signature_move": "its dual glass eyes pivot in unison toward the side on their tiny brass axes",
-      "turkish": "flounder: Pisi baligi (Yassi vücutlu, kumda yasayan dip balik türü) — yassilastirilmis oval disk, bronz perçinli dokum demir"
-    },
-    "template_version": "22b0547924d3",
-    "idea_version": "8509dc8ab17e"
-  },
-  {
     "queued_at": "2026-11-17T14:40:00+00:00",
     "publish_at": "2026-11-17T23:00:00+00:00",
     "file_id": "BAACAgQAAxkBAAIHIGr8ZyuyAAFckTqsGbLW1syPpz1zGQACAR8AAt6D6VP-ifJQ1A1GkT0E",
