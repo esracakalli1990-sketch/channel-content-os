@@ -254,6 +254,23 @@ def _escape(text: str) -> str:
     return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
 
+def _recent_batch(hours: float, root: Path | None = None) -> tuple[str, int] | None:
+    """The newest batch within *hours* and how many ideas it holds, or None."""
+    cutoff = datetime.now(UTC) - timedelta(hours=hours)
+    sizes: dict[str, int] = {}
+    for entry in _read_json(_data_path(PENDING_FILE, root), []):
+        stamp = str(entry.get("batch", ""))
+        try:
+            if datetime.fromisoformat(stamp) >= cutoff:
+                sizes[stamp] = sizes.get(stamp, 0) + 1
+        except ValueError:
+            continue
+    if not sizes:
+        return None
+    newest = max(sizes)
+    return newest, sizes[newest]
+
+
 def has_recent_batch(hours: float, root: Path | None = None) -> bool:
     """Whether a batch of ideas already went out within *hours*."""
     cutoff = datetime.now(UTC) - timedelta(hours=hours)
@@ -283,9 +300,24 @@ def send_daily_prompts(
     # The catch-up runs use this: the job gets one shot a night, and twice now
     # Gemini answered 503 to every retry and the whole night was lost. Later
     # runs repeat the attempt and stand down once a batch has landed.
-    if skip_if_recent_hours and has_recent_batch(skip_if_recent_hours, root):
-        logger.info("A batch already went out in the last %g hours — nothing to do", skip_if_recent_hours)
-        return []
+    #
+    # A batch that landed SHORT is topped up instead of skipped: on 11, 12 and
+    # 16 November Gemini's main model was down, the fallback offered only
+    # animals already used, and the night delivered one idea of two while the
+    # catch-up runs a few hours later -- when the main model is usually back --
+    # stood down because "a batch already went out".
+    top_up_batch = ""
+    offset = 0
+    if skip_if_recent_hours:
+        recent = _recent_batch(skip_if_recent_hours, root)
+        if recent is not None:
+            stamp, made = recent
+            if made >= count:
+                logger.info("A batch already went out in the last %g hours — nothing to do", skip_if_recent_hours)
+                return []
+            top_up_batch, offset = stamp, made
+            count -= made
+            logger.info("Topping up the %s batch: %d more idea(s)", stamp, count)
 
     # Reopened ideas -- filmed once but unusable, like the three landscape
     # uploads of 11-13 November -- take tonight's places before new ones are
@@ -304,16 +336,24 @@ def send_daily_prompts(
     # morning, which overwriting the file would have thrown away.
     pending = [
         entry for entry in _read_json(path, [])
-        if _is_fresh(entry) and not entry.get("used_at")
+        if _is_fresh(entry) and (not entry.get("used_at")
+                                 # kept so a later top-up still counts it
+                                 or (top_up_batch and entry.get("batch") == top_up_batch))
     ]
     # Each batch is numbered from one, because that is what the operator writes
     # on the clips. A running counter would have made tonight's first idea
     # "#11" while the caption still said "1".
     #
-    batch = _fresh_batch_stamp(pending)
+    batch = top_up_batch or _fresh_batch_stamp(pending)
 
     total = len(reopened) + len(pairs)
-    if count == 1:
+    if top_up_batch:
+        if total:
+            notifications.send_message(
+                f"➕ <b>Eksik fikir tamamlandı</b> — {total} tane daha.\n"
+                "Bu geceki partiye eklendi; numarasıyla gönderebilirsin."
+            )
+    elif count == 1:
         notifications.send_message(
             "🎬 <b>Sıradaki video</b>\n"
             "Promptları Flow'da çalıştır, çıkan videoyu bu sohbete geri gönder."
@@ -335,7 +375,7 @@ def send_daily_prompts(
     failures: list[str] = []
     reopened_keys = {(e.get("batch"), e.get("index")) for e in reopened}
     for index, entry in enumerate(
-        [e for e in pending if (e.get("batch"), e.get("index")) in reopened_keys], start=1
+        [e for e in pending if (e.get("batch"), e.get("index")) in reopened_keys], start=offset + 1
     ):
         pair = shorts_prompts.render(Concept(**entry["concept"]))
         entry.update(
@@ -352,7 +392,7 @@ def send_daily_prompts(
         except RuntimeError as exc:
             logger.error("Could not send reopened prompt #%d: %s", index, exc)
             failures.append(f"#{index} {pair.concept.creature}: {exc}")
-    for index, pair in enumerate(pairs, start=len(reopened) + 1):
+    for index, pair in enumerate(pairs, start=offset + len(reopened) + 1):
         pending.append({
             "index": index,
             "batch": batch,

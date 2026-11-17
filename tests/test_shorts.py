@@ -1484,8 +1484,9 @@ class CatchUpRunTests(unittest.TestCase):
             def generate(self, prompt, system_prompt=""):
                 raise AssertionError("the model must not be called again")
 
+        # A full batch: one asked for, one arrived. (A short one is topped up.)
         pairs = shorts_pipeline.send_daily_prompts(
-            StubProvider(), count=3, root=self.root, skip_if_recent_hours=6
+            StubProvider(), count=1, root=self.root, skip_if_recent_hours=6
         )
         self.assertEqual(pairs, [])
 
@@ -1909,6 +1910,40 @@ class PromptDeliveryTests(unittest.TestCase):
             lambda: setattr(shorts_pipeline, "generate_prompt_pairs", original_gen)
         )
         return shorts_pipeline.send_daily_prompts(None, count=2, root=root)
+
+    def test_a_short_batch_is_topped_up_not_skipped(self):
+        """16 November: one idea of two, and the catch-up runs stood down."""
+        from dataclasses import asdict
+        from channel_ops import notifications, shorts_pipeline
+        from channel_ops.shorts_prompts import PromptPair
+
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "data").mkdir()
+            stamp = datetime_now_iso()
+            made = {"index": 1, "batch": stamp, "created_at": stamp,
+                    "concept": asdict(_concept("flounder")), "used_at": stamp}
+            (root / "data" / "shorts_pending.json").write_text(json.dumps([made]), "utf-8")
+            asked = []
+            for target, name, value in (
+                (notifications, "send_message", lambda text, **kw: {}),
+                (shorts_pipeline, "generate_prompt_pairs",
+                 lambda *a, count, **k: asked.append(count) or [
+                     PromptPair(_concept(f"new {i}"), "t2i", "i2v") for i in range(count)]),
+            ):
+                original = getattr(target, name)
+                setattr(target, name, value)
+                self.addCleanup(setattr, target, name, original)
+
+            shorts_pipeline.send_daily_prompts(None, count=2, root=root, skip_if_recent_hours=12)
+            pending = json.loads((root / "data" / "shorts_pending.json").read_text("utf-8"))
+            self.assertEqual(asked, [1])
+            self.assertEqual(sorted((e["batch"] == stamp, e["index"]) for e in pending),
+                             [(True, 1), (True, 2)])
+
+            # Full now: the next catch-up run stands down.
+            shorts_pipeline.send_daily_prompts(None, count=2, root=root, skip_if_recent_hours=12)
+            self.assertEqual(asked, [1])
 
     def test_a_reopened_idea_takes_a_place_before_new_ones(self):
         """14 November: three landscape uploads were reopened for re-filming;
