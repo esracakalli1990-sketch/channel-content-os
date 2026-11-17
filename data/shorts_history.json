@@ -250,7 +250,9 @@
     "hoatzin",
     "smooth newt",
     "flounder",
-    "northern cardinal"
+    "northern cardinal",
+    "gentoo penguin",
+    "european robin"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -439,6 +441,8 @@
     "crested rhomboid nodule",
     "corrugated curved pod",
     "flattened ovoid disc",
-    "creased folding fan"
+    "creased folding fan",
+    "smooth teardrop capsule",
+    "faceted pentagonal pod"
   ]
 }
