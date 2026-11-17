@@ -249,7 +249,8 @@
     "eurasian jay",
     "hoatzin",
     "smooth newt",
-    "flounder"
+    "flounder",
+    "northern cardinal"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -425,7 +426,6 @@
     "grooved copper cylinder",
     "tapered ogival cone",
     "faceted decagonal cylinder",
-    "creased folding fan",
     "chamfered rectangular block",
     "ridged triangular prism",
     "faceted decagonal column",
@@ -438,6 +438,7 @@
     "smooth asymmetrical crescent",
     "crested rhomboid nodule",
     "corrugated curved pod",
-    "flattened ovoid disc"
+    "flattened ovoid disc",
+    "creased folding fan"
   ]
 }
