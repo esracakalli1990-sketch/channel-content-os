@@ -252,7 +252,9 @@
     "flounder",
     "northern cardinal",
     "gentoo penguin",
-    "european robin"
+    "european robin",
+    "marsh frog",
+    "european polecat"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -443,6 +445,8 @@
     "flattened ovoid disc",
     "creased folding fan",
     "smooth teardrop capsule",
-    "faceted pentagonal pod"
+    "faceted pentagonal pod",
+    "faceted oval pebble",
+    "carved teardrop stone"
   ]
 }
