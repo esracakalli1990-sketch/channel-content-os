@@ -1,27 +1,5 @@
 [
   {
-    "queued_at": "2026-11-17T23:16:02+00:00",
-    "publish_at": "2026-11-18T23:00:00+00:00",
-    "file_id": "BAACAgQAAxkBAAIHLmr838rNRlNCiSLmRYWuPtVIJBioAAIrHwACbCDpU1nN0waamHOVPQQ",
-    "file_unique_id": "AgADKx8AAmwg6VM",
-    "file_size": 2525247,
-    "caption": "2",
-    "concept": {
-      "shape": "faceted pentagonal pod",
-      "material": "weathered copper with dark verdigris patina",
-      "internal_detail": "nested brass levers and a micro spring drive",
-      "button": "a recessed iron disk set flush into the base",
-      "button_short": "the recessed iron disk set flush into the base",
-      "creature": "european robin",
-      "shell_mechanic": "The faceted pentagonal pod opens via five hinged flaps that fold outward like petals",
-      "emerging_parts": "Two jointed wing struts and a small rounded breast plate",
-      "signature_move": "its copper breast plate lights up with a dull amber glow and its head plate nods once on its neck pivot",
-      "turkish": "european robin: Avrupa kizilgenci (Avrupa'da yasayan, kizil goguslu, otucu kus) — yuzlu besgen kapsul, hava almis bakir ve koyu pas yesili"
-    },
-    "template_version": "22b0547924d3",
-    "idea_version": "8509dc8ab17e"
-  },
-  {
     "queued_at": "2026-11-18T22:15:08+00:00",
     "publish_at": "2026-11-19T17:00:00+00:00",
     "file_id": "BAACAgQAAxkBAAIHOmr-IzvNoggNVw_QeZUPamhEZ7_KAALAIwACbCDxU2q2btSE5OddPQQ",
