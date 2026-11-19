@@ -20,5 +20,27 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "8509dc8ab17e"
+  },
+  {
+    "queued_at": "2026-11-19T21:34:02+00:00",
+    "publish_at": "2026-11-20T17:00:00+00:00",
+    "file_id": "BAACAgQAAxkBAAIHSWr_avIPeSNHDm3KHqsV4SaCzVQ0AALqHQACJVP4U42cky2W6pR2PQQ",
+    "file_unique_id": "AgAD6h0AAiVT-FM",
+    "file_size": 2827253,
+    "caption": "1",
+    "concept": {
+      "shape": "slender teardrop housing",
+      "material": "wrought iron and brushed brass",
+      "internal_detail": "tightly wound clockwork barrels and miniature brass push-rods",
+      "button": "a flush brass toggle switch at the tapered tail",
+      "button_short": "the flush brass toggle switch",
+      "creature": "bunting",
+      "shell_mechanic": "The slender teardrop housing parts down the centerline and the metallic shell halves fold outward like opening wings",
+      "emerging_parts": "Two folded metal wing assemblies, a tiny hinged beak, and two jointed feet",
+      "signature_move": "its hinged brass beak snaps open and closed once with a crisp metallic click, and its body tilts forward slightly on its ankle hinge",
+      "turkish": "bunting: Yulaf kusu (Kucuk otucu kus turu) — ince damla seklinde muhafaza, dovme demir ve fircalanmis pirinc"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "8509dc8ab17e"
   }
 ]
