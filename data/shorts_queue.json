@@ -1,27 +1,5 @@
 [
   {
-    "queued_at": "2026-11-18T22:15:08+00:00",
-    "publish_at": "2026-11-19T17:00:00+00:00",
-    "file_id": "BAACAgQAAxkBAAIHOmr-IzvNoggNVw_QeZUPamhEZ7_KAALAIwACbCDxU2q2btSE5OddPQQ",
-    "file_unique_id": "AgADwCMAAmwg8VM",
-    "file_size": 2455131,
-    "caption": "1",
-    "concept": {
-      "shape": "faceted oval pebble",
-      "material": "antique brass with dark patina",
-      "internal_detail": "miniature escapement gear train and winding arbors",
-      "button": "a tiny knurled brass cylinder embedded in the rounded end",
-      "button_short": "the tiny knurled brass cylinder embedded in the rounded end",
-      "creature": "marsh frog",
-      "shell_mechanic": "The heavy brass pebble splits horizontally along its central equator and the two cap halves hinge outward",
-      "emerging_parts": "Four spring-loaded jointed leg assemblies and a wide pivoting skull plate",
-      "signature_move": "its rear jointed leg bars extend outward and spring back together on their pins like a single clockwork jump",
-      "turkish": "marsh frog: Bataklik kurbagasi (Sulak alanlarda yasayan, ziplayan amfibiyen) — yuzleri yontulmus oval cakil tasi, antika pirinc ve koyu patine"
-    },
-    "template_version": "22b0547924d3",
-    "idea_version": "8509dc8ab17e"
-  },
-  {
     "queued_at": "2026-11-18T22:17:12+00:00",
     "publish_at": "2026-11-19T23:00:00+00:00",
     "file_id": "BAACAgQAAxkBAAIHPGr-I5TG2bgGGeUvQvLi_K9nKc31AALBIwACbCDxU6S0yFy491BwPQQ",
