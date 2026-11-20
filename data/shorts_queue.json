@@ -1,7 +1,7 @@
 [
   {
     "queued_at": "2026-11-19T21:34:02+00:00",
-    "publish_at": "2026-11-20T17:00:00+00:00",
+    "publish_at": "2026-11-20T17:33:23+00:00",
     "file_id": "BAACAgQAAxkBAAIHSWr_avIPeSNHDm3KHqsV4SaCzVQ0AALqHQACJVP4U42cky2W6pR2PQQ",
     "file_unique_id": "AgAD6h0AAiVT-FM",
     "file_size": 2827253,
@@ -19,7 +19,9 @@
       "turkish": "bunting: Yulaf kusu (Kucuk otucu kus turu) — ince damla seklinde muhafaza, dovme demir ve fircalanmis pirinc"
     },
     "template_version": "22b0547924d3",
-    "idea_version": "8509dc8ab17e"
+    "idea_version": "8509dc8ab17e",
+    "attempts": 1,
+    "first_publish_at": "2026-11-20T17:00:00+00:00"
   },
   {
     "queued_at": "2026-11-20T00:24:20+00:00",
