@@ -20,5 +20,27 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "8509dc8ab17e"
+  },
+  {
+    "queued_at": "2026-11-20T21:14:26+00:00",
+    "publish_at": "2026-11-21T17:00:00+00:00",
+    "file_id": "BAACAgQAAxkBAAIHXmsAAbfE1bMWH6F2pWHUXqXatilXXgACbSIAAiVTCFB8mQWzNSFiHD0E",
+    "file_unique_id": "AgADbSIAAiVTCFA",
+    "file_size": 2908500,
+    "caption": "1",
+    "concept": {
+      "shape": "cupped bivalve disc",
+      "material": "tarnished copper with dark patina",
+      "internal_detail": "interlocking brass teeth, steel tension springs, and tiny bronze levers",
+      "button": "a raised copper rivet near the hinge",
+      "button_short": "the raised copper rivet near the hinge",
+      "creature": "loggerhead sea turtle",
+      "shell_mechanic": "The cupped bivalve disc opens wide along its copper hinge like a heavy locket",
+      "emerging_parts": "A stout head plate, four jointed flippers, and a short tail",
+      "signature_move": "its front copper flippers lift simultaneously on their pins and lower again like a single clockwork step",
+      "turkish": "loggerhead sea turtle: Iribas deniz kaplumbagasi (Denizlerde yasayan, guclu ceneli buyuk surungen) — cukur cift kapakli disk, kararmis bakir ve koyu patina"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "8509dc8ab17e"
   }
 ]
