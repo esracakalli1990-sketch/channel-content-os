@@ -42,5 +42,27 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "8509dc8ab17e"
+  },
+  {
+    "queued_at": "2026-11-20T22:33:12+00:00",
+    "publish_at": "2026-11-21T23:00:00+00:00",
+    "file_id": "BAACAgQAAxkBAAIHYmsAAcpKOjJAgCEkd5am6T-6WvWdCAACtCIAAiVTCFC2Xb7tng1bvz0E",
+    "file_unique_id": "AgADtCIAAiVTCFA",
+    "file_size": 2920864,
+    "caption": "2",
+    "concept": {
+      "shape": "slender asymmetrical crescent",
+      "material": "dark patinated copper with polished edges",
+      "internal_detail": "tightly wound brass mainsprings and minute interlocking lever arms",
+      "button": "a small raised copper rivet on the curved spine",
+      "button_short": "the small raised copper rivet",
+      "creature": "marine eel",
+      "shell_mechanic": "The crescent copper spine splits down its ventral groove and the two sides roll outward like opening shutters",
+      "emerging_parts": "A long flexible segmented vertebral chain and a tiny hinged jaw plate",
+      "signature_move": "its hinged jaw plate snaps open and shut with a crisp metal click, and its copper tail section whips once from side to side on its internal pivot",
+      "turkish": "marine eel: Deniz yılanı (uzun ve kıvrık vücutlu deniz canlısı) — ince asimetrik hilal, koyu patinajlı bakır ve cilalı kenarlar"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "8509dc8ab17e"
   }
 ]
