@@ -256,7 +256,8 @@
     "marsh frog",
     "european polecat",
     "bunting",
-    "sandhill crane"
+    "sandhill crane",
+    "loggerhead sea turtle"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -346,7 +347,6 @@
     "grooved concave wedge",
     "ribbed elliptical pod",
     "heavy ribbed brass cylinder",
-    "cupped bivalve disc",
     "knotty tapered stump",
     "curved sigmoid ingot",
     "corrugated navicular pod",
@@ -450,6 +450,7 @@
     "faceted oval pebble",
     "carved teardrop stone",
     "slender teardrop housing",
-    "grooved elliptical dome"
+    "grooved elliptical dome",
+    "cupped bivalve disc"
   ]
 }
