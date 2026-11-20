@@ -1,27 +1,5 @@
 [
   {
-    "queued_at": "2026-11-20T00:24:20+00:00",
-    "publish_at": "2026-11-20T23:00:00+00:00",
-    "file_id": "BAACAgQAAxkBAAIHUGr_ksGL8kBUfBGZNP58aqHaWGrqAAKLHwACJVMAAVCu4k1kn8t5Iz0E",
-    "file_unique_id": "AgADix8AAiVTAAFQ",
-    "file_size": 3019336,
-    "caption": "2",
-    "concept": {
-      "shape": "grooved elliptical dome",
-      "material": "aged bronze with verdigris highlights",
-      "internal_detail": "tightly wound clockwork springs and brass levers",
-      "button": "a sunken bronze button ringed with tiny rivets",
-      "button_short": "the sunken bronze button",
-      "creature": "sandhill crane",
-      "shell_mechanic": "The grooved domed shell parts down the middle and rotates outward on hidden pins",
-      "emerging_parts": "Long articulated stilt legs and a folding neck linkage",
-      "signature_move": "its hinged brass beak swings open on its pivot and snaps shut once with a sharp click",
-      "turkish": "sandhill crane: Kanada turnasi (Buyuk, gocmen kus) — oluklu eliptik kubbe, verdigris golgeli eskitilmis bronz"
-    },
-    "template_version": "22b0547924d3",
-    "idea_version": "8509dc8ab17e"
-  },
-  {
     "queued_at": "2026-11-20T21:14:26+00:00",
     "publish_at": "2026-11-21T17:00:00+00:00",
     "file_id": "BAACAgQAAxkBAAIHXmsAAbfE1bMWH6F2pWHUXqXatilXXgACbSIAAiVTCFB8mQWzNSFiHD0E",
