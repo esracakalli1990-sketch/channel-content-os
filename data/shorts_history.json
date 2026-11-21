@@ -258,7 +258,9 @@
     "bunting",
     "sandhill crane",
     "loggerhead sea turtle",
-    "marine eel"
+    "marine eel",
+    "fossa",
+    "great blue turaco"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -402,7 +404,6 @@
     "ribbed tubular housing",
     "fluted cylindrical canister",
     "domed pentagonal case",
-    "ribbed walnut ellipsoid",
     "beveled rectangular block",
     "scalloped deltoid vault",
     "faceted hexagonal cylinder",
@@ -445,7 +446,6 @@
     "crested rhomboid nodule",
     "corrugated curved pod",
     "flattened ovoid disc",
-    "creased folding fan",
     "smooth teardrop capsule",
     "faceted pentagonal pod",
     "faceted oval pebble",
@@ -453,6 +453,8 @@
     "slender teardrop housing",
     "grooved elliptical dome",
     "cupped bivalve disc",
-    "slender asymmetrical crescent"
+    "slender asymmetrical crescent",
+    "ribbed walnut ellipsoid",
+    "creased folding fan"
   ]
 }
