@@ -1,27 +1,5 @@
 [
   {
-    "queued_at": "2026-11-22T01:03:27+00:00",
-    "publish_at": "2026-11-22T23:00:00+00:00",
-    "file_id": "BAACAgQAAxkBAAIHdWsCPv1H58YSCuH96-b9xcpjxshhAAIiJQACdDwRUD_s2YIV07VHPQQ",
-    "file_unique_id": "AgADIiUAAnQ8EVA",
-    "file_size": 3515491,
-    "caption": "2",
-    "concept": {
-      "shape": "creased folding fan",
-      "material": "antique cast iron with gilded brass hinges",
-      "internal_detail": "interlocking micro-cogs and delicate tension springs",
-      "button": "a tiny iron lever shaped like a drop",
-      "button_short": "the tiny iron drop lever",
-      "creature": "great blue turaco",
-      "shell_mechanic": "The pleated iron fan spreads wide along its radial pivots and the ribbed segments fan outward",
-      "emerging_parts": "A hinged crest plate, two slender jointed legs, and a rigid beak assembly",
-      "signature_move": "its hinged crest plate bobs up and down on its pivot and its brass beak assembly opens and clicks shut",
-      "turkish": "great blue turaco: Buyuk mavi turako (Afrika'da yasayan, renkli tuy baslikli bir kus) — kirisik katlanir yelpaze, antik dokme demir ve yaldizli pirinc mentefeler"
-    },
-    "template_version": "22b0547924d3",
-    "idea_version": "8509dc8ab17e"
-  },
-  {
     "queued_at": "2026-11-22T21:12:50+00:00",
     "publish_at": "2026-11-23T17:00:00+00:00",
     "file_id": "BAACAgQAAxkBAAIHfmsDWrSYGaWACDPur6GFeDXwYT6GAALTJAACf3gYUJRTjP5zBrI-PQQ",
