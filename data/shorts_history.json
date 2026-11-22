@@ -260,7 +260,9 @@
     "loggerhead sea turtle",
     "marine eel",
     "fossa",
-    "great blue turaco"
+    "great blue turaco",
+    "manatee",
+    "portuguese man o war"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -455,6 +457,8 @@
     "cupped bivalve disc",
     "slender asymmetrical crescent",
     "ribbed walnut ellipsoid",
-    "creased folding fan"
+    "creased folding fan",
+    "tapered oval casing",
+    "cupped elliptical bivalve"
   ]
 }
