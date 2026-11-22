@@ -1,1 +1,24 @@
-[]
+[
+  {
+    "queued_at": "2026-11-22T01:01:24+00:00",
+    "publish_at": "2026-11-22T17:00:00+00:00",
+    "file_id": "BAACAgQAAxkBAAIHc2sCPo5ubBNfmM2Kot0rpK6nHGoJAAIgJQACdDwRUC4Fd_bmLo02PQQ",
+    "file_unique_id": "AgADICUAAnQ8EVA",
+    "file_size": 3152345,
+    "caption": "1",
+    "concept": {
+      "shape": "ribbed walnut ellipsoid",
+      "material": "dark carved burl walnut and aged sterling silver",
+      "internal_detail": "microscopic silver escapement wheels and coiled steel hairs",
+      "button": "a small silver stud embedded in the woody grain",
+      "button_short": "the small silver stud embedded in the wooden grain",
+      "creature": "fossa",
+      "shell_mechanic": "The walnut ellipsoid splits down the middle and the two carved halves peel backward like folding leaves",
+      "emerging_parts": "Four jointed silver legs and a long flexible tail segment",
+      "signature_move": "its silver tail segment swings from side to side once on its base hinge with a dry click",
+      "turkish": "fossa: Fossa (Madagaskar'da yasayan, kedi benzeri yirtici memeli) — dilimli ceviz elipsoidi, koyu oymali kok ceviz ve eskitilmis gumus"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "8509dc8ab17e"
+  }
+]
