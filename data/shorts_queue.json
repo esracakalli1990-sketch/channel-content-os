@@ -1,27 +1,5 @@
 [
   {
-    "queued_at": "2026-11-22T21:12:50+00:00",
-    "publish_at": "2026-11-23T17:00:00+00:00",
-    "file_id": "BAACAgQAAxkBAAIHfmsDWrSYGaWACDPur6GFeDXwYT6GAALTJAACf3gYUJRTjP5zBrI-PQQ",
-    "file_unique_id": "AgAD0yQAAn94GFA",
-    "file_size": 2701535,
-    "caption": "1",
-    "concept": {
-      "shape": "tapered oval casing",
-      "material": "oxidized silver and dark walnut wood",
-      "internal_detail": "fine brass cogs and tension springs",
-      "button": "a tiny silver lever on the flank",
-      "button_short": "the tiny silver lever",
-      "creature": "manatee",
-      "shell_mechanic": "The tapered oval casing separates horizontally and the upper wooden shell tilts upward",
-      "emerging_parts": "A broad flat tail fin and two jointed flipper arms",
-      "signature_move": "its internal gear assembly emits a quiet mechanical whir, and its broad flat tail fin ratchets slowly from side to side on its hinge pin",
-      "turkish": "manatee: Manati (deniz inoteği, otçul deniz memelisi) — konik oval mahfaza, oksitlenmiş gümüş ve koyu ceviz ağacı"
-    },
-    "template_version": "22b0547924d3",
-    "idea_version": "8509dc8ab17e"
-  },
-  {
     "queued_at": "2026-11-22T21:14:52+00:00",
     "publish_at": "2026-11-23T23:00:00+00:00",
     "file_id": "BAACAgQAAxkBAAIHgGsDWtuhnde8pGwTSTzZQj8nJQPoAALVJAACf3gYUCQRLiSUx9ohPQQ",
