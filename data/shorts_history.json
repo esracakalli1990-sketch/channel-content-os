@@ -263,7 +263,8 @@
     "great blue turaco",
     "manatee",
     "portuguese man o war",
-    "mandrill"
+    "mandrill",
+    "spectacled bear"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -401,7 +402,6 @@
     "spherical pod",
     "grooved cylindrical bolt",
     "curved triangular prism",
-    "beveled ovate monocoque",
     "tapered cylindrical drum",
     "smooth convex obelisk",
     "ribbed tubular housing",
@@ -460,6 +460,7 @@
     "ribbed walnut ellipsoid",
     "tapered oval casing",
     "cupped elliptical bivalve",
-    "creased folding fan"
+    "creased folding fan",
+    "beveled ovate monocoque"
   ]
 }
