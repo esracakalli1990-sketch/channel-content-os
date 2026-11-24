@@ -1,27 +1,5 @@
 [
   {
-    "queued_at": "2026-11-24T07:05:08+00:00",
-    "publish_at": "2026-11-24T17:00:00+00:00",
-    "file_id": "BAACAgQAAxkBAAIHl2sFNs-EeQER_xYTWrVyzV94Yl7ZAAJQJQACwmsoUK9c7KnRhMV8PQQ",
-    "file_unique_id": "AgADUCUAAsJrKFA",
-    "file_size": 2679566,
-    "caption": "1",
-    "concept": {
-      "shape": "creased folding fan",
-      "material": "patinated bronze and blackened iron",
-      "internal_detail": "fine steel pivot pins and miniature rack-and-pinion linkages",
-      "button": "a heavy iron thumb latch set flush into the base",
-      "button_short": "the heavy iron thumb latch",
-      "creature": "mandrill",
-      "shell_mechanic": "The creased folding fan expands outward from its base through hinged iron ribs that fan across the palm",
-      "emerging_parts": "Two jointed bronze cheek plates and a grooved muzzle bar",
-      "signature_move": "its hinged bronze cheek plates slide outward on their guide rails and snap together with a crisp double click",
-      "turkish": "mandrill: Mandril (Renkli yüzlü büyük maymun) — kirisik katlanir yelpaze, patinajli bronz ve karartilmis demir"
-    },
-    "template_version": "22b0547924d3",
-    "idea_version": "8509dc8ab17e"
-  },
-  {
     "queued_at": "2026-11-24T07:07:11+00:00",
     "publish_at": "2026-11-24T23:00:00+00:00",
     "file_id": "BAACAgQAAxkBAAIHmWsFNzVCA4pxn87vZNzXaXt-MkAIAAJRJQACwmsoUNx6lnhAe60GPQQ",
