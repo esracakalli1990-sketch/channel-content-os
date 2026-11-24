@@ -20,5 +20,27 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "8509dc8ab17e"
+  },
+  {
+    "queued_at": "2026-11-24T07:07:11+00:00",
+    "publish_at": "2026-11-24T23:00:00+00:00",
+    "file_id": "BAACAgQAAxkBAAIHmWsFNzVCA4pxn87vZNzXaXt-MkAIAAJRJQACwmsoUNx6lnhAe60GPQQ",
+    "file_unique_id": "AgADUSUAAsJrKFA",
+    "file_size": 2613387,
+    "caption": "2",
+    "concept": {
+      "shape": "beveled ovate monocoque",
+      "material": "heavy antique brass and dark iron",
+      "internal_detail": "nested coaxial gears and fine tension springs",
+      "button": "a sliding brass bar mounted on the underside",
+      "button_short": "the sliding brass bar on the underside",
+      "creature": "spectacled bear",
+      "shell_mechanic": "The rounded brass hull separates down the middle and folds outward like twin doors",
+      "emerging_parts": "Four stout hinged legs, a broad rounded head plate, and short ear plates",
+      "signature_move": "its heavy front leg pivots forward on its brass hinge and its hinged snout plate nods once with a mechanical click",
+      "turkish": "spectacled bear: Gozluklu ayi (Guney Amerika'da yasayan bir memeli) — beveled ovate monocoque, agir antik pirinc ve koyu demir"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "8509dc8ab17e"
   }
 ]
