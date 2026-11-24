@@ -262,7 +262,8 @@
     "fossa",
     "great blue turaco",
     "manatee",
-    "portuguese man o war"
+    "portuguese man o war",
+    "mandrill"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -457,8 +458,8 @@
     "cupped bivalve disc",
     "slender asymmetrical crescent",
     "ribbed walnut ellipsoid",
-    "creased folding fan",
     "tapered oval casing",
-    "cupped elliptical bivalve"
+    "cupped elliptical bivalve",
+    "creased folding fan"
   ]
 }
