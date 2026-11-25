@@ -31,7 +31,6 @@
     "armadillo",
     "hermit crab",
     "luna moth",
-    "chameleon",
     "pangolin",
     "chambered nautilus",
     "horseshoe crab",
@@ -266,7 +265,9 @@
     "mandrill",
     "spectacled bear",
     "horned screamer",
-    "bearded dragon"
+    "bearded dragon",
+    "grey seal",
+    "chameleon"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -395,7 +396,6 @@
     "domed pentagonal vault",
     "canted scalene wedge",
     "flattened heart plaque",
-    "ribbed boat hull",
     "ribbed convex cylinder",
     "ribbed saddle vault",
     "grooved ovoid bead",
@@ -427,7 +427,6 @@
     "tapered trigonal block",
     "canted quadrilateral block",
     "fluted oblate disc",
-    "cupped elliptical pod",
     "curved asymmetrical pod",
     "smooth carved soapstone pebble",
     "grooved rhombic cassette",
@@ -465,6 +464,8 @@
     "creased folding fan",
     "beveled ovate monocoque",
     "tapered asymmetric bulb",
-    "flattened ovoid pod"
+    "flattened ovoid pod",
+    "ribbed boat hull",
+    "cupped elliptical pod"
   ]
 }
