@@ -267,7 +267,9 @@
     "horned screamer",
     "bearded dragon",
     "grey seal",
-    "chameleon"
+    "chameleon",
+    "short-tailed albatross",
+    "bottlenose dolphin"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -466,6 +468,8 @@
     "tapered asymmetric bulb",
     "flattened ovoid pod",
     "ribbed boat hull",
-    "cupped elliptical pod"
+    "cupped elliptical pod",
+    "creased folding scroll",
+    "smooth convex lozenge"
   ]
 }
