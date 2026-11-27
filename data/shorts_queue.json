@@ -20,5 +20,27 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "8509dc8ab17e"
+  },
+  {
+    "queued_at": "2026-11-27T07:34:10+00:00",
+    "publish_at": "2026-11-27T23:00:00+00:00",
+    "file_id": "BAACAgQAAxkBAAIH3GsJMglGE-7X3xXVhU6dji2POf8HAAIyHAACmOJIUBbCWlacBsRWPQQ",
+    "file_unique_id": "AgADMhwAApjiSFA",
+    "file_size": 2349478,
+    "caption": "2",
+    "concept": {
+      "shape": "smooth convex lozenge",
+      "material": "dark iron and brushed bronze",
+      "internal_detail": "intricate brass differential gears and tiny steel linkages",
+      "button": "a flush bronze disc set into the base",
+      "button_short": "the flush bronze disc",
+      "creature": "bottlenose dolphin",
+      "shell_mechanic": "The smooth iron lozenge parts down its median seam and the two symmetrical hull plates slide outward",
+      "emerging_parts": "A slender curved snout and a high dorsal fin",
+      "signature_move": "its bronze snout pivots up and down once on its neck hinge with a clean clockwork snap",
+      "turkish": "bottlenose dolphin: Afalina veya Şişe burunlu yunus (Zeki, okyanuslarda yaşayan sosyal deniz memelisi) — pürüzsüz dışbükey eşkenar dörtgen, koyu demir ve fırçalanmış bronz"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "8509dc8ab17e"
   }
 ]
