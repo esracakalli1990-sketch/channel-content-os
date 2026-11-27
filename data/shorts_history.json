@@ -269,7 +269,9 @@
     "grey seal",
     "chameleon",
     "short-tailed albatross",
-    "bottlenose dolphin"
+    "bottlenose dolphin",
+    "tripodfish",
+    "gharial"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -470,6 +472,8 @@
     "ribbed boat hull",
     "cupped elliptical pod",
     "creased folding scroll",
-    "smooth convex lozenge"
+    "smooth convex lozenge",
+    "keeled rhombic bar",
+    "canted trapezoidal slab"
   ]
 }
