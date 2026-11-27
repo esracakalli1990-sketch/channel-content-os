@@ -1,27 +1,5 @@
 [
   {
-    "queued_at": "2026-11-27T07:32:07+00:00",
-    "publish_at": "2026-11-27T17:00:00+00:00",
-    "file_id": "BAACAgQAAxkBAAIH2msJMarEgfxInP-PDY_HCwfmXLOOAAIxHAACmOJIUD_ZieFoA_rcPQQ",
-    "file_unique_id": "AgADMRwAApjiSFA",
-    "file_size": 3206575,
-    "caption": "1",
-    "concept": {
-      "shape": "creased folding scroll",
-      "material": "tarnished silver and blackened steel",
-      "internal_detail": "minature bronze levers and interlocking gear trains",
-      "button": "a tiny knurled silver roller set into the edge",
-      "button_short": "the knurled silver roller",
-      "creature": "short-tailed albatross",
-      "shell_mechanic": "The creased silver scroll unfolds its stacked metal layers outward like overlapping plumage",
-      "emerging_parts": "Two long folding wings and a tapered bill plate",
-      "signature_move": "its silver beak plates slide apart and snap back together with a crisp metallic click",
-      "turkish": "short-tailed albatross: Kısa kuyruklu albatros (Okyanusları aşan, büyük ve zarif deniz kuşu) — katlanmış kıvrık rulo, kararmış gümüş ve kararsız çelik"
-    },
-    "template_version": "22b0547924d3",
-    "idea_version": "8509dc8ab17e"
-  },
-  {
     "queued_at": "2026-11-27T07:34:10+00:00",
     "publish_at": "2026-11-27T23:00:00+00:00",
     "file_id": "BAACAgQAAxkBAAIH3GsJMglGE-7X3xXVhU6dji2POf8HAAIyHAACmOJIUBbCWlacBsRWPQQ",
