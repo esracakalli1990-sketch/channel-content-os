@@ -1,0 +1,35 @@
+Analytics son gün 2026-11-25 | dışarıda: {'kopya': 2, 'gizli/silinmiş': 4, '5 günden genç': 10}
+eski: n=98 10-01–11-09, gün+3 olgun 98
+yeni: n=21 11-12–11-22, gün+3 olgun 21
+
+gün+3 etkileşimli (eski: 1 Eki–10 Kas)         yeni n= 21 med=    2567 | eski n= 98 med=    4355 | oran 0.59 p=0.648 fark gösterilemedi
+gün+3 etkileşimli (eski: 27 Eki–10 Kas)        yeni n= 21 med=    2567 | eski n= 39 med=    2301 | oran 1.12 p=0.314 fark gösterilemedi
+gün+3 izlenme (eski: 27 Eki–10 Kas)            yeni n= 21 med=    5547 | eski n= 39 med=    4900 | oran 1.13 p=0.321 fark gösterilemedi
+ortalama görüntüleme % (eski: 27 Eki–10 Kas)   yeni n= 21 med=     129 | eski n= 37 med=     122 | oran 1.06 p=0.216 fark gösterilemedi
+eski (27 Eki+): gün+3 ≥10K 15/39 | ≥50K 1 | <2K 9
+yeni (27 Eki+): gün+3 ≥10K 8/21 | ≥50K 4 | <2K 3
+
+kanal etkileşimli/gün: 27 Eki–10 Kas 34116 | 11 Kas–2026-11-25 113947
+
+== yeni set videoları
+11-12 17 wall gecko             gün+3     938 canlı 1084 izl% 120.8 | cast bronze with heavy dark patina
+11-12 23 red-tailed hawk        gün+3   31901 canlı 37919 izl% 123.6 | burnished copper and dark weathere
+11-13 17 common wallcreeper     gün+3    1581 canlı 2090 izl% 154.5 | dark cast iron with inlaid copper 
+11-14 17 eurasian jay           gün+3   41675 canlı 102552 izl% 147.7 | antique cast iron and tarnished br
+11-14 23 hoatzin                gün+3    4592 canlı 4897 izl% 118.0 | dark iron and polished copper
+11-15 17 roadrunner             gün+3   56189 canlı 139635 izl% 140.7 | oxidized copper and forged iron
+11-15 23 smooth newt            gün+3    4121 canlı 5463 izl% 132.0 | weathered bronze and dark teak woo
+11-16 17 spotted ratfish        gün+3    9753 canlı 20800 izl% 140.8 | heavy cast iron and weathered silv
+11-16 23 red-legged seriema     gün+3    5547 canlı 6056 izl% 115.0 | patinated brass and forged iron
+11-17 17 flounder               gün+3   51664 canlı 115434 izl% 134.6 | cast iron with aged bronze rivets
+11-17 23 northern cardinal      gün+3    2050 canlı 2489 izl% 111.2 | blackened iron and tarnished silve
+11-18 17 gentoo penguin         gün+3  119377 canlı 237410 izl% 138.6 | burnished copper with silver solde
+11-18 23 european robin         gün+3    8415 canlı 11246 izl% 117.3 | weathered copper with dark verdigr
+11-19 17 marsh frog             gün+3   10816 canlı 12467 izl% 162.1 | antique brass with dark patina
+11-19 23 european polecat       gün+3    1773 canlı 2089 izl% 122.0 | dark iron and oxidized copper
+11-20 17 bunting                gün+3    2107 canlı 2379 izl% 108.8 | wrought iron and brushed brass
+11-20 23 sandhill crane         gün+3   46430 canlı 49948 izl% 134.1 | aged bronze with verdigris highlig
+11-21 17 loggerhead sea turtle  gün+3    3010 canlı 3484 izl% 123.2 | tarnished copper with dark patina
+11-21 23 marine eel             gün+3    3439 canlı 4355 izl% 122.4 | dark patinated copper with polishe
+11-22 17 fossa                  gün+3    2156 canlı 2397 izl% 129.0 | dark carved burl walnut and aged s
+11-22 23 great blue turaco      gün+3  275864 canlı 454249 izl% 150.0 | antique cast iron with gilded bras
