@@ -14,9 +14,9 @@ from __future__ import annotations
 
 from channel_ops.channel_data import load_records, rows
 
-FIRST_DAY = "2026-10-04"
-LAST_DAY = "2026-11-01"
-DAYS = 60
+FIRST_DAY = "2026-10-01"
+LAST_DAY = "2026-11-30"
+DAYS = 90
 
 
 def emit(root=None) -> None:
