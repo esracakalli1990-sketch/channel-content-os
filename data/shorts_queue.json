@@ -20,5 +20,27 @@
     },
     "template_version": "22b0547924d3",
     "idea_version": "8509dc8ab17e"
+  },
+  {
+    "queued_at": "2026-11-28T07:17:44+00:00",
+    "publish_at": "2026-11-28T23:00:00+00:00",
+    "file_id": "BAACAgQAAxkBAAIH82sKf-LbOL3_mWpYjUpW-a-CYWcIAALwHwACmOJQUC45LjDPzrujPQQ",
+    "file_unique_id": "AgAD8B8AApjiUFA",
+    "file_size": 3031890,
+    "caption": "2",
+    "concept": {
+      "shape": "canted trapezoidal slab",
+      "material": "cast iron with river-worn oil finish and aged copper plates",
+      "internal_detail": "coiled flat spring barrels and miniature copper gear trains",
+      "button": "a dark circular bronze button inlaid with concentric copper rings",
+      "button_short": "the dark circular bronze button on the rear plating",
+      "creature": "gharial",
+      "shell_mechanic": "The grooved dorsal plates slide sideways along dovetail tracks on either side",
+      "emerging_parts": "A long toothed copper snout and four splayed jointed legs",
+      "signature_move": "its narrow toothed jaw ratchets open on a copper gear pivot and snaps shut with a metallic strike",
+      "turkish": "gharial: Gavyal (Hindistan nehirlerinde yaşayan ince uzun çeneli timsah) — eğik yamuk levha, nehir cilalı dökme demir ve eskitilmiş bakır plakalar"
+    },
+    "template_version": "22b0547924d3",
+    "idea_version": "8509dc8ab17e"
   }
 ]
