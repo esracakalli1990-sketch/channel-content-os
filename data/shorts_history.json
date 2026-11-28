@@ -271,7 +271,9 @@
     "short-tailed albatross",
     "bottlenose dolphin",
     "tripodfish",
-    "gharial"
+    "gharial",
+    "great spotted woodpecker",
+    "nile crocodile"
   ],
   "shapes": [
     "smooth almond wedge",
@@ -474,6 +476,8 @@
     "creased folding scroll",
     "smooth convex lozenge",
     "keeled rhombic bar",
-    "canted trapezoidal slab"
+    "canted trapezoidal slab",
+    "fluted teardrop pod",
+    "corrugated oval pod"
   ]
 }
